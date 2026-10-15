@@ -13,3 +13,7 @@ Demo links: set `data-demo="https://..."` on each `<article class="card">`. Unti
 
 ## Animation demos
 `animations.html` has four animation options to try (tear-open cloth intro, pixel-built previews, pinned browser tour, tear-off price tag). Pick the ones to bring into `index.html`.
+
+## Intro prototypes
+- `intro-search.html`: "Search yourself". The visitor searches their own name (or shop), sees the scattered results people find today, then sees their own site as the first result and taps it open.
+- `intro.html`: the paper-and-wax-seal opening (earlier draft).
