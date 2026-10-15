@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pixelpatra</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Ready-made website templates for students, professionals and small businesses. Buy the files or get it set up for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Tiro+Devanagari+Hindi&display=swap">
+<style>
+/* Layout: one column store page. Pixel-grid motif from the name, saffron as the single loud colour, cards are the only boxed objects. */
+:root {
+  color-scheme: light;
+  --paper: #f6f7fb;
+  --surface: #ffffff;
+  --ink: #15172a;
+  --muted: #5b5f78;
+  --line: #dfe1ec;
+  --saffron: #f26b1d;
+  --saffron-ink: #ffffff;
+  --teal: #0f8f86;
+  --sky: #3b6cf6;
+  --leaf: #2f9e5b;
+  --plum: #8a3ffc;
+  --shadow: 0 1px 2px rgba(21,23,42,.06), 0 12px 32px -12px rgba(21,23,42,.18);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-deva: "Tiro Devanagari Hindi", "Noto Serif Devanagari", serif;
+  --radius: 14px;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1120; --surface: #181b2e; --ink: #eef0fa; --muted: #a3a7c2; --line: #2a2e48;
+    --saffron: #ff8a3d; --saffron-ink: #1a0d03; --teal: #34c3b8; --sky: #7c9bff; --leaf: #5fd08d; --plum: #b48cff;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1120; --surface: #181b2e; --ink: #eef0fa; --muted: #a3a7c2; --line: #2a2e48;
+  --saffron: #ff8a3d; --saffron-ink: #1a0d03; --teal: #34c3b8; --sky: #7c9bff; --leaf: #5fd08d; --plum: #b48cff;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--saffron); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.wrap { max-width: 1120px; margin-inline: auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.price { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--paper) 82%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.top.scrolled { border-bottom-color: var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -.02em; }
+.logo-mark { display: grid; grid-template-columns: repeat(3, 6px); gap: 2px; }
+.logo-mark i { width: 6px; height: 6px; background: var(--ink); border-radius: 1px; }
+.logo-mark i.o { background: var(--saffron); }
+.logo-mark i.x { background: transparent; }
+.nav { display: flex; align-items: center; gap: 22px; font-size: 15px; font-weight: 500; }
+.nav a { text-decoration: none; color: var(--muted); }
+.nav a:hover { color: var(--ink); }
+@media (max-width: 640px) { .nav a.hide-sm { display: none; } }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 999px; font: 600 15px/1 var(--font-body); text-decoration: none; cursor: pointer; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); transition: transform .15s, background .15s, color .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); }
+.btn-solid { background: var(--saffron); border-color: var(--saffron); color: var(--saffron-ink); }
+.btn-dark { background: var(--ink); color: var(--paper); }
+.btn-sm { min-height: 38px; padding: 8px 14px; font-size: 14px; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* Hero */
+.hero { padding-block: 56px 40px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.hero h1 { font-size: clamp(40px, 7vw, 76px); font-weight: 800; letter-spacing: -.035em; }
+.hero h1 .hl { color: var(--saffron); }
+.hero .lede { margin-top: 18px; font-size: 18px; color: var(--muted); max-width: 46ch; }
+.hero .ctas { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
+.hero .deva { margin-top: 26px; display: flex; align-items: baseline; gap: 10px; color: var(--muted); font-size: 14px; }
+.hero .deva b { font-family: var(--font-deva); font-weight: 400; font-size: 22px; color: var(--ink); }
+.pixels { position: relative; aspect-ratio: 1; max-width: 100%; width: min(420px, 100%); justify-self: center; display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.pixels span { border-radius: 4px; background: var(--line); }
+.pixels span.on { background: var(--ink); }
+.pixels span.acc { background: var(--saffron); }
+.anim .pixels span.on, .anim .pixels span.acc { animation: drop .6s cubic-bezier(.2,.8,.2,1.2) both; animation-delay: calc(var(--d) * 22ms); }
+@keyframes drop { from { transform: translateY(-18px) scale(.4); opacity: .2; } to { transform: none; opacity: 1; } }
+.anim .hero .copy > * { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+.anim .hero .copy > :nth-child(2) { animation-delay: .08s; }
+.anim .hero .copy > :nth-child(3) { animation-delay: .16s; }
+.anim .hero .copy > :nth-child(4) { animation-delay: .24s; }
+.anim .hero .copy > :nth-child(5) { animation-delay: .32s; }
+@keyframes rise { from { transform: translateY(14px); opacity: .01; } to { transform: none; opacity: 1; } }
+@media (max-width: 820px) {
+  .hero { padding-block: 32px 24px; }
+  .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
+  .pixels { width: min(260px, 70%); order: -1; justify-self: start; gap: 4px; }
+}
+
+/* Mode switch */
+.section { padding-block: 56px; }
+.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 28px; }
+.sec-head h2 { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; letter-spacing: -.03em; margin-top: 6px; }
+.switch { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); position: relative; }
+.switch button { position: relative; z-index: 1; border: 0; background: transparent; color: var(--muted); font: 600 14px/1 var(--font-body); padding: 11px 16px; border-radius: 999px; cursor: pointer; transition: color .2s; }
+.switch button[aria-pressed="true"] { color: var(--paper); }
+.switch .pill { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 4px; border-radius: 999px; background: var(--ink); transition: transform .3s cubic-bezier(.3,.7,.2,1), width .3s; }
+.mode-note { flex-basis: 100%; color: var(--muted); font-size: 15px; max-width: 62ch; }
+
+/* Cards */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+.card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); display: flex; flex-direction: column; transform-style: preserve-3d; transition: transform .25s ease-out, box-shadow .25s; will-change: transform; }
+.card .glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgba(255,255,255,.22), transparent 55%); opacity: 0; transition: opacity .25s; }
+.card:hover .glare { opacity: 1; }
+.shot { margin: 12px 12px 0; border-radius: 9px; overflow: hidden; aspect-ratio: 16 / 10; max-width: 100%; background: var(--paper); border: 1px solid var(--line); display: flex; flex-direction: column; }
+.shot .bar { height: 22px; flex: none; display: flex; align-items: center; gap: 5px; padding-inline: 9px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.shot .bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.shot .page { flex: 1; position: relative; padding: 7%; display: grid; gap: 6%; }
+.shot .ph { border-radius: 4px; background: var(--line); }
+.card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.card-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 12px; }
+.card h3 { font-size: 23px; font-weight: 700; letter-spacing: -.02em; }
+.tag { flex: none; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); }
+.card p.desc { color: var(--muted); font-size: 15px; }
+.card-foot { margin-top: auto; padding-top: 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.card .price { font-size: 24px; font-weight: 500; }
+.card .price small { display: block; font-family: var(--font-body); font-size: 12px; color: var(--muted); font-weight: 500; }
+.card .actions { display: flex; gap: 8px; }
+.price .num { display: inline-block; }
+.price .num.flip { animation: flip .35s ease; }
+@keyframes flip { 0% { transform: translateY(0); opacity: 1; } 45% { transform: translateY(-8px); opacity: 0; } 55% { transform: translateY(8px); opacity: 0; } 100% { transform: none; opacity: 1; } }
+
+/* Mock layouts per template */
+.m-portfolio .page { grid-template-columns: 30% 1fr; align-items: center; }
+.m-portfolio .avatar { aspect-ratio: 1; border-radius: 50%; background: var(--teal); }
+.m-portfolio .lines { display: grid; gap: 9px; }
+.m-portfolio .lines .ph:first-child { height: 12px; width: 80%; background: var(--ink); }
+.m-portfolio .lines .ph { height: 7px; }
+.m-portfolio .row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; height: 100%; }
+.m-portfolio .row .ph { background: color-mix(in srgb, var(--teal) 22%, var(--line)); }
+.m-bud .page { grid-template-rows: auto 1fr; }
+.m-bud .hero-band { border-radius: 5px; padding: 8% 7%; display: grid; gap: 7px; background: var(--c); }
+.m-bud .hero-band .ph { height: 7px; background: rgba(255,255,255,.55); width: 70%; }
+.m-bud .hero-band .ph:first-child { height: 11px; width: 55%; background: rgba(255,255,255,.95); }
+.m-bud .tiles { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); gap: 7px; }
+.m-bud .tiles .ph { background: color-mix(in srgb, var(--c) 20%, var(--line)); }
+.m-bud.v2 .page { grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; }
+.m-bud.v2 .hero-band { align-content: center; }
+.m-bud.v2 .tiles { grid-template-columns: 1fr 1fr; }
+.m-bud.v3 .hero-band { background: transparent; border: 2px solid var(--c); }
+.m-bud.v3 .hero-band .ph { background: color-mix(in srgb, var(--c) 35%, var(--line)); }
+.m-bud.v3 .hero-band .ph:first-child { background: var(--c); }
+
+/* Bundle */
+.bundle { position: relative; overflow: hidden; border-radius: calc(var(--radius) + 6px); background: var(--ink); color: var(--paper); padding: clamp(24px, 5vw, 48px); display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; }
+.bundle h2 { font-size: clamp(30px, 4.6vw, 48px); font-weight: 800; letter-spacing: -.03em; }
+.bundle .eyebrow { color: color-mix(in srgb, var(--paper) 65%, transparent); }
+.bundle p { margin-top: 12px; color: color-mix(in srgb, var(--paper) 75%, transparent); max-width: 48ch; }
+.bundle ul { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 6px; font-size: 15px; }
+.bundle li { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed color-mix(in srgb, var(--paper) 22%, transparent); padding-block: 6px; }
+.bundle li .price { color: color-mix(in srgb, var(--paper) 60%, transparent); text-decoration: line-through; }
+.bundle .deal { display: grid; gap: 14px; justify-items: start; }
+.bundle .big { font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, 9vw, 96px); line-height: 1; letter-spacing: -.04em; color: var(--saffron); }
+.bundle .save { font-family: var(--font-mono); font-size: 13px; padding: 5px 10px; border-radius: 6px; background: color-mix(in srgb, var(--saffron) 20%, transparent); color: var(--saffron); }
+.bundle .btn-solid { min-height: 50px; padding-inline: 24px; font-size: 16px; }
+.bundle .px { position: absolute; right: -10px; top: -10px; display: grid; grid-template-columns: repeat(5, 14px); gap: 5px; opacity: .25; pointer-events: none; }
+.bundle .px i { width: 14px; height: 14px; border-radius: 3px; background: var(--saffron); }
+.bundle .px i.x { background: transparent; }
+@media (max-width: 760px) { .bundle { grid-template-columns: 1fr; } }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.step { display: grid; gap: 8px; align-content: start; }
+.step .n { font-family: var(--font-mono); font-size: 13px; color: var(--saffron); }
+.step h3 { font-size: 21px; font-weight: 700; letter-spacing: -.015em; }
+.step p { color: var(--muted); font-size: 15px; }
+@media (max-width: 720px) { .steps { grid-template-columns: 1fr; gap: 22px; } }
+
+/* Contact */
+.contact { text-align: left; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-block: 40px; border-top: 1px solid var(--line); }
+.contact h2 { font-size: clamp(26px, 3.6vw, 36px); font-weight: 800; letter-spacing: -.025em; }
+.contact p { color: var(--muted); margin-top: 6px; }
+.btn-wa { background: #1fa855; border-color: #1fa855; color: #ffffff; }
+footer { padding-block: 24px 96px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+/* Floating WhatsApp */
+.fab { position: fixed; z-index: 30; right: calc(18px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #1fa855; color: #ffffff; box-shadow: 0 10px 28px -8px rgba(31,168,85,.7); transition: transform .2s; }
+.fab:hover { transform: scale(1.07); }
+.fab svg { width: 28px; height: 28px; }
+
+/* Toast */
+.toast { position: fixed; z-index: 40; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: var(--paper); padding: 12px 18px; border-radius: 10px; font-size: 14px; font-weight: 500; transition: transform .25s, opacity .25s; max-width: calc(100% - 32px); }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* Scroll reveal: only applied to things below the fold at load */
+.reveal { transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal.pending { opacity: .01; transform: translateY(26px); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal.pending { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Pixelpatra home">
+      <span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>
+      Pixelpatra
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#templates">Templates</a>
+      <a class="hide-sm" href="#bundle">Bundle</a>
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="btn btn-sm btn-dark" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="copy">
+        <p class="eyebrow">Website templates, made in India</p>
+        <h1>Your website, <span class="hl">ready this week.</span></h1>
+        <p class="lede">Clean, fast templates for students, professionals and small businesses. Buy the files and launch it yourself, or let us set it up with your content.</p>
+        <div class="ctas">
+          <a class="btn btn-solid" href="#templates">See the templates</a>
+          <a class="btn" href="#bundle">Get all 4 for ₹999</a>
+        </div>
+        <p class="deva"><b lang="hi">पत्र</b> patra means a page, a letter. We make yours.</p>
+      </div>
+      <div class="pixels" id="pixels" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="section" id="templates">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">4 templates</p>
+          <h2>Pick your template</h2>
+        </div>
+        <div class="switch" role="group" aria-label="Price option">
+          <span class="pill" id="pill"></span>
+          <button type="button" id="mode-files" aria-pressed="true" data-mode="files">Template only</button>
+          <button type="button" id="mode-setup" aria-pressed="false" data-mode="setup">With setup</button>
+        </div>
+        <p class="mode-note" id="mode-note">You get the template files and launch the site yourself.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card reveal" data-name="Portfolio" data-files="299" data-setup="799" data-demo="">
+          <span class="glare"></span>
+          <div class="shot m-portfolio" aria-hidden="true">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="page">
+              <div class="avatar"></div>
+              <div class="lines"><span class="ph"></span><span class="ph"></span><span class="ph" style="width:60%"></span></div>
+              <div class="row"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>Portfolio</h3><span class="tag">Students &amp; Pros</span></div>
+            <p class="desc">A personal site for your work, resume and contact details. Ideal for placements, freelancing and job hunts.</p>
+            <div class="card-foot">
+              <p class="price"><span class="num">₹299</span><small class="lbl">template only</small></p>
+              <div class="actions">
+                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal" data-name="Bud and Things, Edition 1" data-files="499" data-setup="1499" data-demo="">
+          <span class="glare"></span>
+          <div class="shot m-bud v1" style="--c: var(--sky)" aria-hidden="true">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="page">
+              <div class="hero-band"><span class="ph"></span><span class="ph"></span></div>
+              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>Bud and Things · 1</h3><span class="tag">Business</span></div>
+            <p class="desc">A business site with a bold banner, services and a contact section. Good for shops, studios and local services.</p>
+            <div class="card-foot">
+              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <div class="actions">
+                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal" data-name="Bud and Things, Edition 2" data-files="499" data-setup="1499" data-demo="">
+          <span class="glare"></span>
+          <div class="shot m-bud v2" style="--c: var(--leaf)" aria-hidden="true">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="page">
+              <div class="hero-band"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>Bud and Things · 2</h3><span class="tag">Business</span></div>
+            <p class="desc">A split layout that puts your products or services side by side with your story.</p>
+            <div class="card-foot">
+              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <div class="actions">
+                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal" data-name="Bud and Things, Edition 3" data-files="499" data-setup="1499" data-demo="">
+          <span class="glare"></span>
+          <div class="shot m-bud v3" style="--c: var(--plum); --cols: 4" aria-hidden="true">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="page">
+              <div class="hero-band"><span class="ph"></span><span class="ph"></span></div>
+              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>Bud and Things · 3</h3><span class="tag">Business</span></div>
+            <p class="desc">A lighter, minimal take with a gallery grid. Suits cafes, boutiques and creative businesses.</p>
+            <div class="card-foot">
+              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <div class="actions">
+                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="bundle">
+    <div class="wrap">
+      <div class="bundle reveal">
+        <div class="px" aria-hidden="true"><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i></i><i class="x"></i></div>
+        <div>
+          <p class="eyebrow">Bundle</p>
+          <h2>All 4 templates, one price</h2>
+          <p>Get the Portfolio and all three Bud and Things editions together. Use them for yourself, your business, or your next client.</p>
+          <ul>
+            <li><span>Portfolio</span><span class="price">₹299</span></li>
+            <li><span>Bud and Things · 1, 2, 3</span><span class="price">₹1,497</span></li>
+          </ul>
+        </div>
+        <div class="deal">
+          <span class="save">You save ₹797</span>
+          <div class="big price">₹999</div>
+          <a class="btn btn-solid buy" id="buy-bundle" href="#" target="_blank" rel="noopener">Buy the bundle</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">How it works</p><h2>Live in three steps</h2></div></div>
+      <div class="steps">
+        <div class="step reveal"><span class="n">Step 1</span><h3>Pick a template</h3><p>Open the demo, check it on your phone, and choose the one that fits.</p></div>
+        <div class="step reveal"><span class="n">Step 2</span><h3>Pay securely</h3><p>Choose template only or with setup, and pay in rupees.</p></div>
+        <div class="step reveal"><span class="n">Step 3</span><h3>Go live</h3><p>Get the files to launch yourself, or send us your content and we put your site live for you.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2>Questions before you buy?</h2>
+          <p>Message us on WhatsApp. We usually reply the same day.</p>
+        </div>
+        <a class="btn btn-wa" id="wa-contact" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.41 1.3-1.95 1.35-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> Pixelpatra</span>
+    <span>Templates for students, professionals and small businesses</span>
+  </div>
+</footer>
+
+<a class="fab" id="wa-fab" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.41 1.3-1.95 1.35-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>
+</a>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---- Settings: fill these in when ready ---- */
+const CONFIG = {
+  whatsapp: "",          // e.g. "919876543210" (country code + number, no +). Empty = WhatsApp opens and asks who to send to.
+  payLinks: {            // Razorpay / Gumroad links per item, filled in later
+    "Portfolio": { files: "", setup: "" },
+    "Bud and Things, Edition 1": { files: "", setup: "" },
+    "Bud and Things, Edition 2": { files: "", setup: "" },
+    "Bud and Things, Edition 3": { files: "", setup: "" },
+    "Bundle": { files: "" }
+  }
+};
+
+(function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const root = document.documentElement;
+  const rupee = n => "₹" + Number(n).toLocaleString("en-IN");
+  const wa = text => "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(text);
+  let mode = "files";
+
+  /* Intro pixel art: a "P" with a saffron pixel, built from an 8x8 map */
+  const map = [
+    "........",
+    ".####...",
+    ".#...#..",
+    ".#...#..",
+    ".####...",
+    ".#......",
+    ".#....@.",
+    "........"
+  ];
+  const px = document.getElementById("pixels");
+  let k = 0;
+  map.join("").split("").forEach(ch => {
+    const s = document.createElement("span");
+    if (ch === "#") { s.className = "on"; s.style.setProperty("--d", k++); }
+    if (ch === "@") { s.className = "acc"; s.style.setProperty("--d", k + 6); }
+    px.appendChild(s);
+  });
+  if (!reduce) root.classList.add("anim");
+
+  /* Toast */
+  const toast = document.getElementById("toast");
+  let tt;
+  function say(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(tt);
+    tt = setTimeout(() => toast.classList.remove("show"), 2600);
+  }
+
+  /* Buy + demo links */
+  function updateLinks() {
+    document.querySelectorAll(".card").forEach(card => {
+      const name = card.dataset.name;
+      const price = card.dataset[mode];
+      const link = (CONFIG.payLinks[name] || {})[mode];
+      const label = mode === "setup" ? " with setup" : "";
+      card.querySelector(".buy").href = link || wa(`Hi Pixelpatra! I'd like to buy ${name}${label} (${rupee(price)}).`);
+    });
+    const b = CONFIG.payLinks.Bundle.files;
+    document.getElementById("buy-bundle").href = b || wa("Hi Pixelpatra! I'd like to buy the all-4 template bundle (₹999).");
+  }
+  document.querySelectorAll(".demo").forEach(a => {
+    const card = a.closest(".card");
+    if (card.dataset.demo) { a.href = card.dataset.demo; a.target = "_blank"; a.rel = "noopener"; return; }
+    a.addEventListener("click", e => { e.preventDefault(); say("Demo for " + card.dataset.name + " is coming soon."); });
+  });
+  const hello = wa("Hi Pixelpatra! I have a question about your templates.");
+  document.getElementById("wa-contact").href = hello;
+  document.getElementById("wa-fab").href = hello;
+
+  /* Template only / With setup switch */
+  const notes = {
+    files: "You get the template files and launch the site yourself.",
+    setup: "We add your name, photos and text, and put the site live for you."
+  };
+  const pill = document.getElementById("pill");
+  const btns = document.querySelectorAll(".switch button");
+  function placePill() {
+    const on = document.querySelector('.switch button[aria-pressed="true"]');
+    pill.style.width = on.offsetWidth + "px";
+    pill.style.transform = "translateX(" + (on.offsetLeft - 4) + "px)";
+  }
+  function setMode(m) {
+    mode = m;
+    btns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === m)));
+    placePill();
+    document.getElementById("mode-note").textContent = notes[m];
+    document.querySelectorAll(".card").forEach(card => {
+      const num = card.querySelector(".num");
+      num.classList.remove("flip"); void num.offsetWidth; num.classList.add("flip");
+      setTimeout(() => { num.textContent = rupee(card.dataset[m]); }, reduce ? 0 : 160);
+      card.querySelector(".lbl").textContent = m === "setup" ? "with setup" : "template only";
+    });
+    updateLinks();
+  }
+  btns.forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+  window.addEventListener("resize", placePill);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placePill);
+  placePill();
+  updateLinks();
+
+  /* Header border on scroll */
+  const top = document.getElementById("top");
+  const onScroll = () => top.classList.toggle("scrolled", window.scrollY > 8);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* Scroll reveal, only for elements below the fold at load */
+  if (!reduce && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.remove("pending"); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    let i = 0;
+    document.querySelectorAll(".reveal").forEach(el => {
+      if (el.getBoundingClientRect().top > window.innerHeight) {
+        el.style.transitionDelay = ((i++ % 3) * 70) + "ms";
+        el.classList.add("pending");
+        io.observe(el);
+      }
+    });
+  }
+
+  /* Card tilt on devices with a mouse */
+  if (!reduce && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    document.querySelectorAll(".card").forEach(card => {
+      const glare = card.querySelector(".glare");
+      card.addEventListener("pointermove", e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        card.style.transition = "transform .08s linear, box-shadow .25s";
+        card.style.transform = `perspective(900px) rotateX(${(0.5 - y) * 7}deg) rotateY(${(x - 0.5) * 9}deg) translateY(-4px)`;
+        glare.style.setProperty("--gx", x * 100 + "%");
+        glare.style.setProperty("--gy", y * 100 + "%");
+      });
+      card.addEventListener("pointerleave", () => {
+        card.style.transition = "";
+        card.style.transform = "";
+      });
+    });
+  }
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

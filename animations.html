@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pixelpatra Animation Picks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one column of four demo stages, same tokens as the store so each option reads as it would on the real site. */
+:root {
+  color-scheme: light;
+  --paper: #f6f7fb; --surface: #ffffff; --ink: #15172a; --muted: #5b5f78; --line: #dfe1ec;
+  --saffron: #f26b1d; --saffron-dk: #c9520f; --saffron-ink: #ffffff;
+  --teal: #0f8f86; --sky: #3b6cf6; --leaf: #2f9e5b; --plum: #8a3ffc;
+  --shadow: 0 1px 2px rgba(21,23,42,.06), 0 12px 32px -12px rgba(21,23,42,.18);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1120; --surface: #181b2e; --ink: #eef0fa; --muted: #a3a7c2; --line: #2a2e48;
+    --saffron: #ff8a3d; --saffron-dk: #d9661c; --saffron-ink: #1a0d03;
+    --teal: #34c3b8; --sky: #7c9bff; --leaf: #5fd08d; --plum: #b48cff;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1120; --surface: #181b2e; --ink: #eef0fa; --muted: #a3a7c2; --line: #2a2e48;
+  --saffron: #ff8a3d; --saffron-dk: #d9661c; --saffron-ink: #1a0d03;
+  --teal: #34c3b8; --sky: #7c9bff; --leaf: #5fd08d; --plum: #b48cff;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; text-wrap: balance; margin: 0; letter-spacing: -.03em; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--saffron); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1040px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.intro { padding-block: 40px 8px; display: grid; gap: 10px; }
+.intro h1 { font-size: clamp(32px, 5.5vw, 54px); font-weight: 800; }
+.intro p.lede { color: var(--muted); max-width: 60ch; }
+.opt { padding-block: 40px; display: grid; gap: 16px; }
+.opt-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px; }
+.opt-head h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 800; margin-top: 4px; }
+.opt-head .rec { display: inline-block; margin-left: 8px; vertical-align: middle; font: 500 11px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 5px 8px; border-radius: 6px; background: var(--saffron); color: var(--saffron-ink); }
+.opt-note { color: var(--muted); font-size: 15px; max-width: 64ch; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 8px 16px; border-radius: 999px; font: 600 14px/1 var(--font-body); cursor: pointer; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); }
+.btn-solid { background: var(--saffron); border-color: var(--saffron); color: var(--saffron-ink); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.stage { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+
+/* 1. Cloth */
+.cloth-stage { height: clamp(360px, 62vw, 480px); touch-action: none; user-select: none; -webkit-user-select: none; }
+.cloth-behind { position: absolute; inset: 0; display: grid; align-content: center; gap: 14px; padding: 8%; }
+.cloth-behind .eyebrow { color: var(--muted); }
+.cloth-behind h3 { font-size: clamp(30px, 6vw, 58px); font-weight: 800; }
+.cloth-behind h3 span { color: var(--saffron); }
+.cloth-behind p { color: var(--muted); max-width: 40ch; }
+#cloth { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
+#cloth:active { cursor: grabbing; }
+.cloth-hint { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); padding: 8px 14px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: 13px; font-weight: 600; pointer-events: none; transition: opacity .3s; white-space: nowrap; }
+.cloth-hint.gone { opacity: 0; }
+
+/* 2. Pixel build */
+.pb-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 760px) { .pb-grid { grid-template-columns: 1fr; } }
+.pb-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 12px; display: grid; gap: 12px; }
+.pb-shot { display: grid; grid-template-columns: repeat(20, 1fr); gap: 2px; aspect-ratio: 20 / 12; max-width: 100%; border-radius: 8px; overflow: hidden; background: var(--paper); padding: 4px; }
+.pb-shot span { border-radius: 1.5px; }
+.pb-shot.run span { animation: pxfall .7s cubic-bezier(.25,.8,.3,1.15) both; animation-delay: var(--d); }
+@keyframes pxfall { from { transform: translateY(-140px) rotate(25deg); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
+.pb-card h3 { font-size: 19px; font-weight: 700; letter-spacing: -.015em; }
+.pb-card .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-inline: 4px; }
+.pb-card .price { font-family: var(--font-mono); }
+
+/* 3. Scroll browser */
+.sb { position: relative; height: 320vh; }
+.sb-sticky { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 22px; align-items: center; padding: 18px; min-height: min(78vh, 520px); }
+@media (max-width: 760px) { .sb-sticky { grid-template-columns: 1fr; gap: 14px; } .sb-list { order: 2; } }
+.sb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.sb-list li { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--muted); transition: background .3s, color .3s; font-weight: 600; }
+.sb-list li .price { font-family: var(--font-mono); font-weight: 500; }
+.sb-list li.on { background: var(--ink); color: var(--paper); }
+.sb-frame { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--paper); }
+.sb-bar { height: 28px; display: flex; align-items: center; gap: 6px; padding-inline: 10px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.sb-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.sb-bar .url { margin-left: 8px; font: 500 11px/1 var(--font-mono); color: var(--muted); }
+.sb-screens { position: relative; aspect-ratio: 16 / 10; max-width: 100%; }
+.sb-screen { position: absolute; inset: 0; padding: 7%; display: grid; gap: 6%; opacity: 0; transform: translateY(24px) scale(.98); transition: opacity .45s, transform .45s cubic-bezier(.2,.7,.2,1); }
+.sb-screen.on { opacity: 1; transform: none; }
+.sb-screen .blk { border-radius: 6px; background: var(--line); }
+.sb-progress { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; margin-top: 10px; }
+.sb-progress b { display: block; height: 100%; width: 0; background: var(--saffron); }
+.sb-tip { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+/* 4. Price tag */
+.tag-stage { background: var(--ink); color: var(--paper); padding: clamp(24px, 5vw, 44px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: start; min-height: 330px; }
+@media (max-width: 600px) { .tag-stage { grid-template-columns: 1fr; } }
+.tag-stage h3 { font-size: clamp(26px, 4vw, 40px); font-weight: 800; }
+.tag-stage p { color: color-mix(in srgb, var(--paper) 72%, transparent); margin-top: 10px; max-width: 40ch; }
+.deal { margin-top: 18px; display: flex; align-items: baseline; gap: 12px; }
+.deal .big { font-family: var(--font-display); font-weight: 800; font-size: clamp(54px, 9vw, 86px); line-height: 1; letter-spacing: -.04em; color: var(--saffron); transform: scale(.6); opacity: 0; transition: transform .5s cubic-bezier(.3,1.6,.5,1), opacity .3s; }
+.deal .save { font: 500 13px/1 var(--font-mono); padding: 6px 10px; border-radius: 6px; background: color-mix(in srgb, var(--saffron) 22%, transparent); color: var(--saffron); opacity: 0; transition: opacity .3s .25s; }
+.tag-stage.torn .deal .big { transform: none; opacity: 1; }
+.tag-stage.torn .deal .save { opacity: 1; }
+.hang { position: relative; width: 170px; height: 240px; justify-self: center; }
+.hang .string { position: absolute; left: 50%; top: 0; width: 2px; height: 46px; background: color-mix(in srgb, var(--paper) 50%, transparent); transform: translateX(-50%); }
+.ptag { position: absolute; left: 50%; top: 40px; width: 150px; margin-left: -75px; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; transform-origin: 50% 0; }
+.ptag .stub { height: 26px; background: #f3e3c6; border-radius: 10px 10px 0 0; position: relative; }
+.ptag .stub::after { content: ""; position: absolute; left: 50%; top: 8px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--ink); }
+.ptag .body { background: #f3e3c6; color: #2b2116; border-top: 2px dashed #b9a27a; border-radius: 0 0 10px 10px; padding: 16px 12px 18px; text-align: center; display: grid; gap: 2px; }
+.ptag .body small { font: 500 10px/1.2 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: #6d5a3d; }
+.ptag .body b { font: 800 34px/1.1 var(--font-display); letter-spacing: -.03em; }
+.ptag .body span { font-size: 12px; color: #6d5a3d; }
+.ptag .body.falling { transition: transform 1s cubic-bezier(.5,0,.9,.6), opacity 1s; }
+.pull-hint { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); font-size: 12px; font-weight: 600; white-space: nowrap; color: color-mix(in srgb, var(--paper) 70%, transparent); }
+
+.wrapup { padding-block: 32px 64px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-shot.run span { animation: none; }
+  .sb-screen { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <header class="intro">
+    <p class="eyebrow">Pixelpatra · animation options</p>
+    <h1>Try each one, then pick</h1>
+    <p class="lede">Four options for the store page, each shown in its own box. Drag, scroll and tap them like a visitor would. I recommend options 1 and 2 together.</p>
+  </header>
+
+  <!-- 1 -->
+  <section class="opt" id="opt1">
+    <div class="opt-head">
+      <div>
+        <p class="eyebrow">Option 1 · intro</p>
+        <h2>Tear-open cloth <span class="rec">Recommended</span></h2>
+      </div>
+      <div class="btns">
+        <button class="btn btn-solid" type="button" id="rip">Rip it for me</button>
+        <button class="btn" type="button" id="cloth-reset">Reset</button>
+      </div>
+    </div>
+    <p class="opt-note">The store opens under a sheet of saffron pixels. Grab it and pull, or swipe fast across it, and it tears and falls away. On the real site a scroll would also rip it.</p>
+    <div class="stage cloth-stage">
+      <div class="cloth-behind">
+        <p class="eyebrow">Website templates, made in India</p>
+        <h3>Your website, <span>ready this week.</span></h3>
+        <p>Clean, fast templates for students, professionals and small businesses.</p>
+      </div>
+      <canvas id="cloth" aria-label="A sheet of pixels you can tear by dragging"></canvas>
+      <div class="cloth-hint" id="cloth-hint">Pull or swipe to tear</div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="opt" id="opt2">
+    <div class="opt-head">
+      <div>
+        <p class="eyebrow">Option 2 · scroll</p>
+        <h2>Pixels build each preview <span class="rec">Recommended</span></h2>
+      </div>
+      <div class="btns"><button class="btn" type="button" id="pb-replay">Replay</button></div>
+    </div>
+    <p class="opt-note">When a template card scrolls into view, its preview drops in pixel by pixel, the same way the "P" logo forms.</p>
+    <div class="pb-grid" id="pb-grid"></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="opt" id="opt3">
+    <div class="opt-head">
+      <div>
+        <p class="eyebrow">Option 3 · scroll</p>
+        <h2>Pinned browser tour</h2>
+      </div>
+    </div>
+    <p class="opt-note">Keep scrolling. The browser stays in place while the four templates swap inside it, with the matching name and price lit up.</p>
+    <div class="sb" id="sb">
+      <div class="stage sb-sticky">
+        <div>
+          <ul class="sb-list" id="sb-list">
+            <li class="on"><span>Portfolio</span><span class="price">₹299</span></li>
+            <li><span>Bud and Things · 1</span><span class="price">₹499</span></li>
+            <li><span>Bud and Things · 2</span><span class="price">₹499</span></li>
+            <li><span>Bud and Things · 3</span><span class="price">₹499</span></li>
+          </ul>
+          <div class="sb-progress"><b id="sb-prog"></b></div>
+          <p class="sb-tip">Scroll down to switch templates</p>
+        </div>
+        <div class="sb-frame">
+          <div class="sb-bar"><i></i><i></i><i></i><span class="url" id="sb-url">pixelpatra.com/portfolio</span></div>
+          <div class="sb-screens" id="sb-screens"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="opt" id="opt4">
+    <div class="opt-head">
+      <div>
+        <p class="eyebrow">Option 4 · bundle</p>
+        <h2>Tear off the price tag</h2>
+      </div>
+      <div class="btns"><button class="btn" type="button" id="tag-reset">Reset</button></div>
+    </div>
+    <p class="opt-note">The bundle box shows the full price on a paper tag. Pull the tag down to tear it off and reveal the bundle price.</p>
+    <div class="stage tag-stage" id="tag-stage">
+      <div>
+        <p class="eyebrow" style="color: inherit; opacity: .65">Bundle</p>
+        <h3>All 4 templates, one price</h3>
+        <p>Portfolio plus all three Bud and Things editions.</p>
+        <div class="deal"><span class="big">₹999</span><span class="save">You save ₹797</span></div>
+      </div>
+      <div class="hang">
+        <div class="string"></div>
+        <div class="ptag" id="ptag">
+          <div class="stub"></div>
+          <div class="body" id="ptag-body"><small>Separately</small><b>₹1,796</b><span>4 templates</span></div>
+        </div>
+        <span class="pull-hint" id="pull-hint">Pull the tag down</span>
+      </div>
+    </div>
+  </section>
+
+  <p class="wrapup">Tell me in the thread which options you want on the store, and I'll add them.</p>
+</main>
+
+<script>
+(function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  /* ---------- 1. Cloth ---------- */
+  const canvas = document.getElementById("cloth");
+  const ctx = canvas.getContext("2d");
+  const hint = document.getElementById("cloth-hint");
+  let W, H, cell, C, R, pts, Hc, Vc, running = false, dropped = false, total = 0, broken = 0, raf;
+  const logo = ["####.", "#...#", "#...#", "####.", "#....", "#...."];
+  let ptr = { down: false, x: 0, y: 0, px: 0, py: 0, cut: false };
+
+  function build() {
+    const r = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    C = W < 520 ? 14 : 24;
+    cell = W / C;
+    R = Math.ceil(H / cell) + 1;
+    pts = [];
+    for (let j = 0; j <= R; j++) for (let i = 0; i <= C; i++) {
+      const x = i * cell, y = j * cell - cell * 0.5;
+      pts.push({ x, y, ox: x, oy: y, pin: j === 0 });
+    }
+    Hc = new Array((R + 1) * C).fill(true);
+    Vc = new Array(R * (C + 1)).fill(true);
+    total = Hc.length + Vc.length; broken = 0; dropped = false;
+    canvas.style.display = "block";
+    hint.classList.remove("gone");
+  }
+  const P = (i, j) => pts[j * (C + 1) + i];
+
+  function solveLink(a, b, arr, k) {
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.0001;
+    if (d > cell * 3.4) { arr[k] = false; broken++; return; }
+    const diff = (d - cell) / d * 0.5;
+    const ox = dx * diff, oy = dy * diff;
+    if (!a.pin) { a.x += ox; a.y += oy; }
+    if (!b.pin) { b.x -= ox; b.y -= oy; }
+  }
+
+  function step() {
+    const g = cell * 0.035;
+    for (const p of pts) {
+      if (p.pin) continue;
+      const vx = (p.x - p.ox) * 0.985, vy = (p.y - p.oy) * 0.985;
+      p.ox = p.x; p.oy = p.y;
+      p.x += vx; p.y += vy + g;
+    }
+    // pointer: pull nearby points, cut when moving fast
+    if (ptr.down) {
+      const dx = ptr.x - ptr.px, dy = ptr.y - ptr.py, sp = Math.hypot(dx, dy);
+      const rad = cell * 1.5;
+      for (const p of pts) {
+        const d = Math.hypot(p.x - ptr.x, p.y - ptr.y);
+        if (d < rad && !p.pin) { p.ox = p.x - dx * 0.9; p.oy = p.y - dy * 0.9; p.x += dx * 0.5; p.y += dy * 0.5; }
+      }
+      if (sp > cell * 0.55 || ptr.cut) cutAround(ptr.x, ptr.y, cell * (ptr.cut ? 1.1 : 0.75));
+      ptr.px = ptr.x; ptr.py = ptr.y;
+    }
+    for (let it = 0; it < 3; it++) {
+      for (let j = 0; j <= R; j++) for (let i = 0; i < C; i++) { const k = j * C + i; if (Hc[k]) solveLink(P(i, j), P(i + 1, j), Hc, k); }
+      for (let j = 0; j < R; j++) for (let i = 0; i <= C; i++) { const k = j * (C + 1) + i; if (Vc[k]) solveLink(P(i, j), P(i, j + 1), Vc, k); }
+    }
+    if (!dropped && broken / total > 0.05) dropAll();
+  }
+
+  function dropAll() {
+    if (dropped) return;
+    dropped = true;
+    pts.forEach(p => { if (p.pin) setTimeout(() => { p.pin = false; }, 250 + Math.random() * 450); });
+  }
+
+  function cutAround(x, y, r) {
+    for (let j = 0; j <= R; j++) for (let i = 0; i < C; i++) {
+      const k = j * C + i; if (!Hc[k]) continue;
+      const a = P(i, j), b = P(i + 1, j);
+      if (Math.hypot((a.x + b.x) / 2 - x, (a.y + b.y) / 2 - y) < r) { Hc[k] = false; broken++; }
+    }
+    for (let j = 0; j < R; j++) for (let i = 0; i <= C; i++) {
+      const k = j * (C + 1) + i; if (!Vc[k]) continue;
+      const a = P(i, j), b = P(i, j + 1);
+      if (Math.hypot((a.x + b.x) / 2 - x, (a.y + b.y) / 2 - y) < r) { Vc[k] = false; broken++; }
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const sa = css("--saffron"), sd = css("--saffron-dk"), ink = "#15172a";
+    const lx = Math.floor(C / 2) - 2, ly = Math.max(1, Math.floor((R - 6) / 2) - 1);
+    ctx.lineWidth = 1;
+    for (let j = 0; j < R; j++) for (let i = 0; i < C; i++) {
+      if (!Hc[j * C + i] || !Hc[(j + 1) * C + i] || !Vc[j * (C + 1) + i] || !Vc[j * (C + 1) + i + 1]) continue;
+      const a = P(i, j), b = P(i + 1, j), c = P(i + 1, j + 1), d = P(i, j + 1);
+      const li = i - lx, lj = j - ly;
+      const isLogo = lj >= 0 && lj < logo.length && li >= 0 && li < 5 && logo[lj][li] === "#";
+      // shade by stretch
+      const area = Math.abs((c.x - a.x) * (d.y - b.y) - (d.x - b.x) * (c.y - a.y)) / 2;
+      const s = Math.min(1, area / (cell * cell));
+      ctx.globalAlpha = 0.75 + 0.25 * s;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.closePath();
+      ctx.fillStyle = isLogo ? ink : ((i + j) % 2 ? sa : sd);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function loop() {
+    step(); draw();
+    if (dropped && pts.every(p => p.y > H + cell * 2)) { running = false; canvas.style.display = "none"; return; }
+    raf = requestAnimationFrame(loop);
+  }
+  function start() { cancelAnimationFrame(raf); build(); running = true; loop(); }
+
+  function local(e) { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  canvas.addEventListener("pointerdown", e => {
+    const p = local(e); ptr = { down: true, x: p.x, y: p.y, px: p.x, py: p.y, cut: false };
+    canvas.setPointerCapture(e.pointerId); hint.classList.add("gone");
+  });
+  canvas.addEventListener("pointermove", e => { if (!ptr.down) return; const p = local(e); ptr.x = p.x; ptr.y = p.y; });
+  const up = () => { ptr.down = false; };
+  canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
+
+  document.getElementById("rip").addEventListener("click", () => {
+    if (!running) start();
+    hint.classList.add("gone");
+    const x0 = W * 0.08, y0 = H * 0.2, x1 = W * 0.92, y1 = H * 0.75, t0 = performance.now(), dur = 450;
+    ptr = { down: true, x: x0, y: y0, px: x0, py: y0, cut: true };
+    (function swipe(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      ptr.x = x0 + (x1 - x0) * t; ptr.y = y0 + (y1 - y0) * t + Math.sin(t * Math.PI) * H * 0.12;
+      if (t < 1) requestAnimationFrame(swipe); else { ptr.down = false; dropAll(); }
+    })(t0);
+  });
+  document.getElementById("cloth-reset").addEventListener("click", start);
+  if (reduce) { build(); draw(); } else start();
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (canvas.style.display !== "none") start(); }, 200); });
+
+  /* ---------- 2. Pixel build ---------- */
+  const pbData = [
+    { name: "Portfolio", price: "₹299", col: (i, j) => {
+      if (j === 0) return "var(--line)";
+      if (Math.hypot(i - 4.5, j - 4.5) < 2.9) return "var(--teal)";
+      if (j === 3 && i >= 9 && i <= 17) return "var(--ink)";
+      if ((j === 5 && i >= 9 && i <= 16) || (j === 6 && i >= 9 && i <= 13)) return "var(--muted)";
+      if (j >= 9 && j <= 10 && i >= 1 && i <= 18 && i % 6 !== 0) return "color-mix(in srgb, var(--teal) 35%, var(--line))";
+      return null; } },
+    { name: "Bud and Things · 1", price: "₹499", col: (i, j) => {
+      if (j === 0) return "var(--line)";
+      if (j >= 2 && j <= 6 && i >= 1 && i <= 18) {
+        if (j === 3 && i >= 3 && i <= 10) return "#ffffff";
+        if (j === 5 && i >= 3 && i <= 7) return "rgba(255,255,255,.7)";
+        return "var(--sky)"; }
+      if (j >= 8 && j <= 10 && i >= 1 && i <= 18 && i % 6 !== 1 || (j >= 8 && j <= 10 && i === 1)) return "color-mix(in srgb, var(--sky) 30%, var(--line))";
+      return null; } },
+    { name: "Bud and Things · 2", price: "₹499", col: (i, j) => {
+      if (j === 0) return "var(--line)";
+      if (j >= 2 && j <= 10 && i >= 1 && i <= 9) {
+        if (j === 5 && i >= 2 && i <= 7) return "#ffffff";
+        if (j === 7 && i >= 2 && i <= 5) return "rgba(255,255,255,.7)";
+        return "var(--leaf)"; }
+      if (j >= 2 && j <= 10 && i >= 11 && i <= 18 && j !== 6 && i !== 15) return "color-mix(in srgb, var(--leaf) 30%, var(--line))";
+      return null; } }
+  ];
+  const pbGrid = document.getElementById("pb-grid");
+  const shots = pbData.map(t => {
+    const card = document.createElement("article"); card.className = "pb-card";
+    const shot = document.createElement("div"); shot.className = "pb-shot";
+    for (let j = 0; j < 12; j++) for (let i = 0; i < 20; i++) {
+      const s = document.createElement("span"); const c = t.col(i, j);
+      s.style.background = c || "transparent";
+      if (c) s.style.setProperty("--d", (j * 45 + Math.random() * 260 + (i % 4) * 20) + "ms");
+      shot.appendChild(s);
+    }
+    card.appendChild(shot);
+    const row = document.createElement("div"); row.className = "row";
+    row.innerHTML = `<h3>${t.name}</h3><span class="price">${t.price}</span>`;
+    card.appendChild(row); pbGrid.appendChild(card);
+    return shot;
+  });
+  function runShot(s) { s.classList.remove("run"); void s.offsetWidth; s.classList.add("run"); }
+  if (!reduce && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { runShot(e.target); io.unobserve(e.target); } }), { threshold: 0.35 });
+    shots.forEach(s => io.observe(s));
+  }
+  document.getElementById("pb-replay").addEventListener("click", () => shots.forEach((s, k) => setTimeout(() => runShot(s), k * 150)));
+
+  /* ---------- 3. Scroll browser ---------- */
+  const screensEl = document.getElementById("sb-screens");
+  const screens = [
+    { url: "pixelpatra.com/portfolio", html: `<div style="display:grid;grid-template-columns:30% 1fr;gap:8%;align-items:center"><div style="aspect-ratio:1;border-radius:50%;background:var(--teal)"></div><div style="display:grid;gap:10px"><div class="blk" style="height:14px;width:80%;background:var(--ink)"></div><div class="blk" style="height:8px"></div><div class="blk" style="height:8px;width:60%"></div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div></div>` },
+    { url: "pixelpatra.com/bud-and-things-1", html: `<div style="border-radius:8px;background:var(--sky);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:#fff"></div><div class="blk" style="height:8px;width:70%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div></div>` },
+    { url: "pixelpatra.com/bud-and-things-2", html: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;height:100%;grid-row:1/-1"><div style="border-radius:8px;background:var(--leaf);padding:10%;display:grid;align-content:center;gap:8px"><div class="blk" style="height:14px;width:70%;background:#fff"></div><div class="blk" style="height:8px;width:85%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div></div></div>` },
+    { url: "pixelpatra.com/bud-and-things-3", html: `<div style="border-radius:8px;border:2px solid var(--plum);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:var(--plum)"></div><div class="blk" style="height:8px;width:70%;background:color-mix(in srgb,var(--plum) 35%,var(--line))"></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div></div>` }
+  ];
+  screens.forEach((s, k) => { const d = document.createElement("div"); d.className = "sb-screen" + (k === 0 ? " on" : ""); d.innerHTML = s.html; screensEl.appendChild(d); });
+  const sb = document.getElementById("sb"), lis = document.querySelectorAll("#sb-list li"), prog = document.getElementById("sb-prog"), urlEl = document.getElementById("sb-url");
+  let cur = 0;
+  function onSb() {
+    const r = sb.getBoundingClientRect();
+    const p = Math.max(0, Math.min(1, -r.top / (r.height - window.innerHeight * 0.85)));
+    prog.style.width = (p * 100) + "%";
+    const k = Math.min(3, Math.floor(p * 4));
+    if (k !== cur) {
+      cur = k;
+      screensEl.querySelectorAll(".sb-screen").forEach((el, n) => el.classList.toggle("on", n === k));
+      lis.forEach((li, n) => li.classList.toggle("on", n === k));
+      urlEl.textContent = screens[k].url;
+    }
+  }
+  window.addEventListener("scroll", onSb, { passive: true }); onSb();
+
+  /* ---------- 4. Price tag ---------- */
+  const tag = document.getElementById("ptag"), body = document.getElementById("ptag-body"), stage = document.getElementById("tag-stage"), phint = document.getElementById("pull-hint");
+  let drag = null, torn = false;
+  tag.addEventListener("pointerdown", e => { if (torn) return; drag = { x: e.clientX, y: e.clientY }; tag.setPointerCapture(e.pointerId); body.style.transition = "none"; });
+  tag.addEventListener("pointermove", e => {
+    if (!drag || torn) return;
+    const dx = e.clientX - drag.x, dy = Math.max(0, e.clientY - drag.y);
+    body.style.transform = `translate(${dx * 0.25}px, ${dy * 0.6}px) rotate(${dx * 0.08}deg)`;
+    if (dy > 90) tear(dx);
+  });
+  function release() {
+    if (!drag) return; drag = null;
+    if (!torn) { body.style.transition = "transform .5s cubic-bezier(.3,1.8,.5,1)"; body.style.transform = ""; }
+  }
+  tag.addEventListener("pointerup", release); tag.addEventListener("pointercancel", release);
+  function tear(dx) {
+    torn = true; drag = null;
+    body.classList.add("falling"); body.style.transition = "";
+    requestAnimationFrame(() => { body.style.transform = `translate(${dx * 0.6 + 30}px, 520px) rotate(${dx > 0 ? 38 : -38}deg)`; body.style.opacity = "0"; });
+    phint.textContent = "Torn off!";
+    stage.classList.add("torn");
+  }
+  document.getElementById("tag-reset").addEventListener("click", () => {
+    torn = false; body.classList.remove("falling"); body.style.transition = "none"; body.style.transform = ""; body.style.opacity = "";
+    stage.classList.remove("torn"); phint.textContent = "Pull the tag down";
+  });
+})();
+</script>
+</body>
+</html>
