@@ -1,5 +1,7 @@
 # Pixelpatra store site
 
+The page opens under a tearable pixel sheet (swipe, tap, scroll, or it opens by itself after a moment). Visitors can type their name or business and pick a colour, and every template preview updates to show their own site.
+
 One static page: `index.html` (no build step). Deploy by dragging this folder into Netlify Drop, or importing it on Vercel.
 
 ## Fill in before launch
