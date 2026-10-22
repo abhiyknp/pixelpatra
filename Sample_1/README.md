@@ -9,7 +9,8 @@ points, gift cards and the Owner view all work in "demo mode", where every chang
 
 ## What it includes
 
-- Home page with the 3D house walk-through, or the gift-shop home page (switch in the Preview bar or Owner view → Settings)
+- Gift-shop home page: welcome offer, new arrivals, gift sets, ready-made bundles and the gift finder. (The 3D house
+  walk-through is not part of this sample; it is kept in the Bud & Things prototype.)
 - Shop by collection, product pages, search, the "Find your feeling" gift finder, Build a Bundle (two pieces at a saving)
 - See it in your room (3D sample room, or the visitor's own photo)
 - Cart and checkout with sign-in by emailed code (shown on screen in demo mode), gift options, coupons and points, and
@@ -60,10 +61,9 @@ private repository needs a paid GitHub plan).
 8. **Check**: search the folder for `SAMPLE`, `Sample`, `Product One`, `Collection A`, `example.com`, `samplestudio` and `0000`
    (the dummy HSN codes). Nothing should be left.
 
-The 3D house and the product renders draw simple shapes (jars, columns, trays). The client's own photos replace the renders
-on the site once uploaded in Owner view → Photos & videos.
+The product pictures are drawn placeholder shapes (jars, columns, trays). The client's own photos replace them once
+uploaded in Owner view → Photos & videos.
 
 ## Tests
 
 With the preview running: `node tools/test-flow.js` (cart, checkout, payment, order, sign-in, sample room, Owner view and
-finder at desktop and phone width) and `node tools/test-house.js` (screenshots of the 3D walk). Both need Playwright.
