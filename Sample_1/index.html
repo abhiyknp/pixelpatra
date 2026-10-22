@@ -1422,7 +1422,7 @@ function route() { const h = (location.hash || '#home').slice(1) || 'home'; retu
 // freeze the page behind the menu, cart, search and room viewer, so scrolling only moves the open panel
 let lockY = null, lockHash = '';
 function syncScrollLock() {
-  const open = !!(UI.menu || UI.drawer || UI.search || document.querySelector('.room'));
+  const open = !!(UI.menu || UI.drawer || UI.search || document.querySelector('.room:not([hidden])'));
   if (open && lockY === null) { lockY = window.scrollY; lockHash = location.hash; document.body.style.top = -lockY + 'px'; document.body.classList.add('lock'); }
   else if (!open && lockY !== null) { document.body.classList.remove('lock'); document.body.style.top = ''; window.scrollTo(0, location.hash === lockHash ? lockY : 0); lockY = null; }
 }
