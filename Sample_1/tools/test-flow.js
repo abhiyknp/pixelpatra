@@ -13,7 +13,7 @@ const { chromium } = require(require('child_process').execSync('npm root -g').to
     await pg.mouse.wheel(0, 1500); await pg.waitForTimeout(300);
     const over = async (tag) => { const o = await pg.evaluate(() => document.documentElement.scrollWidth - window.innerWidth); if (o > 0) errs.push(`${w} overflow ${o}px on ${tag}`); };
     await over('home');
-    await pg.goto(url + '#p-spiced-tea'); await pg.waitForTimeout(100); await over('product');
+    await pg.goto(url + '#p-product-03'); await pg.waitForTimeout(100); await over('product');
     await pg.click('[data-act="room-open"]'); await pg.click('[data-act="room-3d"]'); await pg.waitForSelector('#room3d-cv'); await pg.waitForTimeout(1500);
     console.log(w, 'sample room:', (await pg.textContent('#room-h')).trim(), '| loading note left:', !!(await pg.$('#room-load')));
     await pg.click('[data-act="room-look"][data-v="dusk"]'); await pg.click('[data-act="room-lit"]'); await pg.waitForTimeout(300);
@@ -46,11 +46,11 @@ const { chromium } = require(require('child_process').execSync('npm root -g').to
     // Studio Points: earned once delivered, then spent at the next checkout
     await pg.goto(url + '#account'); await pg.waitForTimeout(100);
     console.log(w, 'points:', (await pg.textContent('.acct-card.points strong')).trim());
-    await pg.goto(url + '#p-stepped-tray'); await pg.click('[data-act="add"]'); await pg.keyboard.press('Escape'); await pg.goto(url + '#checkout'); await pg.waitForTimeout(100);
+    await pg.goto(url + '#p-product-07'); await pg.click('[data-act="add"]'); await pg.keyboard.press('Escape'); await pg.goto(url + '#checkout'); await pg.waitForTimeout(100);
     const before = (await pg.textContent('.checkout-side .grand')).trim(); await pg.click('[data-act="pts-use"]'); await pg.waitForTimeout(100);
     console.log(w, 'with points:', before, '→', (await pg.textContent('.checkout-side .grand')).trim());
     await pg.goto(url + '#admin'); await pg.waitForTimeout(100);
-    await pg.click('[data-act="adm-tab"][data-v="stock"]'); console.log(w, 'stock CF-220:', await pg.inputValue('#st-SS-CN-CF-220'));
+    await pg.click('[data-act="adm-tab"][data-v="stock"]'); console.log(w, 'stock 03-L:', await pg.inputValue('#st-SS-A-03-L'));
     await pg.goto(url + '#feeling'); await pg.click('[data-act="finder-opt"][data-v="calm"]');
     for (let i = 0; i < 5; i++) await pg.click('[data-act="finder-next"]');
     console.log(w, 'finder:', await pg.$$eval('.finder-main .name', (e) => e.map((x) => x.textContent)));

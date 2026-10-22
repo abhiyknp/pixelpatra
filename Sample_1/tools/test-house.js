@@ -1,5 +1,5 @@
 // Screenshots of opening D, the house, at chosen points of the walk. Each shot is
-//   { "p": 0..1 walk position, "w": viewport width, "mood": "festive" (optional), "focus": "spiced-tea" (optional),
+//   { "p": 0..1 walk position, "w": viewport width, "mood": "festive" (optional), "focus": "product-03" (optional),
 //     "skin": "signature" (optional) }
 // Usage: node tools/test-house.js '[{"p":0.2,"w":1280},{"p":0.6,"w":390,"mood":"festive"}]' [out-dir]
 // Prints any page errors. WebGL runs on SwiftShader, so expect a few seconds per shot. Needs tools/preview.sh.
