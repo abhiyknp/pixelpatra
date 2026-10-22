@@ -131,7 +131,7 @@ button, input, select { font: inherit; color: inherit; }
 .menu-btn { display: none; }
 @media (max-width: 860px) { .nav { display: none; } .menu-btn { display: inline-flex; } }
 .mobile-menu .wrap { display: block; }
-.mobile-menu { max-height: calc(100vh - 140px); overflow-y: auto; border-top: 1px solid var(--line); background: var(--ivory); }
+.mobile-menu { max-height: calc(100vh - 140px); overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--line); background: var(--ivory); }
 .mobile-menu a { display: flex; align-items: center; min-height: 52px; text-decoration: none; border-bottom: 1px solid var(--linen); font-family: var(--display); font-size: 21px; }
 
 /* app mode */
@@ -291,6 +291,8 @@ label { font-size: 14px; font-weight: 600; }
 .pts-use { padding: 8px 12px; background: var(--ok-bg); font-size: 15px; }
 
 /* cart drawer */
+.drawer-body, .search-panel, .room { overscroll-behavior: contain; }
+body.lock { position: fixed; left: 0; right: 0; width: 100%; overflow: hidden; }
 .scrim { position: fixed; inset: 0; background: rgba(58,41,32,.4); z-index: 40; }
 .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: var(--ivory); z-index: 41; display: flex; flex-direction: column; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); box-shadow: -10px 0 40px rgba(58,41,32,.2); }
 .drawer-head { min-height: 64px; padding: 0 8px 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
@@ -1417,6 +1419,15 @@ function toggleSave(id) { const i = S.saved.indexOf(id); if (i >= 0) { S.saved.s
 
 // ---------- routing ----------
 function route() { const h = (location.hash || '#home').slice(1) || 'home'; return h; }
+// freeze the page behind the menu, cart, search and room viewer, so scrolling only moves the open panel
+let lockY = null, lockHash = '';
+function syncScrollLock() {
+  const open = !!(UI.menu || UI.drawer || UI.search || document.querySelector('.room'));
+  if (open && lockY === null) { lockY = window.scrollY; lockHash = location.hash; document.body.style.top = -lockY + 'px'; document.body.classList.add('lock'); }
+  else if (!open && lockY !== null) { document.body.classList.remove('lock'); document.body.style.top = ''; window.scrollTo(0, location.hash === lockHash ? lockY : 0); lockY = null; }
+}
+let lockQueued = false;
+new MutationObserver(() => { if (lockQueued) return; lockQueued = true; requestAnimationFrame(() => { lockQueued = false; syncScrollLock(); }); }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
 window.addEventListener('hashchange', () => { UI.menu = false; DB.stale = false; UI.orderSync = {}; render(true); });
 
 // ---------- chrome ----------
