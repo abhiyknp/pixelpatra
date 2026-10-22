@@ -1,0 +1,54 @@
+# Sample_1 · SAMPLE STUDIO shop prototype
+
+A complete shop website with a placeholder brand. Show it to prospective clients, then re-brand a copy once a client pays.
+Everything here is dummy: the name SAMPLE STUDIO, the logo, photos, products, prices, text, email and social handles.
+
+It is a prototype only: no domain, no database, no real payments or deliveries. Checkout, payment, order tracking,
+points, gift cards and the Owner view all work in "demo mode", where every change stays in the visitor's own browser.
+
+## What it includes
+
+- Home page with the 3D house walk-through, or the gift-shop home page (switch in the Preview bar or Owner view → Settings)
+- Shop by category, product pages, search, the "Find your feeling" gift finder, Build your ritual pairs
+- See it in your room (3D sample room, or the visitor's own photo)
+- Cart and checkout with sign-in by emailed code (shown on screen in demo mode), gift options, welcome code and points
+- Test payment screens (UPI, QR, card) with buttons to act out a successful or failed payment
+- Order page, Track your order, customer account with orders and Studio Points
+- Gift cards, share links, gift reminders, corporate and bulk enquiries, journal, Our Story, FAQ and policy page templates
+- Owner view (`#admin`): products, stock, photos and videos, site text, settings, orders (Packed → Shipped → Delivered),
+  reviews, sign-ups and six colour themes
+
+## Open it
+
+There is no build step. Serve the folder with any static server and open `index.html`:
+
+```sh
+sh tools/preview.sh      # http://localhost:8765/
+```
+
+It can also be dropped into Netlify Drop or any static host as it is.
+
+## Re-brand it for a client
+
+1. **Logo and images** in `assets/`: replace `logo-primary.webp` (and `logo-primary-reverse.webp` for dark backgrounds),
+   `logo-wordmark.png`, `logo-icon.webp`, `monogram-seal.png`, `leaf.png`, the favicons and `share.jpg`.
+   Keep the same file names and similar proportions. `pack-*.jpg` and `logo-photo.jpg` are "Sample photo" placeholders
+   for the client's own photos.
+2. **Name**: search and replace `SAMPLE STUDIO` / `Sample Studio` in `index.html` (including the `<head>` tags at the top)
+   and `products3d.js`. Rename `Studio Points` and the `SS-` order prefix if wanted.
+3. **Colours and fonts**: the six themes are CSS variables at the top of `index.html` (`:root[data-skin=…]`). The fonts are
+   the Google Fonts link and the `--display` / `--body` variables.
+4. **Products**: the `P` list in `index.html` (search for `let P = [`) holds names, descriptions, prices, sizes and variants.
+   Ritual pairs are in `PAIRINGS` just below. Product ids also appear in `SET_DEFAULTS` (featured, new in, spotlight).
+5. **Text**: every line of copy is in `TEXT` in `index.html` (also editable later in Owner view → Site text). Lines that
+   start with "Sample text", and the Our Story values, must be written for the client. Policy pages are templates to check.
+6. **Contacts and business details**: `SET_DEFAULTS` in `index.html` (email, Instagram, Pinterest, WhatsApp, business name,
+   address, GSTIN, grievance officer).
+7. **Going live** (only when a client pays for a live shop): their own Supabase project and keys in `config.js`, their own
+   Cashfree, Shiprocket and email-sending accounts, and their own domain. Those server parts are not in this sample.
+8. **Check**: search the folder for `SAMPLE`, `Sample text`, `example.com` and `samplestudio`. Nothing should be left.
+
+## Tests
+
+With the preview running: `node tools/test-flow.js` (cart, checkout, payment, order, sign-in, sample room, Owner view and
+finder at desktop and phone width) and `node tools/test-house.js` (screenshots of the 3D walk). Both need Playwright.
