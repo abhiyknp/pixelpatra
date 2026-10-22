@@ -3297,6 +3297,7 @@ function acctSend(email, next) {
 // A tax invoice for each paid order, from the order kept in this browser (or the database). Prices on the site include
 // GST, so each line's taxable value is worked back from its price after its share of the discounts. Gift cards are a
 // way of paying, not a discount, so they don't change the tax. The rates below are samples: confirm them with an accountant.
+const inFrame = (() => { try { return window.self !== window.top; } catch (e) { return true; } })(); // a preview frame can't print
 const GST_RATE = { candles: 12, objects: 12, gifts: 12, service: 18 };
 const HSN = { candles: '3406', objects: '6810', gifts: '3406', service: '9965' };
 const rupees = (n) => '₹' + (Math.round(n * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -3346,7 +3347,7 @@ function viewInvoice(id) {
       <div class="inv-tot"><div><span>Taxable value</span><span>${rupees(v.taxable)}</span></div>${v.inState ? `<div><span>CGST</span><span>${half(v.tax)}</span></div><div><span>SGST</span><span>${half(v.tax)}</span></div>` : `<div><span>IGST</span><span>${rupees(v.tax)}</span></div>`}<div><span>Invoice total</span><span>${rupees(v.total)}</span></div>${v.card ? `<div><span>Paid by gift card</span><span>−${rupees(v.card)}</span></div>` : ''}<div class="grand"><span>${unpaid || gone ? 'Amount' : o.method === 'Cash on delivery' ? 'To pay on delivery' : 'Amount paid'}</span><span>${rupees(v.total - v.card)}</span></div></div></section>
     <footer class="inv-foot"><span>Prices include GST. Goods once delivered are replaced, not refunded, under our replacement policy.<br>This is a computer-generated invoice.${SHOPDB.on ? '' : ' <strong>Sample only: not a valid tax document.</strong>'}</span><span class="inv-sign">For ${esc(biz.name)}<span>Authorised signatory</span></span></footer>
   </article>
-  <div class="inv-acts"><button class="btn" type="button" data-act="inv-print">Print or save as PDF</button><a class="btn ghost" href="#order-${esc(o.id)}">Back to the order</a></div></div>`;
+  <div class="inv-acts">${inFrame ? '<span class="muted" style="flex-basis:100%;text-align:center;font-size:14px">Printing and saving as PDF work once the site is on its own web address.</span>' : '<button class="btn" type="button" data-act="inv-print">Print or save as PDF</button>'}<a class="btn ghost" href="#order-${esc(o.id)}">Back to the order</a></div></div>`;
 }
 
 function acctIn(email, next) {
