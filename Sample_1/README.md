@@ -14,6 +14,9 @@ points, gift cards and the Owner view all work in "demo mode", where every chang
 - Cart and checkout with sign-in by emailed code (shown on screen in demo mode), gift options, welcome code and points
 - Test payment screens (UPI, QR, card) with buttons to act out a successful or failed payment
 - Order page, Track your order, customer account with orders and Studio Points
+- Tax invoice for every order (`#invoice-<order>`), from the order page and the Owner view: GST worked back from
+  GST-inclusive prices, CGST + SGST or IGST by state, amount in words, and Print or save as PDF. It carries a SAMPLE mark
+  and placeholder business details and tax rates in demo mode
 - Gift cards, share links, gift reminders, corporate and bulk enquiries, journal, Our Story, FAQ and policy page templates
 - Owner view (`#admin`): products, stock, photos and videos, site text, settings, orders (Packed → Shipped → Delivered),
   reviews, sign-ups and six colour themes
@@ -43,7 +46,8 @@ It can also be dropped into Netlify Drop or any static host as it is.
 5. **Text**: every line of copy is in `TEXT` in `index.html` (also editable later in Owner view → Site text). Lines that
    start with "Sample text", and the Our Story values, must be written for the client. Policy pages are templates to check.
 6. **Contacts and business details**: `SET_DEFAULTS` in `index.html` (email, Instagram, Pinterest, WhatsApp, business name,
-   address, GSTIN, grievance officer).
+   address, GSTIN, business state for invoices, grievance officer). Check the GST rates and HSN codes in `GST_RATE` and
+   `HSN` (search `// ---------- invoices`) with the client's accountant.
 7. **Going live** (only when a client pays for a live shop): their own Supabase project and keys in `config.js`, their own
    Cashfree, Shiprocket and email-sending accounts, and their own domain. Those server parts are not in this sample.
 8. **Check**: search the folder for `SAMPLE`, `Sample text`, `example.com` and `samplestudio`. Nothing should be left.

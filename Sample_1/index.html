@@ -973,6 +973,39 @@ body.app .why-band { padding-bottom: 96px; }
   .section-head a, .section a[href^="#"]:not(.btn):not(.tile):not(.card) { min-height: 44px; display: inline-flex; align-items: center; }
   .adm-banner .linkbtn { display: inline; min-height: 0; padding: 12px 4px; }
 }
+/* Invoice: a printable tax invoice for each order (the sample uses placeholder business details) */
+.invoice { position: relative; max-width: 900px; margin: 0 auto; padding: 40px; background: #fff; color: #2B211C; border: 1px solid var(--line); font-size: 14px; line-height: 1.5; overflow: hidden; }
+.inv-mark { position: absolute; top: 46%; left: 50%; transform: translate(-50%, -50%) rotate(-24deg); font-family: var(--display); font-size: clamp(54px, 11vw, 120px); letter-spacing: .08em; color: rgba(176, 110, 80, .1); white-space: nowrap; pointer-events: none; }
+.inv-head { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: flex-start; padding-bottom: 20px; border-bottom: 2px solid #2B211C; }
+.inv-logo { width: 180px; height: auto; display: block; }
+.inv-title { text-align: right; display: flex; flex-direction: column; gap: 2px; }
+.inv-title strong { font-family: var(--display); font-size: 30px; font-weight: 500; letter-spacing: .04em; }
+.inv-parties { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 20px; padding: 20px 0; border-bottom: 1px solid #DDD3C8; }
+.inv-parties h3, .inv-sum h3 { margin: 0 0 4px; font-family: inherit; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #7A6A5E; font-weight: 700; }
+.inv-parties p { margin: 0; }
+.inv-table { width: 100%; border-collapse: collapse; margin: 20px 0 0; font-variant-numeric: tabular-nums; }
+.inv-table th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #7A6A5E; border-bottom: 1px solid #2B211C; padding: 8px 6px; font-weight: 700; }
+.inv-table td { padding: 10px 6px; border-bottom: 1px solid #EEE6DC; vertical-align: top; }
+.inv-table .r { text-align: right; white-space: nowrap; }
+.inv-table .muted { color: #7A6A5E; font-size: 12px; }
+.inv-wrap { overflow-x: auto; }
+.inv-table td:nth-child(2) { min-width: 150px; }
+.inv-sum { display: grid; grid-template-columns: 1fr minmax(240px, 320px); gap: 24px; padding-top: 20px; align-items: start; }
+.inv-tot { display: grid; gap: 6px; font-variant-numeric: tabular-nums; }
+.inv-tot div { display: flex; justify-content: space-between; gap: 12px; }
+.inv-tot .grand { border-top: 2px solid #2B211C; padding-top: 8px; font-weight: 700; font-size: 17px; }
+.inv-foot { margin-top: 28px; padding-top: 16px; border-top: 1px solid #DDD3C8; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: 12px; color: #7A6A5E; }
+.inv-sign { text-align: right; min-width: 200px; }
+.inv-sign span { display: block; margin-top: 34px; border-top: 1px solid #2B211C; padding-top: 4px; color: #2B211C; }
+.inv-note { margin: 0 auto 16px; max-width: 900px; }
+.inv-acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 20px auto 0; }
+@media (max-width: 640px) { .invoice { padding: 20px 16px; } .inv-sum { grid-template-columns: 1fr; } .inv-title { text-align: left; } .inv-table { font-size: 13px; } }
+@media print {
+  body:has(.invoice) > *:not(#app), body:has(.invoice) #app > .wrap > :not(.invoice) { display: none !important; }
+  body:has(.invoice) #app > .wrap { padding: 0 !important; max-width: none; }
+  .invoice { border: 0; padding: 0; max-width: none; }
+  @page { margin: 14mm; }
+}
 </style>
 
 <div class="proto" role="region" aria-label="Preview controls">
@@ -1315,7 +1348,7 @@ const SET_META = [
   ['wrapFee', 'Gift wrap price (₹)', 'num'], ['ritualOff', 'Ritual saving: % off a candle and object bought together (0 for none)', 'num'],
   ['welcomeCode', 'Welcome code for newsletter sign-ups', 'text'], ['welcomeOff', 'Welcome code saving (%)', 'num'], ['repourPrice', 'Jar re-pour price (₹, 0 to hide)', 'num'], ['rewardPct', 'Studio Points: % of each paid order given back as points (1 point = ₹1; 0 to hide)', 'num'],
   ['featured', 'Home: featured product ids', 'text'], ['giftPicks', 'Gifting: popular product ids', 'text'], ['homeRitual', 'Home: ritual pairing id', 'text'], ['newIn', 'Home: new arrival product ids', 'text'], ['spotlight', 'Home: spotlight product id', 'text'],
-  ['bizName', 'Policies: registered business name', 'text'], ['bizAddress', 'Policies: registered address (without "India")', 'text'], ['gstin', 'Policies: GSTIN', 'text'],
+  ['bizName', 'Policies: registered business name', 'text'], ['bizAddress', 'Policies: registered address (without "India")', 'text'], ['gstin', 'Policies: GSTIN', 'text'], ['bizState', 'Invoices: the state the business is registered in (decides CGST + SGST or IGST)', 'text'],
   ['grievanceName', 'Policies: grievance officer name', 'text'], ['grievancePhone', 'Policies: grievance officer phone', 'text'], ['courtCity', 'Policies: city whose courts have jurisdiction', 'text'], ['policyDate', 'Policies: last updated, e.g. 19 October 2026', 'text'],
   ['pickupPin', 'Pickup PIN code, where the courier collects parcels (turns on the live PIN check)', 'text'], ['shiprocketPickup', 'Shiprocket pickup location name, as in Shiprocket → Settings → Pickup addresses', 'text'], ['parcelKg', 'Usual parcel weight (kg)', 'num'], ['parcelL', 'Usual box length (cm)', 'num'], ['parcelB', 'Usual box width (cm)', 'num'], ['parcelH', 'Usual box height (cm)', 'num'],
   ['whatsapp', 'WhatsApp number with country code, digits only', 'text'], ['orderAlerts', 'Email that gets a message for every new order (empty: the contact email)', 'text'], ['reminderDays', 'Gift reminders: send this many days before the date', 'num'], ['whatsappOn', 'Messages: send order updates on WhatsApp to customers who ask (turn on once the provider is set up)', 'bool'], ['smsOn', 'Messages: send order updates by SMS to customers who ask (turn on once the provider is set up)', 'bool'], ['pushOn', 'Messages: send notifications to customers who allowed them (turn on once push is set up)', 'bool'], ['giftCards', 'Gift card amounts in ₹, separated by commas (empty to hide gift cards)', 'text'], ['refReward', 'Thank-you gift card for each friend who orders through a share link (₹, 0 for none)', 'num'], ['metaPixel', 'Meta Pixel id, for Instagram and Facebook ads (empty for off)', 'text'], ['gaId', 'Google Analytics id, like G-XXXXXXX (empty for off)', 'text'], ['email', 'Contact email', 'text'], ['instagram', 'Instagram handle', 'text'], ['pinterest', 'Pinterest username', 'text'],
@@ -1328,7 +1361,7 @@ const HOME_STYLES = { foyer: 'Foyer: the 3D house walk', gift: 'Gift shop: produ
 const homeStyle = () => { const v = S.homePick || SET.homeStyle; return HOME_STYLES[v] ? v : 'foyer'; };
 const SET_DEFAULTS = { pickupPin: '', shiprocketPickup: 'Primary', parcelKg: 0.5, parcelL: 20, parcelB: 15, parcelH: 10, giftCards: '500, 1000, 2000', refReward: 100, shipFee: 99, freeOver: 1999, deliveryDays: '4 to 7 days', exchangeDays: 7, codOn: false, codFee: 49, wrapFee: 99, ritualOff: 10, welcomeCode: 'HELLO10', welcomeOff: 10, repourPrice: 599, rewardPct: 5,
   featured: 'spiced-tea, stepped-tray, amber-glow, crescent-ring-dish', giftPicks: 'amber-glow, stepped-tray, crescent-ring-dish, fresh-linen', homeRitual: 'tea-time', newIn: 'festive-gift-box, herb-garden, stone-coasters, arch-catch-all, grand-gift-box, mini-gift-box', spotlight: 'spiced-tea', whatsapp: '', orderAlerts: '', reminderDays: 7, whatsappOn: false, smsOn: false, pushOn: false, email: 'hello@example.com', instagram: '@samplestudio', pinterest: 'samplestudio',
-  bizName: '', bizAddress: '', gstin: '', grievanceName: '', grievancePhone: '', courtCity: '', policyDate: '',
+  bizName: '', bizAddress: '', gstin: '', bizState: 'Karnataka', grievanceName: '', grievancePhone: '', courtCity: '', policyDate: '',
   theme: 'signature', homeStyle: 'foyer', comingSoon: true, previewCode: 'samplepreview' };
 let SET = Object.assign({}, SET_DEFAULTS);
 let TXT = {};
@@ -1954,7 +1987,7 @@ function viewOrder(id) {
       ${candles && +SET.repourPrice ? `<p class="repour">${T('pdp.repour')}</p>` : ''}
       ${SHOPDB.on ? '' : '<p class="muted" style="font-size:14px">Preview: move this order along from the <a href="#admin">Owner view</a> to see the customer side update.</p>'}
       <div class="status">Questions about this order? ${wa ? `<a href="${esc(wa)}" target="_blank" rel="noopener">Message us on WhatsApp</a>` : 'Message us on WhatsApp'} or write to ${esc(SET.email)}.</div>
-      <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="button" data-act="reorder" data-id="${o.id}">Buy again</button><a class="btn ghost" href="#shop">Keep browsing</a></span></div>
+      <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="button" data-act="reorder" data-id="${o.id}">Buy again</button>${gone ? '' : `<a class="btn ghost" href="#invoice-${esc(o.id)}">${unpaid ? 'Proforma invoice' : 'View invoice'}</a>`}<a class="btn ghost" href="#shop">Keep browsing</a></span></div>
     <aside class="checkout-side"><strong>${o.id}</strong>${o.items.map((l) => `<div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span>${esc(l.name)} · ${esc(l.label)} × ${l.qty}</span><span class="num">${inr(l.price * l.qty)}</span></div>`).join('')}
       <div class="totals num">${row('Subtotal', inr(o.sub))}${o.ritual ? row('Ritual saving', '−' + inr(o.ritual), 'save') : ''}${o.codeOff ? row('Code ' + esc(o.code), '−' + inr(o.codeOff), 'save') : ''}${o.pointsUsed ? row('Studio Points', '−' + inr(o.pointsUsed), 'save') : ''}${row('Shipping', o.ship ? inr(o.ship) : 'Free')}${o.wrap ? row('Gift wrap', inr(o.wrap)) : ''}${o.cod ? row('Cash on delivery fee', inr(o.cod)) : ''}${o.cardOff ? row('Gift card ' + esc(o.card || ''), '−' + inr(o.cardOff), 'save') : ''}${row(cod ? 'To pay on delivery' : unpaid || gone ? 'Total' : 'Paid', inr(o.total), 'grand')}</div>
       ${giftSummary(o.gift)}
@@ -2127,7 +2160,7 @@ function admOrders() {
   const live = list.filter((o) => o.status !== 'Cancelled'); const rev = live.filter((o) => o.status !== 'Awaiting payment').reduce((a, o) => a + (o.total || 0), 0); const open = live.filter((o) => o.status !== 'Delivered').length;
   const low = Object.keys(skuMap).filter((s) => stockOf(s) <= 2).length; const gifts = live.filter((o) => o.gift && o.gift.on && o.status !== 'Delivered').length;
   return `<div class="owner-grid"><div class="stat"><span class="muted">Website orders</span><strong class="num">${list.length}</strong></div><div class="stat"><span class="muted">To pack or ship</span><strong class="num">${open}</strong></div><div class="stat"><span class="muted">Gifts to wrap</span><strong class="num">${gifts}</strong></div><div class="stat"><span class="muted">Takings</span><strong class="num">${inr(rev)}</strong></div><div class="stat"><span class="muted">Options at 2 or fewer</span><strong class="num">${low}</strong></div></div>
-    ${list.length ? `<div class="table-wrap"><table><thead><tr><th>Order</th><th>Placed</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Next step</th></tr></thead><tbody>${list.map((o) => { const i = STATUSES.indexOf(o.status); const g = o.gift && o.gift.on ? o.gift : null; return `<tr><td><a href="#order-${esc(o.id)}">${esc(o.id)}</a></td><td class="num">${new Date(o.placedAt).toLocaleDateString('en-IN')}</td><td>${esc(o.contact.name || '')}<br><span class="muted num">${esc(o.contact.phone || '')}</span>${o.optin ? '<br><span class="pill">WhatsApp updates</span>' : ''}</td><td>${o.items.map((l) => esc(l.name) + ' · ' + esc(l.label) + ' × ' + l.qty).join('<br>')}${g ? `<div class="gift-sum small"><strong>Gift for ${esc(g.name)}</strong>${g.wrap || g.date ? `<span>${[g.wrap ? 'Gift wrap' : '', g.date ? 'Arrive by ' + niceDay(g.date) : ''].filter(Boolean).join(' · ')}</span>` : ''}${g.note ? `<span class="muted">“${esc(g.note)}”</span>` : ''}</div>` : ''}</td><td class="num">${inr(o.total)}${o.codeOff ? `<br><span class="muted">${esc(o.code)}</span>` : ''}</td><td>${esc(o.method)}</td><td><span class="pill ${esc(o.status)}">${esc(o.status)}</span></td><td><span style="display:flex;gap:8px;flex-wrap:wrap">${o.status === 'Awaiting payment' ? `<button class="btn small ghost" type="button" data-act="advance" data-id="${esc(o.id)}">Mark paid</button>` : i >= 0 && i < 3 ? `<button class="btn small ghost" type="button" data-act="advance" data-id="${esc(o.id)}">Mark ${STATUSES[i + 1].toLowerCase()}</button>` : `<span class="muted">${o.status === 'Cancelled' ? 'Cancelled' : 'Done'}</span>`}${['Awaiting payment', 'Placed', 'Packed'].includes(o.status) ? `<button class="btn small ghost" type="button" data-act="adm-cancel" data-id="${esc(o.id)}">Cancel</button>` : ''}${SHOPDB.on && ['Placed', 'Packed'].includes(o.status) && !(o.parcel && o.parcel.awb) ? `<button class="btn small" type="button" data-act="adm-ship" data-id="${esc(o.id)}" ${UI.adm.shipping === o.id ? 'disabled' : ''}>${UI.adm.shipping === o.id ? 'Booking…' : 'Book courier'}</button>` : ''}</span>${parcelNote(o)}${o.refundDue ? '<span class="pill out">Paid late: refund it in Cashfree</span>' : ''}</td></tr>`; }).join('')}</tbody></table></div>`
+    ${list.length ? `<div class="table-wrap"><table><thead><tr><th>Order</th><th>Placed</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Next step</th></tr></thead><tbody>${list.map((o) => { const i = STATUSES.indexOf(o.status); const g = o.gift && o.gift.on ? o.gift : null; return `<tr><td><a href="#order-${esc(o.id)}">${esc(o.id)}</a><br><a class="muted" style="font-size:13px" href="#invoice-${esc(o.id)}">Invoice</a></td><td class="num">${new Date(o.placedAt).toLocaleDateString('en-IN')}</td><td>${esc(o.contact.name || '')}<br><span class="muted num">${esc(o.contact.phone || '')}</span>${o.optin ? '<br><span class="pill">WhatsApp updates</span>' : ''}</td><td>${o.items.map((l) => esc(l.name) + ' · ' + esc(l.label) + ' × ' + l.qty).join('<br>')}${g ? `<div class="gift-sum small"><strong>Gift for ${esc(g.name)}</strong>${g.wrap || g.date ? `<span>${[g.wrap ? 'Gift wrap' : '', g.date ? 'Arrive by ' + niceDay(g.date) : ''].filter(Boolean).join(' · ')}</span>` : ''}${g.note ? `<span class="muted">“${esc(g.note)}”</span>` : ''}</div>` : ''}</td><td class="num">${inr(o.total)}${o.codeOff ? `<br><span class="muted">${esc(o.code)}</span>` : ''}</td><td>${esc(o.method)}</td><td><span class="pill ${esc(o.status)}">${esc(o.status)}</span></td><td><span style="display:flex;gap:8px;flex-wrap:wrap">${o.status === 'Awaiting payment' ? `<button class="btn small ghost" type="button" data-act="advance" data-id="${esc(o.id)}">Mark paid</button>` : i >= 0 && i < 3 ? `<button class="btn small ghost" type="button" data-act="advance" data-id="${esc(o.id)}">Mark ${STATUSES[i + 1].toLowerCase()}</button>` : `<span class="muted">${o.status === 'Cancelled' ? 'Cancelled' : 'Done'}</span>`}${['Awaiting payment', 'Placed', 'Packed'].includes(o.status) ? `<button class="btn small ghost" type="button" data-act="adm-cancel" data-id="${esc(o.id)}">Cancel</button>` : ''}${SHOPDB.on && ['Placed', 'Packed'].includes(o.status) && !(o.parcel && o.parcel.awb) ? `<button class="btn small" type="button" data-act="adm-ship" data-id="${esc(o.id)}" ${UI.adm.shipping === o.id ? 'disabled' : ''}>${UI.adm.shipping === o.id ? 'Booking…' : 'Book courier'}</button>` : ''}</span>${parcelNote(o)}${o.refundDue ? '<span class="pill out">Paid late: refund it in Cashfree</span>' : ''}</td></tr>`; }).join('')}</tbody></table></div>`
     : '<div class="empty"><strong>No website orders yet.</strong><span class="muted">Place one from the shop: add something to the cart, check out as a guest and simulate a payment.</span><a class="btn small" href="#shop">Go to the shop</a></div>'}`;
 }
 
@@ -2866,6 +2899,7 @@ function render(nav) {
   else if (r === 'cart') html = viewCart();
   else if (r === 'checkout') html = viewCheckout();
   else if (r.startsWith('order-')) html = viewOrder(r.slice(6));
+  else if (r.startsWith('invoice-')) html = viewInvoice(r.slice(8));
   else if (r === 'admin') html = viewAdmin();
   else if (r === 'story') html = viewStory();
   else if (r === 'help') html = viewHelp();
@@ -3259,6 +3293,62 @@ function acctSend(email, next) {
   if (!SHOPDB.on) { done(String(Math.floor(100000 + Math.random() * 900000))); return; }
   SHOPDB.sendCode(email).then(() => done(null), (err) => { A.busy = false; A.err = /rate|seconds/i.test(err.message) ? 'Please wait a minute before asking for another code.' : 'We couldn’t send the code (' + err.message + '). Check the email and try again.'; render(); $('#acct-email')?.focus(); });
 }
+// ---------- invoices ----------
+// A tax invoice for each paid order, from the order kept in this browser (or the database). Prices on the site include
+// GST, so each line's taxable value is worked back from its price after its share of the discounts. Gift cards are a
+// way of paying, not a discount, so they don't change the tax. The rates below are samples: confirm them with an accountant.
+const GST_RATE = { candles: 12, objects: 12, gifts: 12, service: 18 };
+const HSN = { candles: '3406', objects: '6810', gifts: '3406', service: '9965' };
+const rupees = (n) => '₹' + (Math.round(n * 100) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function inWords(n) {
+  const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+  const two = (x) => x < 20 ? a[x] : b[Math.floor(x / 10)] + (x % 10 ? ' ' + a[x % 10] : '');
+  const three = (x) => (x >= 100 ? a[Math.floor(x / 100)] + ' Hundred' + (x % 100 ? ' ' : '') : '') + two(x % 100);
+  let r = Math.floor(n), out = [];
+  [[10000000, 'Crore'], [100000, 'Lakh'], [1000, 'Thousand']].forEach(([d, w]) => { if (r >= d) { out.push(three(Math.floor(r / d)) + ' ' + w); r %= d; } });
+  if (r) out.push(three(r));
+  const paise = Math.round((n - Math.floor(n)) * 100);
+  return 'Rupees ' + (out.join(' ') || 'Zero') + (paise ? ' and ' + two(paise) + ' Paise' : '') + ' Only';
+}
+function invoiceOf(o) {
+  const disc = (o.ritual || 0) + (o.codeOff || 0) + (o.pointsUsed || 0); const sub = o.sub || o.items.reduce((t, l) => t + l.price * l.qty, 0);
+  const lines = o.items.map((l) => {
+    const cat = (skuMap[l.sku] && skuMap[l.sku].p.cat) || 'gifts'; const gross = l.price * l.qty; const net = gross - (sub ? disc * gross / sub : 0);
+    const rate = GST_RATE[cat] || 12; const taxable = net / (1 + rate / 100);
+    return { name: l.name, label: l.label, sku: l.sku, hsn: HSN[cat] || '', qty: l.qty, unit: l.price, gross, off: gross - net, rate, taxable, tax: net - taxable, total: net };
+  });
+  [['Shipping', o.ship], ['Gift wrap', o.wrap], ['Cash on delivery fee', o.cod]].forEach(([n, v]) => { if (+v) { const taxable = v / 1.18; lines.push({ name: n, label: '', sku: '', hsn: HSN.service, qty: 1, unit: v, gross: v, off: 0, rate: GST_RATE.service, taxable, tax: v - taxable, total: v, service: true }); } });
+  const inState = String(o.address.state || '').trim().toLowerCase() === String(SET.bizState || '').trim().toLowerCase();
+  const sum = (k) => lines.reduce((t, l) => t + l[k], 0);
+  const no = 'INV-' + String(o.id).replace(/^[A-Z]+-/, ''); const fy = (() => { const d = new Date(o.placedAt); const y = d.getMonth() >= 3 ? d.getFullYear() : d.getFullYear() - 1; return y + '-' + String(y + 1).slice(2); })();
+  return { lines, inState, taxable: sum('taxable'), tax: sum('tax'), total: sum('total'), disc, card: o.cardOff || 0, no: no + '/' + fy };
+}
+function viewInvoice(id) {
+  const o = S.orders.find((x) => x.id === id); if (!o) return viewNotFound();
+  const v = invoiceOf(o); const unpaid = o.status === 'Awaiting payment', gone = o.status === 'Cancelled';
+  const biz = { name: SET.bizName || 'SAMPLE STUDIO (sample business)', addr: SET.bizAddress || '12 Sample Street, Sample Nagar, Bengaluru 560001', state: SET.bizState || 'Karnataka', gstin: SET.gstin || '29ABCDE1234F1Z5 (sample)' };
+  const half = (n) => rupees(n / 2);
+  const to = o.gift && o.gift.on ? { name: o.gift.name, phone: o.gift.phone } : { name: o.contact.name, phone: o.contact.phone };
+  const title = gone ? 'Cancelled invoice' : unpaid ? 'Proforma invoice' : 'Tax invoice';
+  return `<div class="wrap" style="padding-bottom:var(--section)"><div class="page-head"><nav class="crumbs" aria-label="Breadcrumb"><a href="#order-${esc(o.id)}">Order ${esc(o.id)}</a> / Invoice</nav><h1 tabindex="-1">Invoice for order ${esc(o.id)}</h1>
+    <p class="muted">${SHOPDB.on ? 'Print it or save it as a PDF for your records.' : 'Sample invoice: the business details and tax rates are placeholders for the client to fill in. Print it or save it as a PDF.'}</p></div>
+  <article class="invoice" aria-label="${esc(title)} ${esc(v.no)}">${SHOPDB.on ? '' : '<span class="inv-mark" aria-hidden="true">SAMPLE</span>'}
+    <header class="inv-head"><div style="display:flex;flex-direction:column;gap:8px"><img class="inv-logo" src="assets/logo-primary.webp" alt="SAMPLE STUDIO" width="960" height="549"><span><strong>${esc(biz.name)}</strong><br>${esc(biz.addr)}, ${esc(biz.state)}, India<br>GSTIN: <span class="num">${esc(biz.gstin)}</span><br>${esc(SET.email || '')}</span></div>
+      <div class="inv-title"><strong>${title}</strong><span>Invoice no. <span class="num">${esc(v.no)}</span></span><span>Date: ${new Date(o.placedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span><span>Order: <span class="num">${esc(o.id)}</span></span><span>Place of supply: ${esc(o.address.state || '')}</span></div></header>
+    <section class="inv-parties"><div><h3>Billed to</h3><p>${esc(o.contact.name || '')}<br>${esc(o.contact.email || '')}<br><span class="num">${esc(o.contact.phone || '')}</span></p></div>
+      <div><h3>Shipped to</h3><p>${esc(to.name || '')}<br>${esc(o.address.line1 || '')}${o.address.line2 ? ', ' + esc(o.address.line2) : ''}<br>${esc(o.address.city || '')} ${esc(o.address.pin || '')}, ${esc(o.address.state || '')}${to.phone ? `<br><span class="num">${esc(to.phone)}</span>` : ''}</p></div>
+      <div><h3>Payment</h3><p>${esc(o.method)}${unpaid ? ' · awaiting payment' : gone ? ' · cancelled' : o.method === 'Cash on delivery' ? ' · due on delivery' : ' · paid'}${o.card ? `<br>Gift card <span class="num">${esc(o.card)}</span>` : ''}</p></div></section>
+    <div class="inv-wrap"><table class="inv-table"><thead><tr><th>#</th><th>Item</th><th>HSN/SAC</th><th class="r">Qty</th><th class="r">Price</th><th class="r">Discount</th><th class="r">Taxable value</th><th class="r">GST</th><th class="r">Amount</th></tr></thead>
+      <tbody>${v.lines.map((l, i) => `<tr><td class="num">${i + 1}</td><td>${esc(l.name)}${l.label ? ` · ${esc(l.label)}` : ''}${l.sku ? `<br><span class="muted num">${esc(l.sku)}</span>` : ''}</td><td class="num">${esc(l.hsn)}</td><td class="r num">${l.qty}</td><td class="r num">${rupees(l.unit)}</td><td class="r num">${l.off ? '−' + rupees(l.off) : '–'}</td><td class="r num">${rupees(l.taxable)}</td><td class="r num">${rupees(l.tax)}<br><span class="muted">${l.rate}%</span></td><td class="r num">${rupees(l.total)}</td></tr>`).join('')}</tbody></table></div>
+    <section class="inv-sum"><div><h3>Amount in words</h3><p style="margin:0 0 14px">${inWords(Math.round((v.total - v.card) * 100) / 100)}</p>
+      <h3>Tax summary</h3><p style="margin:0">${v.inState ? `CGST ${rupees(v.tax / 2)} + SGST ${half(v.tax)} (supply within ${esc(biz.state)})` : `IGST ${rupees(v.tax)} (supply to another state)`}${v.disc ? `<br>Discounts applied before tax: ${[o.ritual ? 'ritual saving ' + rupees(o.ritual) : '', o.codeOff ? 'code ' + esc(o.code) + ' ' + rupees(o.codeOff) : '', o.pointsUsed ? 'Studio Points ' + rupees(o.pointsUsed) : ''].filter(Boolean).join(', ')}.` : ''}</p></div>
+      <div class="inv-tot"><div><span>Taxable value</span><span>${rupees(v.taxable)}</span></div>${v.inState ? `<div><span>CGST</span><span>${half(v.tax)}</span></div><div><span>SGST</span><span>${half(v.tax)}</span></div>` : `<div><span>IGST</span><span>${rupees(v.tax)}</span></div>`}<div><span>Invoice total</span><span>${rupees(v.total)}</span></div>${v.card ? `<div><span>Paid by gift card</span><span>−${rupees(v.card)}</span></div>` : ''}<div class="grand"><span>${unpaid || gone ? 'Amount' : o.method === 'Cash on delivery' ? 'To pay on delivery' : 'Amount paid'}</span><span>${rupees(v.total - v.card)}</span></div></div></section>
+    <footer class="inv-foot"><span>Prices include GST. Goods once delivered are replaced, not refunded, under our replacement policy.<br>This is a computer-generated invoice.${SHOPDB.on ? '' : ' <strong>Sample only: not a valid tax document.</strong>'}</span><span class="inv-sign">For ${esc(biz.name)}<span>Authorised signatory</span></span></footer>
+  </article>
+  <div class="inv-acts"><button class="btn" type="button" data-act="inv-print">Print or save as PDF</button><a class="btn ghost" href="#order-${esc(o.id)}">Back to the order</a></div></div>`;
+}
+
 function acctIn(email, next) {
   const prev = S.orders.find((o) => o.contact.email === email); S.account = { email, name: (prev && prev.contact.name) || (UI.co.contact && UI.co.contact.name) || '', since: new Date().toISOString() };
   save(); UI.acct = {}; UI.mine = null; track('signin', {}); say('Signed in as ' + email + '.'); if (next && location.hash.slice(1) !== next) location.hash = next; else render();
@@ -3435,6 +3525,7 @@ document.addEventListener('click', (e) => {
     case 'pay-app': UI.co.appSheet = true; render(); break;
     case 'pay-fail': UI.co.appSheet = false; UI.co.payErr = 'The payment was declined in your UPI app. Nothing was charged. Try again or choose another method.'; track('payment_failed', { method: 'UPI app' }); render(); break;
     case 'pay-success': placeOrder(d.via); break;
+    case 'inv-print': window.print(); break;
     case 'pay-order': payOnline(d.id); break;
     case 'adm-ship': { const A = UI.adm; const o = (admData('orders') || []).find((x) => x.id === d.id); if (!o || A.shipping) break; A.shipping = o.id; render();
       admDo(async () => { try { const r = await SHOPDB.fn('delivery', { action: 'book', order_id: o.id }); o.parcel = r.ship; if (r.status) o.status = r.status; track('courier_booked', { order: o.id }); } finally { A.shipping = null; render(); } }, `Courier booked for ${o.id}. Print the label and pack it for pickup.`); break; }
