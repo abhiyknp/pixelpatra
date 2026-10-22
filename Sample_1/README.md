@@ -31,6 +31,10 @@ sh tools/preview.sh      # http://localhost:8765/
 
 It can also be dropped into Netlify Drop or any static host as it is.
 
+Once merged to `main`, `.github/workflows/sample-pages.yml` publishes it to GitHub Pages at
+https://abhiyknp.github.io/pixelpatra/Sample_1/ (one-time setup: Settings → Pages → Source: GitHub Actions; Pages on a
+private repository needs a paid GitHub plan).
+
 ## Re-brand it for a client
 
 1. **Logo and images** in `assets/`: replace `logo-primary.webp` (and `logo-primary-reverse.webp` for dark backgrounds),
