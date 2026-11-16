@@ -1,9 +1,9 @@
 /* Privacy-friendly visit counts with GoatCounter (no cookies, no personal data, no consent banner needed).
    Off until GOATCOUNTER_CODE is set: create a free account at https://www.goatcounter.com, then put the site code
-   here (for https://abhishek.goatcounter.com the code is "abhishek"). GoatCounter ignores localhost visits. */
+   here (for https://example.goatcounter.com the code is "yourcode"). GoatCounter ignores localhost visits. */
 (function () {
   'use strict';
-  var GOATCOUNTER_CODE = 'abhiyknp';
+  var GOATCOUNTER_CODE = 'example';
   if (!GOATCOUNTER_CODE) return;
 
   var queue = [];

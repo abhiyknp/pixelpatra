@@ -54,7 +54,7 @@ PF.skills.push(
 {
   id: 'datamodel', area: 'E', name: 'Data modelling and SQL',
   tags: ['entities', 'primary key', 'foreign key', 'normalisation', 'joins', 'integrity', 'ERD'],
-  ev: 'source', evNote: 'Résumé: SQL (tools; used at Intechglobe). Data modelling is a recommended extension; the schema below is illustrative.',
+  ev: 'source', evNote: 'Résumé: SQL (tools; used at Northbridge). Data modelling is a recommended extension; the schema below is illustrative.',
   sum: 'Understand how data is structured so requirements, reports and migrations are correct.',
   def: 'A data model describes <strong>entities</strong> (things such as Application or Payment), their <strong>attributes</strong>, and the <strong>relationships</strong> between them. A <strong>primary key</strong> uniquely identifies a row. A <strong>foreign key</strong> references another table\'s key. <strong>Normalisation</strong> removes duplicated data to protect <strong>integrity</strong>.',
   why: 'Reports, migrations and integrations all depend on understanding where data lives and how it relates. A Business Analyst who can read a model and write SQL can answer questions without waiting for a developer.',
@@ -126,7 +126,7 @@ PF.skills.push(
 {
   id: 'powerbi', area: 'F', name: 'Power BI and KPI dashboards',
   tags: ['KPI', 'measures', 'dimensions', 'numerator', 'denominator', 'refresh', 'pendency', 'TAT'],
-  ev: 'source', evNote: 'Résumé: Power BI (tools); developed dashboards and analytical reports (Intechglobe).',
+  ev: 'source', evNote: 'Résumé: Power BI (tools); developed dashboards and analytical reports (Northbridge).',
   sum: 'Turn a stakeholder\'s question into a defined measure and a chart that answers it honestly.',
   def: 'A KPI (key performance indicator) is a measure tied to an objective. A dashboard groups KPIs with <strong>dimensions</strong> (ways to slice: region, stage, type), <strong>measures</strong> (calculations), <strong>filters</strong> and visuals. A good KPI definition states its numerator, denominator, reporting period, data source, refresh frequency and interpretation.',
   why: 'Undefined KPIs create arguments rather than decisions. Two teams computing "average processing time" differently will reach different conclusions from the same data.',
@@ -145,12 +145,12 @@ PF.skills.push(
   cases: ['healthcare', 'datalake', 'rajmarg'],
   q: { q: 'Tell me how you would catch a misleading KPI.', a: 'I would check its definition against the question. Average turnaround including applicant response time answers "how long does the whole process take", not "how fast is the authority". I would also check the distribution, because a few very old files can distort a mean. The fix is separate measures and medians with outlier counts, agreed with the stakeholder.' },
   more: ['What goes into a KPI definition?'],
-  honest: 'I built Power BI dashboards at Intechglobe. The dashboard here uses sample data and shows no real results.'
+  honest: 'I built Power BI dashboards at Northbridge. The dashboard here uses sample data and shows no real results.'
 },
 {
   id: 'sqlanalysis', area: 'F', name: 'SQL and data analysis',
   tags: ['segmentation', 'bottlenecks', 'validation', 'reconciliation', 'aggregation', 'duplicates'],
-  ev: 'source', evNote: 'Résumé: SQL; analytical reports (Intechglobe); M.S. Data Science.',
+  ev: 'source', evNote: 'Résumé: SQL; analytical reports (Northbridge); M.S. Data Science.',
   sum: 'Answer operational questions directly from data, and prove that totals agree.',
   def: 'Using SQL and spreadsheet analysis to investigate questions, validate data quality, segment records, find bottlenecks and reconcile totals between systems.',
   why: 'Evidence wins arguments that opinion cannot. Being able to query data speeds up discovery, defect investigation and UAT validation.',
@@ -198,7 +198,7 @@ PF.skills.push(
 {
   id: 'testing', area: 'G', name: 'Test strategy and test scenarios',
   tags: ['test conditions', 'test cases', 'negative', 'boundary', 'regression', 'role-based', 'integration'],
-  ev: 'source', evNote: 'Résumé: testing support (Coditro); UAT and release validation (Ascra).',
+  ev: 'source', evNote: 'Résumé: testing support (Brightpath Labs); UAT and release validation (Ascra).',
   sum: 'Design checks that prove requirements work, including the paths users are not supposed to take.',
   def: 'A <strong>test condition</strong> is something to verify. A <strong>test case</strong> specifies preconditions, test data, steps and the expected result, then records the actual result and evidence. Types: positive, negative, boundary, role-based, integration, regression and exception.',
   why: 'Testing only the happy path lets the defects that cause the most support calls reach production.',
@@ -246,7 +246,7 @@ PF.skills.push(
 {
   id: 'triage', area: 'G', name: 'Defect triage',
   tags: ['severity', 'priority', 'reproducibility', 'workaround', 'release decision'],
-  ev: 'source', evNote: 'Résumé: Defect Triage (skills); defect triage (Ascra); defect tracking (Coditro).',
+  ev: 'source', evNote: 'Résumé: Defect Triage (skills); defect triage (Ascra); defect tracking (Brightpath Labs).',
   sum: 'Decide quickly and fairly what gets fixed, when, and what users do in the meantime.',
   def: '<strong>Severity</strong> is the technical or functional impact. <strong>Priority</strong> is the order of fixing, based on business impact and timing. Triage also considers reproducibility, workaround, affected users, dependencies and release timing.',
   why: 'Without triage, teams fix what is loudest, not what matters.',
@@ -294,7 +294,7 @@ PF.skills.push(
 {
   id: 'workshops', area: 'H', name: 'Stakeholder interviews and requirement workshops',
   tags: ['JAD', 'facilitation', 'agenda', 'interviews', 'playback'],
-  ev: 'source', evNote: 'Résumé: JAD sessions (Coditro); stakeholder workshops (Intechglobe).',
+  ev: 'source', evNote: 'Résumé: JAD sessions (Brightpath Labs); stakeholder workshops (Northbridge).',
   sum: 'Run sessions that end with decisions, not just discussion.',
   def: 'Interviews give depth from one person. Workshops, including JAD (Joint Application Design) sessions, bring business and technical people together to define requirements jointly.',
   why: 'Joint sessions resolve in hours what email threads take weeks to resolve.',
@@ -366,7 +366,7 @@ PF.skills.push(
 {
   id: 'enablement', area: 'H', name: 'Demonstrations, training, user manuals, release communication and sign-off',
   tags: ['demo', 'training', 'user manual', 'release notes', 'sign-off'],
-  ev: 'source', evNote: 'Résumé: product demonstrations, user training, change management (Intechglobe); SOPs, user manuals, release documentation, stakeholder sign-offs (Ascra).',
+  ev: 'source', evNote: 'Résumé: product demonstrations, user training, change management (Northbridge); SOPs, user manuals, release documentation, stakeholder sign-offs (Ascra).',
   sum: 'Help people adopt the change: show it, teach it, document it, and get it formally accepted.',
   def: 'Activities that prepare users for a release and record acceptance: demonstrations, training sessions, user manuals and SOPs, release communication, and sign-off.',
   why: 'Adoption is part of delivery.',
