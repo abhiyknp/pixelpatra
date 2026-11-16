@@ -7,6 +7,13 @@
 window.SHOP_CONFIG = {
   // Owner sign-in asks for an authenticator app code after the password when this is true (needs a database).
   ownerTwoStep: false,
+  // Set by the developer when the site is built; the owner cannot change these from Owner view.
+  setup: {
+    // the colour themes the owner may choose between in Settings (keys of SKINS in index.html)
+    approvedThemes: ['signature', 'festive', 'monsoon', 'evening'],
+    // hours between a confirmed change request for a locked detail and it going live
+    changeWaitHours: 48
+  },
   supabase: {
     url: '',
     anonKey: ''
