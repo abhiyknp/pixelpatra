@@ -14,6 +14,7 @@
 <meta property="og:site_name" content="Pixelpatra"><meta property="og:title" content="Pixelpatra: immersive website templates"><meta property="og:description" content="Portfolios, online shops, product websites and 3D experiences. Try every template live, then request a quote."><meta property="og:type" content="website">
 <script src="shared/pp-config.js"></script>
 <script src="shared/pp-theme.js" data-pp="store"></script>
+<script src="shared/pp-ui.js" defer></script>
 <link rel="stylesheet" href="shared/pp-site.css">
 </head>
 <body>
@@ -62,13 +63,22 @@
           </div>
         </div>
         <label class="try-label" for="your-name">Type your name or business to see it in every live demo</label>
-        <input id="your-name" type="text" maxlength="28" autocomplete="off" spellcheck="false" placeholder="e.g. Riya Sharma or Chai Corner">
+        <input id="your-name" type="text" maxlength="28" autocomplete="off" spellcheck="false" placeholder="e.g. Riya Sharma or Chai Corner" aria-describedby="name-msg" data-tip="Your name or business. It replaces the sample brand in every live demo.">
+        <p class="name-msg" id="name-msg" role="status" aria-live="polite"></p>
         <div class="try-themes"><span class="lbl" id="hero-sw-l">Colour theme</span><div id="hero-sw"></div></div>
         <p class="try-note">Your name and colour theme carry into every live demo below. They stay in your browser only.</p>
       </div>
     </div>
     <canvas id="cloth" hidden aria-hidden="true"></canvas>
     <button type="button" class="cloth-open" id="cloth-open" hidden>Swipe or tap to open</button>
+  </section>
+
+  <section class="wrap" aria-label="How to use this page">
+    <ol class="guide">
+      <li><span><a href="#your-name">Type your name</a> and pick a colour theme. They appear in every demo.</span></li>
+      <li><span><a href="#templates">Open a live demo</a> and try the Owner view, the way you would run your own site.</span></li>
+      <li><span><a href="quote.html">Request a quote</a> for the one you like. Nothing starts until you say yes.</span></li>
+    </ol>
   </section>
 
   <section class="section" id="features">
@@ -95,9 +105,9 @@
         <div class="themebar"><span id="themelabel">Theme</span><div id="pp-sw"></div></div>
         <div class="switch" role="group" aria-label="Price option">
           <span class="pill" id="pill"></span>
-          <button type="button" id="mode-files" aria-pressed="true" data-mode="files">Template files</button>
-          <button type="button" id="mode-setup" aria-pressed="false" data-mode="setup">Setup &amp; launch</button>
-          <button type="button" id="mode-custom" aria-pressed="false" data-mode="custom">Custom build</button>
+          <button type="button" id="mode-files" aria-pressed="true" data-mode="files" data-tip="The template files, delivered to you. You launch the site yourself.">Template files</button>
+          <button type="button" id="mode-setup" aria-pressed="false" data-mode="setup" data-tip="We set the template up with your content and put it live.">Setup &amp; launch</button>
+          <button type="button" id="mode-custom" aria-pressed="false" data-mode="custom" data-tip="A site designed and built for you, starting from a template.">Custom build</button>
         </div>
         <p class="mode-note" id="mode-note">You get the template files and launch the site yourself.</p>
       </div>
@@ -107,7 +117,7 @@
         <button type="button" role="tab" aria-selected="true" data-cat="all">All</button>
         <button type="button" role="tab" aria-selected="false" data-cat="portfolio">Portfolio</button>
         <button type="button" role="tab" aria-selected="false" data-cat="ecommerce">E-commerce</button>
-        <button type="button" role="tab" aria-selected="false" data-cat="3d">3D &amp; animated</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="3d" data-tip="Sites with 3D scenes, scroll films and effects">3D &amp; animated</button>
         <button type="button" role="tab" aria-selected="false" data-cat="business">Business</button>
       </div>
       <p class="tabhint" id="tabhint">Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.</p>
@@ -489,7 +499,16 @@ const CONFIG = window.PP_CONFIG || {};
     store.set("pp-name", yourName);
     updateLinks();
   }
-  input.addEventListener("input", () => { clearTimeout(flashT); applyName(input.value, false); flashT = setTimeout(() => applyName(input.value, true), 250); });
+  const nmsg = document.getElementById("name-msg");
+  function nameCheck(v) {
+    v = v.trim(); nmsg.className = "name-msg";
+    if (!v) { nmsg.textContent = ""; return ""; }
+    if (!/[\p{L}\p{N}]/u.test(v)) { nmsg.textContent = "Please use at least one letter or number."; nmsg.classList.add("bad"); input.setAttribute("aria-invalid", "true"); return ""; }
+    input.removeAttribute("aria-invalid");
+    nmsg.textContent = input.value.length >= input.maxLength ? "That is the longest name we can show (" + input.maxLength + " characters). Saved." : "Saved. “" + v + "” now appears in every live demo."; nmsg.classList.add("ok");
+    return v;
+  }
+  input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); flashT = setTimeout(() => applyName(v, true), 250); });
   const saved = store.get("pp-name"); if (saved) { input.value = saved; applyName(saved, false); }
   if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); }
 
@@ -632,13 +651,15 @@ const CONFIG = window.PP_CONFIG || {};
   tabs.forEach(b => b.addEventListener("click", () => pickCat(b.dataset.cat)));
   const q = new URLSearchParams(location.search).get("cat"); if (q && hints[q]) pickCat(q);
   const modal = document.getElementById("modal"), frame = document.getElementById("modal-frame");
-  let from = null;
+  let from = null, slowT;
+  frame.addEventListener("load", () => clearTimeout(slowT));
   function openLive(card) {
     const cat = (document.querySelector("#tabs [aria-selected=true]") || {}).dataset ? document.querySelector("#tabs [aria-selected=true]").dataset.cat : "all";
     from = card; frame.src = "demo/?embed=1&demo=" + card.dataset.id + (cat !== "all" ? "&cat=" + cat : "");
+    clearTimeout(slowT); slowT = setTimeout(() => { if (window.ppUI && !modal.hidden) ppUI.alert(navigator.onLine === false ? "You are offline, so the live demo cannot load. Reconnect and open it again." : "The live demo is taking longer than usual. Check your connection, or close it and try again."); }, 20000);
     modal.hidden = false; document.body.classList.add("lock"); document.querySelectorAll("body > header, body > main, body > footer, body > .fab").forEach(n => n.setAttribute("inert", "")); frame.focus();
   }
-  function closeLive() { modal.hidden = true; frame.src = "about:blank"; document.body.classList.remove("lock"); document.querySelectorAll("[inert]").forEach(n => n.removeAttribute("inert")); if (from) from.querySelector(".demo").focus(); }
+  function closeLive() { clearTimeout(slowT); modal.hidden = true; frame.src = "about:blank"; document.body.classList.remove("lock"); document.querySelectorAll("[inert]").forEach(n => n.removeAttribute("inert")); if (from) from.querySelector(".demo").focus(); }
   document.addEventListener("click", e => {
     const a = e.target.closest("a.demo"), shot = e.target.closest(".tshot");
     const card = (a || shot) && (a || shot).closest(".card"); if (!card) return;

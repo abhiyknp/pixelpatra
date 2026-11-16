@@ -14,8 +14,8 @@
   var E = { name: $('#e-name'), email: $('#e-email'), phone: $('#e-phone'), goal: $('#e-goal'), consent: $('#e-consent') };
   function mark(inp, msg, el) { el.textContent = msg || ''; if (inp) inp.setAttribute('aria-invalid', msg ? 'true' : 'false'); return !msg; }
   function validate() {
-    var ok = true, first = null, v = function (id) { return $(id).value.trim(); };
-    function bad(inp, msg, el) { if (!mark(inp, msg, el)) { ok = false; if (!first) first = inp; } }
+    var ok = true, first = null, list = [], v = function (id) { return $(id).value.trim(); };
+    function bad(inp, msg, el) { if (!mark(inp, msg, el)) { ok = false; if (!first) first = inp; list.push({ id: inp.id, msg: msg }); } }
     bad($('#q-name'), v('#q-name').length < 2 ? 'Please tell us your name.' : '', E.name);
     var em = v('#q-email'), ph = v('#q-phone').replace(/[\s\-()]/g, '');
     var emBad = em && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em), phBad = ph && !/^\+?\d{8,15}$/.test(ph);
@@ -23,7 +23,12 @@
     bad($('#q-phone'), phBad ? 'Use 8 to 15 digits, with the country code if outside India.' : '', E.phone);
     bad($('#q-goal'), v('#q-goal').length < 10 ? 'Tell us a little about what you want (at least a sentence).' : '', E.goal);
     bad($('#q-consent'), $('#q-consent').checked ? '' : 'Please tick to agree.', E.consent);
-    if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    var sum = $('#qsummary');
+    if (list.length) {
+      sum.innerHTML = '<b>Please fix ' + (list.length === 1 ? 'this' : 'these ' + list.length + ' things') + ' before sending:</b><ul>' + list.map(function (x) { return '<li><a href="#' + x.id + '">' + x.msg + '</a></li>'; }).join('') + '</ul>';
+      sum.hidden = false; sum.focus(); sum.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      [].forEach.call(sum.querySelectorAll('a'), function (a) { a.addEventListener('click', function (e) { e.preventDefault(); var t = $(a.getAttribute('href')); if (t) { t.focus(); t.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }); });
+    } else { sum.hidden = true; sum.innerHTML = ''; }
     return ok;
   }
   function summary() {
@@ -49,8 +54,9 @@
     e.preventDefault(); if (!validate()) return;
     var text = summary(), btn = $('#q-send'); btn.disabled = true; btn.textContent = 'Sending…';
     if (!netlify) { fallback(text); return; }
+    if (navigator.onLine === false && window.ppUI) ppUI.alert('You are offline, so we cannot send this automatically. Use the options on the next screen, so your request is not lost.', 'warn');
     var body = new URLSearchParams(new FormData(form)).toString();
-    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).then(function (r) { if (r.ok) thanks(); else throw new Error('post'); }).catch(function () { btn.disabled = false; btn.textContent = 'Send my request'; fallback(text); });
+    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).then(function (r) { if (r.ok) thanks(); else throw new Error('post'); }).catch(function () { btn.disabled = false; btn.textContent = 'Send my request'; if (window.ppUI) ppUI.alert('We could not send your request automatically. Please use one of the options below, so nothing is lost.', 'warn'); fallback(text); });
   });
-  form.addEventListener('input', function (e) { var id = e.target.id; if (e.target.getAttribute('aria-invalid') === 'true') { e.target.setAttribute('aria-invalid', 'false'); var m = { 'q-name': 'name', 'q-email': 'email', 'q-phone': 'phone', 'q-goal': 'goal', 'q-consent': 'consent' }[id]; if (m) E[m].textContent = ''; } });
+  form.addEventListener('input', function (e) { var id = e.target.id; if (e.target.getAttribute('aria-invalid') === 'true') { e.target.setAttribute('aria-invalid', 'false'); var m = { 'q-name': 'name', 'q-email': 'email', 'q-phone': 'phone', 'q-goal': 'goal', 'q-consent': 'consent' }[id]; if (m) E[m].textContent = ''; if (!form.querySelector('[aria-invalid="true"]')) { var sm = $('#qsummary'); sm.hidden = true; sm.innerHTML = ''; } } });
 })();

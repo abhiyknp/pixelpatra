@@ -331,3 +331,20 @@ details.faq { border-bottom: 1px solid var(--line); padding-block: 4px; max-widt
 [hidden] { display: none !important; }
 .nav a, .nav .btn { white-space: nowrap; }
 @media (max-width: 640px) { .top .wrap { gap: 10px; } .nav { gap: 14px; } .logo { font-size: 17px; } .nav .btn-sm { padding-inline: 14px; } }
+
+/* breadcrumbs: where am I */
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted,#6b5d52);margin:0 0 14px}
+.crumbs a{color:inherit;text-underline-offset:3px}.crumbs a:hover{color:var(--accent,#c2410c)}.crumbs [aria-current]{color:var(--ink,#1b1410);font-weight:600}
+/* step guide on the home page */
+.guide{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 0;padding:0;list-style:none;counter-reset:g}
+.guide li{counter-increment:g;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line,#e6ddd2);border-radius:12px;background:var(--surface,#fff);font-size:14px;line-height:1.35}
+.guide li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent,#f97316);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+.guide a{color:inherit;font-weight:700;text-underline-offset:3px}
+@media(max-width:720px){.guide{grid-template-columns:1fr}}
+/* form messages */
+.qsummary{border:1px solid #ef4444;background:#fef2f2;color:#7f1d1d;border-radius:12px;padding:12px 16px;margin:0 0 16px}
+.qsummary[hidden]{display:none}.qsummary b{display:block;margin-bottom:4px}.qsummary ul{margin:0;padding-left:20px}.qsummary a{color:inherit;font-weight:600}
+.qfail{border:1px solid #f59e0b;background:#fffbeb;color:#78350f;border-radius:12px;padding:12px 16px;margin:12px 0}
+.qfail[hidden]{display:none}
+.name-msg{min-height:1.3em;font-size:13px;margin:6px 0 0;color:var(--muted,#6b5d52)}.name-msg.bad{color:#b91c1c;font-weight:600}.name-msg.ok{color:#15803d}
+.try-label small{font-weight:400}
