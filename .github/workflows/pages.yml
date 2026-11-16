@@ -29,26 +29,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - name: Assemble the site
-        run: |
-          mkdir -p _site
-          cp index.html animations.html intro.html _site/
-          cp -r demo _site/demo
-          for d in Sample_1 House_3D_Prototype Sample_2 kits; do
-            mkdir -p "_site/$d"
-            (cd "$d" && tar --exclude=./tools --exclude=./.preview --exclude=./.cache --exclude='*.md' --exclude=./.gitignore --exclude=serve.sh --exclude=page.html -cf - .) | (cd "_site/$d" && tar -xf -)
-          done
-          # the scroll intros page is written as page content: give it a full HTML document
-          {
-            printf '%s' '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>[hidden]{display:none!important}body{margin:0}</style></head><body>'
-            cat kits/scroll-intros/index.html
-            printf '%s' '</body></html>'
-          } > _site/kits/scroll-intros/index.html
-          touch _site/.nojekyll
-      - name: Add the security policy to the two shop samples
-        run: |
-          node Sample_1/tools/add-csp.js _site/Sample_1/index.html
-          node House_3D_Prototype/tools/add-csp.js _site/House_3D_Prototype/index.html
+      - name: Build the site
+        run: sh tools/build-site.sh _site
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: _site
