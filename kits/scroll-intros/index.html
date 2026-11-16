@@ -1,5 +1,5 @@
-<title>SAMPLE STUDIO</title>
-<script src="../../shared/pp-theme.js" data-pp="intros"></script>
+<title>EMBER LANE</title>
+<script src="../../shared/pp-theme.js" data-pp="intros" data-brand="Ember Lane|EMBER LANE"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lato:wght@400;700&display=swap">
@@ -576,7 +576,7 @@ body.cs main { padding-bottom: 0; }
 
 <div class="proto" role="region" aria-label="Preview controls">
   <div class="wrap">
-    <span><strong>Preview</strong> · draft products, demo payments, nothing is charged or shipped</span>
+    <span><strong>Preview</strong> · demo products, demo payments, nothing is charged or shipped</span>
     <span class="links">
       <span class="seg" role="group" aria-label="View as">
         <button type="button" data-act="mode" data-v="web" id="mode-web">Website</button>
@@ -594,7 +594,7 @@ body.cs main { padding-bottom: 0; }
 
 <header class="site-head">
   <div class="wrap">
-    <a class="logo" href="#home" aria-label="SAMPLE STUDIO, home"><span class="mark wordmark" aria-hidden="true"></span><span class="mark monogram" aria-hidden="true"></span></a>
+    <a class="logo" href="#home" aria-label="EMBER LANE, home"><span class="mark wordmark" aria-hidden="true"></span><span class="mark monogram" aria-hidden="true"></span></a>
     <nav class="nav" aria-label="Primary" id="nav"></nav>
     <div class="head-actions">
       <button class="icon-btn" type="button" data-act="search" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
@@ -611,9 +611,9 @@ body.cs main { padding-bottom: 0; }
 <footer class="site-foot">
   <div class="wrap cols">
     <div style="display:flex;flex-direction:column;gap:8px">
-      <span class="mark lockup" style="width:220px" role="img" aria-label="SAMPLE STUDIO"></span>
-      <span class="muted" id="foot-tag">Your tagline goes here.</span>
-      <span class="muted">SAMPLE STUDIO</span>
+      <span class="mark lockup" style="width:220px" role="img" aria-label="EMBER LANE"></span>
+      <span class="muted" id="foot-tag">Made slowly. Given with care.</span>
+      <span class="muted">EMBER LANE</span>
       <div id="foot-social"></div>
     </div>
     <nav aria-label="Shop"><strong>Shop</strong><a href="#candles">Candles</a><a href="#jesmonite">Jesmonite Objects</a><a href="#shop">All products</a><a href="#ritual">Build Your Ritual</a></nav>
@@ -635,39 +635,39 @@ body.cs main { padding-bottom: 0; }
 (function () {
 'use strict';
 
-// ---------- catalogue (draft) ----------
-// Launch range: candles and Jesmonite objects. Names, scents and prices are drafts until testing is complete.
+// ---------- catalogue (sample range for the Ember Lane demo) ----------
+// Candles and cast clay-and-stone objects. Names, scents and prices are replaced with the client’s own range.
 const IMG = { box: 'assets/pack-box.jpg', jar: 'assets/pack-jar.jpg', tag: 'assets/pack-tag.jpg', card: 'assets/pack-card.jpg', pouch: 'assets/pack-pouch.jpg', seal: 'assets/pack-seal.jpg', leather: 'assets/pack-leather.jpg', logoPhoto: 'assets/logo-photo.jpg' };
 const CANDLE_CARE = ['Let the first burn melt to the edges (about 2 hours).', 'Trim the wick to 5 mm before each light.', 'Never leave a burning candle unattended.'];
-const JAR_MAT = 'Scented candle in a speckled stone-finish jar with a wooden lid, cotton wick. Wax type to be confirmed after testing.';
+const JAR_MAT = 'Hand-poured soy-blend candle in a speckled glass or ceramic jar with a wooden lid and a cotton wick. Burns for about 45 hours.';
 const JAR_SIZE = '120 g jar: 7 × 7.5 cm · 220 g jar: 8.5 × 9 cm';
-const twoSizes = (code) => [{ sku: 'BT-CN-' + code + '-120', label: '120 g', price: 899 }, { sku: 'BT-CN-' + code + '-220', label: '220 g', price: 1399 }];
+const twoSizes = (code) => [{ sku: 'EL-CN-' + code + '-120', label: '120 g', price: 899 }, { sku: 'EL-CN-' + code + '-220', label: '220 g', price: 1399 }];
 const PILLAR_COL = { 'Ivory': '#F6EDDF', 'Terracotta': '#C45A3A', 'Olive': '#5B6B46' };
 const FIN = { 'Ivory': '#F1E8DA', 'Ivory Terrazzo': '#EFE7DA', 'Sand': '#DCC9AE', 'Terracotta': '#B0644A', 'Caramel Swirl': '#C99A6C', 'Caramel': '#C99A6C', 'Olive': '#6B6B43', 'Mixed Earth · set of 4': '#6B6B43', 'All Ivory · set of 4': '#F1E8DA' };
 const JES_CARE = ['Wipe with a soft, damp cloth.', 'Not dishwasher-safe and not for food.', 'Keep away from long contact with water.'];
 const JES_MAT = 'Cast in Jesmonite, a water-based composite, with a sealed matte finish. Each piece varies slightly in colour and texture.';
 let P = [
-  { id: 'first-light', name: 'First Light', cat: 'candles', type: 'Scented candle', line: 'The first quiet hour, poured.', notes: ['Mogra', 'Neroli', 'White tea'], variants: twoSizes('FL'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['calm', 'fresh'], space: ['bedroom', 'workspace'], occ: ['just-because', 'thank-you'], gift: true, pyramid: { top: ['Neroli', 'Bergamot'], heart: ['Mogra (Arabian jasmine)'], base: ['White tea', 'Soft musk'] }, smellsLike: 'Jasmine on the windowsill at six in the morning, before anyone else is up.', art: 'jar', c: '#F4ECE0' },
-  { id: 'monsoon-letters', name: 'Monsoon Letters', cat: 'candles', type: 'Scented candle', line: 'Wet earth, old paper, a window left open.', notes: ['Petrichor', 'Vetiver', 'Green cardamom'], variants: twoSizes('ML'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['calm', 'creative'], space: ['living', 'workspace'], occ: ['just-because', 'milestone'], gift: true, pyramid: { top: ['Green cardamom', 'Rain'], heart: ['Petrichor', 'Old paper'], base: ['Vetiver', 'Cedar'] }, smellsLike: 'The first rain on hot earth, a stack of letters, a window left open.', art: 'jar', c: '#A9B39A' },
-  { id: 'chai-at-four', name: 'Chai at Four', cat: 'candles', type: 'Scented candle', line: 'The hour everyone comes home to.', notes: ['Masala chai', 'Tonka', 'Warm milk'], variants: twoSizes('CF'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['cosy'], space: ['living', 'kitchen'], occ: ['housewarming', 'thank-you'], gift: true, pyramid: { top: ['Ginger', 'Clove'], heart: ['Cardamom', 'Warm milk'], base: ['Tonka', 'Jaggery'] }, smellsLike: 'A steel pot on the stove at four, and everyone drifting into the kitchen.', art: 'jar', c: '#C9A227' },
-  { id: 'brass-and-saffron', name: 'Brass & Saffron', cat: 'candles', type: 'Scented candle', line: 'For lamps, doorways and celebrations.', notes: ['Saffron', 'Amber', 'Sandalwood'], variants: [{ sku: 'BT-CN-BS-220', label: '220 g', price: 1499 }], material: 'Scented candle in a terracotta stone-finish jar with a wooden lid, cotton wick. Wax type to be confirmed after testing.', size: '8.5 × 9 cm', care: CANDLE_CARE, mood: ['cosy', 'gift-ready'], space: ['living', 'entrance'], occ: ['festive', 'housewarming', 'milestone'], gift: true, pyramid: { top: ['Saffron', 'Pink pepper'], heart: ['Amber', 'Marigold'], base: ['Sandalwood', 'Benzoin'] }, smellsLike: 'Polished brass lamps and marigolds at the door, the evening before a celebration.', art: 'jar', c: '#C45A3A' },
-  { id: 'terrace-garden', name: 'Terrace Garden', cat: 'candles', type: 'Scented candle', line: 'Tulsi, lemongrass and a little sunlight.', notes: ['Tulsi', 'Lemongrass', 'Fig leaf'], variants: twoSizes('TG'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['fresh'], space: ['kitchen', 'workspace', 'bathroom'], occ: ['just-because', 'birthday'], gift: true, pyramid: { top: ['Lemongrass', 'Lime peel'], heart: ['Tulsi', 'Fig leaf'], base: ['Vetiver', 'Green musk'] }, smellsLike: 'Watering the terrace pots at sunrise, tulsi on your fingers.', art: 'jar', c: '#C9D0B8' },
-  { id: 'pillar-studies', name: 'Pillar Studies', cat: 'candles', type: 'Pillar candle', line: 'Sculpted candles that look good even unlit.', notes: ['Unscented'], variants: [{ sku: 'BT-CN-PS-IV', label: 'Ivory', price: 549 }, { sku: 'BT-CN-PS-TC', label: 'Terracotta', price: 549 }, { sku: 'BT-CN-PS-OL', label: 'Olive', price: 549 }, { sku: 'BT-CN-PS-SET3', label: 'Set of 3', price: 1499 }], material: 'Unscented ribbed pillar candle. Wax type to be confirmed after testing.', size: '5 × 12 cm', care: ['Burn on a heat-safe plate.', 'Trim the wick to 5 mm before each light.', 'Never leave a burning candle unattended.'], mood: ['creative', 'calm'], space: ['living', 'dining'], occ: ['festive', 'birthday', 'just-because'], gift: true, art: 'pillar', c: '#F1E8DA' },
-  { id: 'ghat-tray', name: 'Ghat Tray', cat: 'jesmonite', type: 'Tray', line: 'Steps for your small everyday things.', variants: [{ sku: 'BT-JS-GT-IT', label: 'Ivory Terrazzo', price: 1490 }, { sku: 'BT-JS-GT-SD', label: 'Sand', price: 1490 }, { sku: 'BT-JS-GT-TC', label: 'Terracotta', price: 1490 }], material: JES_MAT, size: '30 × 15 × 2 cm', care: JES_CARE, mood: ['calm', 'gift-ready'], space: ['living', 'bedroom', 'entrance'], occ: ['housewarming', 'milestone'], gift: true, art: 'tray' },
-  { id: 'moonlet-ring-dish', name: 'Moonlet Ring Dish', cat: 'jesmonite', type: 'Ring dish', line: 'A half-moon for the rings you take off at night.', variants: [{ sku: 'BT-JS-MR-IV', label: 'Ivory', price: 590 }, { sku: 'BT-JS-MR-CS', label: 'Caramel Swirl', price: 590 }, { sku: 'BT-JS-MR-OL', label: 'Olive', price: 590 }], material: JES_MAT, size: '10 × 5 × 2.5 cm', care: JES_CARE, mood: ['calm', 'gift-ready'], space: ['bedroom', 'bathroom'], occ: ['birthday', 'thank-you', 'just-because'], gift: true, art: 'dish' },
-  { id: 'jharokha-catch-all', name: 'Jharokha Catch-all', cat: 'jesmonite', type: 'Catch-all', line: 'A little window for keys, coins and notes.', variants: [{ sku: 'BT-JS-JC-IV', label: 'Ivory', price: 1090 }, { sku: 'BT-JS-JC-SD', label: 'Sand', price: 1090 }], material: JES_MAT, size: '14 × 17 × 2.5 cm', care: JES_CARE, mood: ['creative'], space: ['entrance', 'workspace'], occ: ['housewarming', 'thank-you'], gift: true, art: 'archtray' },
-  { id: 'pebble-coasters', name: 'Pebble Coasters', cat: 'jesmonite', type: 'Coasters', line: 'River stones for your morning cup.', variants: [{ sku: 'BT-JS-PC-ME4', label: 'Mixed Earth · set of 4', price: 1190 }, { sku: 'BT-JS-PC-IV4', label: 'All Ivory · set of 4', price: 1190 }], material: JES_MAT, size: 'Each about 10 × 9 × 1 cm', care: ['Wipe with a soft, damp cloth.', 'Not dishwasher-safe.', 'Use with hot mugs; keep away from flames.'], mood: ['cosy', 'fresh'], space: ['living', 'workspace', 'dining'], occ: ['housewarming', 'birthday'], gift: true, art: 'pebbles' },
-  { id: 'still-form-no-1', name: 'Still Form No. 1', cat: 'jesmonite', type: 'Sculptural', line: 'An arch to lean books, or thoughts, against.', variants: [{ sku: 'BT-JS-SF-IV', label: 'Ivory', price: 1690 }, { sku: 'BT-JS-SF-TC', label: 'Terracotta', price: 1690 }], material: JES_MAT, size: '12 × 18 × 4 cm', care: ['Dust with a dry, soft cloth.', 'Keep indoors.'], mood: ['creative', 'calm'], space: ['living', 'workspace'], occ: ['milestone', 'housewarming'], gift: true, art: 'arch' },
-  { id: 'halo-candle-plate', name: 'Halo Candle Plate', cat: 'jesmonite', type: 'Candle plate', line: 'Give your candle somewhere to stand.', variants: [{ sku: 'BT-JS-HP-IV', label: 'Ivory', price: 690 }, { sku: 'BT-JS-HP-OL', label: 'Olive', price: 690 }, { sku: 'BT-JS-HP-CR', label: 'Caramel', price: 690 }], material: JES_MAT, size: '14 cm across, 1.5 cm rim', care: ['Wipe with a soft, damp cloth.', 'Not dishwasher-safe and not for food.', 'Let wax cool before removing.'], mood: ['calm', 'cosy'], space: ['living', 'dining', 'bedroom'], occ: ['festive', 'just-because'], gift: false, art: 'plate' }
+  { id: 'amber-dusk', name: 'Amber Dusk', cat: 'candles', type: 'Scented candle', line: 'Warm amber and soft vanilla, for slow evenings.', notes: ['Amber', 'Vanilla', 'Smoke'], variants: twoSizes('AD'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['calm', 'cosy'], space: ['bedroom', 'living'], occ: ['just-because', 'thank-you'], gift: true, pyramid: { top: ['Bergamot', 'Pink pepper'], heart: ['Amber', 'Vanilla bean'], base: ['Smoke', 'Soft musk'] }, smellsLike: 'A lit lamp, a warm blanket and the last quiet hour of the day.', art: 'jar', c: '#F4ECE0' },
+  { id: 'cedar-hearth', name: 'Cedar Hearth', cat: 'candles', type: 'Scented candle', line: 'Cedarwood and clove in a terracotta jar.', notes: ['Cedarwood', 'Clove', 'Orange peel'], variants: twoSizes('CH'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['calm', 'creative'], space: ['living', 'workspace'], occ: ['just-because', 'milestone'], gift: true, pyramid: { top: ['Orange peel', 'Clove'], heart: ['Cedarwood', 'Cinnamon'], base: ['Vetiver', 'Amber'] }, smellsLike: 'Woodsmoke drifting across a cold garden, and a kettle just coming to the boil.', art: 'jar', c: '#A9B39A' },
+  { id: 'linen-morning', name: 'Linen Morning', cat: 'candles', type: 'Scented candle', line: 'Fresh cotton and white tea.', notes: ['White tea', 'Cotton', 'Lemon'], variants: twoSizes('LM'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['fresh'], space: ['bedroom', 'bathroom'], occ: ['housewarming', 'thank-you'], gift: true, pyramid: { top: ['Lemon', 'Green tea'], heart: ['White tea', 'Cotton flower'], base: ['Soft musk', 'Cedar'] }, smellsLike: 'Clean sheets drying on a line and a window open to the morning.', art: 'jar', c: '#C9A227' },
+  { id: 'fig-orchard', name: 'Fig Orchard', cat: 'candles', type: 'Scented candle', line: 'Ripe fig and green leaves, with two wicks.', notes: ['Fig', 'Green leaf', 'Soft woods'], variants: [{ sku: 'EL-CN-FO-220', label: '220 g', price: 1499 }], material: 'Hand-poured soy-blend candle in a clear glass vessel with two cotton wicks for an even burn. About 70 hours of light.', size: '8.5 × 9 cm', care: CANDLE_CARE, mood: ['cosy', 'gift-ready'], space: ['living', 'entrance'], occ: ['festive', 'housewarming', 'milestone'], gift: true, pyramid: { top: ['Green leaf', 'Bergamot'], heart: ['Ripe fig', 'Coconut milk'], base: ['Sandalwood', 'Cedar'] }, smellsLike: 'Warm fruit picked straight from the tree, and the shade underneath it.', art: 'jar', c: '#C45A3A' },
+  { id: 'rose-tin', name: 'Rose Tin', cat: 'candles', type: 'Travel candle', line: 'A pocket-sized rose candle for the road.', notes: ['Damask rose', 'Musk', 'Pink pepper'], variants: twoSizes('RT'), material: JAR_MAT, size: JAR_SIZE, care: CANDLE_CARE, mood: ['fresh'], space: ['kitchen', 'workspace', 'bathroom'], occ: ['just-because', 'birthday'], gift: true, pyramid: { top: ['Pink pepper', 'Lychee'], heart: ['Damask rose', 'Peony'], base: ['Musk', 'Cedar'] }, smellsLike: 'A rose garden after the rain, shut inside a small tin you can carry.', art: 'jar', c: '#C9D0B8' },
+  { id: 'ivory-pillar', name: 'Ivory Pillar', cat: 'candles', type: 'Pillar candle', line: 'A tall, unscented pillar in soft ivory.', notes: ['Unscented'], variants: [{ sku: 'EL-CN-IP-IV', label: 'Ivory', price: 549 }, { sku: 'EL-CN-IP-TC', label: 'Terracotta', price: 549 }, { sku: 'EL-CN-IP-OL', label: 'Olive', price: 549 }, { sku: 'EL-CN-IP-SET3', label: 'Set of 3', price: 1499 }], material: 'Unscented ribbed pillar candle with a smooth matte finish, made to burn clean and slow.', size: '5 × 12 cm', care: ['Burn on a heat-safe plate.', 'Trim the wick to 5 mm before each light.', 'Never leave a burning candle unattended.'], mood: ['creative', 'calm'], space: ['living', 'dining'], occ: ['festive', 'birthday', 'just-because'], gift: true, art: 'pillar', c: '#F1E8DA' },
+  { id: 'speckle-tray', name: 'Speckle Tray', cat: 'jesmonite', type: 'Tray', line: 'A round tray with a stone-like speckle.', variants: [{ sku: 'EL-JS-ST-IT', label: 'Ivory Terrazzo', price: 1490 }, { sku: 'EL-JS-ST-SD', label: 'Sand', price: 1490 }, { sku: 'EL-JS-ST-TC', label: 'Terracotta', price: 1490 }], material: JES_MAT, size: '30 × 15 × 2 cm', care: JES_CARE, mood: ['calm', 'gift-ready'], space: ['living', 'bedroom', 'entrance'], occ: ['housewarming', 'milestone'], gift: true, art: 'tray' },
+  { id: 'sand-dish', name: 'Sand Dish', cat: 'jesmonite', type: 'Trinket dish', line: 'A small dish for rings, keys and loose change.', variants: [{ sku: 'EL-JS-SD-IV', label: 'Ivory', price: 590 }, { sku: 'EL-JS-SD-CS', label: 'Caramel Swirl', price: 590 }, { sku: 'EL-JS-SD-OL', label: 'Olive', price: 590 }], material: JES_MAT, size: '10 × 5 × 2.5 cm', care: JES_CARE, mood: ['calm', 'gift-ready'], space: ['bedroom', 'bathroom'], occ: ['birthday', 'thank-you', 'just-because'], gift: true, art: 'dish' },
+  { id: 'arch-tray', name: 'Arch Tray', cat: 'jesmonite', type: 'Arch tray', line: 'An arch-shaped tray with a gentle curve.', variants: [{ sku: 'EL-JS-AT-IV', label: 'Ivory', price: 1090 }, { sku: 'EL-JS-AT-SD', label: 'Sand', price: 1090 }], material: JES_MAT, size: '14 × 17 × 2.5 cm', care: JES_CARE, mood: ['creative'], space: ['entrance', 'workspace'], occ: ['housewarming', 'thank-you'], gift: true, art: 'archtray' },
+  { id: 'river-pebbles', name: 'River Pebbles', cat: 'jesmonite', type: 'Pebble set', line: 'Four smooth pebbles for a bowl or a shelf.', variants: [{ sku: 'EL-JS-RP-ME4', label: 'Mixed Earth · set of 4', price: 1190 }, { sku: 'EL-JS-RP-IV4', label: 'All Ivory · set of 4', price: 1190 }], material: JES_MAT, size: 'Each about 10 × 9 × 1 cm', care: ['Wipe with a soft, damp cloth.', 'Not dishwasher-safe.', 'Keep away from flames.'], mood: ['cosy', 'fresh'], space: ['living', 'workspace', 'dining'], occ: ['housewarming', 'birthday'], gift: true, art: 'pebbles' },
+  { id: 'mini-arch', name: 'Mini Arch', cat: 'jesmonite', type: 'Ornament', line: 'A small standing arch for a shelf.', variants: [{ sku: 'EL-JS-MA-IV', label: 'Ivory', price: 1690 }, { sku: 'EL-JS-MA-TC', label: 'Terracotta', price: 1690 }], material: JES_MAT, size: '12 × 18 × 4 cm', care: ['Dust with a dry, soft cloth.', 'Keep indoors.'], mood: ['creative', 'calm'], space: ['living', 'workspace'], occ: ['milestone', 'housewarming'], gift: true, art: 'arch' },
+  { id: 'sage-plate', name: 'Sage Plate', cat: 'jesmonite', type: 'Plate', line: 'A speckled sage plate for serving and display.', variants: [{ sku: 'EL-JS-SP-IV', label: 'Ivory', price: 690 }, { sku: 'EL-JS-SP-OL', label: 'Olive', price: 690 }, { sku: 'EL-JS-SP-CR', label: 'Caramel', price: 690 }], material: JES_MAT, size: '14 cm across, 1.5 cm rim', care: ['Wipe with a soft, damp cloth.', 'Not dishwasher-safe and not for food.', 'Let wax cool before removing.'], mood: ['calm', 'cosy'], space: ['living', 'dining', 'bedroom'], occ: ['festive', 'just-because'], gift: false, art: 'plate' }
 ];
 let PAIRINGS = [
-  { id: 'morning-ritual', name: 'The Morning Ritual', items: [['first-light', 0], ['halo-candle-plate', 0]], why: 'A fresh candle and a plate to stand it on.' },
-  { id: 'four-oclock', name: 'Four O’Clock', items: [['chai-at-four', 1], ['ghat-tray', 1]], why: 'Warm scent and a tray for the tea things.' },
-  { id: 'doorway-welcome', name: 'Doorway Welcome', items: [['brass-and-saffron', 0], ['jharokha-catch-all', 0]], why: 'A festive scent and a catch-all by the door. Made for housewarmings.' },
-  { id: 'rainy-desk', name: 'Rainy Desk', items: [['monsoon-letters', 1], ['pebble-coasters', 0]], why: 'Earthy scent and coasters for long work afternoons.' },
-  { id: 'night-stand', name: 'Night Stand', items: [['terrace-garden', 0], ['moonlet-ring-dish', 0]], why: 'A light scent and a dish for rings at the end of the day.' }
+  { id: 'evening-ritual', name: 'Evening Ritual', items: [['amber-dusk', 0], ['sage-plate', 0]], why: 'A warm candle and a plate to set it on: the simplest way to make an evening feel special.' },
+  { id: 'quiet-morning', name: 'Quiet Morning', items: [['linen-morning', 1], ['speckle-tray', 1]], why: 'A fresh, light candle with a speckled tray, for a bedside or a bathroom shelf.' },
+  { id: 'open-shelf', name: 'Open Shelf', items: [['fig-orchard', 0], ['arch-tray', 0]], why: 'Our biggest candle on an arch tray, for a shelf that needs a centre. A good housewarming gift.' },
+  { id: 'warm-corner', name: 'Warm Corner', items: [['cedar-hearth', 1], ['river-pebbles', 0]], why: 'A cedar candle beside smooth pebbles, for a reading corner.' },
+  { id: 'small-luxuries', name: 'Small Luxuries', items: [['rose-tin', 0], ['sand-dish', 0]], why: 'A pocket rose candle and a sand dish, an easy gift for a friend.' }
 ];
-const FUTURE = [['Gift sets & curated gifting', 'Next'], ['Home décor & lifestyle objects', 'Later'], ['Celebration & corporate gifting', 'Later']];
+const FUTURE = [['Reed diffusers and room sprays', 'Next'], ['Handmade vases', 'Later'], ['Festive and corporate gifting', 'Later']];
 const MOODS = [['calm', 'Calm and grounded'], ['cosy', 'Warm and cosy'], ['fresh', 'Fresh and uplifting'], ['creative', 'Creative and expressive'], ['gift-ready', 'Thoughtful and gift-ready']];
 const SPACES = [['bedroom', 'Bedroom'], ['living', 'Living room'], ['workspace', 'Desk or workspace'], ['kitchen', 'Kitchen'], ['entrance', 'Entrance'], ['bathroom', 'Bathroom'], ['dining', 'Dining table']];
 const OCCASIONS = [['birthday', 'Birthday'], ['housewarming', 'Housewarming'], ['thank-you', 'Thank you'], ['festive', 'Festive'], ['milestone', 'A milestone'], ['just-because', 'Just because']];
@@ -694,8 +694,8 @@ const KEY = 'bt-proto-v2';
 function defaults() {
   const stock = {};
   Object.keys(skuMap).forEach((sku, i) => { stock[sku] = [8, 6, 5, 3][i % 4]; });
-  stock['BT-CN-PS-OL'] = 0;
-  stock['BT-CN-BS-220'] = 2;
+  stock['EL-CN-PS-OL'] = 0;
+  stock['EL-CN-BS-220'] = 2;
   return { cart: [], saved: [], notify: {}, orders: [], stock, events: [], mode: 'web', opening: 'arches', skin: 'signature', seenHouse: true };
 }
 let S = defaults();
@@ -703,7 +703,7 @@ try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(defaults
 if (!['arches', 'pour', 'tour'].includes(S.opening)) S.opening = 'arches';
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } }
 const coFresh = (contact, address) => ({ step: 'contact', contact: contact || {}, address: address || {}, errors: {}, method: 'qr', upi: '', card: {}, upiSent: false, appSheet: false, gift: { on: false, wrap: false, name: '', phone: '', note: '', date: '' }, code: '', codeErr: null, optin: false });
-const UI = { drawer: false, search: false, searchQ: '', menu: false, shop: { cat: 'all', type: 'all', occ: 'all', sort: 'featured' }, pdp: {}, finder: { step: 0, mood: null, space: null, who: null, kind: null, budget: null, done: false }, ritual: { preset: 'four-oclock', pick: {}, custom: { candle: 'chai-at-four', object: 'ghat-tray' } }, co: coFresh(), toast: null, review: {}, restock: null, orderSync: {}, track: null, adm: { tab: 'orders', rows: {}, edit: null, q: '' } };
+const UI = { drawer: false, search: false, searchQ: '', menu: false, shop: { cat: 'all', type: 'all', occ: 'all', sort: 'featured' }, pdp: {}, finder: { step: 0, mood: null, space: null, who: null, kind: null, budget: null, done: false }, ritual: { preset: 'quiet-morning', pick: {}, custom: { candle: 'linen-morning', object: 'speckle-tray' } }, co: coFresh(), toast: null, review: {}, restock: null, orderSync: {}, track: null, adm: { tab: 'orders', rows: {}, edit: null, q: '' } };
 
 
 // ---------- editable content: site text and settings ----------
@@ -712,8 +712,8 @@ const UI = { drawer: false, search: false, searchQ: '', menu: false, shop: { cat
 // In a text, a new line breaks the line and *words between stars* are set in italics. {braces} are filled in from settings.
 const TEXT = {
   'home.eyebrow': ['', 'Hero: small line above the logo (empty uses the theme’s line)'],
-  'home.tag': ['Thoughtful objects.\nMeaningful moments.', 'Hero: tagline'],
-  'home.sub': ['Objects and little rituals, thoughtfully made for everyday living and meaningful giving.', 'Hero: sentence under the tagline'],
+  'home.tag': ['Made slowly.\nGiven with care.', 'Hero: tagline'],
+  'home.sub': ['Hand-poured candles and cast objects for the quiet moments of the day.', 'Hero: sentence under the tagline'],
   'home.cta1': ['Explore the Collection', 'Hero: first button'],
   'home.cta2': ['Find Your Feeling', 'Hero: second button'],
   'walk.cap1': ['The door is open.\n*Come in.*', 'Walk: at the front door'],
@@ -721,16 +721,16 @@ const TEXT = {
   'walk.cap3': ['Through the arch,\n*the bedroom waits in the dark.*', 'Walk: entering the bedroom'],
   'walk.cap4': ['Then the bedside candles\n*take over from the dusk.*', 'Walk: bedside candles'],
   'walk.cap5': ['A corner kept\n*for giving.*', 'Walk: gifting corner'],
-  'walk.cap6': ['Your tagline\n*goes here.*', 'Walk: last line before the end'],
+  'walk.cap6': ['Made slowly.\n*Given with care.*', 'Walk: last line before the end'],
   'walk.shop': ['Shop the collection', 'Walk: button that stays on screen'],
   'walk.skip': ['Skip the walk', 'Walk: link to jump past it'],
   'home.final': ['Where would you\n*like to begin?*', 'Walk: end question'],
   'home.finalBack': ['Welcome back.\n*Where would you like to begin?*', 'Walk: end question for returning visitors'],
   'home.again': ['Walk through the house again', 'Walk: link for returning visitors'],
-  'home.intro': ['The little things we choose, make and give can carry a lot of meaning. Candles and Jesmonite objects, made in small batches for everyday rituals and meaningful giving.', 'Home: opening paragraph'],
+  'home.intro': ['Ember Lane makes candles and clay-and-stone objects in small batches. Each piece is poured, cast and finished by hand, then wrapped to be given.', 'Home: opening paragraph'],
   'home.introLink': ['Read our story', 'Home: link under the opening paragraph'],
   'home.back': ['Welcome back', 'Home: returning customer heading'],
-  'home.worldEyebrow': ['The SAMPLE STUDIO world', 'Home: world section small line'],
+  'home.worldEyebrow': ['The EMBER LANE world', 'Home: world section small line'],
   'home.world': ['Thoughtful things, room by room', 'Home: world section heading'],
   'home.cats': ['Shop by category', 'Home: category heading'],
   'home.feelEyebrow': ['Find Your Feeling · 1 of 5', 'Home: feeling band small line'],
@@ -748,9 +748,9 @@ const TEXT = {
   'home.newsText': ['Early access to every new batch, and {welcomeOff}% off your first order. About once a month; leave any time.', 'Newsletter: text'],
   'home.newsDone': ['You’re on the list. Your welcome code is {welcomeCode}: use it at checkout for {welcomeOff}% off.', 'Newsletter: thank-you message'],
   'shop.all': ['Everything ready to order today: candles and Jesmonite objects.', 'Shop: all products line'],
-  'shop.candles': ['Five scented candles and one sculpted, unscented pillar. Poured in small batches.', 'Shop: candles line'],
+  'shop.candles': ['Hand-poured soy-blend candles in glass, ceramic and tin, from pocket-sized to two-wick.', 'Shop: candles line'],
   'shop.jesmonite': ['Trays, ring dishes and sculptural forms cast in Jesmonite, a water-based composite. Each piece varies a little in tone and texture.', 'Shop: Jesmonite line'],
-  'shop.noteCandle': ['Why the first burn matters|Let the first burn melt the wax right to the edges, about two hours. It helps the candle burn evenly every time after.', 'Shop: candle note card (title|text)'],
+  'shop.noteCandle': ['Make it last|Trim the wick to 5 mm and let the first burn reach the edge of the jar, so the candle burns evenly every time.', 'Shop: candle note card (title|text)'],
   'shop.noteJes': ['Why no two trays look quite the same|Jesmonite is mixed and poured in small batches, so swirls and speckles settle a little differently each time.', 'Shop: Jesmonite note card (title|text)'],
   'pdp.trust1': ['Delivered in {deliveryDays} across India', 'Product: delivery promise'],
   'pdp.trust2': ['Cash on delivery available', 'Product: cash on delivery line'],
@@ -773,20 +773,20 @@ const TEXT = {
   'gift.h2': ['Chosen with thought.', 'Gifting: second heading'],
   'gift.text': ['Every piece arrives boxed, tagged and sealed with the B&T mark, ready to give. At checkout you can send it straight to them, add a hand-written note, gift wrap it and choose when it arrives. Gift sets come later.', 'Gifting: text'],
   'gift.popular': ['Popular to give', 'Gifting: picks heading'],
-  'story.title': ['Thoughtful objects. Meaningful moments.', 'Our Story: heading'],
-  'story.lead': ['SAMPLE STUDIO is a sample shop. Replace this line with one sentence on what the business believes in.', 'Our Story: lead'],
-  'story.p1': ['Sample text: where the name comes from. Two or three sentences on the founder, the idea behind the name and what the shop hopes to grow into.', 'Our Story: paragraph 1'],
-  'story.p2': ['Sample text: how the business works today. Where things are made, what the range starts with, and what makes it different.', 'Our Story: paragraph 2'],
+  'story.title': ['Made slowly. Given with care.', 'Our Story: heading'],
+  'story.lead': ['Ember Lane believes small, well-made things make a home feel like yours.', 'Our Story: lead'],
+  'story.p1': ['The name comes from the lane behind our first workshop, where the evening light came in sideways. What began as a few candles for friends became a small studio making candles and objects for everyday rituals.', 'Our Story: paragraph 1'],
+  'story.p2': ['Today we pour candles and cast jesmonite trays, dishes and ornaments by hand, in small batches. We begin with a handful of pieces we love and add only what we would use at home.', 'Our Story: paragraph 2'],
   'story.note': ['[Founder’s note goes here, in their own words.]', 'Our Story: note from the founder'],
   'help.shipping': ['Shipping is {shipFee}, free over {freeOver}. Orders arrive in {deliveryDays}.', 'Help: shipping and delivery'],
   'help.exchanges': ['If something arrives damaged or isn’t right, message us within {exchangeDays} days of delivery and we’ll exchange it.', 'Help: exchanges'],
   'help.where': ['[Stores, pop-ups and stockists]. Also on Amazon, Flipkart and Meesho.', 'Help: where to find us'],
   'help.privacy': ['We use your details only to deliver your order and, if you ask, to send updates. We never sell them.', 'Help: privacy'],
-  'foot.tagline': ['Your tagline goes here.', 'Footer: tagline'],
+  'foot.tagline': ['Made slowly. Given with care.', 'Footer: tagline'],
   'foot.also': ['Also on Amazon, Flipkart and Meesho. Pay by UPI, card or cash on delivery.', 'Footer: small print'],
   'soon.eyebrow': ['Coming soon', 'Coming soon: small line above the heading'],
   'soon.title': ['Something small\n*is beginning to grow.*', 'Coming soon: heading'],
-  'soon.text': ['Candles and Jesmonite objects, made in small batches for everyday rituals and meaningful giving. Leave your email or WhatsApp number and we’ll tell you the day we open.', 'Coming soon: text'],
+  'soon.text': ['We are putting the finishing touches on the shop. Leave your email and we will tell you the day we open.', 'Coming soon: text'],
   'soon.cta': ['Tell me when you open', 'Coming soon: sign-up button']
 };
 const TEXT_GROUPS = [['soon.', 'Coming soon page'],['home.', 'Home page'], ['walk.', 'The house walk'], ['shop.', 'Shop'], ['pdp.', 'Product pages'], ['cart.', 'Cart'], ['co.', 'Checkout'], ['gift.', 'Gifting'], ['story.', 'Our Story'], ['help.', 'Help'], ['foot.', 'Footer']];
@@ -802,7 +802,7 @@ const SET_META = [
 ];
 const CS_KEYS = ['comingSoon', 'previewCode'];
 const SET_DEFAULTS = { shipFee: 99, freeOver: 1999, deliveryDays: '4 to 7 days', exchangeDays: 7, codOn: true, codFee: 49, wrapFee: 99, ritualOff: 10, welcomeCode: 'HELLO10', welcomeOff: 10, repourPrice: 599,
-  featured: 'chai-at-four, ghat-tray, brass-and-saffron, moonlet-ring-dish', giftPicks: 'brass-and-saffron, ghat-tray, moonlet-ring-dish, first-light', homeRitual: 'four-oclock', whatsapp: '', email: '', instagram: '', pinterest: '',
+  featured: 'linen-morning, speckle-tray, fig-orchard, sand-dish', giftPicks: 'fig-orchard, speckle-tray, sand-dish, amber-dusk', homeRitual: 'quiet-morning', whatsapp: '', email: '', instagram: '', pinterest: '',
   comingSoon: true, previewCode: 'budpreview' };
 let SET = Object.assign({}, SET_DEFAULTS);
 let TXT = {};
@@ -821,7 +821,7 @@ const gated = () => BTDB.on && !!SET.comingSoon && route() !== 'admin' && !BTDB.
 const previewLink = () => location.origin + location.pathname + '?preview=' + encodeURIComponent(SET.previewCode || '');
 
 // ---------- the data: built in, from this browser (demo), or from the database ----------
-// DATA holds what the owner can change. Empty products or pairings fall back to the built-in draft range.
+// DATA holds what the owner can change. Empty products or pairings fall back to the built-in sample range.
 const DATA = { products: null, pairings: null, text: {}, settings: {}, stock: null, media: [], reviews: [] };
 const DB = { state: BTDB.on ? 'loading' : 'local', error: null, stale: false };
 const bySort = (a, b) => (a.sort || 0) - (b.sort || 0);
@@ -979,7 +979,7 @@ function renderOverlay() {
     const q = UI.searchQ.trim().toLowerCase();
     const res = q ? P.filter((p) => (p.name + ' ' + p.type + ' ' + (p.notes || []).join(' ') + ' ' + p.line).toLowerCase().includes(q)) : [];
     h += `<div class="search-panel" role="dialog" aria-modal="true" aria-label="Search"><div class="wrap">
-      <div style="display:flex;justify-content:space-between;align-items:center"><span class="logo"><span class="mark wordmark" aria-hidden="true"></span><span class="sr">SAMPLE STUDIO</span></span><button class="icon-btn" type="button" data-act="close-search" aria-label="Close search">${CLOSE}</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span class="logo"><span class="mark wordmark" aria-hidden="true"></span><span class="sr">EMBER LANE</span></span><button class="icon-btn" type="button" data-act="close-search" aria-label="Close search">${CLOSE}</button></div>
       <label for="search-q">Search candles and objects</label>
       <input id="search-q" type="text" autocomplete="off" value="${esc(UI.searchQ)}" placeholder="Try “tray”, “chai” or “calm”">
       <div id="search-res">${searchResults(q, res)}</div>
@@ -1069,7 +1069,7 @@ function viewHome() {
   const nC = P.filter((p) => p.cat === 'candles').length, nJ = P.filter((p) => p.cat === 'jesmonite').length;
   const caps = OPENINGS[S.opening].caps.map((c, i) => (S.opening === 'house' && TEXT['walk.cap' + (i + 1)] ? T('walk.cap' + (i + 1)) : c[0]));
   const last = S.orders[0];
-  const pack = brandImgs('packaging', [[IMG.box, 'The SAMPLE STUDIO gift set: candles in a ribbon-tied box.', 'Gift set box'], [IMG.tag, 'Rustic hang tag with the logo and olive leaf.', 'Hang tag'], [IMG.card, 'Candle care tag with burn instructions.', 'Care tag'], [IMG.seal, 'SAMPLE STUDIO wax seals in brand colours.', 'Wax seals']]);
+  const pack = brandImgs('packaging', [[IMG.box, 'The EMBER LANE gift set: candles in a ribbon-tied box.', 'Gift set box'], [IMG.tag, 'Rustic hang tag with the logo and olive leaf.', 'Hang tag'], [IMG.card, 'Candle care tag with burn instructions.', 'Care tag'], [IMG.seal, 'EMBER LANE wax seals in brand colours.', 'Wax seals']]);
   const candleCover = P.filter((p) => p.cat === 'candles').map((p) => mediaFor(p.id, { kind: 'photo', role: ['lifestyle', 'lit'] })[0]).find(Boolean);
   const jesCover = P.filter((p) => p.cat !== 'candles').map((p) => mediaFor(p.id, { kind: 'photo', role: 'lifestyle' })[0]).find(Boolean);
   return `
@@ -1080,7 +1080,7 @@ function viewHome() {
       <div class="lc-copy" id="lc-copy">
         <div class="lc-hero" id="lc-hero">
           <span class="eyebrow">${Tx('home.eyebrow') ? T('home.eyebrow') : esc(SKINS[S.skin].eyebrow)}</span>
-          <h1 class="hero-logo"><span class="sr">SAMPLE STUDIO</span><span class="mark lockup" aria-hidden="true"></span></h1>
+          <h1 class="hero-logo"><span class="sr">EMBER LANE</span><span class="mark lockup" aria-hidden="true"></span></h1>
           <p class="tag">${T('home.tag')}</p>
           <p class="sub">${T('home.sub')}</p>
           <div class="lc-cta"><a class="btn" href="#shop">${T('home.cta1')}</a><a class="btn ghost" href="#feeling">${T('home.cta2')}</a></div>
@@ -1106,8 +1106,8 @@ function viewHome() {
 
   <section class="wrap" aria-labelledby="cats-h" style="padding-bottom:80px"><div class="section-head"><h2 id="cats-h">${T('home.cats')}</h2></div>
     <div class="cats">
-      <a class="cat" href="#candles"><span class="tile photo-tile"><img src="${esc(candleCover ? mUrl(candleCover) : IMG.jar)}" alt="${esc(candleCover ? candleCover.alt : 'A SAMPLE STUDIO candle with its label among dried botanicals.')}" loading="lazy"></span><span class="row"><strong>Candles</strong><span style="font-weight:600">${nC} scents and studies →</span></span></a>
-      <a class="cat" href="#jesmonite"><span class="tile alt${jesCover ? ' photo-tile' : ''}">${jesCover ? `<img src="${esc(mUrl(jesCover))}" alt="${esc(jesCover.alt)}" loading="lazy">` : (byId['ghat-tray'] ? art(byId['ghat-tray'], 0, 1.3) : '') + (byId['still-form-no-1'] ? art(byId['still-form-no-1'], 0, 1) : '')}</span><span class="row"><strong>Jesmonite Objects</strong><span style="font-weight:600">${nJ} pieces →</span></span></a>
+      <a class="cat" href="#candles"><span class="tile photo-tile"><img src="${esc(candleCover ? mUrl(candleCover) : IMG.jar)}" alt="${esc(candleCover ? candleCover.alt : 'A EMBER LANE candle with its label among dried botanicals.')}" loading="lazy"></span><span class="row"><strong>Candles</strong><span style="font-weight:600">${nC} scents and studies →</span></span></a>
+      <a class="cat" href="#jesmonite"><span class="tile alt${jesCover ? ' photo-tile' : ''}">${jesCover ? `<img src="${esc(mUrl(jesCover))}" alt="${esc(jesCover.alt)}" loading="lazy">` : (byId['speckle-tray'] ? art(byId['speckle-tray'], 0, 1.3) : '') + (byId['mini-arch'] ? art(byId['mini-arch'], 0, 1) : '')}</span><span class="row"><strong>Jesmonite Objects</strong><span style="font-weight:600">${nJ} pieces →</span></span></a>
     </div></section>
 
   <section class="band" aria-labelledby="feel-h"><div class="wrap"><div style="flex:1 1 360px"><span class="eyebrow">${T('home.feelEyebrow')}</span><h2 id="feel-h">${T('home.feel')}</h2></div>
@@ -1130,7 +1130,7 @@ function viewHome() {
   <section class="section wrap" id="gifting-sec" aria-labelledby="gift-h" style="padding-top:0"><div class="section-head"><h2 id="gift-h">${T('home.moment')}</h2></div>
     <div style="display:flex;flex-wrap:wrap;gap:10px">${OCCASIONS.map(([k, l]) => `<a class="chip" href="#shop" data-act="occasion" data-v="${k}">${l}</a>`).join('')}</div></section>
 
-  <section class="dark-band" aria-labelledby="story-h"><div class="wrap section"><div class="split"><figure class="photo dark" style="margin:0">${(() => { const m = mediaFor('brand', { role: ['story', 'process'] })[0]; return m ? mediaEl(m) : `<img src="${IMG.leather}" alt="A sample label." loading="lazy">`; })()}</figure>
+  <section class="dark-band" aria-labelledby="story-h"><div class="wrap section"><div class="split"><figure class="photo dark" style="margin:0">${(() => { const m = mediaFor('brand', { role: ['story', 'process'] })[0]; return m ? mediaEl(m) : `<img src="${IMG.leather}" alt="A hand-stitched leather label." loading="lazy">`; })()}</figure>
     <div style="display:flex;flex-direction:column;gap:16px"><span class="mark monogram" aria-hidden="true"></span><span class="eyebrow" style="color:var(--glow)">${T('home.storyEyebrow')}</span><h2 id="story-h" style="font-size:clamp(30px,3.4vw,44px)">${T('home.storyTitle')}</h2><p style="opacity:.86;max-width:520px">${T('home.storyText')}</p><a href="#story" style="font-weight:600">Read our story →</a></div></div></div></section>
 
   <section class="section wrap" aria-labelledby="news-h"><div class="intro" style="gap:14px"><h2 id="news-h" style="font-size:40px">${T('home.news')}</h2><p class="muted" style="font-family:var(--body);font-size:16px">${T('home.newsText')}</p>
@@ -1138,7 +1138,7 @@ function viewHome() {
 }
 
 function viewComingSoon() {
-  return `<section class="soon" aria-labelledby="soon-h"><span class="mark lockup" role="img" aria-label="SAMPLE STUDIO"></span><span class="eyebrow">${T('soon.eyebrow')}</span><h1 id="soon-h" tabindex="-1">${T('soon.title')}</h1><p class="muted">${T('soon.text')}</p>
+  return `<section class="soon" aria-labelledby="soon-h"><span class="mark lockup" role="img" aria-label="EMBER LANE"></span><span class="eyebrow">${T('soon.eyebrow')}</span><h1 id="soon-h" tabindex="-1">${T('soon.title')}</h1><p class="muted">${T('soon.text')}</p>
     <form data-form="news" data-src="coming-soon" novalidate><label for="news-email" style="flex:1 1 100%">Email or WhatsApp number</label><input id="news-email" type="text" inputmode="email" autocomplete="email" style="flex:1 1 220px;min-width:0"><button class="btn" type="submit">${T('soon.cta')}</button><span id="news-msg" style="flex:1 1 100%"></span></form>
     ${socialLinks()}</section>`;
 }
@@ -1217,7 +1217,7 @@ function viewProduct(id) {
     <div class="facts">
       ${p.notes && !pz ? `<div><strong>Scent</strong><span class="muted">${esc(p.notes.join(' · '))}</span></div>` : ''}
       <div><strong>Size &amp; material</strong><span class="muted">${esc(p.size)}. ${esc(p.material)}</span></div>
-      <div><strong>${p.cat === 'candles' ? 'Burn &amp; care' : 'Care'}</strong><span class="muted">${p.care.map(esc).join(' ')}${p.cat === 'candles' ? ' ' + esc(p.burnTime ? 'Burn time: ' + p.burnTime + '.' : 'Burn time to be confirmed by testing.') : ''}</span></div>
+      <div><strong>${p.cat === 'candles' ? 'Burn &amp; care' : 'Care'}</strong><span class="muted">${p.care.map(esc).join(' ')}${p.cat === 'candles' ? ' ' + esc(p.burnTime ? 'Burn time: ' + p.burnTime + '.' : 'Burn time: about 45 hours.') : ''}</span></div>
       <div><strong>Delivery &amp; exchanges</strong><span class="muted">${T('help.shipping')} See <a href="#help">exchange policy</a>.</span></div>
     </div>
     ${p.cat === 'candles' && +SET.repourPrice ? `<p class="repour">${T('pdp.repour')}</p>` : ''}</div></div>
@@ -1228,7 +1228,7 @@ function viewProduct(id) {
       <fieldset class="field rating"><legend>Your rating</legend><span>${[1, 2, 3, 4, 5].map((n) => `<label><input type="radio" name="rv-rating" value="${n}" ${+R.rating === n ? 'checked' : ''}> ${n}★</label>`).join('')}</span></fieldset>
       <span class="field full"><label for="rv-body">Your review</label><textarea id="rv-body" rows="4" maxlength="1500">${esc(R.body || '')}</textarea></span>${R.err ? `<span class="err full" role="alert">${esc(R.err)}</span>` : ''}<span class="full"><button class="btn" type="submit">Send review</button></span></form>` : `<button class="btn ghost" type="button" data-act="review-open" data-id="${id}">Write a review</button>`}</section>
   <section class="section" aria-labelledby="box-h" style="padding-top:56px;padding-bottom:0"><div class="section-head"><h2 id="box-h">In the box</h2><span class="muted" style="font-size:14px">Approved packaging direction; final pieces may differ.</span></div>
-    <div class="pack-grid">${brandImgs('packaging', [[IMG.box, 'The SAMPLE STUDIO gift set box.', 'Gift set box'], [IMG.tag, 'Hang tag with the tagline.', 'Hang tag'], [IMG.card, 'Candle care tag.', 'Care tag'], [IMG.seal, 'SAMPLE STUDIO wax seals in brand colours.', 'Wax seals']]).slice(0, 4).map(([src, alt, cap]) => `<figure><img src="${esc(src)}" alt="${esc(alt)}" loading="lazy"><figcaption>${esc(cap)}</figcaption></figure>`).join('')}</div></section>
+    <div class="pack-grid">${brandImgs('packaging', [[IMG.box, 'The EMBER LANE gift set box.', 'Gift set box'], [IMG.tag, 'Hang tag with the tagline.', 'Hang tag'], [IMG.card, 'Candle care tag.', 'Care tag'], [IMG.seal, 'EMBER LANE wax seals in brand colours.', 'Wax seals']]).slice(0, 4).map(([src, alt, cap]) => `<figure><img src="${esc(src)}" alt="${esc(alt)}" loading="lazy"><figcaption>${esc(cap)}</figcaption></figure>`).join('')}</div></section>
   <section class="section" aria-labelledby="rel-h" style="padding-top:56px"><div class="section-head"><h2 id="rel-h">More ${p.cat === 'candles' ? 'candles' : 'objects'}</h2></div><div class="grid">${related.map(card).join('')}</div></section></div>`;
 }
 
@@ -1263,7 +1263,7 @@ function viewFeeling() {
     return `<div class="finder"><aside class="finder-side"><span class="eyebrow">Your answers</span><h1 tabindex="-1">${f.mood ? esc(MOODS.find((m) => m[0] === f.mood)[1]) : 'Your matches'}</h1>
       <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px">${FSTEPS.map((s) => `<li>${s.k === 'mood' ? 'Feeling' : s.k === 'space' ? 'Place' : s.k === 'who' ? 'For' : s.k === 'kind' ? 'Kind' : 'Budget'}: ${f[s.k] ? esc(s.opts.find((o) => o[0] === f[s.k])[1]) : 'skipped'}</li>`).join('')}</ul>
       <button class="btn light" type="button" data-act="finder-edit">Change answers</button><span style="margin-top:auto;font-size:13px;opacity:.88">Matches come from simple tags on each product. No account needed, and nothing is added to your cart.</span></aside>
-      <div class="finder-main"><span class="eyebrow num">${r.list.length} matches from the draft range</span>${r.fallback ? '<div class="status">Nothing matched every answer, so these are the closest pieces.</div>' : ''}
+      <div class="finder-main"><span class="eyebrow num">${r.list.length} matches from the range</span>${r.fallback ? '<div class="status">Nothing matched every answer, so these are the closest pieces.</div>' : ''}
       <div class="grid">${r.list.map((x, i) => `<div class="card"><a class="tile${i % 2 ? ' alt' : ''}" href="#p-${x.p.id}" data-act="finder-pick" data-id="${x.p.id}" aria-label="${esc(x.p.name)}">${tileArt(x.p, 0, 1)}</a><span class="eyebrow">${x.p.cat === 'candles' ? 'Candle' : 'Jesmonite'}</span><a class="name" href="#p-${x.p.id}" data-act="finder-pick" data-id="${x.p.id}">${esc(x.p.name)}</a><span class="num" style="font-weight:600">${priceFrom(x.p)}</span><span class="why">Why: ${esc(x.why.join(', ') || 'a good place to start')}</span></div>`).join('')}</div>
       ${pair ? `<div class="pair"><span><strong>Make it a ritual:</strong> ${esc(pair.name)}. ${esc(pair.why)}</span><a class="btn small ghost" href="#ritual" data-act="pick-ritual" data-v="${pair.id}">Build Your Ritual</a></div>` : ''}</div></div>`;
   }
@@ -1351,14 +1351,14 @@ function viewCheckout() {
     let panel = '';
     if (co.placing) panel = '<div class="pay-panel"><span class="waiting" role="status">Placing your order</span></div>';
     else if (m === 'qr') panel = `<div class="pay-panel"><canvas id="qr" width="29" height="29" aria-label="Demo UPI QR code for ${inr(t.total)}"></canvas><div class="info"><strong style="font-size:18px">Scan with any UPI app</strong><span class="muted">Open your UPI app, scan the code and approve <strong class="num">${inr(t.total)}</strong>. The amount is fixed in the code, and this page updates on its own once the payment arrives.</span><span class="waiting" role="status">Waiting for your payment</span><span class="hint">Demo QR made for this order. It is not a real payment code.</span><button class="btn small demo" type="button" data-act="pay-success" data-via="UPI QR">Demo: simulate payment received</button></div></div>`;
-    else if (m === 'app') panel = `<div class="pay-panel"><div class="info"><strong style="font-size:18px">Pay with a UPI app on this phone</strong><span class="muted">Opens the UPI apps installed on this phone. You approve <strong class="num">${inr(t.total)}</strong> and come straight back here.</span>${co.appSheet ? `<div class="status" role="status">Demo: your UPI app would now ask you to approve ${inr(t.total)} to SAMPLE STUDIO.</div><span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn small demo" type="button" data-act="pay-success" data-via="UPI app">Simulate: approved</button><button class="btn small ghost" type="button" data-act="pay-fail">Simulate: declined</button></span>` : '<button class="btn" type="button" data-act="pay-app">Open UPI app</button>'}<span class="hint">If you are shopping on a computer, use the QR code instead.</span></div></div>`;
+    else if (m === 'app') panel = `<div class="pay-panel"><div class="info"><strong style="font-size:18px">Pay with a UPI app on this phone</strong><span class="muted">Opens the UPI apps installed on this phone. You approve <strong class="num">${inr(t.total)}</strong> and come straight back here.</span>${co.appSheet ? `<div class="status" role="status">Demo: your UPI app would now ask you to approve ${inr(t.total)} to EMBER LANE.</div><span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn small demo" type="button" data-act="pay-success" data-via="UPI app">Simulate: approved</button><button class="btn small ghost" type="button" data-act="pay-fail">Simulate: declined</button></span>` : '<button class="btn" type="button" data-act="pay-app">Open UPI app</button>'}<span class="hint">If you are shopping on a computer, use the QR code instead.</span></div></div>`;
     else if (m === 'upi') panel = `<form data-form="upi" class="pay-panel" novalidate><div class="info"><span class="field"><label for="co-upi">UPI ID <span class="hint">for example name@bank</span></label><input id="co-upi" data-co="upi" autocomplete="off" value="${esc(co.upi)}" ${co.errors.upi ? 'aria-invalid="true" aria-describedby="co-upi-err"' : ''}>${co.errors.upi ? `<span class="err" id="co-upi-err">${esc(co.errors.upi)}</span>` : ''}</span>
       ${co.upiSent ? `<div class="status" role="status">Payment request for ${inr(t.total)} sent to ${esc(co.upi)}. Approve it in your UPI app.</div><span class="waiting">Waiting for approval</span><button class="btn small demo" type="button" data-act="pay-success" data-via="UPI ID">Demo: simulate approval</button>` : '<button class="btn" type="submit">Send payment request</button>'}</div></form>`;
     else if (m === 'card') { const c = co.card; const e = co.errors; panel = `<form data-form="card" class="pay-panel" novalidate><div class="info"><div class="form">
       <span class="field full"><label for="co-cnum">Card number <span class="hint">demo: 4111 1111 1111 1111</span></label><input id="co-cnum" data-co="cnum" inputmode="numeric" autocomplete="cc-number" maxlength="19" value="${esc(c.cnum || '')}" ${e.cnum ? 'aria-invalid="true" aria-describedby="co-cnum-err"' : ''}>${e.cnum ? `<span class="err" id="co-cnum-err">${esc(e.cnum)}</span>` : ''}</span>
       <span class="field"><label for="co-cexp">Expiry (MM/YY)</label><input id="co-cexp" data-co="cexp" autocomplete="cc-exp" maxlength="5" value="${esc(c.cexp || '')}" ${e.cexp ? 'aria-invalid="true" aria-describedby="co-cexp-err"' : ''}>${e.cexp ? `<span class="err" id="co-cexp-err">${esc(e.cexp)}</span>` : ''}</span>
       <span class="field"><label for="co-ccvv">CVV</label><input id="co-ccvv" data-co="ccvv" inputmode="numeric" autocomplete="cc-csc" maxlength="4" value="${esc(c.ccvv || '')}" ${e.ccvv ? 'aria-invalid="true" aria-describedby="co-ccvv-err"' : ''}>${e.ccvv ? `<span class="err" id="co-ccvv-err">${esc(e.ccvv)}</span>` : ''}</span></div>
-      <button class="btn" type="submit">Pay ${inr(t.total)} by card</button><span class="hint">In the real site this form belongs to the payment gateway. SAMPLE STUDIO never sees card details.</span></div></form>`; }
+      <button class="btn" type="submit">Pay ${inr(t.total)} by card</button><span class="hint">In the real site this form belongs to the payment gateway. EMBER LANE never sees card details.</span></div></form>`; }
     else if (m === 'cod') panel = `<div class="pay-panel"><div class="info"><strong style="font-size:18px">Pay when it arrives</strong><span class="muted">${T('co.cod')}</span><button class="btn" type="button" data-act="pay-success" data-via="Cash on delivery">Place order · pay <span class="num">${inr(t.total)}</span> on delivery</button></div></div>`;
     main = `<h1 tabindex="-1" style="font-size:40px">Pay <span class="num">${inr(t.total)}</span></h1>${co.payErr ? `<div class="status err" role="alert">${esc(co.payErr)}</div>` : ''}<div class="pay-tabs" role="radiogroup" aria-label="Payment method">${tab('qr', 'UPI QR')}${tab('app', 'UPI app')}${tab('upi', 'UPI ID')}${tab('card', 'Card')}${SET.codOn ? tab('cod', 'Cash on delivery') : ''}</div>${panel}<button class="linkbtn" type="button" data-act="co-step" data-v="address">Back to delivery</button>`;
   }
@@ -1374,12 +1374,12 @@ const SOCIAL_ICONS = {
   email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.8 6.8l8.2 6.2 8.2-6.2"/></svg>'
 };
 function socialLinks(waText) {
-  const ig = String(SET.instagram || '').trim().replace(/^@/, ''), pin = String(SET.pinterest || '').trim().replace(/^@/, ''), wa = waLink(waText || 'Hello SAMPLE STUDIO'), em = String(SET.email || '').trim();
+  const ig = String(SET.instagram || '').trim().replace(/^@/, ''), pin = String(SET.pinterest || '').trim().replace(/^@/, ''), wa = waLink(waText || 'Hello EMBER LANE'), em = String(SET.email || '').trim();
   const link = (href, label, icon, out) => `<li><a href="${esc(href)}" aria-label="${esc(label)}" title="${esc(label)}"${out ? ' target="_blank" rel="noopener"' : ''}>${SOCIAL_ICONS[icon]}</a></li>`;
   const items = [ig && /^[\w.]{1,30}$/.test(ig) && link('https://instagram.com/' + ig, 'Instagram @' + ig, 'instagram', true),
     pin && /^[\w.-]{1,30}$/.test(pin) && link('https://www.pinterest.com/' + pin + '/', 'Pinterest ' + pin, 'pinterest', true),
     wa && link(wa, 'WhatsApp us', 'whatsapp', true), /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) && link('mailto:' + em, 'Email ' + em, 'email')].filter(Boolean);
-  return items.length ? `<ul class="social" aria-label="Find SAMPLE STUDIO">${items.join('')}</ul>` : '';
+  return items.length ? `<ul class="social" aria-label="Find EMBER LANE">${items.join('')}</ul>` : '';
 }
 function viewOrder(id) {
   const o = S.orders.find((x) => x.id === id); if (!o) return viewNotFound();
@@ -1403,8 +1403,8 @@ function viewOrder(id) {
 
 function viewStory() {
   const pillars = [['leaf', 'Thoughtful Design', 'Thought goes into the things we make.'], ['sun', 'Everyday Moments', 'The everyday deserves beautiful things too.'], ['arch', 'Gifting With Feeling', 'Give something that feels chosen, not simply bought.'], ['flow', 'Contemporary Indian Soul', 'Rooted in India. Designed for contemporary living.'], ['spark', 'Made to Be Kept', 'Some things become special because we keep them.']];
-  const founder = mediaFor('brand', { role: 'founder' })[0]; const side = brandImgs('process', [[IMG.seal, 'SAMPLE STUDIO wax seals in brand colours.'], [IMG.leather, 'A sample label.']]);
-  return `<div class="story-hero">${founder ? mediaEl(founder) : `<img src="${IMG.logoPhoto}" alt="The SAMPLE STUDIO logo with its olive leaf.">`}</div>
+  const founder = mediaFor('brand', { role: 'founder' })[0]; const side = brandImgs('process', [[IMG.seal, 'EMBER LANE wax seals in brand colours.'], [IMG.leather, 'A hand-stitched leather label.']]);
+  return `<div class="story-hero">${founder ? mediaEl(founder) : `<img src="${IMG.logoPhoto}" alt="The EMBER LANE logo with its olive leaf.">`}</div>
   <div class="wrap" style="padding-bottom:80px"><div class="page-head"><span class="eyebrow">Our Story</span><h1 tabindex="-1">${T('story.title')}</h1></div>
     <div class="split" style="align-items:flex-start"><div style="display:flex;flex-direction:column;gap:18px;max-width:640px">
       <p style="font-family:var(--display);font-weight:500;font-size:28px;line-height:1.3">${T('story.lead')}</p>
@@ -1421,7 +1421,7 @@ function viewStory() {
 function viewHelp() {
   const tr = UI.track || {};
   return `<div class="wrap" style="padding-bottom:80px"><div class="page-head"><h1 tabindex="-1">Help &amp; contact</h1></div>
-    <form data-form="track" class="track-form" novalidate><strong>Find your order</strong><span class="field"><label for="tr-id">Order number</label><input id="tr-id" placeholder="BT-1001-7F3A9C" value="${esc(tr.id || '')}" autocomplete="off"></span><span class="field"><label for="tr-phone">Mobile number</label><input id="tr-phone" type="tel" inputmode="tel" maxlength="16" value="${esc(tr.phone || '')}" autocomplete="tel-national"></span><button class="btn ghost" type="submit">Find it</button>${tr.msg ? `<span class="err" role="alert">${esc(tr.msg)}</span>` : ''}</form>
+    <form data-form="track" class="track-form" novalidate><strong>Find your order</strong><span class="field"><label for="tr-id">Order number</label><input id="tr-id" placeholder="EL-1001-7F3A9C" value="${esc(tr.id || '')}" autocomplete="off"></span><span class="field"><label for="tr-phone">Mobile number</label><input id="tr-phone" type="tel" inputmode="tel" maxlength="16" value="${esc(tr.phone || '')}" autocomplete="tel-national"></span><button class="btn ghost" type="submit">Find it</button>${tr.msg ? `<span class="err" role="alert">${esc(tr.msg)}</span>` : ''}</form>
     <div class="facts" style="border-top:0"><div><strong>Contact</strong>${SET.email ? `<span class="muted sel">${esc(SET.email)}</span>` : ''}${socialLinks()}</div>
     <div><strong>Shipping &amp; delivery</strong><span class="muted">${T('help.shipping')}</span></div>
     ${SET.codOn ? `<div><strong>Cash on delivery</strong><span class="muted">${T('co.cod')}</span></div>` : ''}
@@ -1439,7 +1439,7 @@ function viewGifting() {
     <div class="split" style="margin-bottom:48px"><figure class="photo" style="margin:0"><img src="${esc(gimg[0][0])}" alt="${esc(gimg[0][1] || '')}" loading="lazy"><figcaption>${esc(gimg[0][2] || '')}</figcaption></figure>
       <div style="display:flex;flex-direction:column;gap:14px"><h2 style="font-size:clamp(30px,3.4vw,44px)">${T('gift.h2')}</h2><p class="muted">${T('gift.text')}</p>
       <ul class="trust">${[`Hand-written note on our card`, `Gift wrap${+SET.wrapFee ? ' for ' + inr(SET.wrapFee) : ''}`, 'Send it straight to them, with no prices in the parcel', 'Choose the day it should arrive by'].map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-      <figure class="photo" style="margin:0;max-width:260px"><img src="${IMG.pouch}" alt="SAMPLE STUDIO gift bag with tissue and botanicals." loading="lazy"><figcaption>Gift bag · coming with gift sets</figcaption></figure></div></div>
+      <figure class="photo" style="margin:0;max-width:260px"><img src="${IMG.pouch}" alt="EMBER LANE gift bag with tissue and botanicals." loading="lazy"><figcaption>Gift bag · coming with gift sets</figcaption></figure></div></div>
     <div class="section-head"><h2>${T('gift.popular')}</h2></div><div class="grid">${picks.map((p, i) => card(p, i)).join('')}</div></div>`;
 }
 
@@ -1486,7 +1486,7 @@ function viewAdmin() {
       ${m.step === 'enrol' ? `<p class="full muted">Once, on this sign-in: open an authenticator app on your phone (Google Authenticator, Microsoft Authenticator or 1Password), add an account and scan this code. From then on, signing in needs your password and the 6-digit code the app shows, so a stolen password alone can’t change the shop.</p>
       ${m.uri && window.qrcode ? '<canvas id="mfa-qr" class="full" role="img" aria-label="Set-up code for the authenticator app" style="width:200px;height:200px;border-radius:8px"></canvas>'
         : m.qr ? `<img class="full" src="${esc(m.qr)}" alt="Set-up code for the authenticator app" width="180" height="180" style="background:#fff;padding:8px;border-radius:8px">` : ''}${m.secret ? `<p class="full muted" style="font-size:14px">Can’t scan it? Type this key into the app: <strong class="num" style="word-break:break-all">${esc(m.secret)}</strong></p>` : ''}`
-        : '<p class="full muted">Open your authenticator app and type the 6-digit code it shows for SAMPLE STUDIO.</p>'}
+        : '<p class="full muted">Open your authenticator app and type the 6-digit code it shows for EMBER LANE.</p>'}
       <span class="field full"><label for="own-code">6-digit code</label><input id="own-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required></span>
       ${A.err ? `<span class="err full" role="alert">${esc(A.err)}</span>` : ''}<span class="full" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="submit">Continue</button><button class="btn ghost" type="button" data-act="adm-signout">Start again</button></span></form></div>`;
   }
@@ -1528,7 +1528,7 @@ function admProductForm(r) {
     <span class="field"><label for="ap-cat">Category</label><select id="ap-cat" name="cat"><option value="candles" ${d.cat === 'candles' ? 'selected' : ''}>Candles</option><option value="jesmonite" ${d.cat !== 'candles' ? 'selected' : ''}>Jesmonite objects</option></select></span>
     ${f('type', 'Type', d.type, { hint: 'for example Scented candle, Tray' })}${f('line', 'One-line description', d.line, { full: true })}
     <fieldset class="field full adm-vars"><legend>Options, prices and SKUs <span class="hint">clear an SKU to remove that option; fill the empty row to add one</span></legend>
-      ${vs.map((v, i) => `<span class="adm-var"><label class="sr" for="ap-vs${i}">SKU ${i + 1}</label><input id="ap-vs${i}" name="v-sku-${i}" placeholder="SKU, for example BT-CN-RO-220" value="${esc(v.sku)}"><label class="sr" for="ap-vl${i}">Option name ${i + 1}</label><input id="ap-vl${i}" name="v-label-${i}" placeholder="Option, for example 220 g" value="${esc(v.label)}"><label class="sr" for="ap-vp${i}">Price ${i + 1}</label><input id="ap-vp${i}" name="v-price-${i}" type="number" min="0" placeholder="Price ₹" value="${esc(v.price)}"></span>`).join('')}</fieldset>
+      ${vs.map((v, i) => `<span class="adm-var"><label class="sr" for="ap-vs${i}">SKU ${i + 1}</label><input id="ap-vs${i}" name="v-sku-${i}" placeholder="SKU, for example EL-CN-RO-220" value="${esc(v.sku)}"><label class="sr" for="ap-vl${i}">Option name ${i + 1}</label><input id="ap-vl${i}" name="v-label-${i}" placeholder="Option, for example 220 g" value="${esc(v.label)}"><label class="sr" for="ap-vp${i}">Price ${i + 1}</label><input id="ap-vp${i}" name="v-price-${i}" type="number" min="0" placeholder="Price ₹" value="${esc(v.price)}"></span>`).join('')}</fieldset>
     ${f('notes', 'Scent notes', (d.notes || []).join(', '), { hint: 'comma separated; leave empty for objects' })}
     ${f('smellsLike', 'Smells like', d.smellsLike, { full: true, area: true, rows: 2, hint: 'the scent story, one or two sentences' })}
     ${f('pz-top', 'Top notes', (pz.top || []).join(', '))}${f('pz-heart', 'Heart notes', (pz.heart || []).join(', '))}${f('pz-base', 'Base notes', (pz.base || []).join(', '))}${f('burnTime', 'Burn time', d.burnTime, { hint: 'for example 40 hours' })}
@@ -1576,7 +1576,7 @@ function admMedia() {
       <span class="field"><label for="up-prod">For</label><select id="up-prod" name="prod" data-act="adm-up-prod">${owners.map(([k, l]) => `<option value="${esc(k)}" ${k === pid ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></span>
       <span class="field"><label for="up-role">What it shows</label><select id="up-role" name="role">${roleOpts(A.upRole)}</select></span>
       ${pid !== 'brand' && p ? `<span class="field"><label for="up-var">Option</label><select id="up-var" name="variant"><option value="">Every option</option>${(p.variants || []).map((v) => `<option>${esc(v.label)}</option>`).join('')}</select></span>` : ''}
-      <span class="field"><label for="up-alt">Describe it <span class="hint">for people using screen readers</span></label><input id="up-alt" name="alt" placeholder="Chai at Four lit on a brass tray, evening light"></span>
+      <span class="field"><label for="up-alt">Describe it <span class="hint">for people using screen readers</span></label><input id="up-alt" name="alt" placeholder="Linen Morning lit on a brass tray, evening light"></span>
       <span class="field full"><label for="up-file">Files <span class="hint">JPG, PNG or WebP photos, MP4 or WebM videos. Large photos are resized to 2000 px.</span></label><input id="up-file" name="files" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm" multiple></span>
       ${A.upMsg ? `<span class="full status" role="status">${esc(A.upMsg)}</span>` : ''}<span class="full"><button class="btn" type="submit">Upload</button></span></form>
     <div class="adm-card"><h2 style="font-size:24px">Checklist</h2><p class="muted">What each product needs, from the photo brief. A tick means at least one is uploaded.</p>
@@ -1722,23 +1722,23 @@ function rgba(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >
 // The arrangement openings A and B resolve into: candles and Jesmonite objects, with a botanical sprig (a prop, not for sale).
 const ARR = [
   { k: 'sprig', dx: -318, w: 70, h: 64, c: '#5B6B46', prop: true },
-  { id: 'ghat-tray', k: 'tray', dx: -205, w: 180, h: 16, c: '#DCC9AE', lift: -38 },
-  { id: 'chai-at-four', k: 'jar', dx: -205, dy: -12, c: '#C9A227', h: 88, w: 66, lift: 65 },
-  { id: 'first-light', k: 'jar', dx: -80, c: '#F4ECE0', h: 66, w: 56, lift: 29 },
-  { id: 'moonlet-ring-dish', k: 'dish', dx: 15, c: '#C99A6C', h: 24, w: 80, rings: true, lift: 141 },
-  { id: 'still-form-no-1', k: 'arch', dx: 115, c: '#F1E8DA', h: 124, w: 84, lift: 76 },
-  { id: 'pillar-studies', k: 'pillar', dx: 205, c: '#C45A3A', h: 110, w: 32, lift: 55 },
-  { id: 'pebble-coasters', k: 'pebbles', dx: 282, c: '#5B6B46', h: 30, w: 72, lift: 65 }
+  { id: 'speckle-tray', k: 'tray', dx: -205, w: 180, h: 16, c: '#DCC9AE', lift: -38 },
+  { id: 'linen-morning', k: 'jar', dx: -205, dy: -12, c: '#C9A227', h: 88, w: 66, lift: 65 },
+  { id: 'amber-dusk', k: 'jar', dx: -80, c: '#F4ECE0', h: 66, w: 56, lift: 29 },
+  { id: 'sand-dish', k: 'dish', dx: 15, c: '#C99A6C', h: 24, w: 80, rings: true, lift: 141 },
+  { id: 'mini-arch', k: 'arch', dx: 115, c: '#F1E8DA', h: 124, w: 84, lift: 76 },
+  { id: 'ivory-pillar', k: 'pillar', dx: 205, c: '#C45A3A', h: 110, w: 32, lift: 55 },
+  { id: 'river-pebbles', k: 'pebbles', dx: 282, c: '#5B6B46', h: 30, w: 72, lift: 65 }
 ];
 const OPENINGS = {
   arches: { name: 'A · Through the Arches', rail: ['Doorway', 'Arches', 'The room', 'Dusk'], cuts: [.3, .6, .8], hero: [.05, .11], staticP: .66,
     caps: [['Step <em>inside.</em>', [.13, .17, .26, .3]], ['Thought, object,<br><em>feeling, memory.</em>', [.35, .4, .5, .55]], ['Some evenings need nothing more<br><em>than a warm light.</em>', [.62, .66, .74, .78]]],
     spots: [.6, .65, .78, .82], final: [.86, .93], light: .8 },
   pour: { name: 'B · The Pour', rail: ['Sketch', 'Pour', 'Cast', 'Light'], cuts: [.14, .62, .78], hero: [.05, .11], staticP: .76,
-    caps: [['Every candle begins<br><em>as a slow pour.</em>', [.12, .16, .24, .28]], ['Masala chai, saffron,<br><em>wet earth after rain.</em>', [.3, .34, .5, .54]], ['Cast, set,<br><em>lifted from the mould.</em>', [.62, .65, .72, .75]], ['Then, one by one,<br><em>they are lit.</em>', [.77, .8, .85, .87]]],
+    caps: [['Every candle begins<br><em>as a slow pour.</em>', [.12, .16, .24, .28]], ['Amber, cedar and cotton,<br><em>a lit lamp at dusk.</em>', [.3, .34, .5, .54]], ['Cast, set,<br><em>lifted from the mould.</em>', [.62, .65, .72, .75]], ['Then, one by one,<br><em>they are lit.</em>', [.77, .8, .85, .87]]],
     spots: [.72, .75, .84, .87], final: [.88, .94], light: .79 },
   house: { name: 'D · The House', rail: ['Front door', 'The niche', 'The bedroom', 'Gifting corner'], cuts: [.145, .371, .71], hero: [.015, .036], staticP: .54,
-    caps: [['The door is open.<br><em>Come in.</em>', [.054, .067, .103, .121]], ['One by one,<br><em>the candles are lit.</em>', [.208, .218, .251, .26]], ['Through the arch,<br><em>the bedroom waits in the dark.</em>', [.365, .377, .431, .449]], ['Then the bedside candles<br><em>take over from the dusk.</em>', [.467, .48, .528, .546]], ['A corner kept<br><em>for giving.</em>', [.716, .728, .77, .782]], ['Your tagline<br><em>goes here.</em>', [.879, .891, .927, .939]]],
+    caps: [['The door is open.<br><em>Come in.</em>', [.054, .067, .103, .121]], ['One by one,<br><em>the candles are lit.</em>', [.208, .218, .251, .26]], ['Through the arch,<br><em>the bedroom waits in the dark.</em>', [.365, .377, .431, .449]], ['Then the bedside candles<br><em>take over from the dusk.</em>', [.467, .48, .528, .546]], ['A corner kept<br><em>for giving.</em>', [.716, .728, .77, .782]], ['Made slowly,<br><em>given with care.</em>', [.879, .891, .927, .939]]],
     spots: null, final: [.946, .994], light: 0 },
   tour: { name: 'C · Home Tour', rail: ['Front door', 'Foyer', 'Living room', 'Bedroom'], cuts: [.16, .48, .79], hero: [.02, .05], staticP: .33,
     caps: [['The door is open.<br><em>Come in.</em>', [.07, .09, .13, .15]], ['One by one,<br><em>the candles are lit.</em>', [.19, .21, .25, .27]], ['Trays and plates to the left,<br><em>little forms to the right.</em>', [.29, .31, .4, .42]], ['The next room<br><em>waits in the dark.</em>', [.48, .5, .54, .56]], ['Pieces for the living room,<br><em>made to be used.</em>', [.6, .62, .71, .73]], ['A corner kept<br><em>for giving.</em>', [.86, .875, .945, .96]]],
@@ -1748,7 +1748,7 @@ const SKINS = {
   signature: { name: 'Signature · Approved palette', use: 'The approved palette: ivory, sand, caramel, terracotta, olive and chocolate.', eyebrow: 'Collection 01 · Everyday Rituals', dark: true, wall: ['#C45A3A', '#8F4C33', '#7A3F2A'], floor: ['#4A3125', '#4B2E1E', '#33211A'], arch: ['#8F4C33', '#C45A3A', '#B36C49', '#C9A227'], plinth: '#FFF8ED', duskWall: '#2A1B14', duskFloor: '#1F140F', night: '#120B08', light: '255,236,210', type: '#FFF8ED', ink2: '#F3E6D6', fx: null },
   atelier: { name: 'Everyday · Clay & Cocoa', use: 'The year-round look: a terracotta room, cocoa floor and a peach glow.', eyebrow: 'Objects & little rituals', dark: true, wall: ['#9C4322', '#8F3B1D', '#823318'], floor: ['#5A2E1C', '#4E2717', '#422013'], arch: ['#A84B27', '#B5562F', '#C06238', '#CA6E42'], plinth: '#F4E4D2', duskWall: '#2A140C', duskFloor: '#1E0E08', night: '#140805', light: '255,200,150', type: '#FFB37A', ink2: '#F5E3D3', fx: null },
   festive: { name: 'Festive · Saffron & Rani', use: 'For Diwali and the festive rush: a rani-pink room, saffron light, marigolds and diyas at dusk.', eyebrow: 'The festive edit', dark: true, wall: ['#7A1230', '#6A0F2A', '#5A0C24'], floor: ['#3E0A18', '#350815', '#2C0612'], arch: ['#6E0F2B', '#801434', '#92193D', '#A31F46'], plinth: '#FBE3C6', duskWall: '#2A0610', duskFloor: '#1E040B', night: '#120207', light: '255,186,80', type: '#FFB020', ink2: '#FFD9A8', fx: 'festive' },
-  monsoon: { name: 'Monsoon · Peacock & Moss', use: 'For June to September: a deep peacock room, moss light and soft rain, made for earthy scents like Monsoon Letters.', eyebrow: 'The monsoon edit', dark: true, wall: ['#0F4C4A', '#0D4341', '#0B3A38'], floor: ['#082B29', '#072624', '#06201F'], arch: ['#0C3F3D', '#11504D', '#16605C', '#1B706B'], plinth: '#DDE9E4', duskWall: '#06201F', duskFloor: '#041716', night: '#020C0B', light: '214,236,190', type: '#C9E265', ink2: '#CFE7DE', fx: 'rain' },
+  monsoon: { name: 'Monsoon · Peacock & Moss', use: 'For June to September: a deep peacock room, moss light and soft rain, made for earthy scents like Cedar Hearth.', eyebrow: 'The monsoon edit', dark: true, wall: ['#0F4C4A', '#0D4341', '#0B3A38'], floor: ['#082B29', '#072624', '#06201F'], arch: ['#0C3F3D', '#11504D', '#16605C', '#1B706B'], plinth: '#DDE9E4', duskWall: '#06201F', duskFloor: '#041716', night: '#020C0B', light: '214,236,190', type: '#C9E265', ink2: '#CFE7DE', fx: 'rain' },
   gifting: { name: 'Gifting · Cherry & Blush', use: 'For gifting campaigns, weddings and Valentine’s week: a cherry room with blush petals.', eyebrow: 'The gifting edit', dark: true, wall: ['#8E0F24', '#7E0D20', '#6E0B1C'], floor: ['#45060F', '#3B050D', '#31040B'], arch: ['#6F0A1C', '#820E22', '#951228', '#A8162E'], plinth: '#FBE2DC', duskWall: '#2E0409', duskFloor: '#220307', night: '#140104', light: '255,200,190', type: '#FFB4A8', ink2: '#FFD6CF', fx: 'petals' },
   evening: { name: 'Evening · Indigo & Brass', use: 'For night-time browsing and dark-mode phones: an indigo room, brass light and the candle already burning.', eyebrow: 'After dark', dark: true, lit: true, wall: ['#1B1F45', '#181B3D', '#141735'], floor: ['#0F1129', '#0D0F24', '#0B0C1F'], arch: ['#14173A', '#1C2050', '#242962', '#2C3274'], plinth: '#2E3260', duskWall: '#0B0C1F', duskFloor: '#07081A', night: '#05060F', light: '226,180,92', type: '#E2B45C', ink2: '#C2C0D6', fx: 'evening' }
 };
@@ -1839,7 +1839,7 @@ function drawObj(ctx, o, x, y, s, sun) {
     const lw = w * .66, lh = h * .4, lx = x - lw / 2, ly = y - h * .66;
     ctx.fillStyle = '#F5ECDD'; ctx.fillRect(lx, ly, lw, lh); ctx.strokeStyle = 'rgba(61,40,30,.18)'; ctx.lineWidth = Math.max(.6, .6 * s); ctx.strokeRect(lx, ly, lw, lh);
     const lf = tintLeaf('#4B2E1E'); if (lf) { const lfh = lh * .38; ctx.drawImage(lf, x - lfh * .45, ly + lh * .1, lfh * .9, lfh); }
-    if (s >= 1.4) { ctx.fillStyle = '#4B2E1E'; ctx.textAlign = 'center'; ctx.font = `600 ${Math.max(5, lw * .118).toFixed(1)}px "Cormorant Garamond", Georgia, serif`; ctx.fillText('SAMPLE STUDIO', x, ly + lh * .7); ctx.font = `${Math.max(4, lw * .08).toFixed(1)}px Lato, sans-serif`;  }
+    if (s >= 1.4) { ctx.fillStyle = '#4B2E1E'; ctx.textAlign = 'center'; ctx.font = `600 ${Math.max(5, lw * .118).toFixed(1)}px "Cormorant Garamond", Georgia, serif`; ctx.fillText((window.ppTheme ? ppTheme.brand('EMBER LANE') : 'EMBER LANE'), x, ly + lh * .7); ctx.font = `${Math.max(4, lw * .08).toFixed(1)}px Lato, sans-serif`;  }
     if (o.lid) {
       const lh2 = 14 * s; const g = ctx.createLinearGradient(x - w / 2, 0, x + w / 2, 0); g.addColorStop(0, '#C9965F'); g.addColorStop(.5, '#A8743F'); g.addColorStop(1, '#7E5230');
       ctx.fillStyle = g; ctx.fillRect(x - w / 2 - 1 * s, y - h - lh2, w + 2 * s, lh2 + 2 * s);
@@ -2053,40 +2053,40 @@ const T3I = (room, k, id, c, pos, at, x = {}) => ({ room, k, id, c, pos, at, ry:
 const LW = -Math.PI / 2, RW = Math.PI / 2;
 const TOUR_ITEMS = [
   // foyer: the arched niche, then the left and right shelves
-  T3I('F', 'jar', 'chai-at-four', '#C9A227', [-.5, .93, 9.2], .2), T3I('F', 'jar', 'brass-and-saffron', '#C45A3A', [0, .93, 9.2], .215), T3I('F', 'jar', 'first-light', '#F4ECE0', [.5, .93, 9.2], .23),
-  T3I('F', 'pillar', 'pillar-studies', '#F1E8DA', [-.36, 1.643, 9.25], .238, { h: .24 }), T3I('F', 'pillar', null, '#C45A3A', [0, 1.643, 9.25], .246, { h: .19 }), T3I('F', 'pillar', null, '#5B6B46', [.36, 1.643, 9.25], .254, { h: .21 }),
-  T3I('F', 'tray', 'ghat-tray', '#DCC9AE', [3.06, 1.1725, 3.7], .3, { ry: LW, place: true }), T3I('F', 'plate', 'halo-candle-plate', '#C99A6C', [3.06, 1.1725, 5], .315, { ry: LW, place: true, withPillar: true }),
-  T3I('F', 'dish', 'moonlet-ring-dish', '#F1E8DA', [3.06, 1.7725, 4], .325, { ry: LW, place: true }), T3I('F', 'jar', 'terrace-garden', '#C9D0B8', [3.06, 1.7725, 5], .333, { ry: LW, place: true }),
-  T3I('F', 'arch', 'still-form-no-1', '#F1E8DA', [-3.06, 1.7725, 3.4], .375, { ry: RW, place: true }), T3I('F', 'archtray', 'jharokha-catch-all', '#DCC9AE', [-3.06, 1.7725, 4.6], .385, { ry: RW, place: true }),
-  T3I('F', 'pebbles', 'pebble-coasters', '#6B6B43', [-3.06, 1.1725, 3.6], .393, { ry: RW, place: true }), T3I('F', 'plate', null, '#B0644A', [-3.06, 1.1725, 4.6], .4, { ry: RW, place: true, withPillar: true }),
+  T3I('F', 'jar', 'linen-morning', '#C9A227', [-.5, .93, 9.2], .2), T3I('F', 'jar', 'fig-orchard', '#C45A3A', [0, .93, 9.2], .215), T3I('F', 'jar', 'amber-dusk', '#F4ECE0', [.5, .93, 9.2], .23),
+  T3I('F', 'pillar', 'ivory-pillar', '#F1E8DA', [-.36, 1.643, 9.25], .238, { h: .24 }), T3I('F', 'pillar', null, '#C45A3A', [0, 1.643, 9.25], .246, { h: .19 }), T3I('F', 'pillar', null, '#5B6B46', [.36, 1.643, 9.25], .254, { h: .21 }),
+  T3I('F', 'tray', 'speckle-tray', '#DCC9AE', [3.06, 1.1725, 3.7], .3, { ry: LW, place: true }), T3I('F', 'plate', 'sage-plate', '#C99A6C', [3.06, 1.1725, 5], .315, { ry: LW, place: true, withPillar: true }),
+  T3I('F', 'dish', 'sand-dish', '#F1E8DA', [3.06, 1.7725, 4], .325, { ry: LW, place: true }), T3I('F', 'jar', 'rose-tin', '#C9D0B8', [3.06, 1.7725, 5], .333, { ry: LW, place: true }),
+  T3I('F', 'arch', 'mini-arch', '#F1E8DA', [-3.06, 1.7725, 3.4], .375, { ry: RW, place: true }), T3I('F', 'archtray', 'arch-tray', '#DCC9AE', [-3.06, 1.7725, 4.6], .385, { ry: RW, place: true }),
+  T3I('F', 'pebbles', 'river-pebbles', '#6B6B43', [-3.06, 1.1725, 3.6], .393, { ry: RW, place: true }), T3I('F', 'plate', null, '#B0644A', [-3.06, 1.1725, 4.6], .4, { ry: RW, place: true, withPillar: true }),
   // living room: the credenza, the coffee table, then the left and right shelves
-  T3I('L', 'pillar', null, '#F1E8DA', [-.75, .72, 7.62], .52, { h: .26 }), T3I('L', 'pillar', null, '#C45A3A', [-.55, .72, 7.6], .528), T3I('L', 'jar', 'monsoon-letters', '#A9B39A', [-.1, .72, 7.6], .536), T3I('L', 'jar', null, '#C9D0B8', [.3, .72, 7.6], .546), T3I('L', 'plate', 'halo-candle-plate', '#6B6B43', [.8, .72, 7.6], .555, { withPillar: true }),
-  T3I('L', 'tray', 'ghat-tray', '#B0644A', [-.85, .43, 4.25], .57, { ry: RW }), T3I('L', 'jar', null, '#C9A227', [-.85, .43, 4.75], .575, { ry: RW }),
-  T3I('L', 'dish', 'moonlet-ring-dish', '#C99A6C', [3.37, 1.7725, 3.3], .605, { ry: LW, place: true }), T3I('L', 'pebbles', 'pebble-coasters', '#B0644A', [3.37, 1.1725, 3.6], .615, { ry: LW, place: true }),
-  T3I('L', 'arch', 'still-form-no-1', '#B0644A', [3.37, 1.7725, 4.5], .625, { ry: LW, place: true }), T3I('L', 'archtray', null, '#F1E8DA', [3.37, 1.1725, 4.7], .635, { ry: LW, place: true }),
-  T3I('L', 'plate', 'halo-candle-plate', '#F1E8DA', [-3.37, 1.7725, 2.9], .675, { ry: RW, place: true }), T3I('L', 'tray', 'ghat-tray', '#6B6B43', [-3.37, 1.1725, 3.4], .685, { ry: RW, place: true }),
+  T3I('L', 'pillar', null, '#F1E8DA', [-.75, .72, 7.62], .52, { h: .26 }), T3I('L', 'pillar', null, '#C45A3A', [-.55, .72, 7.6], .528), T3I('L', 'jar', 'cedar-hearth', '#A9B39A', [-.1, .72, 7.6], .536), T3I('L', 'jar', null, '#C9D0B8', [.3, .72, 7.6], .546), T3I('L', 'plate', 'sage-plate', '#6B6B43', [.8, .72, 7.6], .555, { withPillar: true }),
+  T3I('L', 'tray', 'speckle-tray', '#B0644A', [-.85, .43, 4.25], .57, { ry: RW }), T3I('L', 'jar', null, '#C9A227', [-.85, .43, 4.75], .575, { ry: RW }),
+  T3I('L', 'dish', 'sand-dish', '#C99A6C', [3.37, 1.7725, 3.3], .605, { ry: LW, place: true }), T3I('L', 'pebbles', 'river-pebbles', '#B0644A', [3.37, 1.1725, 3.6], .615, { ry: LW, place: true }),
+  T3I('L', 'arch', 'mini-arch', '#B0644A', [3.37, 1.7725, 4.5], .625, { ry: LW, place: true }), T3I('L', 'archtray', null, '#F1E8DA', [3.37, 1.1725, 4.7], .635, { ry: LW, place: true }),
+  T3I('L', 'plate', 'sage-plate', '#F1E8DA', [-3.37, 1.7725, 2.9], .675, { ry: RW, place: true }), T3I('L', 'tray', 'speckle-tray', '#6B6B43', [-3.37, 1.1725, 3.4], .685, { ry: RW, place: true }),
   T3I('L', 'pillar', null, '#5B6B46', [-3.37, 1.7725, 4.2], .695, { ry: RW, place: true, h: .22 }), T3I('L', 'arch', null, '#DCC9AE', [-3.37, 1.1725, 4.4], .705, { ry: RW, place: true }),
   // bedroom: the ledge above the bed, the bedside tables, the gifting table and the shelves
-  T3I('B', 'pillar', null, '#F1E8DA', [-.9, 1.775, 6.86], .81), T3I('B', 'pillar', 'pillar-studies', '#C45A3A', [-.6, 1.775, 6.86], .818, { h: .26 }), T3I('B', 'jar', 'first-light', '#F4ECE0', [.55, 1.775, 6.86], .826), T3I('B', 'jar', 'brass-and-saffron', '#C45A3A', [.9, 1.775, 6.86], .834),
+  T3I('B', 'pillar', null, '#F1E8DA', [-.9, 1.775, 6.86], .81), T3I('B', 'pillar', 'ivory-pillar', '#C45A3A', [-.6, 1.775, 6.86], .818, { h: .26 }), T3I('B', 'jar', 'amber-dusk', '#F4ECE0', [.55, 1.775, 6.86], .826), T3I('B', 'jar', 'fig-orchard', '#C45A3A', [.9, 1.775, 6.86], .834),
   T3I('B', 'jar', null, '#C9A227', [-1.4, .55, 6.6], .845), T3I('B', 'plate', null, '#DCC9AE', [1.4, .55, 6.6], .852, { withPillar: true }),
   T3I('B', 'box', null, '#C9A27A', [2.95, .765, 2.9], .885, { ry: LW, place: true, w: .3, h: .18, d: .24 }), T3I('B', 'box', null, '#E6D5C1', [2.85, .765, 3.35], .89, { ry: LW, place: true, w: .22, h: .14, d: .2 }),
-  T3I('B', 'jar', 'terrace-garden', '#C9D0B8', [3.05, .765, 3.65], .895, { ry: LW, place: true }), T3I('B', 'dish', 'moonlet-ring-dish', '#F1E8DA', [2.9, .765, 2.55], .9, { ry: LW, place: true }),
-  T3I('B', 'pebbles', 'pebble-coasters', '#F1E8DA', [-3.16, 1.2725, 2.8], .93, { ry: RW, place: true }), T3I('B', 'arch', 'still-form-no-1', '#6B6B43', [-3.16, 1.8225, 3.2], .935, { ry: RW, place: true }),
-  T3I('B', 'archtray', 'jharokha-catch-all', '#C99A6C', [-3.16, 1.2725, 3.8], .94, { ry: RW, place: true }), T3I('B', 'pillar', null, '#C45A3A', [-3.16, 1.8225, 3.9], .945, { ry: RW, place: true }),
+  T3I('B', 'jar', 'rose-tin', '#C9D0B8', [3.05, .765, 3.65], .895, { ry: LW, place: true }), T3I('B', 'dish', 'sand-dish', '#F1E8DA', [2.9, .765, 2.55], .9, { ry: LW, place: true }),
+  T3I('B', 'pebbles', 'river-pebbles', '#F1E8DA', [-3.16, 1.2725, 2.8], .93, { ry: RW, place: true }), T3I('B', 'arch', 'mini-arch', '#6B6B43', [-3.16, 1.8225, 3.2], .935, { ry: RW, place: true }),
+  T3I('B', 'archtray', 'arch-tray', '#C99A6C', [-3.16, 1.2725, 3.8], .94, { ry: RW, place: true }), T3I('B', 'pillar', null, '#C45A3A', [-3.16, 1.8225, 3.9], .945, { ry: RW, place: true }),
   // opening D's bedroom (page coordinates; 'at' is the walk position directly)
   ...[
-    ['pillar', null, '#F1E8DA', [-10.4, 1.55, 5.6], .55, { h: .2 }], ['pillar', 'pillar-studies', '#C45A3A', [-10.4, 1.55, 5.9], .56, { h: .26 }],
-    ['jar', 'first-light', '#F4ECE0', [-10.4, 1.55, 7.0], .57], ['jar', 'brass-and-saffron', '#C45A3A', [-10.4, 1.55, 7.45], .58],
-    ['jar', 'chai-at-four', '#C9A227', [-10.2, .55, 5.0], .59], ['plate', 'halo-candle-plate', '#DCC9AE', [-10.2, .55, 8.2], .6, { withPillar: true }]
+    ['pillar', null, '#F1E8DA', [-10.4, 1.55, 5.6], .55, { h: .2 }], ['pillar', 'ivory-pillar', '#C45A3A', [-10.4, 1.55, 5.9], .56, { h: .26 }],
+    ['jar', 'amber-dusk', '#F4ECE0', [-10.4, 1.55, 7.0], .57], ['jar', 'fig-orchard', '#C45A3A', [-10.4, 1.55, 7.45], .58],
+    ['jar', 'linen-morning', '#C9A227', [-10.2, .55, 5.0], .59], ['plate', 'sage-plate', '#DCC9AE', [-10.2, .55, 8.2], .6, { withPillar: true }]
   ].map(([k, id, c, pos, at, x]) => T3I('BR', k, id, c, pos, at, { ry: RW, hp: true, where: 'By the bed', ...(x || {}) })),
   ...[
-    ['arch', 'still-form-no-1', '#6B6B43', [-4.9, 1.845, 9.47], .695], ['dish', 'moonlet-ring-dish', '#C99A6C', [-5.8, 1.845, 9.47], .705], ['pillar', null, '#C45A3A', [-6.3, 1.845, 9.47], .712, { h: .22 }],
-    ['archtray', 'jharokha-catch-all', '#F1E8DA', [-4.9, 1.245, 9.47], .72], ['pebbles', 'pebble-coasters', '#B0644A', [-5.9, 1.245, 9.47], .728]
+    ['arch', 'mini-arch', '#6B6B43', [-4.9, 1.845, 9.47], .695], ['dish', 'sand-dish', '#C99A6C', [-5.8, 1.845, 9.47], .705], ['pillar', null, '#C45A3A', [-6.3, 1.845, 9.47], .712, { h: .22 }],
+    ['archtray', 'arch-tray', '#F1E8DA', [-4.9, 1.245, 9.47], .72], ['pebbles', 'river-pebbles', '#B0644A', [-5.9, 1.245, 9.47], .728]
   ].map(([k, id, c, pos, at, x]) => T3I('BR', k, id, c, pos, at, { ry: Math.PI, hp: true, place: true, where: 'Left shelves', ...(x || {}) })),
   ...[
-    ['box', null, '#C9A27A', [-7.25, .77, 9.3], .765, { w: .3, h: .18, d: .24 }], ['box', null, '#E6D5C1', [-7.65, .77, 9.35], .772, { w: .22, h: .14, d: .2 }], ['jar', 'terrace-garden', '#C9D0B8', [-7.95, .77, 9.3], .78]
+    ['box', null, '#C9A27A', [-7.25, .77, 9.3], .765, { w: .3, h: .18, d: .24 }], ['box', null, '#E6D5C1', [-7.65, .77, 9.35], .772, { w: .22, h: .14, d: .2 }], ['jar', 'rose-tin', '#C9D0B8', [-7.95, .77, 9.3], .78]
   ].map(([k, id, c, pos, at, x]) => T3I('BR', k, id, c, pos, at, { ry: Math.PI, hp: true, place: true, where: 'The gifting table', ...(x || {}) })),
-  ...[['tray', 'ghat-tray', '#DCC9AE', [-6.0, .5, 3.8], .845], ['jar', 'monsoon-letters', '#A9B39A', [-6.9, .5, 3.8], .855]]
+  ...[['tray', 'speckle-tray', '#DCC9AE', [-6.0, .5, 3.8], .845], ['jar', 'cedar-hearth', '#A9B39A', [-6.9, .5, 3.8], .855]]
     .map(([k, id, c, pos, at]) => T3I('BR', k, id, c, pos, at, { ry: 0, hp: true, place: true, where: 'By the window' }))
 ].map((o) => ({ ...o, noSpot: !o.label }));
 window.TOUR_ITEMS = TOUR_ITEMS;
@@ -2270,7 +2270,7 @@ async function placeOrder(via) {
       if (/sold_out|price_changed|unknown_item/.test(m)) loadData(); render(); return;
     }
     co.placing = false; if (via !== 'Cash on delivery') o.status = 'Awaiting payment'; // until the payment gateway confirms it
-  } else id = 'BT-' + (1001 + S.orders.length);
+  } else id = 'EL-' + (1001 + S.orders.length);
   o.id = id;
   lines.forEach((l) => { S.stock[l.sku] = Math.max(0, stockOf(l.sku) - l.qty); });
   S.orders.unshift(o); S.cart = []; save(); track('purchase', { order: id, value: t.total, method: via, gift: !!o.gift });
@@ -2441,7 +2441,7 @@ document.addEventListener('submit', (e) => {
           const blob = kind === 'photo' ? await shrink(file, 2000) : file; let path;
           if (BTDB.on) { if (blob.size > 50e6) { skipped.push(file.name + ' (over 50 MB)'); continue; } path = pid + '/' + Date.now() + '-' + (slug(file.name.replace(/\.\w+$/, '')) || 'file') + '.' + (blob.type.split('/')[1] || 'bin').replace('jpeg', 'jpg').replace('quicktime', 'mov'); await BTDB.upload(path, blob); }
           else { if (blob.size > 1.5e6) { skipped.push(file.name + ' (too big for demo mode; connect the database)'); continue; } path = await asDataURL(blob); }
-          rows.push({ id: uuid(), product_id: pid, variant, kind, role, path, alt: alt || ((byId[pid] || {}).name || 'SAMPLE STUDIO') + ', ' + role, sort: (n++) * 10, published: true });
+          rows.push({ id: uuid(), product_id: pid, variant, kind, role, path, alt: alt || ((byId[pid] || {}).name || 'EMBER LANE') + ', ' + role, sort: (n++) * 10, published: true });
         } catch (err) { skipped.push(file.name + ' (' + err.message + ')'); }
       }
       try { if (rows.length) await dbPut('media', rows); A.upMsg = (rows.length ? 'Added ' + rows.length + ' file' + (rows.length > 1 ? 's' : '') + '.' : 'Nothing was added.') + (skipped.length ? ' Skipped: ' + skipped.join(', ') + '.' : ''); }

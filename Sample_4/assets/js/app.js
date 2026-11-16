@@ -72,11 +72,11 @@
         '<p class="h-state">Turning complexity into clarity.</p>' +
         '<p class="lede" style="max-width:60ch">Seven years as the link between the people who need a system and the teams who build it, turning complex requirements into work they can build, test and release.</p>' +
         '<ul class="h-short" id="summary" aria-label="In short">' +
-          '<li>Public-sector platforms for <strong>Digital India Corporation (MeitY)</strong>, and before that healthcare, recruitment and vendor-management systems.</li>' +
+          '<li>Public-sector platforms for <strong>National Digital Services Corporation (NDSC)</strong>, and before that healthcare, recruitment and vendor-management systems.</li>' +
           '<li>The full requirements set: BRD, FRD, SRS, RTM, user stories, acceptance criteria and process flows.</li>' +
           '<li>The link between stakeholders and technical teams: authorities, business users, engineering, QA and design working from one agreed set of requirements.</li>' +
         '</ul>' +
-        '<div class="btn-row"><button class="btn" type="button" data-act="goto" data-target="work">See my work</button><a class="btn ghost" href="assets/Abhishek_Yadav_Business_Analyst_Resume.pdf" download>Download résumé (PDF)</a></div>' +
+        '<div class="btn-row"><button class="btn" type="button" data-act="goto" data-target="work">See my work</button><a class="btn ghost" href="assets/Nisha_Rao_Business_Analyst_Resume.pdf" download>Download résumé (PDF)</a></div>' +
         '<div class="glance" aria-label="At a glance">' +
           '<div><span class="v">7+ yrs</span><span class="l">Business analysis, from discovery to production support</span></div>' +
           '<div><span class="v">BRD → UAT</span><span class="l">The full lifecycle, from discovery to sign-off and release</span></div>' +
@@ -105,15 +105,15 @@
 
       '<section data-node aria-labelledby="exp-h">' +
         '<div class="h-about"><div class="h-about-text"><p class="kicker">03 · About me</p><h2 id="exp-h">' + PF.about.title + '</h2><p id="about-p">' + PF.about.text + '</p></div>' +
-          '<div class="h-quotes" aria-label="What people say">' + PF.about.quotes.map(function (q) { return '<figure class="h-quote"><blockquote>' + q.q + '</blockquote><figcaption><strong>' + q.who + '</strong><span>' + q.role + '</span></figcaption></figure>'; }).join('') + '<a class="h-quotes-more" href="https://www.linkedin.com/in/abhiyknp/details/recommendations/" target="_blank" rel="noopener">15 recommendations on LinkedIn ↗</a></div></div>' +
+          '<div class="h-quotes" aria-label="What people say">' + PF.about.quotes.map(function (q) { return '<figure class="h-quote"><blockquote>' + q.q + '</blockquote><figcaption><strong>' + q.who + '</strong><span>' + q.role + '</span></figcaption></figure>'; }).join('') + '<a class="h-quotes-more" href="https://www.linkedin.com/" target="_blank" rel="noopener">More recommendations on LinkedIn ↗</a></div></div>' +
         '<h3 class="h-exp-h">Experience</h3>' +
         '<div class="h-exp">' +
-          '<div><span class="when">Apr 2025 – now</span><div><h3>Digital India Corporation (MeitY) · Business Analyst</h3><p class="small muted" style="margin:0 0 .3rem">Through CMS Computers India</p><p>Rajmarg Pravesh Portal and NHAI DataLake 3.0 for Digital India Corporation (MeitY): 10+ workflow modules, integrations, UAT, triage, release readiness.</p></div></div>' +
-          '<div><span class="when">Apr 2021 – Apr 2025</span><div><h3>Intechglobe · Business Analyst</h3><p>Healthcare Management System: end-to-end business analysis, Scrum delivery, dashboards, workshops and training.</p></div></div>' +
-          '<div><span class="when">Feb 2020 – Mar 2021</span><div><h3>Coditro · Business Analyst</h3><p>ATS and VMS: requirements, stories and acceptance criteria, JAD sessions, gap analysis, defect tracking.</p></div></div>' +
-          '<div><span class="when">Mar 2019 – Feb 2020</span><div><h3>RTL Technologies · Business Development Analyst</h3><p>Client requirement analysis, proposals, market research and client presentations.</p></div></div>' +
+          '<div><span class="when">Apr 2025 – now</span><div><h3>National Digital Services Corporation (NDSC) · Business Analyst</h3><p class="small muted" style="margin:0 0 .3rem">Through Meridian Staffing India</p><p>Marg Pravesh Portal and NHA DataLake 3.0 for National Digital Services Corporation (NDSC): 10+ workflow modules, integrations, UAT, triage, release readiness.</p></div></div>' +
+          '<div><span class="when">Apr 2021 – Apr 2025</span><div><h3>Northbridge · Business Analyst</h3><p>Healthcare Management System: end-to-end business analysis, Scrum delivery, dashboards, workshops and training.</p></div></div>' +
+          '<div><span class="when">Feb 2020 – Mar 2021</span><div><h3>Brightpath Labs · Business Analyst</h3><p>ATS and VMS: requirements, stories and acceptance criteria, JAD sessions, gap analysis, defect tracking.</p></div></div>' +
+          '<div><span class="when">Mar 2019 – Feb 2020</span><div><h3>Orbit Technologies · Business Development Analyst</h3><p>Client requirement analysis, proposals, market research and client presentations.</p></div></div>' +
         '</div>' +
-        '<p class="small muted">M.S. Data Science, Chandigarh University · B.Tech Information Technology, AKTU · English and Hindi</p>' +
+        '<p class="small muted">M.S. Data Science, Greenfield University · B.Tech Information Technology, Western Technical University · English and Hindi</p>' +
         '<div class="h-deeper"><p class="kicker">Go deeper</p><div class="h-deeper-links">' +
           '<a href="#skills"><strong>Skills Library</strong><span>' + counts.s + ' skills, with method, example and interview answers</span></a>' +
           '<a href="#studio"><strong>Artifact Studio</strong><span>' + counts.a + ' sample deliverables, BRD to release checklist</span></a>' +
@@ -125,8 +125,8 @@
       '<section class="h-contact" id="contact" data-node aria-labelledby="ct-h">' +
         '<p class="kicker">04 · Let\'s talk</p><h2 id="ct-h">Clear requirements. Better delivery.</h2>' +
         '<p class="muted" style="max-width:56ch">Open to Senior Business Analyst, Product Owner and Product Analyst roles.</p>' +
-        '<div class="copy-line" style="justify-content:center"><code id="email-text">ba.abhiy@gmail.com</code><button class="btn ghost" type="button" data-act="copy" data-copy="ba.abhiy@gmail.com">Copy email</button><span class="small muted" id="copy-status" aria-live="polite"></span></div>' +
-        '<div class="btn-row" style="justify-content:center"><a class="btn" href="mailto:ba.abhiy@gmail.com">Email me</a><a class="btn ghost" href="assets/Abhishek_Yadav_Business_Analyst_Resume.pdf" download>Download résumé (PDF)</a><a class="btn ghost" href="https://www.linkedin.com/in/abhiyknp" target="_blank" rel="noopener">LinkedIn ↗</a></div>' +
+        '<div class="copy-line" style="justify-content:center"><code id="email-text">nisha.rao@example.com</code><button class="btn ghost" type="button" data-act="copy" data-copy="nisha.rao@example.com">Copy email</button><span class="small muted" id="copy-status" aria-live="polite"></span></div>' +
+        '<div class="btn-row" style="justify-content:center"><a class="btn" href="mailto:nisha.rao@example.com">Email me</a><a class="btn ghost" href="assets/Nisha_Rao_Business_Analyst_Resume.pdf" download>Download résumé (PDF)</a><a class="btn ghost" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn ↗</a></div>' +
       '</section>' +
       '</div></div>';
   }
@@ -398,7 +398,7 @@
     document.body.setAttribute('data-route', view === 'home' ? 'home' : 'page');
     document.querySelectorAll('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === navKey) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     var h1 = main.querySelector('h1');
-    document.title = view === 'home' ? 'Abhishek Yadav, Business Analyst' : (h1 ? h1.textContent + ' · ' : '') + 'Abhishek Yadav';
+    document.title = view === 'home' ? 'Nisha Rao, Business Analyst' : (h1 ? h1.textContent + ' · ' : '') + 'Nisha Rao';
     window.PFW.hydrate(main); window.PFX.hydrate(main); window.PFOwner.hydrate(main); hydrateTabs(main);
     if (view === 'skills') { drawLib(); }
     if (view === 'evidence') { drawEvidence(); }

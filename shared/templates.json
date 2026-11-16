@@ -1,0 +1,119 @@
+{
+ "templates": [
+  {
+   "id": "portfolio",
+   "name": "Portfolio",
+   "cats": "portfolio 3d",
+   "tag": "Portfolio · 3D",
+   "img": "portfolio",
+   "files": 999,
+   "setup": 2499,
+   "desc": "A personal site whose name is built from thousands of particles that react to your pointer, then scatter into a galaxy as you scroll. Projects, about and contact.",
+   "url": "../Sample_3/index.html",
+   "group": "Portfolios",
+   "note": "A portfolio whose name is made of thousands of particles. Move the pointer through them, then scroll: they scatter into a galaxy.",
+   "owner": true
+  },
+  {
+   "id": "ba",
+   "name": "Professional Portfolio",
+   "cats": "portfolio",
+   "tag": "Portfolio · Knowledge base",
+   "img": "ba",
+   "files": 4999,
+   "setup": 9999,
+   "desc": "A working portfolio for analysts and consultants: a chaos-to-clarity scroll intro, a searchable skills library, case studies, sample deliverables, interactive decision scenarios and a process puzzle.",
+   "url": "../Sample_4/index.html",
+   "group": "Portfolios",
+   "note": "A working portfolio: scroll intro, 42-skill library, case studies, sample deliverables, decision scenarios and a process puzzle. Press / to search.",
+   "owner": false
+  },
+  {
+   "id": "sample1",
+   "name": "Gift Shop",
+   "cats": "ecommerce",
+   "tag": "E-commerce",
+   "img": "giftshop",
+   "files": 6999,
+   "setup": 14999,
+   "desc": "A complete online shop: cart, UPI and card payments, orders, GST invoices, coupons and rewards, and an Owner view where the owner runs the shop while the brand and tax details stay locked.",
+   "url": "../Sample_1/index.html",
+   "group": "Shops",
+   "note": "A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser.",
+   "owner": true
+  },
+  {
+   "id": "house",
+   "name": "3D House Shop",
+   "cats": "ecommerce 3d",
+   "tag": "E-commerce · 3D",
+   "img": "house",
+   "files": 9999,
+   "setup": 19999,
+   "desc": "The same full shop, opening with a scroll-driven walk through a 3D house. Products sit in the rooms; visitors step in and shop.",
+   "url": "../House_3D_Prototype/index.html",
+   "group": "Shops",
+   "note": "The same shop, opening with a scroll-driven 3D walk through a house. Use Home page above to switch between the walk and the gift shop.",
+   "owner": true
+  },
+  {
+   "id": "intros",
+   "name": "Scroll Openings",
+   "cats": "3d",
+   "tag": "Animated",
+   "img": "intros",
+   "files": 2999,
+   "setup": 6999,
+   "desc": "Three scroll-driven homepage openings: plaster arches that light up, a candle poured and lit, a 3D home tour. Drop one into any site.",
+   "url": "../kits/scroll-intros/index.html",
+   "group": "Immersive openings",
+   "note": "Three scroll-driven openings. Use Opening above to switch, then scroll the homepage.",
+   "owner": true
+  },
+  {
+   "id": "oil",
+   "name": "Product Website",
+   "cats": "business 3d",
+   "tag": "Product site · Film",
+   "img": "oil",
+   "files": 4999,
+   "setup": 9999,
+   "desc": "For makers and factories: a scroll-controlled seed-to-bottle film, online ordering, dealer enquiries and quality records.",
+   "url": "../Sample_2/index.html",
+   "group": "Business",
+   "note": "Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records.",
+   "owner": false
+  },
+  {
+   "id": "pixel",
+   "name": "Pixel Intros",
+   "cats": "3d",
+   "tag": "Animated · Effects",
+   "img": "pixel",
+   "files": 2499,
+   "setup": 5999,
+   "desc": "Four opening effects for any website: a tear-open pixel cloth, pictures that build pixel by pixel, a pinned browser tour and a tear-off price tag.",
+   "url": "../Sample_5/index.html",
+   "group": "Immersive openings",
+   "note": "Four effects: tear the cloth, scroll to build the pictures, scroll the pinned browser tour, and tear off the price tag.",
+   "owner": false
+  },
+  {
+   "id": "records",
+   "name": "Records Dashboard",
+   "cats": "business",
+   "tag": "Business tool",
+   "img": "records",
+   "files": 3999,
+   "setup": 8999,
+   "desc": "A dashboard for student, staff or customer records: add, edit, delete, search, sort, filter and export, with charts and a phone-friendly layout.",
+   "url": "../Sample_6/index.html",
+   "group": "Business",
+   "note": "Add, edit, delete, search, sort and export records. Try the Add button, then reload: your changes stay in this browser.",
+   "owner": false
+  }
+ ],
+ "bundle": {
+  "price": 29999
+ }
+}

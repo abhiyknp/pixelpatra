@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Request a quote · Pixelpatra</title>
+<meta name="description" content="Tell Pixelpatra what you need and get a clear quote for a website template, setup or custom build.">
+<meta name="theme-color" content="#f6f7fb">
+<meta property="og:site_name" content="Pixelpatra"><meta property="og:title" content="Request a quote · Pixelpatra"><meta property="og:description" content="Tell Pixelpatra what you need and get a clear quote for a website template, setup or custom build."><meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<script src="shared/pp-config.js"></script>
+<script src="shared/pp-theme.js" data-pp="store"></script>
+<link rel="stylesheet" href="shared/pp-site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to the content</a>
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Pixelpatra home"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>Pixelpatra</a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#templates">Templates</a>
+      <a class="hide-sm" href="demo/">Live demos</a>
+      <a class="hide-sm" href="how-it-works.html">How it works</a>
+      <a class="hide-sm" href="faq.html">FAQ</a>
+      <a class="hide-sm" href="about.html">About</a>
+      <a class="btn btn-sm btn-dark" href="quote.html">Request a quote</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap page" id="main">
+
+<div class="page-head"><p class="eyebrow">Request a quote</p><h1>Tell us what you need</h1><p>Takes about two minutes. We reply with a clear quote; nothing starts until you agree.</p></div>
+<form class="qform" id="qform" name="quote" method="POST" action="quote.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+  <input type="hidden" name="form-name" value="quote">
+  <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+  <fieldset><legend>About you</legend>
+    <div class="row"><div class="field"><label for="q-name">Your name</label><input id="q-name" name="name" type="text" autocomplete="name" required><span class="err" id="e-name" role="alert"></span></div>
+    <div class="field"><label for="q-org">Business or organisation <span class="hint">(optional)</span></label><input id="q-org" name="organisation" type="text" autocomplete="organization"></div></div>
+    <div class="row"><div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" inputmode="email"><span class="err" id="e-email" role="alert"></span></div>
+    <div class="field"><label for="q-phone">Phone or WhatsApp</label><input id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"><span class="err" id="e-phone" role="alert"></span></div></div>
+    <p class="hint" style="margin:-4px 0 14px;color:var(--muted)">Email or phone, at least one, so we can reach you.</p>
+  </fieldset>
+  <fieldset><legend>What you want</legend>
+    <div class="row"><div class="field"><label for="q-template">Template</label><select id="q-template" name="template"><option value="Not sure yet">Not sure yet, help me choose</option><option value="Portfolio">Portfolio · Portfolio · 3D</option><option value="Professional Portfolio">Professional Portfolio · Portfolio · Knowledge base</option><option value="Gift Shop">Gift Shop · E-commerce</option><option value="3D House Shop">3D House Shop · E-commerce · 3D</option><option value="Scroll Openings">Scroll Openings · Animated</option><option value="Product Website">Product Website · Product site · Film</option><option value="Pixel Intros">Pixel Intros · Animated · Effects</option><option value="Records Dashboard">Records Dashboard · Business tool</option><option value="Something custom">Something custom</option></select></div>
+    <div class="field"><label for="q-package">Package</label><select id="q-package" name="package"><option value="Template files">Template files</option><option value="Setup &amp; launch">Setup &amp; launch</option><option value="Custom build">Custom build</option></select></div></div>
+    <div class="field"><label for="q-goal">What do you want your website to do?</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
+    <div class="field"><span class="lab">Features you need <span class="hint">(tick any)</span></span><div class="checks">
+      <label class="check"><input type="checkbox" name="features" value="Online ordering"> Online ordering</label><label class="check"><input type="checkbox" name="features" value="Payments"> Payments</label><label class="check"><input type="checkbox" name="features" value="Owner view"> Owner view</label><label class="check"><input type="checkbox" name="features" value="Blog or journal"> Blog or journal</label><label class="check"><input type="checkbox" name="features" value="More than one language"> More than one language</label><label class="check"><input type="checkbox" name="features" value="Domain and hosting help"> Domain and hosting help</label><label class="check"><input type="checkbox" name="features" value="Logo and branding"> Logo and branding</label></div></div>
+  </fieldset>
+  <fieldset><legend>Practical details</legend>
+    <div class="row"><div class="field"><label for="q-budget">Budget</label><select id="q-budget" name="budget"><option>Not decided</option><option>Under ₹10,000</option><option>₹10,000 to ₹25,000</option><option>₹25,000 to ₹50,000</option><option>₹50,000 or more</option></select></div>
+    <div class="field"><label for="q-time">When do you need it?</label><select id="q-time" name="timeline"><option>No fixed date</option><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option></select></div></div>
+    <div class="row"><div class="field"><label for="q-content">Is your content ready?</label><select id="q-content" name="content"><option>Not yet</option><option>Partly</option><option>Yes, text and photos are ready</option></select></div>
+    <div class="field"><label for="q-url">Current website <span class="hint">(optional)</span></label><input id="q-url" name="website" type="url" inputmode="url" placeholder="https://"></div></div>
+    <div class="field"><label for="q-contact">Best time to reach you <span class="hint">(optional)</span></label><input id="q-contact" name="best_time" type="text" placeholder="For example: weekdays after 5 pm"></div>
+  </fieldset>
+  <label class="check"><input type="checkbox" id="q-consent" name="consent" value="yes"> I agree that Pixelpatra may use these details to reply to me. <a href="privacy.html">Privacy</a></label><span class="err" id="e-consent" role="alert"></span>
+  <div><button class="btn btn-solid" type="submit" id="q-send">Send my request</button></div>
+</form>
+<div class="qdone" id="qdone" hidden tabindex="-1" role="status"></div>
+</main>
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div><a class="logo" href="index.html" aria-label="Pixelpatra home"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>Pixelpatra</a><p>Immersive website templates for portfolios, shops, makers and 3D experiences, made in India.</p></div>
+    <div><h3>Templates</h3><ul><li><a href="index.html?cat=portfolio#templates">Portfolio</a></li><li><a href="index.html?cat=ecommerce#templates">E-commerce</a></li><li><a href="index.html?cat=3d#templates">3D &amp; animated</a></li><li><a href="index.html?cat=business#templates">Business</a></li></ul></div>
+    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
+    <div><h3>Legal</h3><ul><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="refunds.html">Refunds</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
+  </div>
+  <div class="wrap foot-base"><span>© <span id="yr">2026</span> Pixelpatra</span><span id="build" title="The same number on every copy of this site means the same version"></span></div>
+</footer>
+<script>document.getElementById("yr").textContent=new Date().getFullYear();fetch("build.json").then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.version)document.getElementById("build").textContent="Version "+j.version}).catch(function(){});</script><script src="shared/pp-quote.js"></script>
+</body></html>

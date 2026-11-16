@@ -32,7 +32,7 @@ PF.skills.push(
 {
   id: 'elicitation', area: 'A', name: 'Stakeholder identification and elicitation',
   tags: ['interviews', 'workshops', 'JAD', 'observation', 'stakeholder register', 'conflicting requirements', 'decision log'],
-  ev: 'source', evNote: 'Résumé: Requirement Gathering & Elicitation, Stakeholder Management; JAD sessions (Coditro); collaboration with MoRTH, NHAI, DIC, Engineering, QA and UI/UX teams (Ascra).',
+  ev: 'source', evNote: 'Résumé: Requirement Gathering & Elicitation, Stakeholder Management; JAD sessions (Brightpath Labs); collaboration with MoRT, NHA, DIC, Engineering, QA and UI/UX teams (Ascra).',
   sum: 'Find the right people, ask the right questions in the right format, and turn disagreement into recorded decisions.',
   def: 'Elicitation draws out requirements, constraints and knowledge from people and documents. Stakeholder identification comes first. It establishes who decides, who owns each process, who uses the system, who builds and supports it, and which external parties the solution depends on.',
   why: 'Requirements written from one viewpoint fail in UAT, when the missing viewpoint finally arrives. Early, deliberate elicitation surfaces conflicting needs while they are still cheap to resolve, and a decision log stops settled questions from being reopened in every meeting.',
@@ -51,12 +51,12 @@ PF.skills.push(
   cases: ['rajmarg', 'ats-vms'],
   q: { q: 'How do you handle two stakeholders who want opposite things?', a: 'I start by getting both positions written down as needs rather than solutions. With the mandatory-fields example, the applicant need is "submit without unnecessary effort" and the authority need is "have enough evidence to approve in compliance". I then work field by field: who uses it, at what stage, under which rule. That usually turns one argument into several smaller decisions, and some fields can move to a later stage. Anything still contested goes to the person with decision rights, with the options and their impacts, and the result goes into the decision log.' },
   more: ['Which elicitation technique do you rely on most, and why?', 'How do you elicit requirements from someone who is too busy to meet?', 'How do you know you have identified every stakeholder?'],
-  honest: 'I name the stakeholder groups from my résumé (MoRTH, NHAI, DIC, engineering, QA and UI/UX) and describe my role as facilitating and documenting. I had no authority over client officials, and I don\'t imply that I did.'
+  honest: 'I name the stakeholder groups from my résumé (MoRT, NHA, DIC, engineering, QA and UI/UX) and describe my role as facilitating and documenting. I had no authority over client officials, and I don\'t imply that I did.'
 },
 {
   id: 'brd', area: 'A', name: 'BRD (Business Requirements Document)',
   tags: ['business objectives', 'scope', 'business rules', 'assumptions', 'constraints', 'success criteria', 'sign-off'],
-  ev: 'source', evNote: 'Résumé: authored BRDs at Ascra, Intechglobe and Coditro.',
+  ev: 'source', evNote: 'Résumé: authored BRDs at Ascra, Northbridge and Brightpath Labs.',
   sum: 'States what the business needs and why, in language the sponsor can approve.',
   def: 'A BRD records the business objectives, scope, exclusions, stakeholders, high-level business requirements, business rules, assumptions, constraints and success criteria for an initiative. It describes <em>what</em> the business needs and <em>why</em>, not how the system will do it.',
   why: 'The BRD is the baseline that sign-off, scope control and change requests refer back to. Without it, every later disagreement about scope becomes a disagreement about memory.',
@@ -80,7 +80,7 @@ PF.skills.push(
 {
   id: 'frd', area: 'A', name: 'FRD (Functional Requirements Document)',
   tags: ['functional behaviour', 'roles', 'validations', 'exceptions', 'alternate flows', 'dependencies'],
-  ev: 'source', evNote: 'Résumé: authored FRDs and functional specifications at Ascra, Intechglobe and Coditro.',
+  ev: 'source', evNote: 'Résumé: authored FRDs and functional specifications at Ascra, Northbridge and Brightpath Labs.',
   sum: 'Turns each business need into precise, testable system behaviour, including the unhappy paths.',
   def: 'An FRD specifies the functions the system must perform: who can do what, what inputs are accepted, which validations apply, what outputs and status changes result, and what happens in alternate and exception flows.',
   why: 'Developers and testers need unambiguous behaviour. A business requirement such as "applicants can respond to clarifications" leaves many open questions: what happens after the deadline, what if the file is the wrong type, who is notified. The FRD answers them before code is written.',
@@ -104,7 +104,7 @@ PF.skills.push(
 {
   id: 'srs', area: 'A', name: 'SRS (Software Requirements Specification)',
   tags: ['system context', 'actors', 'interfaces', 'NFR', 'permissions', 'error handling', 'versioning'],
-  ev: 'source', evNote: 'Résumé: authored SRS documents for Rajmarg Pravesh and DataLake 3.0 (Ascra).',
+  ev: 'source', evNote: 'Résumé: authored SRS documents for Marg Pravesh and DataLake 3.0 (Ascra).',
   sum: 'The full behavioural specification of a system, complete enough for design, build, integration and test.',
   def: 'An SRS is the comprehensive specification of a software system. It covers the system context, actors, functional requirements, non-functional requirements, external interfaces, data, permissions, error handling and traceability. Where the FRD is organised around business functions, the SRS describes the system as a whole and is often the contractual reference for vendors.',
   why: 'Large or multi-vendor builds need one source of truth that architects, developers, integrators and auditors can all use. A well-organised SRS also makes version-to-version change visible.',
@@ -152,7 +152,7 @@ PF.skills.push(
 {
   id: 'ac', area: 'A', name: 'Acceptance criteria',
   tags: ['Given When Then', 'Gherkin', 'negative paths', 'boundary', 'permissions', 'audit'],
-  ev: 'source', evNote: 'Résumé: acceptance criteria at Ascra and Coditro; listed under Product & Agile skills.',
+  ev: 'source', evNote: 'Résumé: acceptance criteria at Ascra and Brightpath Labs; listed under Product & Agile skills.',
   sum: 'The agreed conditions a story must meet to be accepted: clear enough to test, free of implementation detail.',
   def: 'Acceptance criteria are the conditions a story must satisfy before the product owner accepts it. They describe observable behaviour, including negative paths, boundaries, permission checks, exceptions and audit expectations. Given–When–Then is a common format: the context, the action, the expected outcome.',
   why: 'They are the contract between business, development and testing for a single story. Clear criteria reduce rework, settle "is it done?" arguments, and become the basis for test cases.',
@@ -176,7 +176,7 @@ PF.skills.push(
 {
   id: 'rtm', area: 'A', name: 'Requirements Traceability Matrix (RTM)',
   tags: ['forward traceability', 'backward traceability', 'impact analysis', 'coverage', 'test mapping'],
-  ev: 'source', evNote: 'Résumé: authored RTMs at Ascra, Intechglobe and Coditro.',
+  ev: 'source', evNote: 'Résumé: authored RTMs at Ascra, Northbridge and Brightpath Labs.',
   sum: 'Links every objective to its requirements, stories, designs, tests and release, so nothing is lost and every change has a known blast radius.',
   def: 'An RTM is a table, or set of tool links, connecting business objectives to business requirements, functional requirements, user stories, design references, test cases, defects and releases. <strong>Forward traceability</strong> checks that every requirement is built and tested. <strong>Backward traceability</strong> checks that everything built exists for an approved reason.',
   why: 'It shows coverage gaps before UAT, gives audit evidence, and makes impact analysis fast: when a rule changes, the RTM shows which stories, tests and documents must change with it.',
@@ -232,7 +232,7 @@ PF.skills.push(
   avoid: ['Modelling every keystroke. Model decisions, handoffs and states.'],
   steps: ['Define scope: trigger, end states, participants.', 'Draw current state from evidence.', 'Mark pain points and delays.', 'Design future state with decisions, alternate paths, rejection loops, escalation and exceptions.', 'Derive the status model from the future state.', 'Validate with each role by walking through real cases.', 'Link process steps to requirements.'],
   scenario: 'For an application process, the future state has six lanes: Applicant, Portal, Reviewing Officer, Field Inspector, Approving Authority and Finance. The key paths are the clarification loop (reviewer to applicant and back), site inspection, provisional approval leading to payment and the bank guarantee, and final approval with an e-signature. Exceptions include a response window lapse (escalation), payment failure (retry or reconcile) and an invalid guarantee (re-upload).',
-  enterprise: 'The interactive workflow in the Rajmarg Pravesh case study and the BPMN artifact lets you click each step to see the role, the rule, the status change and the related requirement. It is a reconstructed, illustrative model, not the production configuration.',
+  enterprise: 'The interactive workflow in the Marg Pravesh case study and the BPMN artifact lets you click each step to see the role, the rule, the status change and the related requirement. It is a reconstructed, illustrative model, not the production configuration.',
   inputs: ['SOPs and policy', 'Observation and interviews', 'System records'],
   outputs: ['Current and future-state diagrams', 'Status model', 'Exception catalogue'],
   mistakes: [['Diagrams with no exception paths.', 'For every decision, draw every outcome.'], ['Statuses that do not match the diagram.', 'Derive statuses from the model and check each has an exit.'], ['No owner for each step.', 'Every activity sits in a lane.']],
@@ -248,7 +248,7 @@ PF.skills.push(
 {
   id: 'gap', area: 'A', name: 'Gap analysis and impact analysis',
   tags: ['current vs desired', 'process gaps', 'system gaps', 'policy dependency', 'change impact'],
-  ev: 'source', evNote: 'Résumé: GAP Analysis (skills; Coditro); impact assessment implied by change management and RTM work.',
+  ev: 'source', evNote: 'Résumé: GAP Analysis (skills; Brightpath Labs); impact assessment implied by change management and RTM work.',
   sum: 'Compares where we are with where we need to be, and works out everything a change will touch.',
   def: '<strong>Gap analysis</strong> compares the current state with the desired state and lists the gaps in process, system, data, policy and skills. <strong>Impact analysis</strong> examines a proposed change and identifies everything it affects: workflows, roles, data, integrations, reports, tests, documentation and training.',
   why: 'Gap analysis turns vague ambitions into a concrete work list. Impact analysis prevents the classic surprise where a "small" change breaks a report, an integration or a training manual.',

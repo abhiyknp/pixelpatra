@@ -43,7 +43,7 @@
     words.filter(function (o) { return o.head; }).forEach(function (o, k) { o.x = [0.12, 0.72, 0.2, 0.8][k]; o.y = [0.22, 0.18, 0.78, 0.74][k]; o.z = 0.9; });
     html += words.map(function (o, i) { return '<span class="i1-w' + (o.head ? ' h' : '') + (o.hi === 3 ? ' last' : '') + '" data-i="' + i + '">' + o.w.replace(/</g, '&lt;') + '</span>'; }).join('');
     html += '<p class="i-cap i1-c1">Every project starts as noise.</p><p class="i-cap i1-c2">The job is to find what matters.</p>' +
-      '<div class="i1-sub">' + (opts.sub || '<span class="i-name">Abhishek Yadav</span><span>Senior IT Business Analyst</span>') + '</div><span class="i-cue">Scroll ↓</span>';
+      '<div class="i1-sub">' + (opts.sub || '<span class="i-name">Nisha Rao</span><span>Senior IT Business Analyst</span>') + '</div><span class="i-cue">Scroll ↓</span>';
     stage.insertAdjacentHTML('beforeend', html);
     var els = Array.prototype.slice.call(stage.querySelectorAll('.i1-w')), measure = stage.querySelector('.i1-measure'), sub = stage.querySelector('.i1-sub'), c1 = stage.querySelector('.i1-c1'), c2 = stage.querySelector('.i1-c2'), cue = stage.querySelector('.i-cue');
     var T = [], FT = 60, W = 0, H = 0;

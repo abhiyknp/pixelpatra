@@ -49,7 +49,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   <button id="reset" type="button" title="Clears what you changed in the demos (orders, owner edits, sign-ins)">Reset demos</button>
   <a class="btn go" id="open" href="#" target="_blank" rel="noopener">Open full screen ↗</a>
   <a class="btn" id="home" href="../">Pixelpatra home</a>
-  <button id="get" type="button" class="get" hidden>Get this template</button>
+  <button id="get" type="button" class="get" hidden>Request a quote</button>
   <button id="close" type="button" hidden>Close ✕</button>
 </header>
 <div class="note" id="note"></div>
@@ -58,15 +58,101 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
 // Pick a demo, a device and where to start; the choice is kept in the address so a link can be shared:
 //   .../demo/?demo=oil&device=phone        .../demo/?demo=sample1&start=admin
 (function () {
+  /*pp:demos*/
   var DEMOS = [
-    { id: 'sample1', cats: ['ecommerce'], group: 'Shops', name: 'Sample 1 · Gift shop (full shop with Owner view)', url: '../Sample_1/index.html', owner: true, note: 'A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser.' },
-    { id: 'house', cats: ['ecommerce', '3d'], group: 'Shops', name: 'Sample 1 + 3D house walk-through', url: '../House_3D_Prototype/index.html', owner: true, note: 'The same shop, opening with a scroll-driven 3D walk through a house. Use Home page above to switch between the walk and the gift shop.' },
-    { id: 'ba', cats: ['portfolio'], group: 'Portfolios', name: 'Sample 4 · Business Analyst portfolio (knowledge base)', url: '../Sample_4/index.html', note: 'A working portfolio: scroll intro, 42-skill library, case studies, sample deliverables, decision scenarios and a process puzzle. Press / to search.' },
-    { id: 'portfolio', cats: ['portfolio', '3d'], group: 'Portfolios', name: 'Sample 3 · Portfolio (3D particle hero)', url: '../Sample_3/index.html', note: 'A portfolio whose name is made of thousands of particles. Move the pointer through them, then scroll: they scatter into a galaxy.' },
-    { id: 'oil', cats: ['business', '3d'], group: 'Factories and makers', name: 'Sample 2 · Sunflower oil factory (seed to bottle film)', url: '../Sample_2/index.html', note: 'Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records.' },
-    { id: 'intros', cats: ['3d'], group: 'Immersive openings', name: 'Scroll intros (openings A, B, C)', url: '../kits/scroll-intros/index.html', owner: true, note: 'Three scroll-driven openings. Use Opening and Theme above to switch, then scroll the homepage.' },
-    { id: 'store', cats: [], group: 'Pixelpatra', name: 'Pixelpatra store page', url: '../index.html', note: 'The page that sells the templates.' }
+    {
+      "id": "portfolio",
+      "cats": [
+        "portfolio",
+        "3d"
+      ],
+      "group": "Portfolios",
+      "name": "Portfolio · Portfolio · 3D",
+      "url": "../Sample_3/index.html",
+      "owner": true,
+      "note": "A portfolio whose name is made of thousands of particles. Move the pointer through them, then scroll: they scatter into a galaxy."
+    },
+    {
+      "id": "ba",
+      "cats": [
+        "portfolio"
+      ],
+      "group": "Portfolios",
+      "name": "Professional Portfolio · Portfolio · Knowledge base",
+      "url": "../Sample_4/index.html",
+      "owner": false,
+      "note": "A working portfolio: scroll intro, 42-skill library, case studies, sample deliverables, decision scenarios and a process puzzle. Press / to search."
+    },
+    {
+      "id": "sample1",
+      "cats": [
+        "ecommerce"
+      ],
+      "group": "Shops",
+      "name": "Gift Shop · E-commerce",
+      "url": "../Sample_1/index.html",
+      "owner": true,
+      "note": "A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser."
+    },
+    {
+      "id": "house",
+      "cats": [
+        "ecommerce",
+        "3d"
+      ],
+      "group": "Shops",
+      "name": "3D House Shop · E-commerce · 3D",
+      "url": "../House_3D_Prototype/index.html",
+      "owner": true,
+      "note": "The same shop, opening with a scroll-driven 3D walk through a house. Use Home page above to switch between the walk and the gift shop."
+    },
+    {
+      "id": "intros",
+      "cats": [
+        "3d"
+      ],
+      "group": "Immersive openings",
+      "name": "Scroll Openings · Animated",
+      "url": "../kits/scroll-intros/index.html",
+      "owner": true,
+      "note": "Three scroll-driven openings. Use Opening above to switch, then scroll the homepage."
+    },
+    {
+      "id": "oil",
+      "cats": [
+        "business",
+        "3d"
+      ],
+      "group": "Business",
+      "name": "Product Website · Product site · Film",
+      "url": "../Sample_2/index.html",
+      "owner": false,
+      "note": "Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records."
+    },
+    {
+      "id": "pixel",
+      "cats": [
+        "3d"
+      ],
+      "group": "Immersive openings",
+      "name": "Pixel Intros · Animated · Effects",
+      "url": "../Sample_5/index.html",
+      "owner": false,
+      "note": "Four effects: tear the cloth, scroll to build the pictures, scroll the pinned browser tour, and tear off the price tag."
+    },
+    {
+      "id": "records",
+      "cats": [
+        "business"
+      ],
+      "group": "Business",
+      "name": "Records Dashboard · Business tool",
+      "url": "../Sample_6/index.html",
+      "owner": false,
+      "note": "Add, edit, delete, search, sort and export records. Try the Add button, then reload: your changes stay in this browser."
+    }
   ];
+  /*/pp:demos*/
   var $ = function (id) { return document.getElementById(id); };
   var q = new URLSearchParams(location.search);
   var CAT = q.get('cat'), EMBED = q.get('embed') === '1';

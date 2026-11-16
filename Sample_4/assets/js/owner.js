@@ -3,7 +3,7 @@
    permission; the key is kept only in that browser (localStorage) and is sent only to GoatCounter. */
 (function () {
   'use strict';
-  var SITE = 'https://abhiyknp.goatcounter.com', KEY = 'pf-owner-gc';
+  var SITE = 'https://example.goatcounter.com', KEY = 'pf-owner-gc';
   var RANGES = [['1', 'Today'], ['7', '7 days'], ['30', '30 days'], ['90', '90 days']];
   /* GoatCounter groups screen widths into these codes and sends no display name for them. */
   var SIZES = { phone: 'Phones (up to 600px)', tablet: 'Tablets (601 to 1000px)', desktop: 'Laptops and desktops', desktophd: 'Large screens (over 1920px)', unknown: 'Unknown' };
@@ -22,7 +22,7 @@
   function ymd(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
   function cnt(x) { return x.count != null ? x.count : (x.count_unique || 0); }
 
-  /* Friendly names for counted paths: /case/rajmarg → "Case study: Rajmarg Pravesh Portal". */
+  /* Friendly names for counted paths: /case/rajmarg → "Case study: Marg Pravesh Portal". */
   function pageName(path) {
     var p = String(path || '').replace(/^\//, '').split('/'), v = p[0], id = p.slice(1).join('/');
     var find = function (list) { return (list || []).filter(function (x) { return x.id === id; })[0]; };
@@ -53,7 +53,7 @@
         '<thead><tr><th scope="col">Role</th><th scope="col">Read case studies</th><th scope="col">Download résumé</th><th scope="col">Use the Artifact Studio</th><th scope="col">See visitor statistics</th></tr></thead><tbody>' +
         '<tr class="dm-you"><th scope="row">Visitor <span class="dm-tag">you</span></th>' + Y + Y + Y + '<td class="dm-n dm-stamp-cell"><span aria-hidden="true">✕</span><span class="sr-only">Denied</span><span class="dm-stamp" aria-hidden="true">Denied</span></td></tr>' +
         '<tr><th scope="row">Recruiter</th>' + Y + Y + Y + N + '</tr>' +
-        '<tr><th scope="row">Product owner <span class="small muted">(Abhishek)</span></th>' + Y + Y + Y + Y + '</tr>' +
+        '<tr><th scope="row">Product owner <span class="small muted">(Nisha)</span></th>' + Y + Y + Y + Y + '</tr>' +
       '</tbody></table></div></div>' +
       '<div class="panel deny-ac"><h2>Acceptance criteria</h2><ul class="h-ac">' +
         '<li><b>Given</b> I am not the owner, <b>when</b> I open the owner\'s desk, <b>then</b> I see this page and no figures are loaded.</li>' +

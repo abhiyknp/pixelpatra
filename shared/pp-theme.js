@@ -29,6 +29,8 @@
       set({ '--bg': dark, '--ink': t.dark ? t.ink : mix(t.bg, '#ffffff', .4), '--acc': acc, '--mut': mix(t.dark ? t.ink : t.bg, dark, .45) });
       window.PP_COLORS = { c1: hex(acc).map(function (v) { return v / 255; }), c2: hex(acc2).map(function (v) { return v / 255; }) };
     },
+    // the records dashboard: its own palette until a theme is chosen
+    dash: function (t) { set({ '--bg': t.bg, '--card': t.card, '--ink': t.ink, '--muted': mix(t.ink, t.bg, .4), '--line': mix(t.ink, t.bg, .86), '--accent': t.dark ? t.accent : t.accent, '--accent-ink': onText(t.accent), '--accent2': t.accent2 }); },
     // the Business Analyst portfolio keeps its own dark navy look until a theme is chosen; a light theme uses its light tokens
     ba: function (t) {
       var vars = { '--paper': t.bg, '--surface': t.card, '--surface-2': mix(t.bg, t.ink, .06), '--ink': t.ink, '--ink-2': mix(t.ink, t.bg, .28), '--ink-3': mix(t.ink, t.bg, .46), '--rule': mix(t.ink, t.bg, .84),
@@ -63,7 +65,48 @@
   var css1 = '.pp-swatches { display: inline-flex; gap: 8px; align-items: center; } .pp-sw { all: unset; box-sizing: border-box; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; position: relative; background: conic-gradient(var(--b) 0 50%, var(--a) 0 75%, var(--c) 0); box-shadow: 0 0 0 1.5px rgba(128,128,128,.55); transition: transform .2s, box-shadow .2s; } .pp-sw:hover { transform: scale(1.12); } .pp-sw:focus-visible { outline: 3px solid #ffb27a; outline-offset: 3px; } .pp-sw[aria-checked="true"] { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #f97316; } .pp-sw[aria-checked="true"]::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font: 700 15px/1 system-ui; text-shadow: 0 1px 3px rgba(0,0,0,.7); } @media (max-width: 640px) { .pp-sw { width: 38px; height: 38px; } }';
   var st = document.createElement('style'); st.textContent = css1; document.head.appendChild(st);
 
-  window.ppTheme = { themes: THEMES, apply: apply, mount: mount, current: function () { return current; }, saved: stored };
+  // ---- brand: the name typed on the Pixelpatra home page replaces the template's sample brand name everywhere it is shown
+  var scr = document.currentScript, DEFS = ((scr && scr.dataset.brand) || '').split('|').filter(Boolean), INIT = (scr && scr.dataset.initials) || '';
+  DEFS.sort(function (a, b) { return b.length - a.length; });
+  function custom() { try { return (localStorage.getItem('pp-name') || '').trim().slice(0, 28); } catch (e) { return ''; } }
+  function initials(n) { return (n.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2) || '').toUpperCase(); }
+  function conv(str) { var n = custom(); if (!n || !DEFS.length || !str) return str; DEFS.forEach(function (d) { if (str.indexOf(d) >= 0) str = str.split(d).join(d === d.toUpperCase() && d !== d.toLowerCase() ? n.toUpperCase() : n); }); return str; }
+  var origText = new WeakMap(), origAttr = new WeakMap(), ATTRS = ['alt', 'aria-label', 'title', 'placeholder'];
+  function fixText(node) {
+    var cur = node.nodeValue, o = origText.has(node) ? origText.get(node) : cur;
+    if (!origText.has(node)) { if (!(DEFS.some(function (d) { return cur.indexOf(d) >= 0; }) || (INIT && cur.trim() === INIT))) return; origText.set(node, cur); o = cur; }
+    var n = custom(), v = n ? (INIT && o.trim() === INIT ? o.replace(INIT, initials(n)) : conv(o)) : o; if (v !== cur) node.nodeValue = v;
+  }
+  function fixEl(el) {
+    ATTRS.forEach(function (a) { var cur = el.getAttribute(a); if (cur == null) return; var m = origAttr.get(el) || {}; var o = m[a] != null ? m[a] : cur; if (m[a] == null) { if (!DEFS.some(function (d) { return cur.indexOf(d) >= 0; })) return; m[a] = cur; origAttr.set(el, m); } var v = custom() ? conv(o) : o; if (v !== cur) el.setAttribute(a, v); });
+  }
+  function walk(root) {
+    if (!root || (root.nodeType === 1 && /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA)$/.test(root.nodeName))) return;
+    if (root.nodeType === 3) { fixText(root); return; }
+    if (root.nodeType !== 1 && root.nodeType !== 9) return;
+    var tw = document.createTreeWalker(root, 5 /* text and elements */, { acceptNode: function (n) { return n.nodeType === 1 && /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA)$/.test(n.nodeName) ? 2 : 1; } }), n;
+    if (root.nodeType === 1) fixEl(root);
+    while ((n = tw.nextNode())) { if (n.nodeType === 3) fixText(n); else fixEl(n); }
+  }
+  var brandOn = false, bq = [], bt = 0;
+  function brandAll() {
+    var n = custom(); root.toggleAttribute('data-pp-brand', !!n);
+    if (n) { root.style.setProperty('--pp-brand', JSON.stringify(n)); root.style.setProperty('--pp-brand-up', JSON.stringify(n.toUpperCase())); } else { root.style.removeProperty('--pp-brand'); root.style.removeProperty('--pp-brand-up'); }
+    if (document.title) { if (!document.__ppT) document.__ppT = document.title; document.title = n ? conv(document.__ppT) : document.__ppT; }
+    walk(document.body || root);
+  }
+  function startBrand() {
+    if (brandOn || !DEFS.length) return; brandOn = true; brandAll();
+    new MutationObserver(function (ms) { ms.forEach(function (m) { if (m.type === 'childList') m.addedNodes.forEach(function (x) { bq.push(x); }); else bq.push(m.target); }); if (!bt) bt = requestAnimationFrame(function () { bt = 0; var q = bq; bq = []; q.forEach(walk); }); }).observe(document.body, { childList: true, subtree: true, characterData: true });
+    window.addEventListener('storage', function (e) { if (e.key === 'pp-name') brandAll(); });
+    window.addEventListener('message', function (e) { if ((e.data || {}).pixelpatra === 'brand') brandAll(); });
+  }
+  if (DEFS.length) { if (document.body) startBrand(); else document.addEventListener('DOMContentLoaded', startBrand); }
+  var bcss = 'html[data-pp-brand] .mark.wordmark { -webkit-mask-image: none; mask-image: none; background: none; width: auto; aspect-ratio: auto; height: auto; display: inline-block; } html[data-pp-brand] .mark.wordmark::after { content: var(--pp-brand-up); font: 600 19px/1 "Cormorant Garamond", Georgia, serif; letter-spacing: .16em; color: var(--choc, currentColor); white-space: nowrap; } html[data-pp-brand] .mark.lockup { background: none; width: auto; aspect-ratio: auto; display: grid; place-items: center; } html[data-pp-brand] .mark.lockup::after { content: var(--pp-brand-up); font: 600 clamp(26px, 6vw, 64px)/1.1 "Cormorant Garamond", Georgia, serif; letter-spacing: .14em; color: var(--choc, currentColor); text-align: center; }';
+  var bst = document.createElement('style'); bst.textContent = bcss; document.head.appendChild(bst);
+  function brandName(def) { return conv(def); }
+
+  window.ppTheme = { themes: THEMES, apply: apply, mount: mount, current: function () { return current; }, saved: stored, brand: brandName, refreshBrand: brandAll };
   var q = new URLSearchParams(location.search).get('theme'), start = (q && by(q) && q) || stored();
   if (start && by(start)) { apply(start, false, true);
     // these pages build their controls after load: apply again once they exist

@@ -10,11 +10,11 @@ OUT=${1:-dist}
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT"
 rm -rf "$OUT" && mkdir -p "$OUT"
-cp index.html animations.html intro.html credits.html "$OUT"/
+cp index.html how-it-works.html faq.html about.html quote.html terms.html privacy.html refunds.html credits.html favicon.svg "$OUT"/
 cp -r demo "$OUT"/demo
 cp -r shared "$OUT"/shared
 [ -d previews ] && cp -r previews "$OUT"/previews
-for d in Sample_1 House_3D_Prototype Sample_2 Sample_3 Sample_4 kits; do
+for d in Sample_1 House_3D_Prototype Sample_2 Sample_3 Sample_4 Sample_5 Sample_6 kits; do
   mkdir -p "$OUT/$d"
   (cd "$d" && tar --exclude=./tools --exclude=./.preview --exclude=./.cache --exclude='*.md' --exclude=./.gitignore --exclude=serve.sh --exclude=page.html -cf - .) | (cd "$OUT/$d" && tar -xf -)
 done

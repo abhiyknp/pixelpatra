@@ -99,7 +99,7 @@
         '<div class="pz-tally"><div><span class="v">' + P.score + '</span><span class="k">Points' + (isBest ? ' · new best' : ' · best ' + best.score) + '</span></div><div><span class="v">' + total + '/9</span><span class="k">Stars</span></div><div><span class="v">' + fmtTime(P.elapsed) + '</span><span class="k">Time</span></div></div>' +
         '<ol class="pz-flow">' + PF.puzzle.map(function (l, i) { return '<li style="--d:' + i + '"><span class="pz-n">' + (i + 1) + '</span><div><span class="pz-lane">' + l.name + ' · ' + starsHtml(P.stars[i], 3, 'mini') + '</span><p>' + l.lesson + '</p></div></li>'; }).join('') + '</ol>' +
         '<p class="small muted">This is how I run every project: one clear flow from the first request to a measured result.</p>' +
-        '<div class="btn-row"><a class="btn" href="#cases">See it on real projects</a><button class="btn ghost" type="button" data-act="pz-again">Play again</button><a class="btn ghost" href="mailto:ba.abhiy@gmail.com">Email me</a></div></div>';
+        '<div class="btn-row"><a class="btn" href="#cases">See it on real projects</a><button class="btn ghost" type="button" data-act="pz-again">Play again</button><a class="btn ghost" href="mailto:nisha.rao@example.com">Email me</a></div></div>';
       h = host.querySelector('h2'); h.setAttribute('tabindex', '-1'); h.focus();
       return;
     }

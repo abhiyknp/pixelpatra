@@ -5,7 +5,7 @@ PF.skills.push(
 {
   id: 'scrum', area: 'B', name: 'Agile and Scrum',
   tags: ['sprint planning', 'daily scrum', 'refinement', 'review', 'retrospective', 'Kanban', 'increment'],
-  ev: 'source', evNote: 'Résumé: Agile (Scrum & Kanban), Sprint Planning, Backlog Refinement; Agile releases at Ascra, Intechglobe and Coditro.',
+  ev: 'source', evNote: 'Résumé: Agile (Scrum & Kanban), Sprint Planning, Backlog Refinement; Agile releases at Ascra, Northbridge and Brightpath Labs.',
   sum: 'Deliver in small, inspected increments while keeping scope and traceability under control.',
   def: 'Scrum is a framework for delivering a product in short iterations (sprints). Each sprint produces a usable <em>increment</em>. <strong>Transparency</strong>, <strong>inspection</strong> and <strong>adaptation</strong> are its pillars. Roles: the <strong>Product Owner</strong> maximises value and orders the backlog. The <strong>Scrum Master</strong> coaches the process and removes impediments. <strong>Developers</strong> build the increment. <strong>Stakeholders</strong> give feedback at reviews. Kanban is a flow-based alternative that limits work in progress.',
   why: 'Requirements in complex domains change as people see working software. Scrum makes that change safe by inspecting small increments often, but only if scope and traceability are managed alongside it.',
@@ -29,7 +29,7 @@ PF.skills.push(
 {
   id: 'backlog', area: 'B', name: 'Backlog management and prioritisation',
   tags: ['MoSCoW', 'value vs effort', 'WSJF', 'dependencies', 'readiness', 'estimation', 'compliance'],
-  ev: 'source', evNote: 'Résumé: Product Backlog Management, Requirements Prioritization, Feature Prioritization; prioritised backlogs with MoRTH, NHAI and DIC (Ascra).',
+  ev: 'source', evNote: 'Résumé: Product Backlog Management, Requirements Prioritization, Feature Prioritization; prioritised backlogs with MoRT, NHA and DIC (Ascra).',
   sum: 'Keeps the backlog ordered by value, risk and dependency, with reasons anyone can read.',
   def: 'Backlog management maintains an ordered list of work: epics, features, stories, enablers and defects. Prioritisation decides order using explicit criteria. <strong>MoSCoW</strong> sorts items into Must, Should, Could and Won\'t (this time). <strong>Value versus effort</strong> compares benefit with cost. Readiness checks whether an item can enter a sprint.',
   why: 'Teams always have more requests than capacity. A transparent prioritisation method turns "who shouts loudest" into a reasoned decision that stakeholders can challenge with evidence.',
@@ -197,7 +197,7 @@ PF.skills.push(
 {
   id: 'wireframes', area: 'D', name: 'Wireframes and prototyping',
   tags: ['low fidelity', 'high fidelity', 'states', 'validation messages', 'empty states', 'annotations'],
-  ev: 'source', evNote: 'Résumé: created wireframes using Figma at Ascra, Intechglobe and Coditro.',
+  ev: 'source', evNote: 'Résumé: created wireframes using Figma at Ascra, Northbridge and Brightpath Labs.',
   sum: 'Sketch functional intent quickly, with every state annotated, so designers and developers build the same thing.',
   def: 'Low-fidelity wireframes show layout and content. High-fidelity designs show final visuals. A prototype links screens to simulate flow. A Business Analyst\'s wireframes communicate functional intent: which data appears, what actions exist, and how the screen behaves in each state (empty, loading, error, success, no permission).',
   why: 'Text requirements are read differently by different people. A wireframe with annotations shows them, which reduces misunderstanding.',
@@ -221,7 +221,7 @@ PF.skills.push(
 {
   id: 'figma', area: 'D', name: 'Figma and FigJam',
   tags: ['design collaboration', 'journey mapping', 'workshops', 'handoff', 'annotations'],
-  ev: 'source', evNote: 'Résumé: Figma and FigJam (tools); wireframes in Figma (Ascra, Intechglobe, Coditro).',
+  ev: 'source', evNote: 'Résumé: Figma and FigJam (tools); wireframes in Figma (Ascra, Northbridge, Brightpath Labs).',
   sum: 'Shared canvases for workshops, flows, wireframes and annotated handoff.',
   def: 'Figma is a collaborative design tool for wireframes, designs and prototypes. FigJam is its whiteboard for workshops, journey maps and flows. Dev Mode and annotations support handoff.',
   why: 'One shared canvas means stakeholders, designers and developers comment in the same place, which shortens feedback loops.',

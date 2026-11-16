@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Campus Desk · Records dashboard</title>
+<meta name="description" content="A records dashboard template: add, edit, delete, search, sort and export student and staff records. Sample data only.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<script src="../shared/pp-theme.js" data-pp="dash" data-brand="Campus Desk"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the records</a>
+<div class="app">
+  <aside class="side" id="side" aria-label="Sections">
+    <div class="brand"><span class="mk" aria-hidden="true"></span><b>Campus Desk</b></div>
+    <nav>
+      <button type="button" class="nav on" data-view="dash"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h7V4H4v9zm0 7h7v-5H4v5zm9 0h7v-9h-7v9zm0-16v5h7V4h-7z"/></svg>Dashboard</button>
+      <button type="button" class="nav" data-view="students"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3zM5 13.2v4l7 3.8 7-3.8v-4l-7 3.8-7-3.8z"/></svg>Students <span class="count" id="c-students"></span></button>
+      <button type="button" class="nav" data-view="staff"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.6 0-1 .1 1.2.9 2 2 2 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"/></svg>Staff <span class="count" id="c-staff"></span></button>
+    </nav>
+    <div class="side-foot"><button type="button" class="ghost" id="reset">Reset sample data</button><p>Everything you change stays in this browser.</p></div>
+  </aside>
+  <div class="main-col">
+    <header class="top">
+      <button type="button" class="burger" id="burger" aria-label="Open the menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg></button>
+      <label class="search"><span class="sr">Search records</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 14 15.5l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0a4.5 4.5 0 1 1 4.5-4.5A4.5 4.5 0 0 1 9.5 14z"/></svg><input id="q" type="search" placeholder="Search name, email, course…" autocomplete="off"></label>
+      <button type="button" class="btn primary" id="add">+ Add record</button>
+    </header>
+    <main id="main" tabindex="-1"></main>
+  </div>
+</div>
+<dialog id="dlg" aria-labelledby="dlg-t"><form method="dialog" id="form" novalidate></form></dialog>
+<dialog id="confirm" aria-labelledby="cf-t"><form method="dialog"><h2 id="cf-t">Delete</h2><p id="cf-p"></p><div class="row-end"><button class="btn" value="no">Cancel</button><button class="btn danger" value="yes" id="cf-yes">Delete</button></div></form></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

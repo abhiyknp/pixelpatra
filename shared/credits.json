@@ -1,0 +1,119 @@
+[
+ {
+  "file": "p1",
+  "title": "Masala Tea 1.jpg",
+  "artist": "Gaurav Dhwaj Khadka",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Masala_Tea_1.jpg",
+  "where": "Portfolio sample: Chai Corner"
+ },
+ {
+  "file": "p2",
+  "title": "Jim's Art Desk (4462910289).jpg",
+  "artist": "FontShop from USA",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Jim%27s_Art_Desk_%284462910289%29.jpg",
+  "where": "Portfolio sample: Studio Nine"
+ },
+ {
+  "file": "p3",
+  "title": "A basket Full of Carrots at Banda Market Kampala.jpg",
+  "artist": "Reem M Hamid",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:A_basket_Full_of_Carrots_at_Banda_Market_Kampala.jpg",
+  "where": "Portfolio sample: Green Basket"
+ },
+ {
+  "file": "p4",
+  "title": "Hindu wedding card.jpg",
+  "artist": "Onef9day",
+  "license": "CC BY 3.0",
+  "license_url": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hindu_wedding_card.jpg",
+  "where": "Portfolio sample: Ritu Weds Kabir"
+ },
+ {
+  "file": "p5",
+  "title": "Two Loves (Unsplash).jpg",
+  "artist": "Ehud Neuhaus paramir",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Two_Loves_%28Unsplash%29.jpg",
+  "where": "Portfolio sample: Northwind Labs"
+ },
+ {
+  "file": "p6",
+  "title": "Anonymous - Shrine to the God Mithras (Mithraeum) - 1935.100 - Yale University Art Gallery.jpg",
+  "artist": "anonymous",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Anonymous_-_Shrine_to_the_God_Mithras_%28Mithraeum%29_-_1935.100_-_Yale_University_Art_Gallery.jpg",
+  "where": "Portfolio sample: Kala Ghar"
+ },
+ {
+  "file": "pack-box",
+  "title": "Open Pink Gifft Box with White Ribbon.JPG",
+  "artist": "Jpquidores",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Open_Pink_Gifft_Box_with_White_Ribbon.JPG",
+  "where": "Gift shop: gift box"
+ },
+ {
+  "file": "pack-card",
+  "title": "Greeting Card, Valentine, 19th century (CH 18317073).jpg",
+  "artist": "Unknown artistUnknown artist",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Greeting_Card%2C_Valentine%2C_19th_century_%28CH_18317073%29.jpg",
+  "where": "Gift shop: care card"
+ },
+ {
+  "file": "pack-seal",
+  "title": "1842 wax seal of hat maker guild in Sombor.jpg",
+  "artist": "Scanned by \"Ravnoplov\"",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:1842_wax_seal_of_hat_maker_guild_in_Sombor.jpg",
+  "where": "Gift shop: wax seals"
+ },
+ {
+  "file": "pack-jar",
+  "title": "Candle (Slava celebration).jpg",
+  "artist": "Petar Milošević",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Candle_%28Slava_celebration%29.jpg",
+  "where": "Gift shop: candle"
+ },
+ {
+  "file": "pack-pouch",
+  "title": "At La Orotava 2022 035.jpg",
+  "artist": "Photograph by Mike Peel (www.mikepeel.net).",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:At_La_Orotava_2022_035.jpg",
+  "where": "Gift shop: pouch"
+ },
+ {
+  "file": "product-12",
+  "title": "Elegant green ceramic plate design",
+  "artist": "The Metropolitan Museum of Art (via Openverse)",
+  "license": "CC0 1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "page": "https://www.rawpixel.com/image/10235554/plate",
+  "where": "Shop samples: Sage Plate"
+ },
+ {
+  "file": "product-10",
+  "title": "Stones",
+  "artist": "rkramer62",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://www.flickr.com/photos/26503922@N08/6233679473",
+  "where": "Shop samples: River Pebbles"
+ }
+]

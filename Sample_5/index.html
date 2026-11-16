@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pixelpatra Animation Picks</title>
+<title>Northlight Studio · Pixel Intros</title><meta name="robots" content="noindex"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><script src="../shared/pp-theme.js" data-pp="store" data-brand="Northlight Studio|NORTHLIGHT STUDIO"></script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,114 +128,105 @@ p { margin: 0; }
   .pb-shot.run span { animation: none; }
   .sb-screen { transition: none; }
 }
+
+/* pixel build over a real picture, and pictures in the browser tour */
+.pb-shot { position: relative; }
+.pb-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; transition: opacity .6s ease 1.5s; border-radius: 8px; }
+.pb-shot.run img { opacity: 1; }
+.pb-shot.run span { z-index: 1; }
+.pb-card .row small { color: var(--muted); font: 500 12px var(--font-mono); letter-spacing: .04em; }
+.sb-screen { padding: 0; } .sb-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.sb-list li small { font: 500 12px var(--font-mono); opacity: .8; }
+.site-note { color: var(--muted); font-size: 14px; padding-block: 8px 0; }
+@media (prefers-reduced-motion: reduce) { .pb-shot img { opacity: 1; transition: none; } }
 </style>
 </head>
 <body>
-
-<main class="wrap">
+<a class="skip-link" href="#main" style="position:absolute;left:8px;top:-60px;background:#15172a;color:#fff;padding:10px 14px;border-radius:8px;z-index:100" onfocus="this.style.top='8px'" onblur="this.style.top='-60px'">Skip to the effects</a>
+<main class="wrap" id="main">
   <header class="intro">
-    <p class="eyebrow">Pixelpatra · animation options</p>
-    <h1>Try each one, then pick</h1>
-    <p class="lede">Four options for the store page, each shown in its own box. Drag, scroll and tap them like a visitor would. I recommend options 1 and 2 together.</p>
+    <p class="eyebrow">Northlight Studio · opening effects</p>
+    <h1>Four ways to open a website</h1>
+    <p class="lede">Drag, scroll and tap each effect like a visitor would. Use one on your homepage, or all four through the page.</p>
   </header>
 
-  <!-- 1 -->
-  <section class="opt" id="opt1">
+  <section class="opt" id="opt1" aria-labelledby="o1">
     <div class="opt-head">
-      <div>
-        <p class="eyebrow">Option 1 · intro</p>
-        <h2>Tear-open cloth <span class="rec">Recommended</span></h2>
-      </div>
-      <div class="btns">
-        <button class="btn btn-solid" type="button" id="rip">Rip it for me</button>
-        <button class="btn" type="button" id="cloth-reset">Reset</button>
-      </div>
+      <div><p class="eyebrow">Effect 1 · opening</p><h2 id="o1">Tear-open cloth</h2></div>
+      <div class="btns"><button class="btn btn-solid" type="button" id="rip">Tear it for me</button><button class="btn" type="button" id="cloth-reset">Start again</button></div>
     </div>
-    <p class="opt-note">The store opens under a sheet of saffron pixels. Grab it and pull, or swipe fast across it, and it tears and falls away. On the real site a scroll would also rip it.</p>
+    <p class="opt-note">The site opens under a sheet of coloured pixels. Visitors grab it and pull, or swipe fast across it, and it tears and falls away to reveal the page.</p>
     <div class="stage cloth-stage">
       <div class="cloth-behind">
-        <p class="eyebrow">Website templates, made in India</p>
-        <h3>Your website, <span>ready this week.</span></h3>
-        <p>Clean, fast templates for students, professionals and small businesses.</p>
+        <p class="eyebrow">Web design studio · Pune</p>
+        <h3>We build websites <span>people remember.</span></h3>
+        <p>Portfolios, shops and product sites that feel good to scroll and are easy to run.</p>
       </div>
       <canvas id="cloth" aria-label="A sheet of pixels you can tear by dragging"></canvas>
       <div class="cloth-hint" id="cloth-hint">Pull or swipe to tear</div>
     </div>
   </section>
 
-  <!-- 2 -->
-  <section class="opt" id="opt2">
+  <section class="opt" id="opt2" aria-labelledby="o2">
     <div class="opt-head">
-      <div>
-        <p class="eyebrow">Option 2 · scroll</p>
-        <h2>Pixels build each preview <span class="rec">Recommended</span></h2>
-      </div>
+      <div><p class="eyebrow">Effect 2 · scroll</p><h2 id="o2">Pixels build each picture</h2></div>
       <div class="btns"><button class="btn" type="button" id="pb-replay">Replay</button></div>
     </div>
-    <p class="opt-note">When a template card scrolls into view, its preview drops in pixel by pixel, the same way the "P" logo forms.</p>
+    <p class="opt-note">When a project card scrolls into view, its picture drops in pixel by pixel, then sharpens into the real image.</p>
     <div class="pb-grid" id="pb-grid"></div>
   </section>
 
-  <!-- 3 -->
-  <section class="opt" id="opt3">
+  <section class="opt" id="opt3" aria-labelledby="o3">
     <div class="opt-head">
-      <div>
-        <p class="eyebrow">Option 3 · scroll</p>
-        <h2>Pinned browser tour</h2>
-      </div>
+      <div><p class="eyebrow">Effect 3 · scroll</p><h2 id="o3">Pinned browser tour</h2></div>
     </div>
-    <p class="opt-note">Keep scrolling. The browser stays in place while the four templates swap inside it, with the matching name and price lit up.</p>
+    <p class="opt-note">Keep scrolling. The browser stays in place while the projects swap inside it, with the matching name lit up.</p>
     <div class="sb" id="sb">
       <div class="stage sb-sticky">
         <div>
           <ul class="sb-list" id="sb-list">
-            <li class="on"><span>Portfolio</span><span class="price">₹299</span></li>
-            <li><span>Sample 1</span><span class="price">₹499</span></li>
-            <li><span>Sample 2</span><span class="price">₹499</span></li>
-            <li><span>Sample 3</span><span class="price">₹499</span></li>
+            <li class="on"><span>Portfolio site</span><small>Personal</small></li>
+            <li><span>Online shop</span><small>E-commerce</small></li>
+            <li><span>3D showroom</span><small>Immersive</small></li>
+            <li><span>Product film</span><small>Business</small></li>
           </ul>
           <div class="sb-progress"><b id="sb-prog"></b></div>
-          <p class="sb-tip">Scroll down to switch templates</p>
+          <p class="sb-tip">Scroll down to switch projects</p>
         </div>
         <div class="sb-frame">
-          <div class="sb-bar"><i></i><i></i><i></i><span class="url" id="sb-url">pixelpatra.com/portfolio</span></div>
+          <div class="sb-bar"><i></i><i></i><i></i><span class="url" id="sb-url">northlight.studio/work/portfolio</span></div>
           <div class="sb-screens" id="sb-screens"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 4 -->
-  <section class="opt" id="opt4">
+  <section class="opt" id="opt4" aria-labelledby="o4">
     <div class="opt-head">
-      <div>
-        <p class="eyebrow">Option 4 · bundle</p>
-        <h2>Tear off the price tag</h2>
-      </div>
-      <div class="btns"><button class="btn" type="button" id="tag-reset">Reset</button></div>
+      <div><p class="eyebrow">Effect 4 · pricing</p><h2 id="o4">Tear off the price tag</h2></div>
+      <div class="btns"><button class="btn" type="button" id="tag-reset">Put it back</button></div>
     </div>
-    <p class="opt-note">The bundle box shows the full price on a paper tag. Pull the tag down to tear it off and reveal the bundle price.</p>
+    <p class="opt-note">The package shows its full price on a paper tag. Pull the tag down to tear it off and reveal the package price.</p>
     <div class="stage tag-stage" id="tag-stage">
       <div>
-        <p class="eyebrow" style="color: inherit; opacity: .65">Bundle</p>
-        <h3>All 4 templates, one price</h3>
-        <p>Portfolio plus all three samples.</p>
-        <div class="deal"><span class="big">₹999</span><span class="save">You save ₹797</span></div>
+        <p class="eyebrow" style="color: inherit; opacity: .65">Studio package</p>
+        <h3>Everything in one package</h3>
+        <p>Design, build, photography and a year of hosting, together.</p>
+        <div class="deal"><span class="big">₹18,000</span><span class="save">You save ₹6,000</span></div>
       </div>
       <div class="hang">
         <div class="string"></div>
         <div class="ptag" id="ptag">
           <div class="stub"></div>
-          <div class="body" id="ptag-body"><small>Separately</small><b>₹1,796</b><span>4 templates</span></div>
+          <div class="body" id="ptag-body"><small>Separately</small><b>₹24,000</b><span>4 services</span></div>
         </div>
         <span class="pull-hint" id="pull-hint">Pull the tag down</span>
       </div>
     </div>
   </section>
 
-  <p class="wrapup">Tell me in the thread which options you want on the store, and I'll add them.</p>
+  <p class="site-note">Effects use plain HTML, CSS and JavaScript. They respect “reduce motion”, work with touch, mouse and keyboard, and follow the colour theme you choose.</p>
 </main>
-
 <script>
 (function () {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -246,7 +237,7 @@ p { margin: 0; }
   const ctx = canvas.getContext("2d");
   const hint = document.getElementById("cloth-hint");
   let W, H, cell, C, R, pts, Hc, Vc, running = false, dropped = false, total = 0, broken = 0, raf;
-  const logo = ["####.", "#...#", "#...#", "####.", "#....", "#...."];
+  const logo = ["#...#", "##..#", "#.#.#", "#..##", "#...#", "#...#"];
   let ptr = { down: false, x: 0, y: 0, px: 0, py: 0, cut: false };
 
   function build() {
@@ -351,7 +342,7 @@ p { margin: 0; }
     if (dropped && pts.every(p => p.y > H + cell * 2)) { running = false; canvas.style.display = "none"; return; }
     raf = requestAnimationFrame(loop);
   }
-  function start() { cancelAnimationFrame(raf); build(); running = true; loop(); }
+  function start() { cancelAnimationFrame(raf); canvas.style.display = ""; dropped = false; build(); running = true; loop(); }
 
   function local(e) { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
   canvas.addEventListener("pointerdown", e => {
@@ -377,63 +368,39 @@ p { margin: 0; }
   if (reduce) { build(); draw(); } else start();
   let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (canvas.style.display !== "none") start(); }, 200); });
 
-  /* ---------- 2. Pixel build ---------- */
-  const pbData = [
-    { name: "Portfolio", price: "₹299", col: (i, j) => {
-      if (j === 0) return "var(--line)";
-      if (Math.hypot(i - 4.5, j - 4.5) < 2.9) return "var(--teal)";
-      if (j === 3 && i >= 9 && i <= 17) return "var(--ink)";
-      if ((j === 5 && i >= 9 && i <= 16) || (j === 6 && i >= 9 && i <= 13)) return "var(--muted)";
-      if (j >= 9 && j <= 10 && i >= 1 && i <= 18 && i % 6 !== 0) return "color-mix(in srgb, var(--teal) 35%, var(--line))";
-      return null; } },
-    { name: "Sample 1", price: "₹499", col: (i, j) => {
-      if (j === 0) return "var(--line)";
-      if (j >= 2 && j <= 6 && i >= 1 && i <= 18) {
-        if (j === 3 && i >= 3 && i <= 10) return "#ffffff";
-        if (j === 5 && i >= 3 && i <= 7) return "rgba(255,255,255,.7)";
-        return "var(--sky)"; }
-      if (j >= 8 && j <= 10 && i >= 1 && i <= 18 && i % 6 !== 1 || (j >= 8 && j <= 10 && i === 1)) return "color-mix(in srgb, var(--sky) 30%, var(--line))";
-      return null; } },
-    { name: "Sample 2", price: "₹499", col: (i, j) => {
-      if (j === 0) return "var(--line)";
-      if (j >= 2 && j <= 10 && i >= 1 && i <= 9) {
-        if (j === 5 && i >= 2 && i <= 7) return "#ffffff";
-        if (j === 7 && i >= 2 && i <= 5) return "rgba(255,255,255,.7)";
-        return "var(--leaf)"; }
-      if (j >= 2 && j <= 10 && i >= 11 && i <= 18 && j !== 6 && i !== 15) return "color-mix(in srgb, var(--leaf) 30%, var(--line))";
-      return null; } }
+  /* ---------- 2. Pixel build: each tile takes the average colour of its part of the real picture ---------- */
+  const works = [
+    { name: "Portfolio site", tag: "Personal", img: "assets/work-1.jpg" },
+    { name: "Online shop", tag: "E-commerce", img: "assets/work-2.jpg" },
+    { name: "3D showroom", tag: "Immersive", img: "assets/work-3.jpg" },
+    { name: "Product film", tag: "Business", img: "assets/work-4.jpg" }
   ];
-  const pbGrid = document.getElementById("pb-grid");
-  const shots = pbData.map(t => {
+  const pbGrid = document.getElementById("pb-grid"), COLS = 20, ROWS = 12;
+  const shots = works.slice(0, 3).map(t => {
     const card = document.createElement("article"); card.className = "pb-card";
     const shot = document.createElement("div"); shot.className = "pb-shot";
-    for (let j = 0; j < 12; j++) for (let i = 0; i < 20; i++) {
-      const s = document.createElement("span"); const c = t.col(i, j);
-      s.style.background = c || "transparent";
-      if (c) s.style.setProperty("--d", (j * 45 + Math.random() * 260 + (i % 4) * 20) + "ms");
-      shot.appendChild(s);
+    const spans = [];
+    for (let j = 0; j < ROWS; j++) for (let i = 0; i < COLS; i++) {
+      const s = document.createElement("span"); s.style.background = "var(--line)";
+      s.style.setProperty("--d", (j * 45 + Math.random() * 260 + (i % 4) * 20) + "ms"); shot.appendChild(s); spans.push(s);
     }
+    const im = new Image(); im.alt = t.name + " project"; im.src = t.img; im.loading = "lazy"; shot.appendChild(im);
+    const paint = () => { try { const c = document.createElement("canvas"); c.width = COLS; c.height = ROWS; const x = c.getContext("2d"); x.drawImage(im, 0, 0, im.naturalWidth, im.naturalWidth * 0.62, 0, 0, COLS, ROWS); const d = x.getImageData(0, 0, COLS, ROWS).data; spans.forEach((s, k) => { s.style.background = "rgb(" + d[k * 4] + "," + d[k * 4 + 1] + "," + d[k * 4 + 2] + ")"; }); } catch (e) { /* keep the neutral tiles */ } };
+    if (im.complete && im.naturalWidth) paint(); else im.addEventListener("load", paint);
     card.appendChild(shot);
-    const row = document.createElement("div"); row.className = "row";
-    row.innerHTML = `<h3>${t.name}</h3><span class="price">${t.price}</span>`;
-    card.appendChild(row); pbGrid.appendChild(card);
+    const row = document.createElement("div"); row.className = "row"; row.innerHTML = "<h3>" + t.name + "</h3><small>" + t.tag + "</small>"; card.appendChild(row); pbGrid.appendChild(card);
     return shot;
   });
   function runShot(s) { s.classList.remove("run"); void s.offsetWidth; s.classList.add("run"); }
   if (!reduce && "IntersectionObserver" in window) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { runShot(e.target); io.unobserve(e.target); } }), { threshold: 0.35 });
     shots.forEach(s => io.observe(s));
-  }
+  } else shots.forEach(s => s.classList.add("run"));
   document.getElementById("pb-replay").addEventListener("click", () => shots.forEach((s, k) => setTimeout(() => runShot(s), k * 150)));
 
   /* ---------- 3. Scroll browser ---------- */
   const screensEl = document.getElementById("sb-screens");
-  const screens = [
-    { url: "pixelpatra.com/portfolio", html: `<div style="display:grid;grid-template-columns:30% 1fr;gap:8%;align-items:center"><div style="aspect-ratio:1;border-radius:50%;background:var(--teal)"></div><div style="display:grid;gap:10px"><div class="blk" style="height:14px;width:80%;background:var(--ink)"></div><div class="blk" style="height:8px"></div><div class="blk" style="height:8px;width:60%"></div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div></div>` },
-    { url: "pixelpatra.com/sample-1", html: `<div style="border-radius:8px;background:var(--sky);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:#fff"></div><div class="blk" style="height:8px;width:70%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div></div>` },
-    { url: "pixelpatra.com/sample-2", html: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;height:100%;grid-row:1/-1"><div style="border-radius:8px;background:var(--leaf);padding:10%;display:grid;align-content:center;gap:8px"><div class="blk" style="height:14px;width:70%;background:#fff"></div><div class="blk" style="height:8px;width:85%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div></div></div>` },
-    { url: "pixelpatra.com/sample-3", html: `<div style="border-radius:8px;border:2px solid var(--plum);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:var(--plum)"></div><div class="blk" style="height:8px;width:70%;background:color-mix(in srgb,var(--plum) 35%,var(--line))"></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div></div>` }
-  ];
+  const screens = works.map((w, k) => ({ url: "northlight.studio/work/" + w.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), html: '<img src="' + w.img + '" alt="' + w.name + ' project">' }));
   screens.forEach((s, k) => { const d = document.createElement("div"); d.className = "sb-screen" + (k === 0 ? " on" : ""); d.innerHTML = s.html; screensEl.appendChild(d); });
   const sb = document.getElementById("sb"), lis = document.querySelectorAll("#sb-list li"), prog = document.getElementById("sb-prog"), urlEl = document.getElementById("sb-url");
   let cur = 0;
