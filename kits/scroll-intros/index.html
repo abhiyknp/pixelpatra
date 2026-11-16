@@ -1892,7 +1892,10 @@ function drawObj(ctx, o, x, y, s, sun) {
   }
 }
 const PIMG = {};
+const PHOTOS = {};
+fetch('assets/photos.json').then((r) => (r.ok ? r.json() : {})).then((j) => { Object.assign(PHOTOS, j.products || {}); if (Object.keys(PHOTOS).length && typeof render === 'function') render(); }).catch(() => { /* no photo list */ });
 function prodImg(p, vi) {
+  if (PHOTOS[p.id]) return PHOTOS[p.id];
   const key = p.id + ':' + vi + ':' + (tintLeaf('#4B2E1E') ? 1 : 0); if (PIMG[key]) return PIMG[key];
   const c = document.createElement('canvas'); c.width = c.height = 360; const x = c.getContext('2d'); const v = p.variants[vi];
   let objs;
