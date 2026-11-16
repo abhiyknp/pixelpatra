@@ -1,154 +1,75 @@
-// "Seed to bottle": a scroll-driven film. One tall section; a pinned stage shows six scenes (real video and photos), with
-// captions, a chapter rail and a canvas of seeds, dust, golden drops and a rising pool of oil drawn over them.
-// Scroll position is the only clock: scroll down to play, back up to rewind.
+// "Seed to bottle": a scroll-driven film. One tall section with a pinned stage. Scrolling scrubs one real video clip
+// (field, sunflower, seeds, press, oil, bottles), swaps the captions and chapter rail, and the last stretch ends on the
+// brand title. Scroll position is the only clock: scroll down to play, back up to rewind.
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var portrait = matchMedia('(max-aspect-ratio: 1/1)').matches;
-  var CH = window.STORY_CHAPTERS || [];
-  var N = CH.length, FIN = 0.88; // the scenes use the first 88% of the scroll, the title card the rest
-  var film = $('#film'), scenesEl = $('#scenes'), capEl = $('#cap'), rail = $('#rail'), bar = $('#bar'), fin = $('#finale'), cv = $('#fx'), ctx = cv.getContext('2d');
+  var F = window.STORY_FILM || {}, CH = window.STORY_CHAPTERS || [];
+  var N = CH.length, FIN = 0.9; // the chapters use the first 90% of the scroll, the title card the rest
+  var film = $('#film'), vid = $('#filmVid'), capEl = $('#cap'), rail = $('#rail'), bar = $('#bar'), fin = $('#finale'), cv = $('#fx'), ctx = cv.getContext('2d');
 
-  // hero film: the first scene's video, looping behind the title
-  var hv = $('#heroVid');
-  function heroPlay() { var m = CH[0] && CH[0].media[0]; if (!hv || !m) return; hv.src = portrait && m.portrait ? m.portrait : m.src; hv.play().catch(function () {}); }
-  heroPlay();
+  // mp4 first (Safari and phones), webm as the fallback
+  function source(v) {
+    v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.poster = F.poster || '';
+    var m = document.createElement('source'); m.src = F.mp4; m.type = 'video/mp4'; v.appendChild(m);
+    var w = document.createElement('source'); w.src = F.webm; w.type = 'video/webm'; v.appendChild(w);
+    v.preload = 'auto'; v.load();
+  }
+  source(vid);
+  // the hero plays the same clip on a loop
+  var hv = $('#heroVid'); if (hv) { source(hv); hv.loop = true; if (!reduce) hv.play().catch(function () {}); }
+  if (reduce) { document.documentElement.classList.add('static'); vid.controls = true; }
 
-  if (reduce) document.documentElement.classList.add('static');
-
-  // build scenes, captions and rail
-  var scenes = CH.map(function (c, i) {
-    var el = document.createElement('div'); el.className = 'scene'; el.setAttribute('aria-hidden', 'true'); if (c.bg) el.style.background = c.bg;
-    var layers = c.media.map(function (m, j) {
-      var n;
-      if (m.type === 'video') { n = document.createElement('video'); n.muted = true; n.loop = true; n.playsInline = true; n.setAttribute('playsinline', ''); n.preload = 'none'; n.poster = m.poster || ''; n.dataset.src = portrait && m.portrait ? m.portrait : m.src; n.className = 'm'; }
-      else { n = document.createElement('img'); n.className = 'm'; n.alt = ''; n.decoding = 'async'; n.dataset.src = portrait && m.portrait ? m.portrait : m.src; }
-      if (m.filter) n.style.filter = m.filter;
-      n.addEventListener('error', function () { n.style.display = 'none'; });
-      if (j > 0) n.classList.add('b');
-      el.appendChild(n); return n;
-    });
-    scenesEl.appendChild(el);
+  var chaps = CH.map(function (c, i) {
     var chap = document.createElement('div'); chap.className = 'chap'; chap.innerHTML = '<span class="eyebrow">' + c.eyebrow + '</span><h2>' + c.h + '</h2><p>' + c.p + '</p>';
     capEl.appendChild(chap);
     var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', c.rail); b.innerHTML = '<span>' + c.rail + '</span><i></i>';
     b.addEventListener('click', function () { goTo(i); }); rail.appendChild(b);
-    return { el: el, layers: layers, chap: chap, btn: b, loaded: false, c: c };
+    return { chap: chap, btn: b, c: c };
   });
-  function load(s) {
-    if (s.loaded) return; s.loaded = true;
-    s.layers.forEach(function (n) { if (n.dataset.src) { n.src = n.dataset.src; if (n.tagName === 'VIDEO') { n.preload = 'auto'; n.load(); } } });
-  }
   function range() { var r = film.getBoundingClientRect(); var h = film.offsetHeight - innerHeight; return { p: clamp(-r.top / Math.max(1, h), 0, 1), top: scrollY + r.top, h: h }; }
-  function goTo(i) { var r = range(); var c = (i + 0.5) / N * FIN; scrollTo({ top: r.top + c * r.h, behavior: reduce ? 'auto' : 'smooth' }); }
+  function goTo(i) { var r = range(); scrollTo({ top: r.top + (i + 0.5) / N * FIN * r.h, behavior: reduce ? 'auto' : 'smooth' }); }
 
-  // ---------- canvas effects ----------
-  var W = 0, H = 0, dpr = 1, parts = [], pool = 0, last = 0, vel = 0;
+  // ---------- golden dust drifting over the film ----------
+  var W = 0, H = 0, dpr = 1, motes = [], last = 0;
   function size() { dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
   addEventListener('resize', size); size();
-  var rnd = function (a, b) { return a + Math.random() * (b - a); };
-  function spawn(kind) {
-    if (kind === 'seeds') return { x: rnd(0, W), y: rnd(-H * .2, 0), vx: rnd(-18, 18), vy: rnd(120, 280), r: rnd(5, 11), a: rnd(0, 6.28), w: rnd(-3, 3), k: kind };
-    if (kind === 'dust') return { x: rnd(0, W), y: rnd(H * .2, H), vx: rnd(-8, 8), vy: rnd(-26, -8), r: rnd(1, 3.2), a: rnd(.2, .8), ph: rnd(0, 6.28), k: kind };
-    if (kind === 'drops') return { x: W * (portrait ? .5 : .62) + rnd(-3, 3), y: -10, vx: 0, vy: rnd(300, 420), r: rnd(3, 6), k: kind };
-  }
-  function drawSeed(p) {
-    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = '#2b2118'; ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 2.1, 0, 0, 6.28); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillRect(-p.r * .15, -p.r * 1.6, p.r * .3, p.r * 3.2); ctx.restore();
-  }
+  for (var i = 0; i < 46; i++) motes.push({ x: Math.random(), y: Math.random(), r: .6 + Math.random() * 2, s: .004 + Math.random() * .012, ph: Math.random() * 6.28, a: .15 + Math.random() * .5 });
 
-  // a bottle drawn on the canvas that fills with oil as you scroll (the sample brand's own, no third-party label)
-  function drawBottle(t, level) {
-    var bh = Math.min(H * .66, 560), bw = bh * .36, cx = W * (portrait ? .5 : .7), y0 = H * .5 - bh / 2 - H * .02;
-    var path = function () {
-      ctx.beginPath(); ctx.moveTo(cx - bw * .17, y0); ctx.lineTo(cx + bw * .17, y0); ctx.lineTo(cx + bw * .17, y0 + bh * .13);
-      ctx.bezierCurveTo(cx + bw * .17, y0 + bh * .24, cx + bw * .5, y0 + bh * .2, cx + bw * .5, y0 + bh * .34);
-      ctx.lineTo(cx + bw * .5, y0 + bh * .92); ctx.quadraticCurveTo(cx + bw * .5, y0 + bh, cx + bw * .4, y0 + bh);
-      ctx.lineTo(cx - bw * .4, y0 + bh); ctx.quadraticCurveTo(cx - bw * .5, y0 + bh, cx - bw * .5, y0 + bh * .92);
-      ctx.lineTo(cx - bw * .5, y0 + bh * .34); ctx.bezierCurveTo(cx - bw * .5, y0 + bh * .2, cx - bw * .17, y0 + bh * .24, cx - bw * .17, y0 + bh * .13); ctx.closePath();
-    };
-    var lv = clamp(level / .9, 0, 1), top = y0 + bh - lv * bh * .96;
-    // the stream from above while it fills
-    if (lv < 1) { ctx.fillStyle = '#f2bb2c'; ctx.fillRect(cx - 3, 0, 6, Math.max(0, top)); }
-    ctx.save(); path(); ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.fill(); ctx.clip();
-    var g = ctx.createLinearGradient(cx - bw / 2, 0, cx + bw / 2, 0); g.addColorStop(0, '#b97a07'); g.addColorStop(.35, '#f6c53a'); g.addColorStop(.7, '#e9a91b'); g.addColorStop(1, '#a96c05');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(cx - bw, y0 + bh + 4);
-    for (var x = cx - bw; x <= cx + bw; x += 6) ctx.lineTo(x, top + Math.sin(x * .05 + t / 350) * 2.5 * (1 - lv * .6));
-    ctx.lineTo(cx + bw, y0 + bh + 4); ctx.closePath(); ctx.fill();
-    // label
-    var ly = y0 + bh * .52, lh = bh * .26; ctx.fillStyle = 'rgba(251,244,224,.94)'; ctx.fillRect(cx - bw * .5, ly, bw, lh);
-    ctx.fillStyle = '#1d1a10'; ctx.textAlign = 'center'; ctx.font = '600 ' + Math.round(bw * .118) + 'px Fraunces, Georgia, serif'; ctx.fillText('GOLDEN FIELD', cx, ly + lh * .42);
-    ctx.font = '500 ' + Math.round(bw * .075) + 'px Inter, sans-serif'; ctx.fillStyle = '#4d6b2a'; ctx.fillText('SUNFLOWER OIL · 1 L', cx, ly + lh * .66);
-    ctx.fillStyle = '#e6a817'; ctx.beginPath(); ctx.arc(cx, ly + lh * .84, bw * .05, 0, 6.28); ctx.fill();
-    // shine
-    var sh = ctx.createLinearGradient(cx - bw * .5, 0, cx - bw * .2, 0); sh.addColorStop(0, 'rgba(255,255,255,.28)'); sh.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = sh; ctx.fillRect(cx - bw * .48, y0 + bh * .3, bw * .28, bh * .66);
-    ctx.restore();
-    path(); ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = '#e6a817'; ctx.fillRect(cx - bw * .2, y0 - bh * .06, bw * .4, bh * .06); // cap
-    ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(cx - bw * .2, y0 - bh * .06, bw * .4, 3);
+  // ---------- scrubbing ----------
+  var target = 0, cur = 0, state = { idx: 0, p: 0 }, running = false;
+  function seek() {
+    // ease toward the target time; seek only when the last seek has finished, so the frames stay in step with the scroll
+    var d = target - cur; cur += d * .22; if (Math.abs(d) < .004) cur = target;
+    if (!vid.seeking && vid.readyState >= 2 && Math.abs(vid.currentTime - cur) > .004) { try { vid.currentTime = cur; } catch (e) { /* not ready */ } }
   }
-  var ripples = [];
   function frame(t) {
-    var dt = Math.min(.05, (t - last) / 1000 || .016); last = t; ctx.clearRect(0, 0, W, H);
-    var r = range(), idx = Math.min(N - 1, Math.floor(r.p / FIN * N)), local = clamp((r.p / FIN * N) - idx, 0, 1);
-    var kind = (CH[idx] || {}).fx, alpha = r.p > FIN ? clamp(1 - (r.p - FIN) / .04, 0, 1) : 1;
-    var speed = 1 + Math.min(3, Math.abs(vel) * 0.02);
-    // spawn
-    if (kind === 'seeds' && parts.length < 70 && Math.random() < .5) parts.push(spawn('seeds'));
-    if (kind === 'dust' && parts.length < 90 && Math.random() < .6) parts.push(spawn('dust'));
-    if (kind === 'drops' && Math.random() < .09 + .03 * speed) parts.push(spawn('drops'));
-    var poolY = H - clamp(local * 1, 0, 1) * H * .22 - 8;
-    ctx.globalAlpha = alpha;
-    for (var i = parts.length - 1; i >= 0; i--) {
-      var p = parts[i];
-      if (p.k === 'seeds') { p.x += p.vx * dt * speed; p.y += p.vy * dt * speed; p.a += p.w * dt; drawSeed(p); }
-      else if (p.k === 'dust') { p.ph += dt; p.x += (p.vx + Math.sin(p.ph) * 12) * dt; p.y += p.vy * dt; ctx.fillStyle = 'rgba(255,214,120,' + (p.a * (.5 + .5 * Math.sin(p.ph * 2))) + ')'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28); ctx.fill(); }
-      else { p.y += p.vy * dt * speed; var g = ctx.createLinearGradient(p.x - p.r, 0, p.x + p.r, 0); g.addColorStop(0, '#f6c53a'); g.addColorStop(1, '#c98a08'); ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(p.x, p.y, p.r, p.r * 2.2, 0, 0, 6.28); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.fillRect(p.x - p.r * .5, p.y - p.r, p.r * .3, p.r * .8); if (kind === 'drops' && p.y > poolY) { ripples.push({ x: p.x, y: poolY, r: 2, a: .9 }); parts.splice(i, 1); continue; } }
-      if (p.y > H + 30 || p.y < -40 || p.x < -40 || p.x > W + 40 || (p.k !== kind)) parts.splice(i, 1);
-    }
-    // the pool of oil that rises through the oil chapter
-    if (kind === 'drops') {
-      var pg = ctx.createLinearGradient(0, poolY, 0, H); pg.addColorStop(0, 'rgba(245,190,50,.92)'); pg.addColorStop(1, 'rgba(160,100,6,.95)');
-      ctx.fillStyle = pg; ctx.beginPath(); ctx.moveTo(0, H); for (var x = 0; x <= W; x += 12) ctx.lineTo(x, poolY + Math.sin(x * .02 + t / 500) * 3); ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
-    }
-    for (var j = ripples.length - 1; j >= 0; j--) { var q = ripples[j]; q.r += 90 * dt; q.a -= 1.4 * dt; if (q.a <= 0) { ripples.splice(j, 1); continue; } ctx.strokeStyle = 'rgba(255,230,150,' + q.a + ')'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(q.x, q.y, q.r * 2.2, q.r * .5, 0, 0, 6.28); ctx.stroke(); }
-    if (kind === 'bottle') drawBottle(t, local);
-    ctx.globalAlpha = 1; vel *= .9;
+    var dt = Math.min(.05, (t - last) / 1000 || .016); last = t; seek();
+    ctx.clearRect(0, 0, W, H);
+    var a = state.p > FIN ? clamp(1 - (state.p - FIN) / .05, 0, 1) : 1;
+    motes.forEach(function (m) { m.ph += dt; m.y -= m.s * dt * 6; m.x += Math.sin(m.ph) * .0004; if (m.y < -.02) { m.y = 1.02; m.x = Math.random(); }
+      ctx.fillStyle = 'rgba(255,214,120,' + (m.a * a * (.5 + .5 * Math.sin(m.ph * 2))) + ')'; ctx.beginPath(); ctx.arc(m.x * W, m.y * H, m.r, 0, 6.28); ctx.fill(); });
     if (running) requestAnimationFrame(frame);
   }
-  var running = false;
   new IntersectionObserver(function (e) { var on = e[0].isIntersecting; if (on && !running && !reduce) { running = true; last = performance.now(); requestAnimationFrame(frame); } else if (!on) { running = false; } }, { threshold: 0 }).observe(film);
 
   // ---------- scroll ----------
-  var lastY = scrollY, ticking = false;
+  var ticking = false;
   function update() {
     ticking = false; if (reduce) return;
-    var r = range(), pp = r.p, w = FIN / N, fade = w * .34; vel = scrollY - lastY; lastY = scrollY;
-    var idx = Math.min(N - 1, Math.floor(pp / FIN * N));
+    var r = range(), pp = r.p; state.p = pp;
+    var q = clamp(pp / FIN, 0, .99999) * N, idx = Math.floor(q), local = q - idx, c = CH[idx].time;
+    state.idx = idx; target = pp >= FIN ? (CH[N - 1].time[1] || F.length) : c[0] + (c[1] - c[0]) * local;
     document.body.classList.toggle('infilm', pp > 0 && pp < 1);
-    scenes.forEach(function (s, i) {
-      var c = (i + .5) * w, dist = Math.abs(pp - c);
-      if (i === 0 && pp < c) dist = 0; if (i === N - 1 && pp > c) dist = 0;
-      var o = clamp((w / 2 + fade / 2 - dist) / fade, 0, 1); if (pp > FIN && i === N - 1) o = clamp(1 - (pp - FIN) / (1 - FIN) * .35, .65, 1);
-      var t = clamp((pp - i * w) / w, 0, 1), k = 1.02 + .1 * t;
-      s.el.style.opacity = o; s.el.style.visibility = o < .01 ? 'hidden' : 'visible';
-      s.layers.forEach(function (n, j) {
-        var dx = (j % 2 ? 1 : -1) * (t - .5) * 2.5, dy = (.5 - t) * 3;
-        n.style.transform = 'translate3d(' + dx + '%,' + dy + '%,0) scale(' + (k + j * .03) + ')';
-        if (j > 0) n.style.opacity = clamp((t - .35) / .3, 0, 1);
-      });
-      if (Math.abs(i - idx) <= 1) load(s);
-      s.layers.forEach(function (n) { if (n.tagName === 'VIDEO' && n.src) { if (o > .02 && n.paused && !reduce) n.play().catch(function () {}); else if (o <= .02 && !n.paused) n.pause(); } });
-      s.chap.classList.toggle('on', i === idx && pp < FIN); s.btn.classList.toggle('on', i === idx); s.btn.setAttribute('aria-current', i === idx ? 'step' : 'false');
-    });
+    chaps.forEach(function (s, i) { s.chap.classList.toggle('on', i === idx && pp < FIN); s.btn.classList.toggle('on', i === idx); s.btn.setAttribute('aria-current', i === idx ? 'step' : 'false'); });
     fin.classList.toggle('on', pp >= FIN + .03);
     bar.style.width = (pp * 100) + '%';
+    if (!running && !reduce) { seek(); }
   }
   function req() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
   addEventListener('scroll', req, { passive: true }); addEventListener('resize', req);
-  scenes.forEach(function (s, i) { if (i < 2) load(s); });
+  vid.addEventListener('loadeddata', function () { update(); seek(); });
   update();
-  if (reduce) scenes.forEach(function (s) { load(s); s.layers.forEach(function (n) { if (n.tagName === 'VIDEO') n.pause(); }); });
 })();
