@@ -19,7 +19,7 @@
   }
   source(vid);
   // the hero plays the same clip on a loop
-  var hv = $('#heroVid'); if (hv) { source(hv); hv.loop = true; if (!reduce) hv.play().catch(function () {}); }
+  var hv = $('#heroVid'); if (hv) { var hs = document.createElement('source'); hs.src = F.hero || F.mp4; hs.type = 'video/mp4'; hv.poster = F.poster || ''; hv.appendChild(hs); hv.loop = true; hv.preload = reduce ? 'none' : 'auto'; if (!reduce) hv.play().catch(function () {}); }
   if (reduce) { document.documentElement.classList.add('static'); vid.controls = true; }
 
   var chaps = CH.map(function (c, i) {
