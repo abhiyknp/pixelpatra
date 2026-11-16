@@ -34,5 +34,14 @@ window.CREDITS = [
   "license": "CC BY-SA 4.0",
   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
   "artist": "Vmakumar"
+ },
+ {
+  "name": "bottle2",
+  "kind": "image",
+  "title": "Ayçiçek yağı.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Ay%C3%A7i%C3%A7ek_ya%C4%9F%C4%B1.jpg",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "artist": "Lemon tart"
  }
 ];
