@@ -9,323 +9,32 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Tiro+Devanagari+Hindi&display=swap">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f6f7fb">
+<meta property="og:site_name" content="Pixelpatra"><meta property="og:title" content="Pixelpatra: immersive website templates"><meta property="og:description" content="Portfolios, online shops, product websites and 3D experiences. Try every template live, then request a quote."><meta property="og:type" content="website">
+<script src="shared/pp-config.js"></script>
 <script src="shared/pp-theme.js" data-pp="store"></script>
-<style>
-/* Layout: one column store page. Pixel-grid motif from the name, saffron as the single loud colour, cards are the only boxed objects. */
-:root {
-  color-scheme: light;
-  --paper: #f6f7fb;
-  --surface: #ffffff;
-  --ink: #15172a;
-  --muted: #5b5f78;
-  --line: #dfe1ec;
-  --saffron: #f26b1d;
-  --saffron-ink: #1a0d03;
-  --teal: #0f8f86;
-  --sky: #3b6cf6;
-  --leaf: #2f9e5b;
-  --plum: #8a3ffc;
-  --shadow: 0 1px 2px rgba(21,23,42,.06), 0 12px 32px -12px rgba(21,23,42,.18);
-  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --font-deva: "Tiro Devanagari Hindi", "Noto Serif Devanagari", serif;
-  --radius: 14px;
-  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
-  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0f1120; --surface: #181b2e; --ink: #eef0fa; --muted: #a3a7c2; --line: #2a2e48;
-    --saffron: #ff8a3d; --saffron-ink: #1a0d03; --teal: #34c3b8; --sky: #7c9bff; --leaf: #5fd08d; --plum: #b48cff;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --paper: #0f1120; --surface: #181b2e; --ink: #eef0fa; --muted: #a3a7c2; --line: #2a2e48;
-  --saffron: #ff8a3d; --saffron-ink: #1a0d03; --teal: #34c3b8; --sky: #7c9bff; --leaf: #5fd08d; --plum: #b48cff;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.7);
-  color-scheme: dark;
-}
-
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background: var(--paper); color: var(--ink);
-  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-a { color: inherit; }
-:focus-visible { outline: 3px solid var(--saffron); outline-offset: 3px; border-radius: 6px; }
-h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; text-wrap: balance; margin: 0; }
-p { margin: 0; }
-.wrap { max-width: 1120px; margin-inline: auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
-.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-.price { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-
-/* Header */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--paper) 82%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
-.top.scrolled { border-bottom-color: var(--line); }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -.02em; }
-.logo-mark { display: grid; grid-template-columns: repeat(3, 6px); gap: 2px; }
-.logo-mark i { width: 6px; height: 6px; background: var(--ink); border-radius: 1px; }
-.logo-mark i.o { background: var(--saffron); }
-.logo-mark i.x { background: transparent; }
-.nav { display: flex; align-items: center; gap: 22px; font-size: 15px; font-weight: 500; }
-.nav a { text-decoration: none; color: var(--muted); }
-.nav a:hover { color: var(--ink); }
-.nav a.btn-dark, .nav a.btn-dark:hover { color: var(--paper); }
-@media (max-width: 640px) { .nav a.hide-sm { display: none; } }
-
-/* Buttons */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 999px; font: 600 15px/1 var(--font-body); text-decoration: none; cursor: pointer; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); transition: transform .15s, background .15s, color .15s; }
-.btn:hover { transform: translateY(-1px); }
-.btn:active { transform: translateY(1px); }
-.btn-solid { background: var(--saffron); border-color: var(--saffron); color: var(--saffron-ink); }
-.btn-dark { background: var(--ink); color: var(--paper); }
-.btn-sm { min-height: 38px; padding: 8px 14px; font-size: 14px; }
-.btn svg { width: 18px; height: 18px; flex: none; }
-
-/* Hero */
-.hero { padding-block: 56px 40px; }
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
-.hero h1 { font-size: clamp(40px, 7vw, 76px); font-weight: 800; letter-spacing: -.035em; }
-.hero h1 .hl { color: #df5509; }
-.hero .lede { margin-top: 18px; font-size: 18px; color: var(--muted); max-width: 46ch; }
-.hero .ctas { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
-.hero .deva { margin-top: 26px; display: flex; align-items: baseline; gap: 10px; color: var(--muted); font-size: 14px; }
-.hero .deva b { font-family: var(--font-deva); font-weight: 400; font-size: 22px; color: var(--ink); }
-.pixels { position: relative; aspect-ratio: 1; max-width: 100%; width: min(420px, 100%); justify-self: center; display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
-.pixels span { border-radius: 4px; background: var(--line); }
-.pixels span.on { background: var(--ink); }
-.pixels span.acc { background: var(--saffron); }
-.anim .pixels span.on, .anim .pixels span.acc { animation: drop .6s cubic-bezier(.2,.8,.2,1.2) both; animation-delay: calc(var(--d) * 22ms); }
-@keyframes drop { from { transform: translateY(-18px) scale(.4); opacity: .2; } to { transform: none; opacity: 1; } }
-.anim .hero .copy > * { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
-.anim .hero .copy > :nth-child(2) { animation-delay: .08s; }
-.anim .hero .copy > :nth-child(3) { animation-delay: .16s; }
-.anim .hero .copy > :nth-child(4) { animation-delay: .24s; }
-.anim .hero .copy > :nth-child(5) { animation-delay: .32s; }
-@keyframes rise { from { transform: translateY(14px); opacity: .01; } to { transform: none; opacity: 1; } }
-@media (max-width: 820px) {
-  .hero { padding-block: 32px 24px; }
-  .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
-  .try { justify-self: stretch; max-width: none; }
-}
-
-/* Cloth intro over the hero */
-.hero { position: relative; }
-#cloth { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 15; display: block; touch-action: none; cursor: grab; }
-#cloth:active { cursor: grabbing; }
-.cloth-open { position: absolute; z-index: 16; left: 50%; bottom: 22px; transform: translateX(-50%); border: 0; cursor: pointer; padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 14px/1 var(--font-body); white-space: nowrap; box-shadow: var(--shadow); transition: opacity .3s; }
-.cloth-open.gone { opacity: 0; pointer-events: none; }
-
-/* Try your name */
-.try { display: grid; gap: 12px; width: 100%; max-width: 460px; justify-self: end; }
-.try-frame { border-radius: 14px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); container-type: inline-size; }
-.try-frame .bar { height: 30px; display: flex; align-items: center; gap: 6px; padding-inline: 12px; border-bottom: 1px solid var(--line); }
-.try-frame .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
-.try-frame .url { margin-left: 8px; flex: 1; min-width: 0; padding: 4px 10px; border-radius: 6px; background: var(--paper); font: 500 12px/1.2 var(--font-mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.try-frame .url b { color: var(--ink); font-weight: 500; }
-.try-page { --b: var(--pick, var(--saffron)); padding: 6cqw 7cqw 7cqw; display: grid; gap: 2.4cqw; }
-.try-nav { display: flex; align-items: center; gap: 3cqw; margin-bottom: 3cqw; }
-.try-nav b { width: 8cqw; height: 8cqw; border-radius: 2cqw; display: grid; place-items: center; background: var(--b); color: #fff; font: 700 3.4cqw/1 var(--font-display); }
-.try-nav span { height: 1.6cqw; width: 9cqw; border-radius: 1cqw; background: var(--line); }
-.try-nav span:first-of-type { margin-left: auto; }
-.try-kicker { font: 500 2.9cqw/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-.try-name { font-size: 9.5cqw; font-weight: 800; letter-spacing: -.035em; line-height: 1.02; color: var(--ink); overflow-wrap: anywhere; min-height: 1.02em; }
-.try-name .cur { display: inline-block; width: .08em; height: .9em; margin-left: .04em; vertical-align: -.08em; background: var(--b); animation: blink 1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-.try-sub { font-size: 3.6cqw; color: var(--muted); }
-.try-btn { justify-self: start; margin-top: 1.5cqw; padding: 2.2cqw 4.4cqw; border-radius: 99px; background: var(--b); color: #fff; font: 600 3.4cqw/1 var(--font-body); }
-.try-tiles { margin-top: 3cqw; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4cqw; }
-.try-tiles span { aspect-ratio: 4 / 3; border-radius: 2cqw; background: color-mix(in srgb, var(--b) 22%, var(--line)); }
-.try-page, .try-nav b, .try-btn, .try-tiles span { transition: background-color .35s; }
-.try-label { font-weight: 600; font-size: 15px; }
-.try input { width: 100%; min-height: 48px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: 500 16px/1.2 var(--font-body); }
-.try input:focus { outline: none; border-color: var(--saffron); box-shadow: 0 0 0 4px color-mix(in srgb, var(--saffron) 20%, transparent); }
-.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.chips .lbl { font-size: 13px; color: var(--muted); margin-right: 2px; }
-.chip { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1.5px var(--line); cursor: pointer; padding: 0; background: var(--c); transition: transform .15s, box-shadow .15s; }
-.chip[aria-pressed="true"] { box-shadow: 0 0 0 2.5px var(--ink); transform: scale(1.08); }
-.chip.mix { background: conic-gradient(var(--teal) 0 25%, var(--sky) 0 50%, var(--leaf) 0 75%, var(--plum) 0); }
-.try-note { font-size: 13px; color: var(--muted); }
-
-/* Names inside card previews */
-.shot { position: relative; container-type: inline-size; }
-.mt { font-family: var(--font-display); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-.m-portfolio .mt { font-size: 7cqw; color: var(--ink); }
-.m-sample .hero-band .mt { font-size: 7.5cqw; color: #ffffff; }
-.m-sample.v3 .hero-band .mt { color: var(--c); }
-.flash { animation: flash .45s ease; }
-@keyframes flash { 0% { opacity: .2; transform: translateY(3px); } 100% { opacity: 1; transform: none; } }
-
-/* Pixel dissolve on card previews */
-.dissolve { position: absolute; inset: 0; z-index: 2; display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(10, 1fr); pointer-events: none; }
-.dissolve i { background: var(--saffron); }
-.dissolve i:nth-child(odd) { background: color-mix(in srgb, var(--saffron) 82%, var(--ink)); }
-.dissolve.go i { animation: pxout .5s cubic-bezier(.5,0,.7,.4) both; animation-delay: var(--d); }
-@keyframes pxout { to { transform: scale(0) rotate(45deg); opacity: 0; } }
-
-/* Mode switch */
-.section { padding-block: 56px; }
-.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 28px; }
-.sec-head h2 { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; letter-spacing: -.03em; margin-top: 6px; }
-.switch { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); position: relative; }
-.switch button { position: relative; z-index: 1; border: 0; background: transparent; color: var(--muted); font: 600 14px/1 var(--font-body); padding: 11px 16px; border-radius: 999px; cursor: pointer; transition: color .2s; }
-.switch button[aria-pressed="true"] { color: var(--paper); }
-.switch .pill { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 4px; border-radius: 999px; background: var(--ink); transition: transform .3s cubic-bezier(.3,.7,.2,1), width .3s; }
-.mode-note { flex-basis: 100%; color: var(--muted); font-size: 15px; max-width: 62ch; }
-
-/* Cards */
-.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
-.card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); display: flex; flex-direction: column; transform-style: preserve-3d; transition: transform .25s ease-out, box-shadow .25s; will-change: transform; }
-.card .glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgba(255,255,255,.22), transparent 55%); opacity: 0; transition: opacity .25s; }
-.card:hover .glare { opacity: 1; }
-.shot { margin: 12px 12px 0; border-radius: 9px; overflow: hidden; aspect-ratio: 16 / 10; max-width: 100%; background: var(--paper); border: 1px solid var(--line); display: flex; flex-direction: column; }
-.shot .bar { height: 22px; flex: none; display: flex; align-items: center; gap: 5px; padding-inline: 9px; border-bottom: 1px solid var(--line); background: var(--surface); }
-.shot .bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
-.shot .page { flex: 1; position: relative; padding: 7%; display: grid; gap: 6%; }
-.shot .ph { border-radius: 4px; background: var(--line); }
-.card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.card-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 12px; }
-.card h3 { font-size: 23px; font-weight: 700; letter-spacing: -.02em; }
-.tag { flex: none; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); }
-.card p.desc { color: var(--muted); font-size: 15px; }
-.card-foot { margin-top: auto; padding-top: 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.card .price { font-size: 24px; font-weight: 500; }
-.card .price small { display: block; font-family: var(--font-body); font-size: 12px; color: var(--muted); font-weight: 500; }
-.card .actions { display: flex; gap: 8px; }
-.price .num { display: inline-block; }
-.price .num.flip { animation: flip .35s ease; }
-@keyframes flip { 0% { transform: translateY(0); opacity: 1; } 45% { transform: translateY(-8px); opacity: 0; } 55% { transform: translateY(8px); opacity: 0; } 100% { transform: none; opacity: 1; } }
-
-/* Mock layouts per template */
-.m-portfolio .page { grid-template-columns: 30% 1fr; align-items: center; }
-.m-portfolio .avatar { aspect-ratio: 1; border-radius: 50%; background: var(--c); transition: background-color .35s; }
-.m-portfolio .lines { display: grid; gap: 9px; }
-.m-portfolio .lines .ph { height: 7px; }
-.m-portfolio .row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; height: 100%; }
-.m-portfolio .row .ph { background: color-mix(in srgb, var(--c) 22%, var(--line)); }
-.m-sample .page { grid-template-rows: auto 1fr; }
-.m-sample .hero-band { border-radius: 5px; padding: 8% 7%; display: grid; gap: 7px; background: var(--c); }
-.m-sample .hero-band .ph { height: 7px; background: rgba(255,255,255,.55); width: 70%; }
-.m-sample .tiles { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); gap: 7px; }
-.m-sample .tiles .ph { background: color-mix(in srgb, var(--c) 20%, var(--line)); }
-.m-sample.v2 .page { grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; }
-.m-sample.v2 .hero-band { align-content: center; }
-.m-sample.v2 .tiles { grid-template-columns: 1fr 1fr; }
-.m-sample.v3 .hero-band { background: transparent; border: 2px solid var(--c); }
-.m-sample.v3 .hero-band .ph { background: color-mix(in srgb, var(--c) 35%, var(--line)); }
-
-/* Bundle */
-.bundle { position: relative; overflow: hidden; border-radius: calc(var(--radius) + 6px); background: var(--ink); color: var(--paper); padding: clamp(24px, 5vw, 48px); display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; }
-.bundle h2 { font-size: clamp(30px, 4.6vw, 48px); font-weight: 800; letter-spacing: -.03em; }
-.bundle .eyebrow { color: color-mix(in srgb, var(--paper) 65%, transparent); }
-.bundle p { margin-top: 12px; color: color-mix(in srgb, var(--paper) 75%, transparent); max-width: 48ch; }
-.bundle ul { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 6px; font-size: 15px; }
-.bundle li { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed color-mix(in srgb, var(--paper) 22%, transparent); padding-block: 6px; }
-.bundle li .price { color: color-mix(in srgb, var(--paper) 60%, transparent); text-decoration: line-through; }
-.bundle .deal { display: grid; gap: 14px; justify-items: start; }
-.bundle .big { font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, 9vw, 96px); line-height: 1; letter-spacing: -.04em; color: var(--saffron); }
-.bundle .save { font-family: var(--font-mono); font-size: 13px; padding: 5px 10px; border-radius: 6px; background: color-mix(in srgb, var(--saffron) 20%, transparent); color: var(--saffron); }
-.cart-name { color: var(--saffron); }
-.bundle .btn-solid { min-height: 50px; padding-inline: 24px; font-size: 16px; }
-.bundle .px { position: absolute; right: -10px; top: -10px; display: grid; grid-template-columns: repeat(5, 14px); gap: 5px; opacity: .25; pointer-events: none; }
-.bundle .px i { width: 14px; height: 14px; border-radius: 3px; background: var(--saffron); }
-.bundle .px i.x { background: transparent; }
-@media (max-width: 760px) { .bundle { grid-template-columns: 1fr; } }
-
-/* Steps */
-.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
-.step { display: grid; gap: 8px; align-content: start; }
-.step .n { font-family: var(--font-mono); font-size: 13px; color: var(--saffron); }
-.step h3 { font-size: 21px; font-weight: 700; letter-spacing: -.015em; }
-.step p { color: var(--muted); font-size: 15px; }
-@media (max-width: 720px) { .steps { grid-template-columns: 1fr; gap: 22px; } }
-
-/* Contact */
-.contact { text-align: left; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-block: 40px; border-top: 1px solid var(--line); }
-.contact h2 { font-size: clamp(26px, 3.6vw, 36px); font-weight: 800; letter-spacing: -.025em; }
-.contact p { color: var(--muted); margin-top: 6px; }
-.btn-wa { background: #128040; border-color: #128040; color: #ffffff; }
-footer { padding-block: 24px 96px; color: var(--muted); font-size: 14px; }
-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
-
-/* Floating WhatsApp */
-.fab { position: fixed; z-index: 30; right: calc(18px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #1fa855; color: #ffffff; box-shadow: 0 10px 28px -8px rgba(31,168,85,.7); transition: transform .2s; }
-.fab:hover { transform: scale(1.07); }
-.fab svg { width: 28px; height: 28px; }
-
-/* Toast */
-.toast { position: fixed; z-index: 40; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: var(--paper); padding: 12px 18px; border-radius: 10px; font-size: 14px; font-weight: 500; transition: transform .25s, opacity .25s; max-width: calc(100% - 32px); }
-.toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-/* Scroll reveal: only applied to things below the fold at load */
-.reveal { transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
-.reveal.pending { opacity: .01; transform: translateY(26px); }
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal.pending { opacity: 1; transform: none; }
-}
-
-/* ---- showcase: features, category tabs, real previews, live preview modal ---- */
-.feats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.feat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
-.feat b { display: block; font-size: 17px; letter-spacing: -.01em; margin-bottom: 6px; } .feat p { margin: 0; color: var(--muted); font-size: 15px; }
-.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 10px; }
-.tabs button { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: 600 14px/1 var(--font-body); padding: 11px 18px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s; min-height: 42px; }
-.tabs button:hover { transform: translateY(-1px); border-color: var(--ink); }
-.tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.tabhint { color: var(--muted); font-size: 14.5px; margin: 0 0 22px; }
-.grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
-.card[hidden] { display: none; } .card.pop { animation: pop .5s cubic-bezier(.2, .8, .2, 1); } @keyframes pop { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
-.tshot { position: relative; margin: 14px 14px 0; border-radius: 12px; overflow: hidden; background: #111; border: 1px solid var(--line); aspect-ratio: 16 / 10; cursor: pointer; }
-.tshot .bar { position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 22px; background: rgba(20, 20, 24, .78); backdrop-filter: blur(4px); display: flex; gap: 5px; align-items: center; padding: 0 10px; }
-.tshot .bar i { width: 7px; height: 7px; border-radius: 50%; background: #ffffff55; }
-.tshot .dt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s cubic-bezier(.2, .7, .2, 1), opacity .6s; }
-.tshot img { opacity: 0; } .tshot img.ok { opacity: 1; }
-.tshot .ph { position: absolute; z-index: 2; right: 10px; bottom: -22%; width: 24%; border-radius: 14px; border: 3px solid #111; box-shadow: 0 14px 30px rgba(0, 0, 0, .45); transform: translateY(0); transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
-.tshot .live { position: absolute; z-index: 3; left: 12px; bottom: 12px; background: var(--ink); color: var(--paper); font: 700 13px/1 var(--font-body); padding: 9px 14px; border-radius: 999px; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
-.card:hover .tshot .dt { transform: scale(1.06); } .card:hover .tshot .ph { transform: translateY(-16%); } .card:hover .tshot .live, .tshot:focus-visible .live { opacity: 1; transform: none; }
-@media (hover: none) { .tshot .live { opacity: 1; transform: none; } }
-.card.flash { box-shadow: 0 0 0 4px var(--accent, #f97316), var(--shadow); }
-.modal { position: fixed; inset: 0; z-index: 100; background: #0b0b0e; animation: mopen .45s cubic-bezier(.2, .8, .2, 1); }
-.modal iframe { width: 100%; height: 100%; border: 0; display: block; }
-@keyframes mopen { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
-body.lock { overflow: hidden; }
-#try-ini { color: var(--saffron-ink); } .step .n { color: color-mix(in srgb, var(--saffron) 68%, #000); } .bundle .save { color: color-mix(in srgb, var(--saffron) 70%, #fff); } .try-btn { color: #1a0d03; }
-.skip-link { position: absolute; left: 8px; top: -60px; z-index: 200; background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 8px; font-weight: 700; } .skip-link:focus { top: 8px; }
-.themebar { display: inline-flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: var(--muted); } .themebar .pp-sw[aria-checked="true"] { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink); }
-@media (max-width: 640px) { .themebar { width: 100%; justify-content: space-between; } }
-
-@media (pointer: coarse) { .btn, .btn-sm, .switch button, .tabs button, .nav a, .logo, .chip, .try-btn { min-height: 44px; } .nav a, .logo { display: inline-flex; align-items: center; } .chip { min-width: 44px; } .pp-sw { width: 44px !important; height: 44px !important; } .themebar .pp-swatches { gap: 4px; } }
-</style>
+<link rel="stylesheet" href="shared/pp-site.css">
 </head>
 <body>
 
 <a class="skip-link" href="#templates">Skip to the templates</a>
+<!--pp:header-->
+<a class="skip-link" href="#main">Skip to the content</a>
 <header class="top" id="top">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="Pixelpatra home">
-      <span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>
-      Pixelpatra
-    </a>
+    <a class="logo" href="index.html" aria-label="Pixelpatra home"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>Pixelpatra</a>
     <nav class="nav" aria-label="Main">
-      <a href="#templates">Templates</a>
-      <a href="demo/">Live demos</a>
-      <a class="hide-sm" href="#bundle">Bundle</a>
-      <a class="hide-sm" href="#how">How it works</a>
-      <a class="btn btn-sm btn-dark" href="#contact">Contact</a>
+      <a href="index.html#templates">Templates</a>
+      <a class="hide-sm" href="demo/">Live demos</a>
+      <a class="hide-sm" href="how-it-works.html">How it works</a>
+      <a class="hide-sm" href="faq.html">FAQ</a>
+      <a class="hide-sm" href="about.html">About</a>
+      <a class="btn btn-sm btn-dark" href="quote.html">Request a quote</a>
     </nav>
   </div>
 </header>
+<!--/pp:header-->
 
 <main>
   <section class="hero">
@@ -352,19 +61,10 @@ body.lock { overflow: hidden; }
             <div class="try-tiles"><span></span><span></span><span></span></div>
           </div>
         </div>
-        <label class="try-label" for="your-name">Type your name or business to see your site</label>
+        <label class="try-label" for="your-name">Type your name or business to see it in every live demo</label>
         <input id="your-name" type="text" maxlength="28" autocomplete="off" spellcheck="false" placeholder="e.g. Riya Sharma or Chai Corner">
-        <div class="chips" role="group" aria-label="Brand colour">
-          <span class="lbl">Colour</span>
-          <button type="button" class="chip mix" data-c="" aria-pressed="true" aria-label="Template colours"></button>
-          <button type="button" class="chip" data-c="var(--saffron)" style="--c: var(--saffron)" aria-pressed="false" aria-label="Saffron"></button>
-          <button type="button" class="chip" data-c="var(--teal)" style="--c: var(--teal)" aria-pressed="false" aria-label="Teal"></button>
-          <button type="button" class="chip" data-c="var(--sky)" style="--c: var(--sky)" aria-pressed="false" aria-label="Blue"></button>
-          <button type="button" class="chip" data-c="var(--leaf)" style="--c: var(--leaf)" aria-pressed="false" aria-label="Green"></button>
-          <button type="button" class="chip" data-c="var(--plum)" style="--c: var(--plum)" aria-pressed="false" aria-label="Purple"></button>
-          <button type="button" class="chip" data-c="#e0457b" style="--c: #e0457b" aria-pressed="false" aria-label="Pink"></button>
-        </div>
-        <p class="try-note">Your name and colour show up in every template below.</p>
+        <div class="try-themes"><span class="lbl" id="hero-sw-l">Colour theme</span><div id="hero-sw"></div></div>
+        <p class="try-note">Your name and colour theme carry into every live demo below. They stay in your browser only.</p>
       </div>
     </div>
     <canvas id="cloth" hidden aria-hidden="true"></canvas>
@@ -395,8 +95,9 @@ body.lock { overflow: hidden; }
         <div class="themebar"><span id="themelabel">Theme</span><div id="pp-sw"></div></div>
         <div class="switch" role="group" aria-label="Price option">
           <span class="pill" id="pill"></span>
-          <button type="button" id="mode-files" aria-pressed="true" data-mode="files">Template only</button>
-          <button type="button" id="mode-setup" aria-pressed="false" data-mode="setup">With setup</button>
+          <button type="button" id="mode-files" aria-pressed="true" data-mode="files">Template files</button>
+          <button type="button" id="mode-setup" aria-pressed="false" data-mode="setup">Setup &amp; launch</button>
+          <button type="button" id="mode-custom" aria-pressed="false" data-mode="custom">Custom build</button>
         </div>
         <p class="mode-note" id="mode-note">You get the template files and launch the site yourself.</p>
       </div>
@@ -411,6 +112,7 @@ body.lock { overflow: hidden; }
       </div>
       <p class="tabhint" id="tabhint">Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.</p>
       <div class="grid" id="grid">
+<!--pp:cards-->
         <article class="card reveal" data-name="Portfolio" data-cat="portfolio 3d" data-id="portfolio" data-files="999" data-setup="2499" data-demo="demo/?demo=portfolio">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDkFGWA65NWUgDbv3Z4Gcb8VWyuOnP1pKBj5UMcjIQVIPTPSimUUxH/2Q==) center/cover">
@@ -423,10 +125,10 @@ body.lock { overflow: hidden; }
             <div class="card-top"><h3>Portfolio</h3><span class="tag">Portfolio · 3D</span></div>
             <p class="desc">A personal site whose name is built from thousands of particles that react to your pointer, then scatter into a galaxy as you scroll. Projects, about and contact.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹999</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹999</span><small class="lbl">template files</small></p>
               <div class="actions">
                 <a class="btn btn-sm demo" href="demo/?demo=portfolio">Open live demo</a>
-                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+                <a class="btn btn-sm btn-solid buy" href="quote.html?template=Portfolio">Request quote</a>
               </div>
             </div>
           </div>
@@ -441,12 +143,12 @@ body.lock { overflow: hidden; }
           </div>
           <div class="card-body">
             <div class="card-top"><h3>Professional Portfolio</h3><span class="tag">Portfolio · Knowledge base</span></div>
-            <p class="desc">A working portfolio for analysts and consultants: a chaos-to-clarity scroll intro, a searchable skills library, case studies, sample deliverables, interactive decision scenarios and a process puzzle. Shown with a real example.</p>
+            <p class="desc">A working portfolio for analysts and consultants: a chaos-to-clarity scroll intro, a searchable skills library, case studies, sample deliverables, interactive decision scenarios and a process puzzle.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹4,999</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹4,999</span><small class="lbl">template files</small></p>
               <div class="actions">
                 <a class="btn btn-sm demo" href="demo/?demo=ba">Open live demo</a>
-                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+                <a class="btn btn-sm btn-solid buy" href="quote.html?template=Professional Portfolio">Request quote</a>
               </div>
             </div>
           </div>
@@ -463,10 +165,10 @@ body.lock { overflow: hidden; }
             <div class="card-top"><h3>Gift Shop</h3><span class="tag">E-commerce</span></div>
             <p class="desc">A complete online shop: cart, UPI and card payments, orders, GST invoices, coupons and rewards, and an Owner view where the owner runs the shop while the brand and tax details stay locked.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹6,999</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹6,999</span><small class="lbl">template files</small></p>
               <div class="actions">
                 <a class="btn btn-sm demo" href="demo/?demo=sample1">Open live demo</a>
-                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+                <a class="btn btn-sm btn-solid buy" href="quote.html?template=Gift Shop">Request quote</a>
               </div>
             </div>
           </div>
@@ -483,10 +185,10 @@ body.lock { overflow: hidden; }
             <div class="card-top"><h3>3D House Shop</h3><span class="tag">E-commerce · 3D</span></div>
             <p class="desc">The same full shop, opening with a scroll-driven walk through a 3D house. Products sit in the rooms; visitors step in and shop.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹9,999</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹9,999</span><small class="lbl">template files</small></p>
               <div class="actions">
                 <a class="btn btn-sm demo" href="demo/?demo=house">Open live demo</a>
-                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+                <a class="btn btn-sm btn-solid buy" href="quote.html?template=3D House Shop">Request quote</a>
               </div>
             </div>
           </div>
@@ -503,67 +205,70 @@ body.lock { overflow: hidden; }
             <div class="card-top"><h3>Scroll Openings</h3><span class="tag">Animated</span></div>
             <p class="desc">Three scroll-driven homepage openings: plaster arches that light up, a candle poured and lit, a 3D home tour. Drop one into any site.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹2,999</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹2,999</span><small class="lbl">template files</small></p>
               <div class="actions">
                 <a class="btn btn-sm demo" href="demo/?demo=intros">Open live demo</a>
-                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+                <a class="btn btn-sm btn-solid buy" href="quote.html?template=Scroll Openings">Request quote</a>
               </div>
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="Factory Film" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="9999" data-demo="demo/?demo=oil">
+        <article class="card reveal" data-name="Product Website" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="9999" data-demo="demo/?demo=oil">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwChZTapPJ5f2yVSPvFpTx+FbdrHLAS9xfzuADkF+BXMLcxoMRoQcfe4zTTdMSeWx6+tZWbZpdGpqGpyzPizuZ19t3OaKy2vOgMakDnO0A/mKKdgbR//2Q==) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
-            <img class="dt" src="previews/oil.jpg" width="1000" height="625" alt="Factory Film template, desktop view" loading="lazy">
-            <img class="ph" src="previews/oil-m.jpg" alt="Factory Film template, phone view" loading="lazy">
+            <img class="dt" src="previews/oil.jpg" width="1000" height="625" alt="Product Website template, desktop view" loading="lazy">
+            <img class="ph" src="previews/oil-m.jpg" alt="Product Website template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Factory Film</h3><span class="tag">Business · Film</span></div>
-            <p class="desc">For factories and makers: a scroll-controlled seed-to-bottle film, online ordering, dealer enquiries and quality records.</p>
+            <div class="card-top"><h3>Product Website</h3><span class="tag">Product site · Film</span></div>
+            <p class="desc">For makers and factories: a scroll-controlled seed-to-bottle film, online ordering, dealer enquiries and quality records.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹4,999</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹4,999</span><small class="lbl">template files</small></p>
               <div class="actions">
                 <a class="btn btn-sm demo" href="demo/?demo=oil">Open live demo</a>
-                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+                <a class="btn btn-sm btn-solid buy" href="quote.html?template=Product Website">Request quote</a>
               </div>
             </div>
           </div>
         </article>
+<!--/pp:cards-->
       </div>
     </div>
   </section>
 
   <section class="section" id="bundle">
     <div class="wrap">
-      <div class="bundle reveal">
+      <!--pp:bundle-->
+<div class="bundle reveal">
         <div class="px" aria-hidden="true"><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i></i><i class="x"></i></div>
         <div>
           <p class="eyebrow">Bundle</p>
           <h2>All 6 templates, one price</h2>
           <p>Get every template together. Use them for yourself, your business, or your next client.</p>
           <ul>
-            <li><span>Portfolio · Gift Shop · 3D House Shop</span><span class="price">₹17,997</span></li>
-            <li><span>Scroll Openings · Factory Film · Professional Portfolio</span><span class="price">₹12,997</span></li>
+            <li><span>All 6 templates, bought separately</span><span class="price">₹30,994</span></li>
           </ul>
         </div>
         <div class="deal">
           <span class="save">You save ₹7,995</span>
           <div class="big price">₹22,999</div>
-          <a class="btn btn-solid buy" id="buy-bundle" href="#" target="_blank" rel="noopener">Buy the bundle</a>
+          <a class="btn btn-solid buy" id="buy-bundle" href="quote.html?template=Bundle">Request the bundle</a>
         </div>
       </div>
+<!--/pp:bundle-->
+    
     </div>
   </section>
 
   <section class="section" id="how">
     <div class="wrap">
-      <div class="sec-head"><div><p class="eyebrow">How it works</p><h2>Live in three steps</h2></div></div>
+      <div class="sec-head"><div><p class="eyebrow">How it works</p><h2>Live in three steps</h2></div><a class="btn btn-sm" href="how-it-works.html">See the full steps and packages</a></div>
       <div class="steps">
-        <div class="step reveal"><span class="n">Step 1</span><h3>Pick a template</h3><p>Open the demo, check it on your phone, and choose the one that fits.</p></div>
-        <div class="step reveal"><span class="n">Step 2</span><h3>Pay securely</h3><p>Choose template only or with setup, and pay in rupees.</p></div>
-        <div class="step reveal"><span class="n">Step 3</span><h3>Go live</h3><p>Get the files to launch yourself, or send us your content and we put your site live for you.</p></div>
+        <div class="step reveal"><span class="n">Step 1</span><h3>Try a template live</h3><p>Open any demo, switch the theme, type your name, and use the Owner view.</p></div>
+        <div class="step reveal"><span class="n">Step 2</span><h3>Request a quote</h3><p>Tell us what you need in a two-minute form. We reply with a clear quote.</p></div>
+        <div class="step reveal"><span class="n">Step 3</span><h3>We deliver</h3><p>You get the files, or we set the site up with your content and put it live.</p></div>
       </div>
     </div>
   </section>
@@ -572,26 +277,32 @@ body.lock { overflow: hidden; }
     <div class="wrap">
       <div class="contact">
         <div>
-          <h2>Questions before you buy?</h2>
-          <p>Message us on WhatsApp. We usually reply the same day.</p>
+          <h2>Questions before you order?</h2>
+          <p>Send a request and we will reply with a clear quote. Nothing starts until you agree.</p>
         </div>
-        <a class="btn btn-wa" id="wa-contact" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.41 1.3-1.95 1.35-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>
-          Chat on WhatsApp
-        </a>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+          <a class="btn btn-solid" href="quote.html">Request a quote</a>
+          <a class="btn btn-wa" id="wa-contact" href="#" target="_blank" rel="noopener" hidden>Chat on WhatsApp</a>
+          <a class="btn" id="mail-contact" href="#" hidden>Email us</a>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer>
-  <div class="wrap">
-    <span>© <span id="yr">2026</span> Pixelpatra</span>
-    <span>Immersive templates for portfolios, shops, factories and 3D · <a href="credits.html">Photo credits</a> · <span id="build" title="Same number on every copy of this site means the same version"></span></span>
+<!--pp:footer-->
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div><a class="logo" href="index.html" aria-label="Pixelpatra home"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>Pixelpatra</a><p>Immersive website templates for portfolios, shops, makers and 3D experiences, made in India.</p></div>
+    <div><h3>Templates</h3><ul><li><a href="index.html?cat=portfolio#templates">Portfolio</a></li><li><a href="index.html?cat=ecommerce#templates">E-commerce</a></li><li><a href="index.html?cat=3d#templates">3D &amp; animated</a></li><li><a href="index.html?cat=business#templates">Business</a></li></ul></div>
+    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
+    <div><h3>Legal</h3><ul><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="refunds.html">Refunds</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
   </div>
+  <div class="wrap foot-base"><span>© <span id="yr">2026</span> Pixelpatra</span><span id="build" title="The same number on every copy of this site means the same version"></span></div>
 </footer>
+<!--/pp:footer-->
 
-<a class="fab" id="wa-fab" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+<a class="fab" id="wa-fab" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden>
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.41 1.3-1.95 1.35-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>
 </a>
 
@@ -600,18 +311,7 @@ body.lock { overflow: hidden; }
 
 <script>
 /* ---- Settings: fill these in when ready ---- */
-const CONFIG = {
-  whatsapp: "",          // e.g. "919876543210" (country code + number, no +). Empty = WhatsApp opens and asks who to send to.
-  payLinks: {            // Razorpay / Gumroad links per item, filled in later
-    "Portfolio": { files: "", setup: "" },
-    "Professional Portfolio": { files: "", setup: "" },
-    "Gift Shop": { files: "", setup: "" },
-    "3D House Shop": { files: "", setup: "" },
-    "Scroll Openings": { files: "", setup: "" },
-    "Factory Film": { files: "", setup: "" },
-    "Bundle": { files: "" }
-  }
-};
+const CONFIG = window.PP_CONFIG || {};
 
 (function () {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -632,32 +332,33 @@ const CONFIG = {
     tt = setTimeout(() => toast.classList.remove("show"), 2600);
   }
 
-  /* Buy + demo links */
+  /* Request-a-quote links: the template and package are carried into the form */
+  const slugs = { files: "files", setup: "setup", custom: "custom" };
   function updateLinks() {
     document.querySelectorAll(".card").forEach(card => {
-      const name = card.dataset.name;
-      const price = card.dataset[mode];
-      const link = (CONFIG.payLinks[name] || {})[mode];
-      const label = mode === "setup" ? " with setup" : "";
-      const forWho = yourName ? ` for "${yourName}"` : "";
-      card.querySelector(".buy").href = link || wa(`Hi Pixelpatra! I'd like to buy ${name}${label} (${rupee(price)})${forWho}.`);
+      const name = card.dataset.name, link = ((CONFIG.payLinks || {})[name] || {})[mode];
+      const b = card.querySelector(".buy");
+      b.href = link || "quote.html?template=" + encodeURIComponent(name) + "&package=" + slugs[mode];
+      b.textContent = link ? "Buy" : "Request quote";
     });
-    const b = CONFIG.payLinks.Bundle.files;
-    document.getElementById("buy-bundle").href = b || wa("Hi Pixelpatra! I'd like to buy the all-6 template bundle (₹22,999).");
   }
   document.querySelectorAll(".demo").forEach(a => {
     const card = a.closest(".card");
     if (card.dataset.demo) { a.href = card.dataset.demo; a.target = "_blank"; a.rel = "noopener"; return; }
     a.addEventListener("click", e => { e.preventDefault(); say("Demo for " + card.dataset.name + " is coming soon."); });
   });
-  const hello = wa("Hi Pixelpatra! I have a question about your templates.");
-  document.getElementById("wa-contact").href = hello;
-  document.getElementById("wa-fab").href = hello;
+  /* WhatsApp and email appear only when they are set in shared/pp-config.js, so there is never a dead button */
+  if (CONFIG.whatsapp) {
+    const hello = wa("Hi Pixelpatra! I have a question about your templates.");
+    ["wa-contact", "wa-fab"].forEach(id => { const el = document.getElementById(id); el.href = hello; el.hidden = false; });
+  }
+  if (CONFIG.email) { const m = document.getElementById("mail-contact"); m.href = "mailto:" + CONFIG.email; m.hidden = false; }
 
   /* Template only / With setup switch */
   const notes = {
-    files: "You get the template files and launch the site yourself.",
-    setup: "We add your name, photos and text, and put the site live for you."
+    files: "You get the template files and a short guide, and launch the site yourself.",
+    setup: "We add your name, logo, colours, photos and text, connect your domain, and put the site live for you.",
+    custom: "We change the layout or features to fit your business. We agree the scope and the price with you in writing first."
   };
   const pill = document.getElementById("pill");
   const btns = document.querySelectorAll(".switch button");
@@ -674,8 +375,8 @@ const CONFIG = {
     document.querySelectorAll(".card").forEach(card => {
       const num = card.querySelector(".num");
       num.classList.remove("flip"); void num.offsetWidth; num.classList.add("flip");
-      setTimeout(() => { num.textContent = rupee(card.dataset[m]); }, reduce ? 0 : 160);
-      card.querySelector(".lbl").textContent = m === "setup" ? "with setup" : "template only";
+      setTimeout(() => { num.textContent = m === "custom" ? "On request" : rupee(card.dataset[m]); }, reduce ? 0 : 160);
+      card.querySelector(".lbl").textContent = m === "setup" ? "setup & launch" : m === "custom" ? "custom quote" : "template files";
     });
     updateLinks();
   }
@@ -750,10 +451,7 @@ const CONFIG = {
   }
   input.addEventListener("input", () => { clearTimeout(flashT); applyName(input.value, false); flashT = setTimeout(() => applyName(input.value, true), 250); });
   const saved = store.get("pp-name"); if (saved) { input.value = saved; applyName(saved, false); }
-  document.querySelectorAll(".chip").forEach(ch => ch.addEventListener("click", () => {
-    document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === ch)));
-    if (ch.dataset.c) root.style.setProperty("--pick", ch.dataset.c); else root.style.removeProperty("--pick");
-  }));
+  if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); }
 
   /* ---- Pixel dissolve on card previews when they scroll in ---- */
   function addDissolve(shot) {
@@ -909,7 +607,7 @@ const CONFIG = {
   document.querySelectorAll(".tshot").forEach(t => { t.tabIndex = 0; t.setAttribute("role", "button"); t.setAttribute("aria-label", "Open live demo"); t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLive(t.closest(".card")); } }); });
   addEventListener("message", e => {
     const m = e.data || {}; if (m.pixelpatra === "close") closeLive();
-    if (m.pixelpatra === "get") { closeLive(); const c = cards.find(x => x.dataset.id === m.demo); if (c) { c.hidden = false; c.scrollIntoView({ behavior: "smooth", block: "center" }); c.classList.add("flash"); setTimeout(() => c.classList.remove("flash"), 2600); } }
+    if (m.pixelpatra === "get") { const c = cards.find(x => x.dataset.id === m.demo); closeLive(); if (c) location.href = "quote.html?template=" + encodeURIComponent(c.dataset.name) + "&package=" + ((document.querySelector(".switch [aria-pressed=true]") || {}).dataset ? document.querySelector(".switch [aria-pressed=true]").dataset.mode : "files"); }
   });
   addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeLive(); });
 })();

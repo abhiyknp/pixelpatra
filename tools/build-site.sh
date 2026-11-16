@@ -10,7 +10,7 @@ OUT=${1:-dist}
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT"
 rm -rf "$OUT" && mkdir -p "$OUT"
-cp index.html animations.html intro.html credits.html "$OUT"/
+cp index.html animations.html intro.html how-it-works.html faq.html about.html quote.html terms.html privacy.html refunds.html credits.html favicon.svg "$OUT"/
 cp -r demo "$OUT"/demo
 cp -r shared "$OUT"/shared
 [ -d previews ] && cp -r previews "$OUT"/previews
