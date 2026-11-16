@@ -3,7 +3,7 @@
 writes assets/credits.js (author, licence and link for every file, as the licences require).
 
     python3 tools/fetch-media.py            # everything not downloaded yet
-    python3 tools/fetch-media.py bottle     # just one entry
+    python3 tools/fetch-media.py seeds      # just one entry
 
 Needs: Python 3 with Pillow, ffmpeg, curl. Wikimedia limits automated downloads, so this waits between requests and stops
 at the first "429 too many requests"; run it again later and it carries on where it stopped (originals are kept in
@@ -24,9 +24,6 @@ MEDIA = {
   'seeds2':    ('Sunflower seeds. img 004.jpg', 'image', {'w': 1920}),
   'mill':      ('Meher oil mill in Yeditha.jpg', 'image', {'w': 1920}),
   'press':     ('Surendra Solvent Oil Mll in Yeditha.jpg', 'image', {'w': 1920}),
-  'extract':   ('Extração de óleo de girassol ECIRTEC SP.jpg', 'image', {'w': 1920}),
-  'bottle':    ('Bottle 1 liter Sunflower refined oil.jpg', 'image', {'w': 1400}),
-  'bottle2':   ('Ayçiçek yağı.jpg', 'image', {'w': 1400}),
 }
 def curl(args, out=None):
     cmd = ['curl', '-sL', '-m', '300', '-A', UA] + (['-o', out] if out else []) + args

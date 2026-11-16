@@ -58,6 +58,37 @@
     ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = '#2b2118'; ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 2.1, 0, 0, 6.28); ctx.fill();
     ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillRect(-p.r * .15, -p.r * 1.6, p.r * .3, p.r * 3.2); ctx.restore();
   }
+
+  // a bottle drawn on the canvas that fills with oil as you scroll (the sample brand's own, no third-party label)
+  function drawBottle(t, level) {
+    var bh = Math.min(H * .66, 560), bw = bh * .36, cx = W * (portrait ? .5 : .7), y0 = H * .5 - bh / 2 - H * .02;
+    var path = function () {
+      ctx.beginPath(); ctx.moveTo(cx - bw * .17, y0); ctx.lineTo(cx + bw * .17, y0); ctx.lineTo(cx + bw * .17, y0 + bh * .13);
+      ctx.bezierCurveTo(cx + bw * .17, y0 + bh * .24, cx + bw * .5, y0 + bh * .2, cx + bw * .5, y0 + bh * .34);
+      ctx.lineTo(cx + bw * .5, y0 + bh * .92); ctx.quadraticCurveTo(cx + bw * .5, y0 + bh, cx + bw * .4, y0 + bh);
+      ctx.lineTo(cx - bw * .4, y0 + bh); ctx.quadraticCurveTo(cx - bw * .5, y0 + bh, cx - bw * .5, y0 + bh * .92);
+      ctx.lineTo(cx - bw * .5, y0 + bh * .34); ctx.bezierCurveTo(cx - bw * .5, y0 + bh * .2, cx - bw * .17, y0 + bh * .24, cx - bw * .17, y0 + bh * .13); ctx.closePath();
+    };
+    var lv = clamp(level / .9, 0, 1), top = y0 + bh - lv * bh * .96;
+    // the stream from above while it fills
+    if (lv < 1) { ctx.fillStyle = '#f2bb2c'; ctx.fillRect(cx - 3, 0, 6, Math.max(0, top)); }
+    ctx.save(); path(); ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.fill(); ctx.clip();
+    var g = ctx.createLinearGradient(cx - bw / 2, 0, cx + bw / 2, 0); g.addColorStop(0, '#b97a07'); g.addColorStop(.35, '#f6c53a'); g.addColorStop(.7, '#e9a91b'); g.addColorStop(1, '#a96c05');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(cx - bw, y0 + bh + 4);
+    for (var x = cx - bw; x <= cx + bw; x += 6) ctx.lineTo(x, top + Math.sin(x * .05 + t / 350) * 2.5 * (1 - lv * .6));
+    ctx.lineTo(cx + bw, y0 + bh + 4); ctx.closePath(); ctx.fill();
+    // label
+    var ly = y0 + bh * .52, lh = bh * .26; ctx.fillStyle = 'rgba(251,244,224,.94)'; ctx.fillRect(cx - bw * .5, ly, bw, lh);
+    ctx.fillStyle = '#1d1a10'; ctx.textAlign = 'center'; ctx.font = '600 ' + Math.round(bw * .118) + 'px Fraunces, Georgia, serif'; ctx.fillText('GOLDEN FIELD', cx, ly + lh * .42);
+    ctx.font = '500 ' + Math.round(bw * .075) + 'px Inter, sans-serif'; ctx.fillStyle = '#4d6b2a'; ctx.fillText('SUNFLOWER OIL · 1 L', cx, ly + lh * .66);
+    ctx.fillStyle = '#e6a817'; ctx.beginPath(); ctx.arc(cx, ly + lh * .84, bw * .05, 0, 6.28); ctx.fill();
+    // shine
+    var sh = ctx.createLinearGradient(cx - bw * .5, 0, cx - bw * .2, 0); sh.addColorStop(0, 'rgba(255,255,255,.28)'); sh.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = sh; ctx.fillRect(cx - bw * .48, y0 + bh * .3, bw * .28, bh * .66);
+    ctx.restore();
+    path(); ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#e6a817'; ctx.fillRect(cx - bw * .2, y0 - bh * .06, bw * .4, bh * .06); // cap
+    ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(cx - bw * .2, y0 - bh * .06, bw * .4, 3);
+  }
   var ripples = [];
   function frame(t) {
     var dt = Math.min(.05, (t - last) / 1000 || .016); last = t; ctx.clearRect(0, 0, W, H);
@@ -83,6 +114,7 @@
       ctx.fillStyle = pg; ctx.beginPath(); ctx.moveTo(0, H); for (var x = 0; x <= W; x += 12) ctx.lineTo(x, poolY + Math.sin(x * .02 + t / 500) * 3); ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
     }
     for (var j = ripples.length - 1; j >= 0; j--) { var q = ripples[j]; q.r += 90 * dt; q.a -= 1.4 * dt; if (q.a <= 0) { ripples.splice(j, 1); continue; } ctx.strokeStyle = 'rgba(255,230,150,' + q.a + ')'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(q.x, q.y, q.r * 2.2, q.r * .5, 0, 0, 6.28); ctx.stroke(); }
+    if (kind === 'bottle') drawBottle(t, local);
     ctx.globalAlpha = 1; vel *= .9;
     if (running) requestAnimationFrame(frame);
   }

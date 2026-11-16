@@ -15,6 +15,6 @@ window.STORY_CHAPTERS = [
   { rail: 'The oil', eyebrow: '05 · The oil', h: 'Clear, golden, <em>settled</em>', p: 'Sample text: filtering, settling and the lab test on every batch.', fx: 'drops',
     bg: 'radial-gradient(80% 70% at 50% 45%, #d9971a, #3a2506)',
     media: [{ type: 'video', src: 'assets/oil.mp4', poster: 'assets/oil-poster.jpg' }] },
-  { rail: 'The bottle', eyebrow: '06 · The bottle', h: 'Filled, sealed, <em>numbered</em>', p: 'Sample text: pack sizes, and the batch number that traces each bottle to its pressing day.', fx: 'dust',
-    media: [{ type: 'image', src: 'assets/bottle.jpg' }] }
+  { rail: 'The bottle', eyebrow: '06 · The bottle', h: 'Filled, sealed, <em>numbered</em>', p: 'Sample text: pack sizes, and the batch number that traces each bottle to its pressing day.', fx: 'bottle',
+    bg: 'radial-gradient(70% 70% at 70% 45%, #5a3d0a, #120d04)', media: [] }
 ];
