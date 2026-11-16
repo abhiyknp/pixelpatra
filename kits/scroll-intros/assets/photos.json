@@ -1,1 +1,6 @@
-{ "products": {} }
+{
+ "products": {
+  "product-10": "assets/products/product-10.jpg",
+  "product-12": "assets/products/product-12.jpg"
+ }
+}
