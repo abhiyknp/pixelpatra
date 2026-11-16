@@ -12,7 +12,8 @@ cd "$ROOT"
 rm -rf "$OUT" && mkdir -p "$OUT"
 cp index.html animations.html intro.html "$OUT"/
 cp -r demo "$OUT"/demo
-for d in Sample_1 House_3D_Prototype Sample_2 kits; do
+[ -d previews ] && cp -r previews "$OUT"/previews
+for d in Sample_1 House_3D_Prototype Sample_2 Sample_3 kits; do
   mkdir -p "$OUT/$d"
   (cd "$d" && tar --exclude=./tools --exclude=./.preview --exclude=./.cache --exclude='*.md' --exclude=./.gitignore --exclude=serve.sh --exclude=page.html -cf - .) | (cd "$OUT/$d" && tar -xf -)
 done

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AARAV MEHTA · Sample portfolio</title>
+<meta name="description" content="Sample portfolio website with a 3D particle hero that forms a name, scatters into a galaxy as you scroll, and reacts to the pointer. Placeholder content.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+:root { --bg: #07070b; --ink: #f4f1ea; --mut: #a8a39a; --acc: #ff7a1a; --gutter: clamp(18px, 5vw, 64px); --head: "Space Grotesk", system-ui, sans-serif; --serif: "Instrument Serif", Georgia, serif; }
+* { box-sizing: border-box; } html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.55 var(--head); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; } [hidden] { display: none !important; }
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.top { position: fixed; inset: 0 0 auto 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 18px var(--gutter); mix-blend-mode: difference; color: #fff; }
+.top a { text-decoration: none; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; }
+.top nav { display: flex; gap: 22px; }
+.demo { position: fixed; z-index: 11; left: 50%; bottom: 10px; transform: translateX(-50%); background: rgba(255, 255, 255, .1); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, .15); color: #fff; font-size: 12px; padding: 6px 14px; border-radius: 999px; white-space: nowrap; pointer-events: none; }
+main { position: relative; z-index: 2; }
+.hero { min-height: 100svh; display: grid; align-content: end; padding: 0 var(--gutter) clamp(60px, 12vh, 120px); }
+.hero .role { font: italic 400 clamp(22px, 3.4vw, 40px)/1.1 var(--serif); color: var(--acc); }
+.hero p { max-width: 480px; color: var(--mut); margin: 10px 0 0; }
+.cue { margin-top: 28px; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--mut); display: flex; gap: 12px; align-items: center; }
+.cue i { width: 44px; height: 1px; background: var(--mut); transform-origin: left; animation: cue 2s ease-in-out infinite; }
+@keyframes cue { 0%, 100% { transform: scaleX(.2); } 50% { transform: scaleX(1); } }
+section.blk { padding: clamp(80px, 14vw, 180px) var(--gutter); }
+h2 { font: 400 clamp(40px, 8vw, 110px)/.95 var(--serif); margin: 0 0 40px; letter-spacing: -.02em; }
+h2 em { color: var(--acc); }
+.work { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 22px; }
+.proj { position: relative; aspect-ratio: 4 / 3; border-radius: 20px; overflow: hidden; display: grid; align-content: end; padding: 22px; text-decoration: none; transform-style: preserve-3d; transition: transform .25s ease-out, box-shadow .3s; will-change: transform; }
+.proj::before { content: ""; position: absolute; inset: 0; background: var(--g); transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+.proj::after { content: ""; position: absolute; inset: 0; background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, .28), transparent 60%); opacity: 0; transition: opacity .3s; }
+.proj:hover { box-shadow: 0 30px 60px rgba(0, 0, 0, .5); } .proj:hover::before { transform: scale(1.08) rotate(.6deg); } .proj:hover::after { opacity: 1; }
+.proj * { position: relative; z-index: 1; }
+.proj b { font: 400 clamp(26px, 3vw, 34px)/1 var(--serif); } .proj span { font-size: 13px; opacity: .85; letter-spacing: .04em; }
+.proj .n { position: absolute; top: 18px; left: 22px; font-size: 12px; letter-spacing: .2em; opacity: .75; }
+.about { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; align-items: start; }
+.about p { font-size: clamp(19px, 2.2vw, 26px); line-height: 1.4; margin: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; } .chips span { border: 1px solid rgba(255, 255, 255, .25); border-radius: 999px; padding: 8px 16px; font-size: 14px; }
+.contact a.big { display: inline-block; font: 400 clamp(32px, 7vw, 96px)/1 var(--serif); text-decoration: none; border-bottom: 2px solid var(--acc); padding-bottom: 6px; word-break: break-all; }
+.contact .row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+.btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 24px; border-radius: 999px; background: var(--acc); color: #1a0c00; font-weight: 700; text-decoration: none; border: 0; cursor: pointer; font-family: inherit; font-size: 15px; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid rgba(255, 255, 255, .35); }
+footer { position: relative; z-index: 2; padding: 30px var(--gutter) 80px; color: var(--mut); font-size: 13px; }
+.glow { position: fixed; width: 360px; height: 360px; margin: -180px 0 0 -180px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 122, 26, .18), transparent 65%); pointer-events: none; z-index: 1; opacity: 0; transition: opacity .4s; }
+@media (hover: none) { .glow { display: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .cue i { animation: none; } }
+.fade { opacity: 0; transform: translateY(26px); transition: opacity .8s, transform .8s cubic-bezier(.2, .7, .2, 1); } .fade.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas><div class="glow" id="glow"></div>
+<header class="top"><a href="#top" id="logo">AM</a><nav aria-label="Main"><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav></header>
+<div class="demo">Sample portfolio · placeholder content · Pixelpatra</div>
+<main id="top">
+  <section class="hero" aria-label="Intro"><h1 class="sr" style="position:absolute;left:-9999px" id="h1"></h1>
+    <div class="role" id="role"></div><p id="line"></p>
+    <div class="cue"><i></i>Move your pointer. Scroll.</div>
+  </section>
+  <section class="blk" id="work"><h2 class="fade">Selected <em>work</em></h2><div class="work" id="grid"></div></section>
+  <section class="blk" id="about"><h2 class="fade">About <em>me</em></h2><div class="about fade"><p id="aboutp"></p><div class="chips" id="chips"></div></div></section>
+  <section class="blk contact" id="contact"><h2 class="fade">Let's <em>talk</em></h2><div class="fade"><a class="big" id="mail" href="#"></a><div class="row"><a class="btn" id="wa" href="#">Message on WhatsApp</a><a class="btn ghost" id="ig" href="#" hidden>Instagram</a></div></div></section>
+</main>
+<footer>© Sample portfolio · built by Pixelpatra as a demo. Move the pointer through the particles, they push back.</footer>
+<script src="config.js"></script>
+<script type="importmap">{ "imports": { "three": "./vendor/three/build/three.module.min.js" } }</script>
+<script type="module" src="portfolio.js"></script>
+</body>
+</html>

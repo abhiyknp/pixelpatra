@@ -273,6 +273,31 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal.pending { opacity: 1; transform: none; }
 }
+
+/* ---- showcase: features, category tabs, real previews, live preview modal ---- */
+.feats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.feat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.feat b { display: block; font-size: 17px; letter-spacing: -.01em; margin-bottom: 6px; } .feat p { margin: 0; color: var(--muted); font-size: 15px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 10px; }
+.tabs button { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: 600 14px/1 var(--font-body); padding: 11px 18px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s; min-height: 42px; }
+.tabs button:hover { transform: translateY(-1px); border-color: var(--ink); }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tabhint { color: var(--muted); font-size: 14.5px; margin: 0 0 22px; }
+.grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+.card[hidden] { display: none; } .card.pop { animation: pop .5s cubic-bezier(.2, .8, .2, 1); } @keyframes pop { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+.tshot { position: relative; margin: 14px 14px 0; border-radius: 12px; overflow: hidden; background: #111; border: 1px solid var(--line); aspect-ratio: 16 / 10; cursor: pointer; }
+.tshot .bar { position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 22px; background: rgba(20, 20, 24, .78); backdrop-filter: blur(4px); display: flex; gap: 5px; align-items: center; padding: 0 10px; }
+.tshot .bar i { width: 7px; height: 7px; border-radius: 50%; background: #ffffff55; }
+.tshot .dt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+.tshot .ph { position: absolute; z-index: 2; right: 10px; bottom: -22%; width: 24%; border-radius: 14px; border: 3px solid #111; box-shadow: 0 14px 30px rgba(0, 0, 0, .45); transform: translateY(0); transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+.tshot .live { position: absolute; z-index: 3; left: 12px; bottom: 12px; background: var(--ink); color: var(--paper); font: 700 13px/1 var(--font-body); padding: 9px 14px; border-radius: 999px; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
+.card:hover .tshot .dt { transform: scale(1.06); } .card:hover .tshot .ph { transform: translateY(-16%); } .card:hover .tshot .live, .tshot:focus-visible .live { opacity: 1; transform: none; }
+@media (hover: none) { .tshot .live { opacity: 1; transform: none; } }
+.card.flash { box-shadow: 0 0 0 4px var(--accent, #f97316), var(--shadow); }
+.modal { position: fixed; inset: 0; z-index: 100; background: #0b0b0e; animation: mopen .45s cubic-bezier(.2, .8, .2, 1); }
+.modal iframe { width: 100%; height: 100%; border: 0; display: block; }
+@keyframes mopen { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+body.lock { overflow: hidden; }
 </style>
 </head>
 <body>
@@ -299,10 +324,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div class="copy">
         <p class="eyebrow">Website templates, made in India</p>
         <h1>Your website, <span class="hl">ready this week.</span></h1>
-        <p class="lede">Clean, fast templates for students, professionals and small businesses. Buy the files and launch it yourself, or let us set it up with your content.</p>
+        <p class="lede">Immersive templates for portfolios, online shops, factories and 3D experiences, each with an Owner view so you run it yourself. Buy the files and launch it yourself, or let us set it up with your content.</p>
         <div class="ctas">
           <a class="btn btn-solid" href="#templates">See the templates</a>
-          <a class="btn" href="#bundle">Get all 4 for ₹999</a>
+          <a class="btn" href="#bundle">Get all 5 for ₹19,999</a>
         </div>
         <p class="deva"><b lang="hi">पत्र</b> patra means a page, a letter. We make yours.</p>
       </div>
@@ -337,12 +362,26 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <button type="button" class="cloth-open" id="cloth-open" hidden>Swipe or tap to open</button>
   </section>
 
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">What every site includes</p><h2>Built to wow, built to run</h2></div></div>
+      <div class="feats">
+        <div class="feat reveal"><b>Immersive on first scroll</b><p>3D particles, scroll-driven films and walk-throughs, so a visitor remembers the site.</p></div>
+        <div class="feat reveal"><b>An Owner view</b><p>Products, prices, stock, photos, offers, orders and invoices, changed by the owner without a developer.</p></div>
+        <div class="feat reveal"><b>Brand and tax details locked</b><p>Name, GST and legal details can't be overwritten by accident. Real changes go through a verified request.</p></div>
+        <div class="feat reveal"><b>Phone first</b><p>Every template is tested on phones and can be installed like an app.</p></div>
+        <div class="feat reveal"><b>Orders on WhatsApp or online</b><p>From a simple WhatsApp order to payments, delivery and GST invoices.</p></div>
+        <div class="feat reveal"><b>Themes you approve</b><p>The owner can switch between looks you chose, never into something off-brand.</p></div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="templates">
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <p class="eyebrow">4 templates<span id="for-name"></span></p>
-          <h2>Pick your template</h2>
+          <p class="eyebrow"><span id="tcount">5 templates in 4 categories</span><span id="for-name"></span></p>
+          <h2>Open a template, try it live</h2>
         </div>
         <div class="switch" role="group" aria-label="Price option">
           <span class="pill" id="pill"></span>
@@ -352,90 +391,110 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <p class="mode-note" id="mode-note">You get the template files and launch the site yourself.</p>
       </div>
 
-      <div class="grid">
-        <article class="card reveal" data-name="Portfolio" data-files="299" data-setup="799" data-demo="">
+      <div class="tabs" role="tablist" aria-label="Template categories" id="tabs">
+        <button type="button" role="tab" aria-selected="true" data-cat="all">All</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="portfolio">Portfolio</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="ecommerce">E-commerce</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="3d">3D &amp; animated</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="business">Business</button>
+      </div>
+      <p class="tabhint" id="tabhint">Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.</p>
+      <div class="grid" id="grid">
+        <article class="card reveal" data-name="Portfolio" data-cat="portfolio 3d" data-id="portfolio" data-files="999" data-setup="2499" data-demo="demo/?demo=portfolio">
           <span class="glare"></span>
-          <div class="shot m-portfolio" style="--c: var(--pick, var(--teal))" aria-hidden="true">
+          <div class="tshot">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="avatar"></div>
-              <div class="lines"><span class="mt nm" data-def="Your Name">Your Name</span><span class="ph"></span><span class="ph" style="width:60%"></span></div>
-              <div class="row"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/portfolio.jpg" width="1000" height="625" alt="Portfolio template, desktop view" loading="lazy">
+            <img class="ph" src="previews/portfolio-m.jpg" alt="Portfolio template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Portfolio</h3><span class="tag">Students &amp; Pros</span></div>
-            <p class="desc">A personal site for your work, resume and contact details. Ideal for placements, freelancing and job hunts.</p>
+            <div class="card-top"><h3>Portfolio</h3><span class="tag">Portfolio · 3D</span></div>
+            <p class="desc">A personal site whose name is built from thousands of particles that react to your pointer, then scatter into a galaxy as you scroll. Projects, about and contact.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹299</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=portfolio">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
           </div>
         </article>
-
-        <article class="card reveal" data-name="Sample 1" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="Gift Shop" data-cat="ecommerce" data-id="sample1" data-files="6999" data-setup="14999" data-demo="demo/?demo=sample1">
           <span class="glare"></span>
-          <div class="shot m-sample v1" style="--c: var(--pick, var(--sky))" aria-hidden="true">
+          <div class="tshot">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span></div>
-              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/giftshop.jpg" width="1000" height="625" alt="Gift Shop template, desktop view" loading="lazy">
+            <img class="ph" src="previews/giftshop-m.jpg" alt="Gift Shop template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Sample 1</h3><span class="tag">Business</span></div>
-            <p class="desc">A business site with a bold banner, services and a contact section. Good for shops, studios and local services.</p>
+            <div class="card-top"><h3>Gift Shop</h3><span class="tag">E-commerce</span></div>
+            <p class="desc">A complete online shop: cart, UPI and card payments, orders, GST invoices, coupons and rewards, and an Owner view where the owner runs the shop while the brand and tax details stay locked.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹6,999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=sample1">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
           </div>
         </article>
-
-        <article class="card reveal" data-name="Sample 2" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="3D House Shop" data-cat="ecommerce 3d" data-id="house" data-files="9999" data-setup="19999" data-demo="demo/?demo=house">
           <span class="glare"></span>
-          <div class="shot m-sample v2" style="--c: var(--pick, var(--leaf))" aria-hidden="true">
+          <div class="tshot">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span><span class="ph"></span></div>
-              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/house.jpg" width="1000" height="625" alt="3D House Shop template, desktop view" loading="lazy">
+            <img class="ph" src="previews/house-m.jpg" alt="3D House Shop template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Sample 2</h3><span class="tag">Business</span></div>
-            <p class="desc">A split layout that puts your products or services side by side with your story.</p>
+            <div class="card-top"><h3>3D House Shop</h3><span class="tag">E-commerce · 3D</span></div>
+            <p class="desc">The same full shop, opening with a scroll-driven walk through a 3D house. Products sit in the rooms; visitors step in and shop.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹9,999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=house">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
           </div>
         </article>
-
-        <article class="card reveal" data-name="Sample 3" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="Scroll Openings" data-cat="3d" data-id="intros" data-files="2999" data-setup="6999" data-demo="demo/?demo=intros">
           <span class="glare"></span>
-          <div class="shot m-sample v3" style="--c: var(--pick, var(--plum)); --cols: 4" aria-hidden="true">
+          <div class="tshot">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span></div>
-              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/intros.jpg" width="1000" height="625" alt="Scroll Openings template, desktop view" loading="lazy">
+            <img class="ph" src="previews/intros-m.jpg" alt="Scroll Openings template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Sample 3</h3><span class="tag">Business</span></div>
-            <p class="desc">A lighter, minimal take with a gallery grid. Suits cafes, boutiques and creative businesses.</p>
+            <div class="card-top"><h3>Scroll Openings</h3><span class="tag">Animated</span></div>
+            <p class="desc">Three scroll-driven homepage openings: plaster arches that light up, a candle poured and lit, a 3D home tour. Drop one into any site.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹2,999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=intros">Open live demo</a>
+                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card reveal" data-name="Factory Film" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="9999" data-demo="demo/?demo=oil">
+          <span class="glare"></span>
+          <div class="tshot">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <img class="dt" src="previews/oil.jpg" width="1000" height="625" alt="Factory Film template, desktop view" loading="lazy">
+            <img class="ph" src="previews/oil-m.jpg" alt="Factory Film template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>Factory Film</h3><span class="tag">Business · Film</span></div>
+            <p class="desc">For factories and makers: a scroll-controlled seed-to-bottle film, online ordering, dealer enquiries and quality records.</p>
+            <div class="card-foot">
+              <p class="price"><span class="num">₹4,999</span><small class="lbl">template only</small></p>
+              <div class="actions">
+                <a class="btn btn-sm demo" href="demo/?demo=oil">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
@@ -451,16 +510,16 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <div class="px" aria-hidden="true"><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i></i><i class="x"></i></div>
         <div>
           <p class="eyebrow">Bundle</p>
-          <h2>All 4 templates, one price</h2>
-          <p>Get the Portfolio and all three samples together. Use them for yourself, your business, or your next client.</p>
+          <h2>All 5 templates, one price</h2>
+          <p>Get every template together. Use them for yourself, your business, or your next client.</p>
           <ul>
-            <li><span>Portfolio</span><span class="price">₹299</span></li>
-            <li><span>Sample 1, 2, 3</span><span class="price">₹1,497</span></li>
+            <li><span>Portfolio · Gift Shop · 3D House Shop</span><span class="price">₹17,997</span></li>
+            <li><span>Scroll Openings · Factory Film</span><span class="price">₹7,998</span></li>
           </ul>
         </div>
         <div class="deal">
-          <span class="save">You save ₹797</span>
-          <div class="big price">₹999</div>
+          <span class="save">You save ₹5,996</span>
+          <div class="big price">₹19,999</div>
           <a class="btn btn-solid buy" id="buy-bundle" href="#" target="_blank" rel="noopener">Buy the bundle</a>
         </div>
       </div>
@@ -505,6 +564,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.41 1.3-1.95 1.35-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>
 </a>
 
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-label="Live template preview"><iframe id="modal-frame" title="Live template preview" allow="fullscreen"></iframe></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -513,9 +573,10 @@ const CONFIG = {
   whatsapp: "",          // e.g. "919876543210" (country code + number, no +). Empty = WhatsApp opens and asks who to send to.
   payLinks: {            // Razorpay / Gumroad links per item, filled in later
     "Portfolio": { files: "", setup: "" },
-    "Sample 1": { files: "", setup: "" },
-    "Sample 2": { files: "", setup: "" },
-    "Sample 3": { files: "", setup: "" },
+    "Gift Shop": { files: "", setup: "" },
+    "3D House Shop": { files: "", setup: "" },
+    "Scroll Openings": { files: "", setup: "" },
+    "Factory Film": { files: "", setup: "" },
     "Bundle": { files: "" }
   }
 };
@@ -550,7 +611,7 @@ const CONFIG = {
       card.querySelector(".buy").href = link || wa(`Hi Pixelpatra! I'd like to buy ${name}${label} (${rupee(price)})${forWho}.`);
     });
     const b = CONFIG.payLinks.Bundle.files;
-    document.getElementById("buy-bundle").href = b || wa("Hi Pixelpatra! I'd like to buy the all-4 template bundle (₹999).");
+    document.getElementById("buy-bundle").href = b || wa("Hi Pixelpatra! I'd like to buy the all-5 template bundle (₹19,999).");
   }
   document.querySelectorAll(".demo").forEach(a => {
     const card = a.closest(".card");
@@ -779,6 +840,43 @@ const CONFIG = {
   })();
 
   document.getElementById("yr").textContent = new Date().getFullYear();
+})();
+
+/* ---- showcase: category tabs and the live preview ---- */
+(function () {
+  const tabs = document.querySelectorAll("#tabs button"), cards = [...document.querySelectorAll("#grid .card")];
+  const hints = { all: "Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.",
+    portfolio: "Portfolios: personal sites for designers, developers, photographers and professionals.",
+    ecommerce: "E-commerce: complete shops with payments, orders, invoices and an Owner view.",
+    "3d": "3D and animated: immersive openings and scroll-driven experiences that people remember.",
+    business: "Business: sites for factories, makers and service companies, with orders and dealer enquiries." };
+  function pickCat(cat) {
+    tabs.forEach(b => b.setAttribute("aria-selected", String(b.dataset.cat === cat)));
+    cards.forEach(c => { const on = cat === "all" || c.dataset.cat.split(" ").includes(cat); c.hidden = !on; if (on) { c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); } });
+    document.getElementById("tabhint").textContent = hints[cat];
+    history.replaceState(null, "", cat === "all" ? location.pathname + location.hash : "?cat=" + cat + "#templates");
+  }
+  tabs.forEach(b => b.addEventListener("click", () => pickCat(b.dataset.cat)));
+  const q = new URLSearchParams(location.search).get("cat"); if (q && hints[q]) pickCat(q);
+  const modal = document.getElementById("modal"), frame = document.getElementById("modal-frame");
+  let from = null;
+  function openLive(card) {
+    const cat = (document.querySelector("#tabs [aria-selected=true]") || {}).dataset ? document.querySelector("#tabs [aria-selected=true]").dataset.cat : "all";
+    from = card; frame.src = "demo/?embed=1&demo=" + card.dataset.id + (cat !== "all" ? "&cat=" + cat : "");
+    modal.hidden = false; document.body.classList.add("lock");
+  }
+  function closeLive() { modal.hidden = true; frame.src = "about:blank"; document.body.classList.remove("lock"); if (from) from.querySelector(".demo").focus(); }
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a.demo"), shot = e.target.closest(".tshot");
+    const card = (a || shot) && (a || shot).closest(".card"); if (!card) return;
+    e.preventDefault(); openLive(card);
+  }, true);
+  document.querySelectorAll(".tshot").forEach(t => { t.tabIndex = 0; t.setAttribute("role", "button"); t.setAttribute("aria-label", "Open live demo"); t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLive(t.closest(".card")); } }); });
+  addEventListener("message", e => {
+    const m = e.data || {}; if (m.pixelpatra === "close") closeLive();
+    if (m.pixelpatra === "get") { closeLive(); const c = cards.find(x => x.dataset.id === m.demo); if (c) { c.hidden = false; c.scrollIntoView({ behavior: "smooth", block: "center" }); c.classList.add("flash"); setTimeout(() => c.classList.remove("flash"), 2600); } }
+  });
+  addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeLive(); });
 })();
 </script>
 </body>
