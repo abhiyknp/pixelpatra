@@ -29,4 +29,7 @@ touch "$OUT"/.nojekyll
 # the security policy for the two shop samples
 node Sample_1/tools/add-csp.js "$OUT/Sample_1/index.html"
 node House_3D_Prototype/tools/add-csp.js "$OUT/House_3D_Prototype/index.html"
-echo "Built $OUT ($(du -sh "$OUT" | cut -f1))"
+# a short fingerprint of the content: two copies of the site with the same fingerprint are identical, wherever they are published
+VER=$(cd "$OUT" && find . -type f ! -name build.json | sort | xargs sha256sum | sha256sum | cut -c1-8)
+printf '{"version":"%s"}\n' "$VER" > "$OUT/build.json"
+echo "Built $OUT ($(du -sh "$OUT" | cut -f1)), version $VER"
