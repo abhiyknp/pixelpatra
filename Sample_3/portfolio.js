@@ -51,7 +51,7 @@ function build() {
     alt[i * 3] = Math.cos(a) * r; alt[i * 3 + 1] = (Math.random() - .5) * .5 * (1 - r / 5) ; alt[i * 3 + 2] = Math.sin(a) * r - 1.5; rnd[i] = Math.random();
   }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(home, 3)); g.setAttribute('aAlt', new THREE.BufferAttribute(alt, 3)); g.setAttribute('aRand', new THREE.BufferAttribute(rnd, 1));
-  uni = { uTime: { value: 0 }, uProg: { value: 0 }, uMouse: { value: new THREE.Vector2(9, 9) }, uSize: { value: small ? 3.2 : 3.0 }, uPx: { value: renderer.getPixelRatio() } };
+  uni = { uTime: { value: 0 }, uProg: { value: 0 }, uMouse: { value: new THREE.Vector2(9, 9) }, uSize: { value: small ? 3.2 : 3.0 }, uPx: { value: renderer.getPixelRatio() }, uC1: { value: new THREE.Vector3(1, .42, .08) }, uC2: { value: new THREE.Vector3(1, .86, .5) } };
   mat = new THREE.ShaderMaterial({ uniforms: uni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     vertexShader: `attribute vec3 aAlt; attribute float aRand; uniform float uTime, uProg, uSize, uPx; uniform vec2 uMouse; varying float vR; varying float vF;
       void main(){ float k = smoothstep(0., 1., clamp(uProg * 1.15 - aRand * .15, 0., 1.)); vec3 p = mix(position, aAlt, k);
@@ -59,8 +59,8 @@ function build() {
         p.z += sin(uTime * .8 + aRand * 6.283) * .035; p.xy += vec2(sin(uTime * .5 + aRand * 11.), cos(uTime * .6 + aRand * 7.)) * (.01 + .03 * k);
         vec2 d = p.xy - uMouse; float r = length(d); float f = smoothstep(.75, 0., r) * (1. - k * .6); p.xy += normalize(d + 1e-4) * f * .32; p.z += f * .35; vF = f; vR = aRand;
         vec4 mv = modelViewMatrix * vec4(p, 1.); gl_PointSize = uSize * uPx * (1. + f * 1.6) * (3.6 / -mv.z) * (.7 + aRand * .8); gl_Position = projectionMatrix * mv; }`,
-    fragmentShader: `varying float vR; varying float vF; void main(){ vec2 c = gl_PointCoord - .5; float d = length(c); if (d > .5) discard; float a = smoothstep(.5, .05, d);
-        vec3 col = mix(vec3(1., .42, .08), vec3(1., .86, .5), vR); col = mix(col, vec3(1., .95, .8), vF * .35); gl_FragColor = vec4(col, a * (.6 + vF * .2)); }` });
+    fragmentShader: `uniform vec3 uC1; uniform vec3 uC2; varying float vR; varying float vF; void main(){ vec2 c = gl_PointCoord - .5; float d = length(c); if (d > .5) discard; float a = smoothstep(.5, .05, d);
+        vec3 col = mix(uC1, uC2, vR); col = mix(col, vec3(1., .95, .8), vF * .35); gl_FragColor = vec4(col, a * (.6 + vF * .2)); }` });
   points = new THREE.Points(g, mat); scene.add(points);
 }
 function size() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); build(); }
@@ -76,6 +76,7 @@ addEventListener('scroll', () => { progT = Math.min(1, scrollY / (innerHeight * 
 let t0 = performance.now();
 function frame(now) {
   const dt = (now - t0) / 1000; t0 = now; if (uni) {
+    if (window.PP_COLORS) { uni.uC1.value.set(...window.PP_COLORS.c1); uni.uC2.value.set(...window.PP_COLORS.c2); }
     uni.uTime.value += dt; mouse.lerp(target, .18); uni.uMouse.value.copy(mouse); prog += (progT - prog) * .07; uni.uProg.value = reduce ? 0 : prog;
     camera.position.x = (mouse.x === 9 ? 0 : mouse.x * .03); camera.position.y = (mouse.y === 9 ? 0 : mouse.y * .03) - prog * .4; camera.lookAt(0, 0, -prog); renderer.render(scene, camera);
   }

@@ -946,6 +946,7 @@ body.app .why-band { padding-bottom: 96px; }
 <div id="overlay"></div>
 <div class="sr" aria-live="polite" id="live"></div>
 
+<script src="../shared/pp-theme.js" data-pp="shop"></script>
 <script src="config.js"></script>
 <script src="vendor/qrcode/qrcode.js"></script>
 <script src="db.js?v=8"></script>
@@ -3068,7 +3069,7 @@ const SKINS = {
 const LEAF = new Image();
 const TINT = {};
 // the owner picks the site theme in Owner view → Settings
-const skin = () => (SKINS[SET.theme] ? SET.theme : 'signature');
+const skin = () => (window.PP_THEME && SKINS[window.PP_THEME] ? window.PP_THEME : (SKINS[SET.theme] ? SET.theme : 'signature'));
 LEAF.onload = () => { for (const k in PIMG) delete PIMG[k]; render(); };
 LEAF.src = 'assets/leaf.png';
 function rp(ctx, x, y, w, h, r) { ctx.moveTo(x, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.closePath(); }

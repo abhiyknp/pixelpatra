@@ -12,6 +12,7 @@ cd "$ROOT"
 rm -rf "$OUT" && mkdir -p "$OUT"
 cp index.html animations.html intro.html "$OUT"/
 cp -r demo "$OUT"/demo
+cp -r shared "$OUT"/shared
 [ -d previews ] && cp -r previews "$OUT"/previews
 for d in Sample_1 House_3D_Prototype Sample_2 Sample_3 kits; do
   mkdir -p "$OUT/$d"

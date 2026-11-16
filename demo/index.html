@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pixelpatra demos</title>
+<script src="../shared/pp-theme.js" data-pp="hub"></script>
 <meta name="description" content="Try every Pixelpatra sample site: pick a demo, a device and where to start, from the dropdowns.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f97316'/%3E%3C/svg%3E">
 <style>
@@ -15,6 +16,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
 .bar b { font-size: 15px; letter-spacing: .02em; }
 .bar b i { color: var(--accent); font-style: normal; }
 .bar label { display: grid; gap: 2px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.bar .thm { display: grid; gap: 4px; } .bar .pp-swatches button.pp-sw { width: 30px; height: 30px; min-height: 0; padding: 0; border: 0; border-radius: 50%; background: conic-gradient(var(--b) 0 50%, var(--a) 0 75%, var(--c) 0); box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .45); display: block; } .bar .pp-swatches button.pp-sw[aria-checked="true"] { box-shadow: 0 0 0 2px #1b1410, 0 0 0 4px #fff; }
 .bar select { font: inherit; font-size: 14px; color: #fff; background: #2b211b; border: 1px solid #5a4a3d; border-radius: 8px; padding: 8px 10px; min-height: 40px; max-width: 78vw; }
 .bar select:focus-visible, .bar button:focus-visible, .bar a:focus-visible { outline: 3px solid #ffb27a; outline-offset: 2px; }
 .bar .sp { flex: 1 1 0; }
@@ -29,7 +31,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
 .stage.phone .frame { width: 390px; max-width: 100%; height: min(844px, 100%); border-radius: 28px; border: 8px solid #111; box-shadow: 0 12px 40px rgba(0, 0, 0, .35); }
 .stage.tablet { align-items: center; padding: 14px; }
 .stage.tablet .frame { width: 820px; max-width: 100%; height: min(1100px, 100%); border-radius: 18px; border: 8px solid #111; box-shadow: 0 12px 40px rgba(0, 0, 0, .35); }
-@media (max-width: 640px) { .bar .opt { display: inline-flex; font: inherit; font-weight: 600; color: #fff; background: transparent; border: 1px solid #8a7766; border-radius: 8px; padding: 0 14px; min-height: 40px; align-items: center; } .bar.collapsed label, .bar.collapsed #reset, .bar.collapsed #open, .bar.collapsed #home { display: none; } .bar.collapsed ~ .note { display: none; } .bar b { width: auto; flex: 1; } .bar { gap: 8px; } .bar b { width: 100%; } .bar label { flex: 1 1 140px; } .bar select { width: 100%; max-width: none; } .sp { display: none; } }
+@media (max-width: 640px) { .bar .opt { display: inline-flex; font: inherit; font-weight: 600; color: #fff; background: transparent; border: 1px solid #8a7766; border-radius: 8px; padding: 0 14px; min-height: 40px; align-items: center; } .bar.collapsed label, .bar.collapsed .thm, .bar.collapsed #reset, .bar.collapsed #open, .bar.collapsed #home { display: none; } .bar.collapsed ~ .note { display: none; } .bar b { width: auto; flex: 1; } .bar { gap: 8px; } .bar b { width: 100%; } .bar label { flex: 1 1 140px; } .bar select { width: 100%; max-width: none; } .sp { display: none; } }
 </style>
 </head>
 <body>
@@ -40,6 +42,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   <label>Device<select id="device" aria-label="Device"><option value="desktop">Website (full width)</option><option value="tablet">Tablet</option><option value="phone">Phone (installed app look)</option></select></label>
   <label>Start at<select id="start" aria-label="Start at"><option value="">Home page</option><option value="admin">Owner view</option></select></label>
   <span id="extra" style="display:contents"></span>
+  <label class="thm">Theme<span id="swatches"></span></label>
   <span class="sp"></span>
   <button id="reset" type="button" title="Clears what you changed in the demos (orders, owner edits, sign-ins)">Reset demos</button>
   <a class="btn go" id="open" href="#" target="_blank" rel="noopener">Open full screen ↗</a>
@@ -59,7 +62,6 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
     { id: 'portfolio', cats: ['portfolio', '3d'], group: 'Portfolios', name: 'Sample 3 · Portfolio (3D particle hero)', url: '../Sample_3/index.html', note: 'A portfolio whose name is made of thousands of particles. Move the pointer through them, then scroll: they scatter into a galaxy.' },
     { id: 'oil', cats: ['business', '3d'], group: 'Factories and makers', name: 'Sample 2 · Sunflower oil factory (seed to bottle film)', url: '../Sample_2/index.html', note: 'Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records.' },
     { id: 'intros', cats: ['3d'], group: 'Immersive openings', name: 'Scroll intros (openings A, B, C)', url: '../kits/scroll-intros/index.html', owner: true, note: 'Three scroll-driven openings. Use Opening and Theme above to switch, then scroll the homepage.' },
-    { id: 'themes', cats: ['ecommerce'], group: 'Immersive openings', name: 'Colour themes (six looks)', url: '../kits/theme-kit/index.html', note: 'The six colour themes a shop can offer its owner.' },
     { id: 'store', cats: [], group: 'Pixelpatra', name: 'Pixelpatra store page', url: '../index.html', note: 'The page that sells the templates.' }
   ];
   var $ = function (id) { return document.getElementById(id); };
@@ -76,10 +78,11 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   // hidden, and the same choices are offered in the bar above instead, so there is one set of controls, not two.
   var CONTROLS = [
     { key: 'opening', label: 'Opening', select: '#opening-sel' },
-    { key: 'theme', label: 'Theme', select: '#skin-sel' },
     { key: 'home', label: 'Home page', buttons: ['#home-foyer', '#home-gift'] }
   ];
-  var pending = { opening: q.get('opening'), theme: q.get('theme'), home: q.get('home') };
+  // the six colour themes are global: one set of buttons for every template, saved in this browser
+  window.ppTheme.mount($('swatches'), { onPick: function (id) { var f = $('frame'); try { f.contentWindow.postMessage({ pixelpatra: 'theme', id: id }, '*'); } catch (e) { /* not ready */ } } });
+  var pending = { opening: q.get('opening'), home: q.get('home') };
   function docOf(f) { try { return f.contentDocument; } catch (e) { return null; } }
   function wire() {
     var f = $('frame'), doc = docOf(f), extra = $('extra'); extra.innerHTML = '';
@@ -112,7 +115,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
     $('stage').className = 'stage ' + (dev === 'phone' ? 'phone' : dev === 'tablet' ? 'tablet' : '');
     $('open').href = url; $('note').textContent = d.note;
     var s = new URLSearchParams(); s.set('demo', d.id); if (dev !== 'desktop') s.set('device', dev); if (start) s.set('start', start);
-    ['opening', 'theme', 'home'].forEach(function (k) { if (pending[k] && d.id === (q.get('demo') || 'sample1')) s.set(k, pending[k]); });
+    ['opening', 'home'].forEach(function (k) { if (pending[k] && d.id === (q.get('demo') || 'sample1')) s.set(k, pending[k]); });
     history.replaceState(null, '', '?' + s.toString()); document.title = d.name.split(' (')[0] + ' · Pixelpatra demos';
   }
   $('frame').addEventListener('load', function () { [250, 1200, 2800, 5000].forEach(function (ms) { setTimeout(wire, ms); }); });

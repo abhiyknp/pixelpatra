@@ -1034,6 +1034,7 @@ body.app .why-band { padding-bottom: 96px; }
 <div id="overlay"></div>
 <div class="sr" aria-live="polite" id="live"></div>
 
+<script src="../shared/pp-theme.js" data-pp="house"></script>
 <script src="config.js"></script>
 <script src="vendor/qrcode/qrcode.js"></script>
 <script src="db.js?v=8"></script>
@@ -3194,7 +3195,7 @@ const SKINS = {
 const LEAF = new Image();
 const TINT = {};
 // the owner picks the site theme in Owner view → Settings; a mood chosen in the house recolours the site for that visitor
-const skin = (only) => { const m = only !== 'site' && S.houseMood && S.houseMood !== 'house' && MOOD_SKIN[S.houseMood]; return m || (SKINS[SET.theme] ? SET.theme : 'signature'); };
+const skin = (only) => { if (window.PP_THEME && SKINS[window.PP_THEME]) return window.PP_THEME; const m = only !== 'site' && S.houseMood && S.houseMood !== 'house' && MOOD_SKIN[S.houseMood]; return m || (SKINS[SET.theme] ? SET.theme : 'signature'); };
 LEAF.onload = () => { for (const k in PIMG) delete PIMG[k]; render(); };
 LEAF.src = 'assets/leaf.png';
 const LC = { cv: null, ctx: null, mask: null, mctx: null, W: 0, H: 0, dpr: 1, p: 0, raf: 0, visible: false, io: null, ptr: { x: 0, y: 0, on: false, touch: false, last: 0 }, marble: null, jaali: null, motes: [], spots: [] };
