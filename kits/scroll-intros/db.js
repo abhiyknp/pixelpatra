@@ -1,4 +1,4 @@
-// BUD & THINGS · the database link (window.BTDB).
+// SAMPLE STUDIO · the database link (window.BTDB).
 // Products, ritual pairings, site text, settings, stock, photos and videos, orders, reviews and sign-ups live in a
 // Supabase project (Postgres plus file storage), reached through its plain HTTP API so no library is loaded.
 // With no project set in config.js, BTDB.on is false and the page uses its built-in content and this browser's storage.

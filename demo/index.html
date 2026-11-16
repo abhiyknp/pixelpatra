@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pixelpatra demos</title>
+<meta name="description" content="Try every Pixelpatra sample site: pick a demo, a device and where to start, from the dropdowns.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f97316'/%3E%3C/svg%3E">
+<style>
+:root { --bar: #1b1410; --ink: #fff; --muted: #cdbfb0; --accent: #f97316; }
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: #e9e4dc; }
+.bar { background: var(--bar); color: var(--ink); padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+.bar b { font-size: 15px; letter-spacing: .02em; }
+.bar b i { color: var(--accent); font-style: normal; }
+.bar label { display: grid; gap: 2px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.bar select { font: inherit; font-size: 14px; color: #fff; background: #2b211b; border: 1px solid #5a4a3d; border-radius: 8px; padding: 8px 10px; min-height: 40px; max-width: 78vw; }
+.bar select:focus-visible, .bar button:focus-visible, .bar a:focus-visible { outline: 3px solid #ffb27a; outline-offset: 2px; }
+.bar .sp { flex: 1 1 0; }
+.bar button, .bar a.btn { font: inherit; font-weight: 600; color: #fff; background: transparent; border: 1px solid #8a7766; border-radius: 8px; padding: 0 14px; min-height: 40px; display: inline-flex; align-items: center; text-decoration: none; cursor: pointer; }
+.bar a.btn.go { background: var(--accent); border-color: var(--accent); color: #1b1410; }
+.note { background: #2b211b; color: var(--muted); padding: 6px 14px; font-size: 12.5px; }
+.stage { flex: 1; min-height: 0; display: flex; justify-content: center; align-items: stretch; padding: 0; background: #d8d0c4; }
+.frame { width: 100%; height: 100%; border: 0; background: #fff; }
+.stage.phone { align-items: center; padding: 14px; }
+.stage.phone .frame { width: 390px; max-width: 100%; height: min(844px, 100%); border-radius: 28px; border: 8px solid #111; box-shadow: 0 12px 40px rgba(0, 0, 0, .35); }
+.stage.tablet { align-items: center; padding: 14px; }
+.stage.tablet .frame { width: 820px; max-width: 100%; height: min(1100px, 100%); border-radius: 18px; border: 8px solid #111; box-shadow: 0 12px 40px rgba(0, 0, 0, .35); }
+@media (max-width: 640px) { .bar { gap: 8px; } .bar b { width: 100%; } .bar label { flex: 1 1 140px; } .bar select { width: 100%; max-width: none; } .sp { display: none; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <b>Pixel<i>patra</i> demos</b>
+  <label>Demo<select id="demo" aria-label="Demo"></select></label>
+  <label>Device<select id="device" aria-label="Device"><option value="desktop">Website (full width)</option><option value="tablet">Tablet</option><option value="phone">Phone (installed app look)</option></select></label>
+  <label>Start at<select id="start" aria-label="Start at"><option value="">Home page</option><option value="admin">Owner view</option></select></label>
+  <span class="sp"></span>
+  <button id="reset" type="button" title="Clears what you changed in the demos (orders, owner edits, sign-ins)">Reset demos</button>
+  <a class="btn go" id="open" href="#" target="_blank" rel="noopener">Open full screen ↗</a>
+  <a class="btn" href="../">Pixelpatra home</a>
+</header>
+<div class="note" id="note"></div>
+<main class="stage" id="stage"><iframe class="frame" id="frame" title="Demo" allow="fullscreen" loading="eager"></iframe></main>
+<script>
+// Pick a demo, a device and where to start; the choice is kept in the address so a link can be shared:
+//   .../demo/?demo=oil&device=phone        .../demo/?demo=sample1&start=admin
+(function () {
+  var DEMOS = [
+    { id: 'sample1', group: 'Shops', name: 'Sample 1 · Gift shop (full shop with Owner view)', url: '../Sample_1/index.html', owner: true, note: 'A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser.' },
+    { id: 'house', group: 'Shops', name: 'Sample 1 + 3D house walk-through', url: '../House_3D_Prototype/index.html', owner: true, note: 'The same shop, opening with a scroll-driven 3D walk through a house. Pick the opening in the dark bar at the top of the demo.' },
+    { id: 'oil', group: 'Factories and makers', name: 'Sample 2 · Sunflower oil factory (seed to bottle film)', url: '../Sample_2/index.html', note: 'Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records.' },
+    { id: 'intros', group: 'Immersive openings', name: 'Scroll intros A · B · C (pick inside)', url: '../kits/scroll-intros/index.html', owner: true, note: 'Three scroll-driven openings. Use the Opening and Theme dropdowns in the dark bar to switch.' },
+    { id: 'themes', group: 'Immersive openings', name: 'Colour themes (six looks)', url: '../kits/theme-kit/index.html', note: 'The six colour themes a shop can offer its owner.' },
+    { id: 'store', group: 'Pixelpatra', name: 'Pixelpatra store page', url: '../index.html', note: 'The page that sells the templates.' }
+  ];
+  var $ = function (id) { return document.getElementById(id); };
+  var q = new URLSearchParams(location.search);
+  var groups = {}; DEMOS.forEach(function (d) { (groups[d.group] = groups[d.group] || []).push(d); });
+  $('demo').innerHTML = Object.keys(groups).map(function (g) { return '<optgroup label="' + g + '">' + groups[g].map(function (d) { return '<option value="' + d.id + '">' + d.name + '</option>'; }).join('') + '</optgroup>'; }).join('');
+  function pick(id) { return DEMOS.filter(function (d) { return d.id === id; })[0] || DEMOS[0]; }
+  if (q.get('demo')) $('demo').value = pick(q.get('demo')).id;
+  if (q.get('device')) $('device').value = q.get('device');
+  if (q.get('start')) $('start').value = q.get('start');
+  function show() {
+    var d = pick($('demo').value), dev = $('device').value, start = $('start').value;
+    $('start').querySelector('option[value="admin"]').disabled = !d.owner; if (!d.owner) $('start').value = start = '';
+    var url = d.url + (start === 'admin' ? '#admin' : '');
+    var f = $('frame'); if (f.dataset.url !== url) { f.dataset.url = url; f.src = url; if (url.indexOf('#') > 0 && f.contentWindow) { try { f.contentWindow.location.replace(url); f.contentWindow.location.reload(); } catch (e) { /* cross-origin */ } } }
+    $('stage').className = 'stage ' + (dev === 'phone' ? 'phone' : dev === 'tablet' ? 'tablet' : '');
+    $('open').href = url; $('note').textContent = d.note;
+    var s = new URLSearchParams(); s.set('demo', d.id); if (dev !== 'desktop') s.set('device', dev); if (start) s.set('start', start);
+    history.replaceState(null, '', '?' + s.toString()); document.title = d.name.split(' (')[0] + ' · Pixelpatra demos';
+  }
+  ['demo', 'device', 'start'].forEach(function (id) { $(id).addEventListener('change', show); });
+  $('reset').addEventListener('click', function () {
+    if (!confirm('Clear everything you changed in the demos (orders, Owner edits, sign-ins)?')) return;
+    try { localStorage.clear(); sessionStorage.clear(); } catch (e) { /* blocked */ }
+    var f = $('frame'); f.src = f.dataset.url || f.src;
+  });
+  show();
+})();
+</script>
+</body>
+</html>

@@ -157,8 +157,8 @@ p { margin: 0; }
 .shot { position: relative; container-type: inline-size; }
 .mt { font-family: var(--font-display); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 .m-portfolio .mt { font-size: 7cqw; color: var(--ink); }
-.m-bud .hero-band .mt { font-size: 7.5cqw; color: #ffffff; }
-.m-bud.v3 .hero-band .mt { color: var(--c); }
+.m-sample .hero-band .mt { font-size: 7.5cqw; color: #ffffff; }
+.m-sample.v3 .hero-band .mt { color: var(--c); }
 .flash { animation: flash .45s ease; }
 @keyframes flash { 0% { opacity: .2; transform: translateY(3px); } 100% { opacity: 1; transform: none; } }
 
@@ -210,16 +210,16 @@ p { margin: 0; }
 .m-portfolio .lines .ph { height: 7px; }
 .m-portfolio .row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; height: 100%; }
 .m-portfolio .row .ph { background: color-mix(in srgb, var(--c) 22%, var(--line)); }
-.m-bud .page { grid-template-rows: auto 1fr; }
-.m-bud .hero-band { border-radius: 5px; padding: 8% 7%; display: grid; gap: 7px; background: var(--c); }
-.m-bud .hero-band .ph { height: 7px; background: rgba(255,255,255,.55); width: 70%; }
-.m-bud .tiles { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); gap: 7px; }
-.m-bud .tiles .ph { background: color-mix(in srgb, var(--c) 20%, var(--line)); }
-.m-bud.v2 .page { grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; }
-.m-bud.v2 .hero-band { align-content: center; }
-.m-bud.v2 .tiles { grid-template-columns: 1fr 1fr; }
-.m-bud.v3 .hero-band { background: transparent; border: 2px solid var(--c); }
-.m-bud.v3 .hero-band .ph { background: color-mix(in srgb, var(--c) 35%, var(--line)); }
+.m-sample .page { grid-template-rows: auto 1fr; }
+.m-sample .hero-band { border-radius: 5px; padding: 8% 7%; display: grid; gap: 7px; background: var(--c); }
+.m-sample .hero-band .ph { height: 7px; background: rgba(255,255,255,.55); width: 70%; }
+.m-sample .tiles { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); gap: 7px; }
+.m-sample .tiles .ph { background: color-mix(in srgb, var(--c) 20%, var(--line)); }
+.m-sample.v2 .page { grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; }
+.m-sample.v2 .hero-band { align-content: center; }
+.m-sample.v2 .tiles { grid-template-columns: 1fr 1fr; }
+.m-sample.v3 .hero-band { background: transparent; border: 2px solid var(--c); }
+.m-sample.v3 .hero-band .ph { background: color-mix(in srgb, var(--c) 35%, var(--line)); }
 
 /* Bundle */
 .bundle { position: relative; overflow: hidden; border-radius: calc(var(--radius) + 6px); background: var(--ink); color: var(--paper); padding: clamp(24px, 5vw, 48px); display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; }
@@ -285,6 +285,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     </a>
     <nav class="nav" aria-label="Main">
       <a href="#templates">Templates</a>
+      <a href="demo/">Live demos</a>
       <a class="hide-sm" href="#bundle">Bundle</a>
       <a class="hide-sm" href="#how">How it works</a>
       <a class="btn btn-sm btn-dark" href="#contact">Contact</a>
@@ -375,9 +376,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </div>
         </article>
 
-        <article class="card reveal" data-name="Bud and Things, Edition 1" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="Sample 1" data-files="499" data-setup="1499" data-demo="">
           <span class="glare"></span>
-          <div class="shot m-bud v1" style="--c: var(--pick, var(--sky))" aria-hidden="true">
+          <div class="shot m-sample v1" style="--c: var(--pick, var(--sky))" aria-hidden="true">
             <div class="bar"><i></i><i></i><i></i></div>
             <div class="page">
               <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span></div>
@@ -385,7 +386,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             </div>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Bud and Things · 1</h3><span class="tag">Business</span></div>
+            <div class="card-top"><h3>Sample 1</h3><span class="tag">Business</span></div>
             <p class="desc">A business site with a bold banner, services and a contact section. Good for shops, studios and local services.</p>
             <div class="card-foot">
               <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
@@ -397,9 +398,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </div>
         </article>
 
-        <article class="card reveal" data-name="Bud and Things, Edition 2" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="Sample 2" data-files="499" data-setup="1499" data-demo="">
           <span class="glare"></span>
-          <div class="shot m-bud v2" style="--c: var(--pick, var(--leaf))" aria-hidden="true">
+          <div class="shot m-sample v2" style="--c: var(--pick, var(--leaf))" aria-hidden="true">
             <div class="bar"><i></i><i></i><i></i></div>
             <div class="page">
               <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span><span class="ph"></span></div>
@@ -407,7 +408,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             </div>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Bud and Things · 2</h3><span class="tag">Business</span></div>
+            <div class="card-top"><h3>Sample 2</h3><span class="tag">Business</span></div>
             <p class="desc">A split layout that puts your products or services side by side with your story.</p>
             <div class="card-foot">
               <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
@@ -419,9 +420,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </div>
         </article>
 
-        <article class="card reveal" data-name="Bud and Things, Edition 3" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="Sample 3" data-files="499" data-setup="1499" data-demo="">
           <span class="glare"></span>
-          <div class="shot m-bud v3" style="--c: var(--pick, var(--plum)); --cols: 4" aria-hidden="true">
+          <div class="shot m-sample v3" style="--c: var(--pick, var(--plum)); --cols: 4" aria-hidden="true">
             <div class="bar"><i></i><i></i><i></i></div>
             <div class="page">
               <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span></div>
@@ -429,7 +430,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             </div>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Bud and Things · 3</h3><span class="tag">Business</span></div>
+            <div class="card-top"><h3>Sample 3</h3><span class="tag">Business</span></div>
             <p class="desc">A lighter, minimal take with a gallery grid. Suits cafes, boutiques and creative businesses.</p>
             <div class="card-foot">
               <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
@@ -451,10 +452,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <div>
           <p class="eyebrow">Bundle</p>
           <h2>All 4 templates, one price</h2>
-          <p>Get the Portfolio and all three Bud and Things editions together. Use them for yourself, your business, or your next client.</p>
+          <p>Get the Portfolio and all three samples together. Use them for yourself, your business, or your next client.</p>
           <ul>
             <li><span>Portfolio</span><span class="price">₹299</span></li>
-            <li><span>Bud and Things · 1, 2, 3</span><span class="price">₹1,497</span></li>
+            <li><span>Sample 1, 2, 3</span><span class="price">₹1,497</span></li>
           </ul>
         </div>
         <div class="deal">
@@ -512,9 +513,9 @@ const CONFIG = {
   whatsapp: "",          // e.g. "919876543210" (country code + number, no +). Empty = WhatsApp opens and asks who to send to.
   payLinks: {            // Razorpay / Gumroad links per item, filled in later
     "Portfolio": { files: "", setup: "" },
-    "Bud and Things, Edition 1": { files: "", setup: "" },
-    "Bud and Things, Edition 2": { files: "", setup: "" },
-    "Bud and Things, Edition 3": { files: "", setup: "" },
+    "Sample 1": { files: "", setup: "" },
+    "Sample 2": { files: "", setup: "" },
+    "Sample 3": { files: "", setup: "" },
     "Bundle": { files: "" }
   }
 };

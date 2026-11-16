@@ -1,15 +1,15 @@
-# Publishes the Sample_1 shop prototype to GitHub Pages on every push to main that changes it:
-#   https://abhiyknp.github.io/pixelpatra/Sample_1/
+# Publishes the whole Pixelpatra demo site to GitHub Pages on every push to main that changes it:
+#   https://abhiyknp.github.io/pixelpatra/            the store page
+#   https://abhiyknp.github.io/pixelpatra/demo/       the demo picker (dropdowns for every sample)
 # One-time setup: Settings → Pages → Build and deployment → Source: "GitHub Actions".
 # Pages on a private repository needs a paid GitHub plan; on the free plan the repository has to be public.
-name: Sample preview (GitHub Pages)
+name: Pixelpatra site (GitHub Pages)
 
 on:
   push:
     branches: [main]
-    paths:
-      - 'Sample_1/**'
-      - '.github/workflows/sample-pages.yml'
+    paths-ignore:
+      - '**/*.md'
   workflow_dispatch:
 
 permissions:
@@ -29,15 +29,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - name: Assemble the site
-        run: |
-          mkdir -p _site/Sample_1
-          (cd Sample_1 && tar --exclude=./tools --exclude=./README.md --exclude=./.gitignore --exclude=./.preview -cf - .) | (cd _site/Sample_1 && tar -xf -)
-          # the bare address opens the sample
-          printf '%s\n' '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=Sample_1/"><title>Sample shop</title><a href="Sample_1/">Open the sample shop</a>' > _site/index.html
-          touch _site/.nojekyll
-      - name: Add the security policy to the page
-        run: node Sample_1/tools/add-csp.js _site/Sample_1/index.html
+      - name: Build the site
+        run: sh tools/build-site.sh _site
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: _site

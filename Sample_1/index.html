@@ -1337,6 +1337,7 @@ const baseRow = (p, i) => { const d = Object.assign({}, p); delete d.id; return 
 const pairRow = (x, i) => ({ id: x.id, data: { name: x.name, why: x.why, items: x.items }, sort: i * 10, live: true });
 async function dbPut(table, rows) {
   rows = [].concat(rows);
+  if (table === 'settings' && !dbPut.unlock && rows.some((r) => LOCKED_KEYS.includes(r.key))) throw new Error('That detail is locked. Use Request a change.');
   // the first edit to products or rituals also saves the built-in ones, so nothing disappears from the site
   if ((table === 'products' || table === 'pairings') && !(DATA[table] && DATA[table].length)) { const base = table === 'products' ? BASE_P.map(baseRow) : BASE_PAIRINGS.map(pairRow); rows = base.filter((b) => !rows.some((r) => r.id === b.id)).concat(rows); }
   if (SHOPDB.on) await SHOPDB.upsert(table, rows); else if (table === 'stock') { rows.forEach((r) => { S.stock[r.sku] = r.qty; }); save(); }
@@ -2146,21 +2147,19 @@ function admStock() {
 function admSettings() {
   const field = ([k, l, t]) => t === 'bool' ? `<label class="check full"><input type="checkbox" data-act="adm-set" data-k="${k}" ${SET[k] ? 'checked' : ''}> ${esc(l)}</label>`
     : `<span class="field${t === 'text' && /featured|giftPicks/.test(k) ? ' full' : ''}"><label for="set-${k}">${esc(l)}</label><input id="set-${k}" data-act="adm-set" data-k="${k}" ${t === 'num' ? 'type="number" min="0"' : ''} value="${esc(SET[k])}"></span>`;
+  applyDueLocked();
   return `<p class="muted">Each change saves when you leave the box and shows on the site at once.</p>
+    ${admLocked()}
     <div class="form adm-card"><h2 class="full" style="font-size:24px">Coming soon page</h2><p class="muted full">While it is on, visitors see only the Coming soon page and its sign-up form${SHOPDB.on ? '' : ' (once the database is connected)'}. You see the whole site while signed in, and so does anyone who opens the preview link. To launch, switch it off.</p>
       ${SET_META.filter((m) => CS_KEYS.includes(m[0])).map(field).join('')}<span class="field full"><label for="cs-link">Preview link for testers</label><span style="display:flex;flex-wrap:wrap;gap:8px"><input id="cs-link" readonly value="${esc(previewLink())}" style="flex:1 1 260px;min-width:0"><button class="btn small ghost" type="button" data-act="cs-copy">Copy link</button></span></span></div>
     <div class="form adm-card"><h2 class="full" style="font-size:24px">Site theme</h2><p class="muted full">The colours every visitor sees. Choosing a mood in the house still recolours the site for that visitor while they browse.</p>
-      <span class="field full"><label for="set-theme">Theme</label><select id="set-theme" data-act="adm-set" data-k="theme">${Object.entries(SKINS).map(([k, v]) => `<option value="${k}" ${k === skin('site') ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}</select></span>
+      <span class="field full"><label for="set-theme">Theme</label><select id="set-theme" data-act="adm-set" data-k="theme">${Object.entries(SKINS).filter(([k]) => approvedThemes().includes(k) || k === skin()).map(([k, v]) => `<option value="${k}" ${k === skin('site') ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}</select></span>
       <p class="muted full">${esc(SKINS[skin('site')].use)}</p></div>
     <div class="form adm-card"><h2 class="full" style="font-size:24px">GST and invoices</h2>
-      <p class="muted full">Leave this off until you are registered: invoices are then a <strong>bill of supply</strong> with no tax. Once registered, add your details and switch it on; new invoices become <strong>tax invoices</strong> that show the GST split (CGST and SGST in your state, IGST for other states). Prices on the site are treated as including GST. Ask your accountant to confirm the HSN codes and rates before you switch it on.</p>
-      <label class="check full"><input type="checkbox" data-act="adm-set" data-k="gstOn" ${SET.gstOn ? 'checked' : ''}> I am registered for GST: make tax invoices</label>
-      ${field(['gstin', 'Your GSTIN (15 characters)', 'text'])}
-      <span class="field"><label for="set-gstState">Your state <span class="hint">where you are registered</span></label><select id="set-gstState" data-act="adm-set" data-k="gstState"><option value="">Choose a state</option>${STATES.map((x) => `<option ${SET.gstState === x ? 'selected' : ''}>${x}</option>`).join('')}</select></span>
-      ${field(['invoicePrefix', 'Invoice number prefix (up to 3 letters)', 'text'])}
-      ${GST_CATS.map(([l, h, r]) => `${field([h, 'HSN code · ' + l, 'text'])}${field([r, 'GST rate % · ' + l, 'num'])}`).join('')}
-      <p class="muted full" style="margin:0">Your business name and registered address come from the Policies boxes below. Invoice numbers look like ${esc((String(SET.invoicePrefix || 'SS').replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 3) || 'SS'))}/${(() => { const n = new Date(); const y = n.getMonth() >= 3 ? n.getFullYear() : n.getFullYear() - 1; return String(y % 100).padStart(2, '0') + '-' + String((y + 1) % 100).padStart(2, '0'); })()}/0001 and start again each April.</p></div>
-    <div class="form adm-card">${SET_META.filter((m) => !CS_KEYS.includes(m[0]) && !THEME_KEYS.includes(m[0]) && !ELSEWHERE_KEYS.includes(m[0])).map(field).join('')}</div>
+      <p class="muted full">These are locked (see Locked details above).  Leave this off until you are registered: invoices are then a <strong>bill of supply</strong> with no tax. Once registered, add your details and switch it on; new invoices become <strong>tax invoices</strong> that show the GST split (CGST and SGST in your state, IGST for other states). Prices on the site are treated as including GST. Ask your accountant to confirm the HSN codes and rates before you switch it on.</p>
+      ${GST_LOCK.map(lockedRow).join('')}
+      <p class="muted full" style="margin:0">Your business name and registered address are in the locked business details above. Invoice numbers look like ${esc((String(SET.invoicePrefix || 'SS').replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 3) || 'SS'))}/${(() => { const n = new Date(); const y = n.getMonth() >= 3 ? n.getFullYear() : n.getFullYear() - 1; return String(y % 100).padStart(2, '0') + '-' + String((y + 1) % 100).padStart(2, '0'); })()}/0001 and start again each April.</p></div>
+    <div class="form adm-card">${SET_META.filter((m) => !CS_KEYS.includes(m[0]) && !THEME_KEYS.includes(m[0]) && !ELSEWHERE_KEYS.includes(m[0]) && !LOCKED_KEYS.includes(m[0])).map(field).join('')}</div>
     <details class="adm-group"><summary>Product and bundle names to use above</summary><p class="muted num" style="padding:12px 0">${P.map((p) => esc(p.id)).join(', ')}</p><p class="muted num">Bundles: ${PAIRINGS.map((x) => esc(x.id)).join(', ')}</p></details>`;
 }
 function admReviews() {
@@ -2190,6 +2189,75 @@ function admReminders(list) {
 // supply" with no tax; with it on they are a "Tax invoice" that splits the GST (prices on the site include GST).
 // Amounts are kept in paise. The number and date are given by the database, in one step (issue_invoice).
 const GST_CATS = [['Collection A', 'hsnCandles', 'gstCandles', 'col-a'], ['Collection B', 'hsnObjects', 'gstObjects', 'col-b'], ['Gift sets', 'hsnGifts', 'gstGifts', 'gifts']];
+// ---------- locked details ----------
+// The developer sets the business name, logo, legal and tax details once, when the site is built. After that the owner
+// cannot type over them. A change goes through a request: a code sent to the email the owner signs in with, then a
+// waiting time (SHOP_CONFIG.setup.changeWaitHours, 48 by default) during which the request can be cancelled, then the
+// system applies it by itself and keeps it in the history. No developer step. In this demo the request is kept in the
+// browser. On a live site the database enforces the same rule (see LOCKED_SETTINGS.md), not only this page.
+const GST_LOCK = ['gstOn', 'gstin', 'gstState', 'invoicePrefix'].concat(GST_CATS.flatMap(([l, h, r]) => [h, r]));
+const BIZ_LOCK = ['bizName', 'bizAddress', 'grievanceName', 'grievancePhone', 'courtCity', 'policyDate'];
+const LOCKED_KEYS = BIZ_LOCK.concat(GST_LOCK);
+const SETUP = (window.SHOP_CONFIG && window.SHOP_CONFIG.setup) || {};
+const WAIT_H = typeof SETUP.changeWaitHours === 'number' ? SETUP.changeWaitHours : 48;
+const approvedThemes = () => (SETUP.approvedThemes && SETUP.approvedThemes.length ? SETUP.approvedThemes : Object.keys(SKINS));
+const LOCK_LABELS = { bizName: 'Registered business name', bizAddress: 'Registered address', grievanceName: 'Grievance officer name', grievancePhone: 'Grievance officer phone', courtCity: 'City whose courts have jurisdiction', policyDate: 'Policies last updated', gstOn: 'Registered for GST', gstin: 'GSTIN', gstState: 'GST state', invoicePrefix: 'Invoice number prefix' };
+GST_CATS.forEach(([l, h, r]) => { LOCK_LABELS[h] = 'HSN code · ' + l; LOCK_LABELS[r] = 'GST rate (%) · ' + l; });
+const lockKind = (k) => (k === 'gstOn' ? 'bool' : k === 'gstState' ? 'state' : /^gst[A-Z]/.test(k) && k !== 'gstin' && k !== 'gstState' ? 'rate' : 'text');
+const lockShow = (k, v) => (lockKind(k) === 'bool' ? (v ? 'Yes' : 'No') : lockKind(k) === 'rate' ? (v === '' || v == null ? 'Not set' : v + '%') : String(v == null ? '' : v).trim() || 'Not set');
+const lockWhen = (ms) => new Date(ms).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+const LK = () => (S.lock = S.lock || { reqs: [] });
+const OWNER_EMAIL = () => (SHOPDB.on && SHOPDB.ownerEmail && SHOPDB.ownerEmail()) || 'owner@example.com';
+// returns { value } cleaned up, or { err }
+function lockCheck(k, raw) {
+  const kind = lockKind(k); let v = kind === 'bool' ? raw === 'yes' : typeof raw === 'string' ? raw.trim() : raw;
+  if (kind === 'rate') { v = Number(raw); if (![0, 5, 12, 18, 28].includes(v)) return { err: 'GST rate must be 0, 5, 12, 18 or 28.' }; }
+  else if (kind === 'state') { if (!STATES.includes(v)) return { err: 'Choose a state from the list.' }; }
+  else if (k === 'gstin') { v = v.toUpperCase(); if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(v)) return { err: 'That is not a valid 15-character GSTIN.' }; }
+  else if (k === 'invoicePrefix') { v = v.toUpperCase(); if (!/^[A-Z0-9]{1,3}$/.test(v)) return { err: 'Use 1 to 3 letters or digits.' }; }
+  else if (/^hsn/.test(k)) { if (!/^[0-9]{4,8}$/.test(v)) return { err: 'An HSN code is 4 to 8 digits.' }; }
+  else if (k === 'grievancePhone') { if (!/^\+?[0-9 ]{8,15}$/.test(v)) return { err: 'Enter a phone number with 8 to 15 digits.' }; }
+  else if (kind === 'text') { if (v.length < 2 || v.length > 200) return { err: 'Enter 2 to 200 characters.' }; }
+  if (k === 'gstOn' && v && !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(String(SET.gstin || '').toUpperCase())) return { err: 'Request a valid GSTIN first, then switch GST on.' };
+  if (JSON.stringify(v) === JSON.stringify(SET[k])) return { err: 'That is already the current value.' };
+  return { value: v };
+}
+async function applyLocked(r) {
+  r.status = 'applying'; dbPut.unlock = true;
+  try { await dbPut('settings', { key: r.key, value: r.value }); r.status = 'applied'; r.doneAt = Date.now(); } catch (e) { r.status = 'waiting'; throw e; } finally { dbPut.unlock = false; }
+  save();
+}
+// applies every request whose waiting time is over (on a live site a scheduled database job does this)
+function applyDueLocked() {
+  const due = LK().reqs.filter((r) => r.status === 'waiting' && r.applyAt <= Date.now()); if (!due.length) return;
+  Promise.all(due.map(applyLocked)).then(() => { renderChrome(); if (route() === 'admin') render(); }, () => {});
+}
+function lockForm(k) {
+  const f = UI.adm.lk, kind = lockKind(k); const cur = SET[k];
+  const input = kind === 'bool' ? `<select id="lk-val"><option value="yes" ${(f.raw || (cur ? 'yes' : 'no')) === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${(f.raw || (cur ? 'yes' : 'no')) === 'no' ? 'selected' : ''}>No</option></select>`
+    : kind === 'state' ? `<select id="lk-val">${STATES.map((x) => `<option ${(f.raw || cur) === x ? 'selected' : ''}>${x}</option>`).join('')}</select>`
+    : `<input id="lk-val" ${kind === 'rate' ? 'type="number" min="0" max="28"' : ''} value="${esc(f.raw != null ? f.raw : cur)}">`;
+  const err = f.err ? `<span class="full err" role="alert">${esc(f.err)}</span>` : '';
+  if (f.step === 2) return `<div class="adm-card full" style="margin:8px 0 14px"><p>Change <strong>${esc(LOCK_LABELS[k])}</strong> from “${esc(lockShow(k, cur))}” to <strong>“${esc(lockShow(k, f.value))}”</strong>.</p>
+    <p class="muted">We emailed a 6-digit code to ${esc(OWNER_EMAIL())}, the email you sign in with. ${SHOPDB.on ? '' : `Demo: your code is <strong class="num">${esc(f.code)}</strong>.`} After you confirm, the change goes live by itself in ${WAIT_H} hours. You can cancel until then.</p>
+    <span class="field"><label for="lk-code">6-digit code</label><input id="lk-code" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></span>${err}
+    <span style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"><button class="btn small" type="button" data-act="lk-confirm">Confirm the change</button><button class="btn small ghost" type="button" data-act="lk-back">Back</button></span></div>`;
+  return `<div class="adm-card full" style="margin:8px 0 14px"><span class="field"><label for="lk-val">New value for ${esc(LOCK_LABELS[k])}</label>${input}</span>
+    <span class="field"><label for="lk-why">Why is it changing? <span class="hint">kept in the history</span></label><input id="lk-why" value="${esc(f.reason || '')}"></span>${err}
+    <span style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"><button class="btn small" type="button" data-act="lk-send">Send me a code</button><button class="btn small ghost" type="button" data-act="lk-close">Cancel</button></span></div>`;
+}
+function lockedRow(k) {
+  const wait = LK().reqs.find((r) => r.key === k && r.status === 'waiting'), open = UI.adm.lk && UI.adm.lk.k === k;
+  return `<div class="full" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:10px 0"><span><span class="hint">${esc(LOCK_LABELS[k])}</span> <span class="pill">Locked</span><br><strong>${esc(lockShow(k, SET[k]))}</strong>${wait ? `<br><span class="muted">Changing to “${esc(lockShow(k, wait.value))}” on ${esc(lockWhen(wait.applyAt))}</span>` : ''}</span>${wait || open ? '' : `<button class="btn small ghost" type="button" data-act="lk-open" data-k="${k}">Request a change</button>`}</div>${open && !wait ? lockForm(k) : ''}`;
+}
+function admLocked() {
+  const reqs = LK().reqs.slice().sort((a, b) => b.at - a.at), waiting = reqs.filter((r) => r.status === 'waiting');
+  return `<div class="form adm-card"><h2 class="full" style="font-size:24px">Locked details</h2>
+    <p class="muted full">Your business name, logo, legal and tax details were set up with your site and are locked, so a slip or a stranger cannot change what is printed on invoices and policies. When something really changes, such as a new address or a GSTIN, use <strong>Request a change</strong>: confirm with a code sent to your sign-in email and it goes live by itself after ${WAIT_H} hours. You never need to wait for a developer. The logo and brand look are fixed in the site files. Colours: pick one of the approved themes below.</p>
+    ${BIZ_LOCK.map(lockedRow).join('')}
+    ${waiting.length ? `<h3 class="full" style="font-size:18px;margin-top:14px">Waiting to go live</h3>${waiting.map((r) => `<div class="full" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center"><span>${esc(LOCK_LABELS[r.key])}: “${esc(lockShow(r.key, r.from))}” to “${esc(lockShow(r.key, r.value))}” <span class="muted">· live ${esc(lockWhen(r.applyAt))}</span></span><span style="display:flex;gap:8px"><button class="btn small ghost" type="button" data-act="lk-cancel" data-id="${esc(r.id)}">Cancel it</button>${SHOPDB.on ? '' : `<button class="btn small ghost" type="button" data-act="lk-now" data-id="${esc(r.id)}">Skip the wait (demo only)</button>`}</span></div>`).join('')}` : ''}
+    ${reqs.filter((r) => r.status !== 'waiting').length ? `<details class="adm-group full"><summary>Change history</summary><div class="table-wrap"><table><thead><tr><th>Asked</th><th>Detail</th><th>From</th><th>To</th><th>Why</th><th>Status</th></tr></thead><tbody>${reqs.filter((r) => r.status !== 'waiting').slice(0, 30).map((r) => `<tr><td class="num">${esc(lockWhen(r.at))}</td><td>${esc(LOCK_LABELS[r.key])}</td><td>${esc(lockShow(r.key, r.from))}</td><td>${esc(lockShow(r.key, r.value))}</td><td>${esc(r.reason)}</td><td>${r.status === 'applied' ? 'Live ' + esc(lockWhen(r.doneAt)) : 'Cancelled'}</td></tr>`).join('')}</tbody></table></div></details>` : ''}</div>`;
+}
 const gstCatOf = (cat) => GST_CATS.find((c) => c[3] === cat) || GST_CATS[1];
 const rs = (p) => '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const lineCat = (l) => { const m = skuMap[l.sku]; return m && m.p ? m.p.cat : 'col-b'; };
@@ -3207,6 +3275,17 @@ function focusFirstError() { const el = document.querySelector('[aria-invalid="t
 document.addEventListener('click', (e) => {
   const t = e.target.closest('[data-act]'); if (!t) return; const a = t.dataset.act; const d = t.dataset;
   switch (a) {
+    case 'lk-open': UI.adm.lk = { k: d.k, step: 1 }; render(); break;
+    case 'lk-close': UI.adm.lk = null; render(); break;
+    case 'lk-back': UI.adm.lk = { k: UI.adm.lk.k, step: 1, raw: UI.adm.lk.raw, reason: UI.adm.lk.reason }; render(); break;
+    case 'lk-send': { const f = UI.adm.lk, el = $('#lk-val'), why = $('#lk-why').value.trim(); const res = lockCheck(f.k, el.value);
+      UI.adm.lk = Object.assign({}, f, { raw: el.value, reason: why, err: res.err || (why.length < 3 ? 'Say briefly why it is changing.' : null) });
+      if (!UI.adm.lk.err) { const a6 = new Uint32Array(1); crypto.getRandomValues(a6); UI.adm.lk = { k: f.k, step: 2, value: res.value, raw: el.value, reason: why, code: String(100000 + (a6[0] % 900000)) }; }
+      render(); break; }
+    case 'lk-confirm': { const f = UI.adm.lk; if ($('#lk-code').value.trim() !== f.code) { UI.adm.lk = Object.assign({}, f, { err: 'That code is not right. Check the email and try again.' }); render(); break; }
+      const now = Date.now(); LK().reqs.push({ id: 'lk' + now, key: f.k, value: f.value, from: SET[f.k], reason: f.reason, at: now, applyAt: now + WAIT_H * 36e5, status: 'waiting' }); save(); UI.adm.lk = null; say('Request saved. It goes live in ' + WAIT_H + ' hours unless you cancel it.'); applyDueLocked(); render(); break; }
+    case 'lk-cancel': { const r = LK().reqs.find((x) => x.id === d.id); if (r && r.status === 'waiting') { r.status = 'cancelled'; r.doneAt = Date.now(); save(); say('Request cancelled.'); } render(); break; }
+    case 'lk-now': { const r = LK().reqs.find((x) => x.id === d.id); if (r && r.status === 'waiting' && !SHOPDB.on) { r.applyAt = Date.now() - 1; applyDueLocked(); } break; }
     case 'room-open': roomOpen(d.id, UI.pdp[d.id] ? UI.pdp[d.id].vi || 0 : 0); break;
     case 'room-close': roomClose(); break;
     case 'na-tab': UI.na = d.v; render(); break;
@@ -3326,6 +3405,7 @@ document.addEventListener('change', (e) => {
   if (d.act === 'ritual-pick') { UI.ritual.pick[UI.ritual.preset][d.i] = t.checked; render(); $('#' + t.id)?.focus(); }
   if (d.act === 'ritual-custom') { UI.ritual.custom[d.k] = t.value; UI.ritual.pick.custom = { 0: true, 1: true }; render(); $('#' + t.id)?.focus(); }
   if (d.act === 'stock') { const qty = Math.max(0, parseInt(t.value, 10) || 0); t.value = qty; admDo(() => dbPut('stock', { sku: d.sku, qty }), 'Stock saved.'); track('stock_update', { sku: d.sku, stock: qty }); }
+  if (d.act === 'adm-set' && LOCKED_KEYS.includes(d.k)) { say('That detail is locked. Use Request a change.'); render(); return; }
   if (d.act === 'adm-set') { const meta = SET_META.find((m) => m[0] === d.k); const value = meta[2] === 'bool' ? t.checked : meta[2] === 'num' ? Math.max(0, parseInt(t.value, 10) || 0) : t.value.trim(); admDo(async () => { await dbPut('settings', { key: d.k, value }); renderChrome(); if (d.k === 'theme') render(); const l = $('#cs-link'); if (l) l.value = previewLink(); }, 'Saved.'); }
   if (d.act === 'adm-text') { const k = d.k; admDo(async () => { if (t.value === TEXT[k][0]) { if (k in TXT) await dbDel('site_text', 'key', k); } else await dbPut('site_text', { key: k, value: t.value }); renderChrome(); }, 'Saved.'); }
   if (d.act === 'adm-up-prod') { UI.adm.upProd = t.value; UI.adm.upMsg = null; render(); $('#up-prod')?.focus(); }
@@ -3533,6 +3613,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (UI.s
 const origRender = render;
 render = function (nav) { if (route() === 'checkout' && nav && UI.co.step === 'contact' && cartCount()) track('checkout_start', { items: cartCount() }); origRender(nav); };
 loadData();
+applyDueLocked();
 if (PAID_BACK && SHOPDB.on) payCheck(PAID_BACK);
 render(false);
 })();

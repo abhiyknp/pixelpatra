@@ -1,6 +1,6 @@
 # Intro prototypes (A, B, C)
 
-The three scroll intros that were tried on the BUD & THINGS homepage and set aside when the site kept only
+The three scroll intros that were tried on an earlier shop homepage and set aside when the site kept only
 **D · The House** (the foyer walk). They are kept here, working, to reuse on another project.
 
 | Intro | What happens as you scroll | Where the code is |

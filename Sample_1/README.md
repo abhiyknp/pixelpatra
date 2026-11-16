@@ -10,7 +10,7 @@ points, gift cards and the Owner view all work in "demo mode", where every chang
 ## What it includes
 
 - Gift-shop home page: welcome offer, new arrivals, gift sets, ready-made bundles and the gift finder. (The 3D house
-  walk-through is not part of this sample; it is kept in the Bud & Things prototype.)
+  walk-through is not part of this sample; it is in [`House_3D_Prototype`](../House_3D_Prototype).)
 - Shop by collection, product pages, search, the "Find your feeling" gift finder, Build a Bundle (two pieces at a saving)
 - See it in your room (3D sample room, or the visitor's own photo)
 - Cart and checkout with sign-in by emailed code (shown on screen in demo mode), gift options, coupons and points, and
@@ -23,7 +23,18 @@ points, gift cards and the Owner view all work in "demo mode", where every chang
 - Gift cards, share links, gift reminders, corporate and bulk enquiries, journal, Our Story, FAQ and policy page templates
 - Owner view (`#admin`): orders (Packed → Shipped → Delivered, and a Delayed flag with a reason), invoices, products,
   bundles, stock, photos and videos, site text, settings, reviews, sign-ups, coupons with rules, rewards (give or take back
-  points), gift cards and six colour themes
+  points), gift cards and the colour themes you approve (see "Locked details" below)
+
+## Locked details (nobody has to call the developer later)
+
+When you hand a site to a client, the business name, logo, legal and tax details are **locked** in Owner view. They show
+with a Locked tag; the owner cannot type over them. If something really changes (a new address, a new GSTIN), the owner
+uses **Request a change**: confirm with a code sent to their sign-in email, and it goes live by itself after a waiting
+time (48 hours by default, cancellable) and is kept in a change history. The owner can still change products, prices,
+stock, offers, text, contacts (phone, WhatsApp, email, Instagram) and pick one of the **approved themes**.
+You set which themes and the waiting time in `config.js` → `setup`. Server-side enforcement for a live site is described
+in [LOCKED_SETTINGS.md](LOCKED_SETTINGS.md) (a design, not built yet): in this demo the lock only protects the visitor's
+own browser copy.
 
 ## Open it
 
@@ -53,12 +64,14 @@ private repository needs a paid GitHub plan).
    Rename "Collection A" and "Collection B" (search for both) to the client's own ranges. Bundles are in `PAIRINGS` just below. Product ids also appear in `SET_DEFAULTS` (featured, new in, spotlight).
 5. **Text**: every line of copy is in `TEXT` in `index.html` (also editable later in Owner view → Site text). Lines that
    start with "Sample text", and the Our Story values, must be written for the client. Policy pages are templates to check.
-6. **Contacts and business details**: `SET_DEFAULTS` in `index.html` (email, Instagram, Pinterest, WhatsApp, business name,
+6. **Contacts and business details**: these are the values the owner can never type over later (only contacts stay
+   editable), so get them right now. `SET_DEFAULTS` in `index.html` (email, Instagram, Pinterest, WhatsApp, business name,
    address, GSTIN, GST switch and state, invoice prefix, HSN codes and GST rates, grievance officer). Have the client's
-   accountant confirm the HSN codes and rates. All of these can also be changed in Owner view → Settings.
-7. **Going live** (only when a client pays for a live shop): their own Supabase project and keys in `config.js`, their own
+   accountant confirm the HSN codes and rates. Contacts can be changed in Owner view → Settings; the business and tax details only through Request a change.
+7. **Approved themes and waiting time**: `config.js` → `setup.approvedThemes` and `setup.changeWaitHours`.
+8. **Going live** (only when a client pays for a live shop): their own Supabase project and keys in `config.js`, their own
    Cashfree, Shiprocket and email-sending accounts, and their own domain. Those server parts are not in this sample.
-8. **Check**: search the folder for `SAMPLE`, `Sample`, `Product One`, `Collection A`, `example.com`, `samplestudio` and `0000`
+9. **Check**: search the folder for `SAMPLE`, `Sample`, `Product One`, `Collection A`, `example.com`, `samplestudio` and `0000`
    (the dummy HSN codes). Nothing should be left.
 
 The product pictures are drawn placeholder shapes (jars, columns, trays). The client's own photos replace them once
