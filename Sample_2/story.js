@@ -20,11 +20,13 @@
 
   // build scenes, captions and rail
   var scenes = CH.map(function (c, i) {
-    var el = document.createElement('div'); el.className = 'scene'; el.setAttribute('aria-hidden', 'true');
+    var el = document.createElement('div'); el.className = 'scene'; el.setAttribute('aria-hidden', 'true'); if (c.bg) el.style.background = c.bg;
     var layers = c.media.map(function (m, j) {
       var n;
       if (m.type === 'video') { n = document.createElement('video'); n.muted = true; n.loop = true; n.playsInline = true; n.setAttribute('playsinline', ''); n.preload = 'none'; n.poster = m.poster || ''; n.dataset.src = portrait && m.portrait ? m.portrait : m.src; n.className = 'm'; }
       else { n = document.createElement('img'); n.className = 'm'; n.alt = ''; n.decoding = 'async'; n.dataset.src = portrait && m.portrait ? m.portrait : m.src; }
+      if (m.filter) n.style.filter = m.filter;
+      n.addEventListener('error', function () { n.style.display = 'none'; });
       if (j > 0) n.classList.add('b');
       el.appendChild(n); return n;
     });

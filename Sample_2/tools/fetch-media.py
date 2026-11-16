@@ -32,20 +32,24 @@ def curl(args, out=None):
     cmd = ['curl', '-sL', '-m', '300', '-A', UA] + (['-o', out] if out else []) + args
     return subprocess.run(cmd, capture_output=True)
 class RateLimited(Exception): pass
-def info(title):
-    u = 'https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=url|extmetadata|size&format=json&titles=' + urllib.parse.quote('File:' + title)
-    r = curl([u]).stdout.decode('utf8', 'replace')
-    if 'too many requests' in r.lower(): raise RateLimited(title)
+def info(title, width=0):
+    u = 'https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=url|extmetadata|size&format=json&titles=' + urllib.parse.quote('File:' + title) + ('&iiurlwidth=%d' % width if width else '')
+    for attempt in range(4):  # the API answers "429, retry after N seconds" with a short wait: honour it
+        r = curl([u]).stdout.decode('utf8', 'replace')
+        if r.lstrip().startswith('{'): break
+        time.sleep(20)
+    else: raise RateLimited(title)
     p = list(json.loads(r)['query']['pages'].values())[0]; return p['imageinfo'][0]
-def download(name, title):
+def download(name, title, kind='video', width=0):
     dest = os.path.join(CACHE, name + os.path.splitext(title)[1].lower())
     meta_path = os.path.join(CACHE, name + '.json')
     if os.path.exists(dest) and os.path.exists(meta_path): return dest, json.load(open(meta_path))
-    ii = info(title); time.sleep(GAP); m = ii['extmetadata']
+    ii = info(title, width if kind == 'image' else 0); time.sleep(GAP); m = ii['extmetadata']
     meta = {'title': title, 'page': 'https://commons.wikimedia.org/wiki/File:' + urllib.parse.quote(title.replace(' ', '_')),
             'license': m.get('LicenseShortName', {}).get('value', ''), 'license_url': m.get('LicenseUrl', {}).get('value', ''),
             'artist': re.sub(r'\s+', ' ', re.sub('<[^>]+>', '', m.get('Artist', {}).get('value', ''))).strip()[:100]}
-    url = ii['url'].split('?')[0]
+    # photos come as ready-sized copies from thumb.wikimedia.org (kind to the rate limit); videos are the original file
+    url = (ii.get('thumburl') or ii['url']).split('?')[0] if kind == 'image' else ii['url'].split('?')[0]
     curl([url], dest)
     head = open(dest, 'rb').read(400) if os.path.exists(dest) else b''
     if b'<html' in head.lower() or b'<!DOCTYPE' in head: os.remove(dest); raise RateLimited(title)
@@ -63,7 +67,7 @@ def main():
     want = sys.argv[1:] or list(MEDIA); done = {}
     for name in want:
         title, kind, o = MEDIA[name]
-        try: src, meta = download(name, title)
+        try: src, meta = download(name, title, kind, o['w'])
         except RateLimited as e: print('Rate limited at', name, '- run again later.'); break
         make(name, src, kind, o); done[name] = meta; print('ok', name)
     credits = []
