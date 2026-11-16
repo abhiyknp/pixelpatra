@@ -10,16 +10,31 @@
   var N = CH.length, FIN = 0.9; // the chapters use the first 90% of the scroll, the title card the rest
   var film = $('#film'), vid = $('#filmVid'), capEl = $('#cap'), rail = $('#rail'), bar = $('#bar'), fin = $('#finale'), cv = $('#fx'), ctx = cv.getContext('2d');
 
-  // mp4 first (Safari and phones), webm as the fallback
+  // Lite mode swaps the film for six still frames, one per chapter (about 0.6 MB instead of 3 to 7 MB). It turns on by itself
+  // on Data Saver and slow connections, and a button lets anyone switch it.
+  var tall = matchMedia('(max-aspect-ratio: 1/1)').matches;
+  var lite = (function () {
+    var q = new URLSearchParams(location.search).get('lite'); if (q) return q === '1';
+    try { var s = localStorage.getItem('pp-lite'); if (s !== null) return s === '1'; } catch (e) { /* storage blocked */ }
+    var c = navigator.connection; return !!(c && (c.saveData || /(^|-)(slow-)?2g|3g/.test(c.effectiveType || '')));
+  })();
+  var liteBtn = $('#lite');
+  if (liteBtn) { liteBtn.textContent = lite ? 'Lite mode: on (tap for full film)' : 'Lite mode'; liteBtn.setAttribute('aria-pressed', String(lite));
+    liteBtn.addEventListener('click', function () { try { localStorage.setItem('pp-lite', lite ? '0' : '1'); } catch (e) { /* storage blocked */ } var u = new URL(location.href); u.searchParams.delete('lite'); location.href = u.toString(); }); }
+  var still = null;
+  // mp4 first (Safari and phones), webm as the fallback. Tall phone screens get the narrow 9:16 cut.
   function source(v) {
     v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.poster = F.poster || '';
-    var m = document.createElement('source'); m.src = F.mp4; m.type = 'video/mp4'; v.appendChild(m);
-    var w = document.createElement('source'); w.src = F.webm; w.type = 'video/webm'; v.appendChild(w);
+    var m = document.createElement('source'); m.src = tall && F.mp4p ? F.mp4p : F.mp4; m.type = 'video/mp4'; v.appendChild(m);
+    if (!(tall && F.mp4p)) { var w = document.createElement('source'); w.src = F.webm; w.type = 'video/webm'; v.appendChild(w); }
     v.preload = 'auto'; v.load();
   }
-  source(vid);
+  if (lite && F.stills) {
+    still = document.createElement('img'); still.className = 'filmvid'; still.alt = ''; still.src = F.stills[0]; vid.parentNode.replaceChild(still, vid);
+    vid = { seeking: false, readyState: 0, currentTime: 0, addEventListener: function () {}, controls: false }; // nothing to scrub
+  } else source(vid);
   // the hero plays the same clip on a loop
-  var hv = $('#heroVid'); if (hv) { source(hv); hv.loop = true; if (!reduce) hv.play().catch(function () {}); }
+  var hv = $('#heroVid'); if (hv && lite) { hv.poster = F.poster || ''; hv.removeAttribute('autoplay'); } else if (hv) { var hs = document.createElement('source'); hs.src = F.hero || F.mp4; hs.type = 'video/mp4'; hv.poster = F.poster || ''; hv.appendChild(hs); hv.loop = true; hv.preload = reduce ? 'none' : 'auto'; if (!reduce) hv.play().catch(function () {}); }
   if (reduce) { document.documentElement.classList.add('static'); vid.controls = true; }
 
   var chaps = CH.map(function (c, i) {
@@ -61,6 +76,7 @@
     ticking = false; if (reduce) return;
     var r = range(), pp = r.p; state.p = pp;
     var q = clamp(pp / FIN, 0, .99999) * N, idx = Math.floor(q), local = q - idx, c = CH[idx].time;
+    if (still && idx !== state.idx && F.stills[idx]) { var img = still; img.style.opacity = 0; setTimeout(function () { img.onload = function () { img.style.opacity = 1; }; img.src = F.stills[idx]; }, 220); }
     state.idx = idx; target = pp >= FIN ? (CH[N - 1].time[1] || F.length) : c[0] + (c[1] - c[0]) * local;
     document.body.classList.toggle('infilm', pp > 0 && pp < 1);
     chaps.forEach(function (s, i) { s.chap.classList.toggle('on', i === idx && pp < FIN); s.btn.classList.toggle('on', i === idx); s.btn.setAttribute('aria-current', i === idx ? 'step' : 'false'); });

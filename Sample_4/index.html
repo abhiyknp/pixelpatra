@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Abhishek Yadav, Business Analyst</title>
+<meta name="description" content="Abhishek Yadav, Senior IT Business Analyst: a working Business Analysis knowledge base with a skills library, case studies, sample artifacts and decision scenarios.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abhishek Yadav, Senior IT Business Analyst">
+<meta property="og:description" content="Turning complexity into clarity. Case studies, a 42-skill Business Analysis library and sample artifacts from seven years of business analysis.">
+<meta property="og:url" content="https://abhiyknp.github.io/Portfolio/">
+<meta property="og:image" content="https://abhiyknp.github.io/Portfolio/assets/img/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="noindex">
+<script src="../shared/pp-theme.js" data-pp="ba"></script>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/main.css?v=20261015e">
+<script src="assets/js/loader.js?v=20261015e"></script>
+<script>
+  /* Apply a saved theme before first paint. Storage may be unavailable; the page works without it. */
+  try { var t = localStorage.getItem('pf-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+</head>
+<body>
+<div class="boot" id="boot" hidden>
+  <div class="boot-in">
+    <p class="boot-name">Abhishek Yadav · Business Analyst</p>
+    <div class="oc-box boot-box" id="boot-box"></div>
+  </div>
+</div>
+<script>
+  /* First-visit loader. Only appears if the site is not ready within half a second (a slow connection), so fast
+     visits never see it. Progress: page started, page parsed, fonts and images in. Ends on "Ready." and fades out. */
+  (function () {
+    var boot = document.getElementById('boot'), shown = false, ready = false, ctl = null, steps = 0, shownAt = 0;
+    var WORDS = ['requirements?', 'scope?', 'stakeholders', 'deadline!!', 'priorities?', 'who owns this?', 'UAT?', 'sign-off?', 'process?',
+      'data?', 'risks?', 'users?', 'backlog', 'why?', 'change request', 'BRD', 'edge cases?', 'approval?'];
+    function step(n) { steps = Math.max(steps, n); if (ctl) ctl.set(steps); }
+    function hide() { boot.classList.add('boot-out'); document.documentElement.classList.remove('booting'); setTimeout(function () { boot.remove(); }, 500); }
+    function show() {
+      if (ready || !window.PFLoader) return;
+      shown = true; shownAt = Date.now(); boot.hidden = false; document.documentElement.classList.add('booting');
+      var box = document.getElementById('boot-box');
+      box.innerHTML = PFLoader.markup(WORDS, 'Ready.', 'Loading the portfolio', 3);
+      ctl = PFLoader.start(box, { total: 3, onClear: function () { setTimeout(hide, 600); } });
+      ctl.set(steps);
+    }
+    function finish() {
+      if (ready) return; ready = true; clearTimeout(timer);
+      if (!shown) { boot.remove(); return; }
+      /* Stay long enough to read as intentional rather than a flicker. */
+      setTimeout(function () { step(3); }, Math.max(0, 1200 - (Date.now() - shownAt)));
+    }
+    var timer = setTimeout(show, 500);
+    step(1);
+    document.addEventListener('DOMContentLoaded', function () { step(2); });
+    window.addEventListener('load', function () { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(finish, finish); });
+    setTimeout(finish, 15000);
+  })();
+</script>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="#home" aria-label="Abhishek Yadav, home">
+      <span class="brand-mark" aria-hidden="true">AY</span>
+      <span class="brand-text"><strong>Abhishek Yadav</strong><span>Business Analyst</span></span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <a href="#home" data-nav="home">Overview</a>
+      <a href="#skills" data-nav="skills">Skills</a>
+      <a href="#cases" data-nav="cases">Case studies</a>
+      <a href="#studio" data-nav="studio">Artifact Studio</a>
+      <a href="#scenarios" data-nav="scenarios">Scenarios</a>
+      <a href="#evidence" data-nav="evidence">Evidence map</a>
+    </nav>
+    <div class="bar-tools">
+      <button class="icon-btn search-btn" type="button" data-act="palette" aria-label="Search everything (press /)">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="kbd">/</span>
+      </button>
+      <button class="icon-btn" type="button" data-act="theme" aria-label="Switch colour theme" id="theme-btn">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" type="button" data-act="menu" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<div class="chainage" id="chainage" title="Reading progress">
+  <span class="ch-km" id="ch-km">0%</span>
+  <span class="ch-phase" id="ch-phase">Discover</span>
+  <span class="ch-track"><span class="ch-fill" id="ch-fill"></span></span>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap foot">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <p class="foot-name"><strong>Abhishek Yadav</strong><span>Senior IT Business Analyst</span></p>
+        <p class="foot-tag">Turning complexity into clarity.</p>
+        <p class="muted small">Every scenario, rule, number and sample document on this site is labelled. "Source-supported" items come from my résumé or my own project description; everything else is an illustrative example or a recommended approach. No confidential client material is reproduced.</p>
+      </div>
+      <nav class="foot-col" aria-label="Explore">
+        <h2>Explore</h2>
+        <a href="#home">Overview</a><a href="#cases">Case studies</a><a href="#skills">Skills Library</a><a href="#studio">Artifact Studio</a><a href="#scenarios">Scenarios</a><a href="#evidence">Evidence map</a>
+      </nav>
+      <div class="foot-col">
+        <h2>Contact</h2>
+        <a href="mailto:ba.abhiy@gmail.com">ba.abhiy@gmail.com</a><a href="https://www.linkedin.com/in/abhiyknp" target="_blank" rel="noopener">LinkedIn ↗</a><a href="assets/Abhishek_Yadav_Business_Analyst_Resume.pdf" download>Download résumé (PDF)</a>
+      </div>
+      <nav class="foot-col" aria-label="Site information">
+        <h2>Site</h2>
+        <a href="#privacy">Privacy notice</a><a href="#terms">Terms of use</a><a href="#accessibility">Accessibility</a>
+        <p class="foot-owner"><a href="#stats" id="owner-link"><span>Owner's desk</span></a></p>
+      </nav>
+    </div>
+    <div class="foot-base">
+      <p>© 2026 Abhishek Yadav. All rights reserved.</p>
+      
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-act="close-modal"></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="icon-btn modal-close" type="button" data-act="close-modal" aria-label="Close">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="assets/js/data/skills-a.js?v=20261015e"></script>
+<script src="assets/js/data/skills-b.js?v=20261015e"></script>
+<script src="assets/js/data/skills-c.js?v=20261015e"></script>
+<script src="assets/js/data/cases.js?v=20261015e"></script>
+<script src="assets/js/data/flows.js?v=20261015e"></script>
+<script src="assets/js/data/artifacts.js?v=20261015e"></script>
+<script src="assets/js/data/scenarios.js?v=20261015e"></script>
+<script src="assets/js/data/extras.js?v=20261015e"></script>
+<script src="assets/js/data/legal.js?v=20261015e"></script>
+<script src="assets/js/widgets.js?v=20261015e"></script>
+<script src="assets/js/extras.js?v=20261015e"></script>
+<script src="assets/js/stats.js?v=20261015e"></script>
+<script src="assets/js/owner.js?v=20261015e"></script>
+<script src="assets/js/intros.js?v=20261015e"></script>
+<script src="assets/js/avatar.js?v=20261015e"></script>
+<script src="assets/js/app.js?v=20261015e"></script>
+<script src="assets/js/words-bg.js?v=20261015e"></script>
+</body>
+</html>

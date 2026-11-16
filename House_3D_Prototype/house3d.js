@@ -93,12 +93,27 @@ function load(onProgress) {
   const SM = (n) => (window.innerWidth < 760 && !SHARP.includes(n) ? 'sm/' : '');
   const lm = (state, n) => { const t = tl.load(`${BASE}${SM(n)}lm-${state}-${n}.jpg`); t.flipY = false; t.colorSpace = THREE.NoColorSpace; return t; };
   const env = (f) => new Promise((res, rej) => tl.load(BASE + f, (t) => { t.colorSpace = THREE.SRGBColorSpace; t.mapping = THREE.EquirectangularReflectionMapping; res(t); }, undefined, rej));
-  const maps = {}; Object.values(ROOMS).forEach((R) => R.pieces.forEach((n) => { maps[n] = { day: lm('day', n), lit: lm('lit', n) }; }));
+  // only what the first view needs is loaded up front: the foyer's daylight maps. The candle-light maps and the whole
+  // bedroom load quietly afterwards (H.loadRest), and a room's light stays at zero until its maps have arrived.
+  const maps = {}, REST = [];
+  const later = (state, n, room) => { const t = new THREE.Texture(); t.flipY = false; t.colorSpace = THREE.NoColorSpace; REST.push({ t, url: `${BASE}${SM(n)}lm-${state}-${n}.jpg`, state, room }); return t; };
+  Object.entries(ROOMS).forEach(([k, R]) => R.pieces.forEach((n) => { maps[n] = { day: k === 'F' ? lm('day', n) : later('day', n, k), lit: later('lit', n, k) }; }));
+  H.rest = REST; H.have = { F: { day: true, lit: false }, B: { day: false, lit: false } };
   const oak = tl.load('assets/tex-oak.jpg'); oak.colorSpace = THREE.SRGBColorSpace; oak.wrapS = oak.wrapT = THREE.RepeatWrapping; oak.anisotropy = 8;
   const geo = (k) => import(`./assets/house/${ROOMS[k].module}.js`).then((m) => new Promise((res, rej) => new GLTFLoader().parse(glb(m.default), '', res, rej)));
   return Promise.all([geo('F'), geo('B'), env(ROOMS.F.env), env(ROOMS.B.env)]).then(([gF, gB, eF, eB]) => ({ gltf: { F: gF, B: gB }, env: { F: eF, B: eB }, maps, oak }));
 }
 
+// fetch the deferred light maps, the ones the walk reaches first before the others, four at a time
+H.loadRest = function () {
+  if (H.restStarted || !H.rest) return; H.restStarted = true;
+  const order = [['lit', 'F'], ['day', 'B'], ['lit', 'B']]; const queue = []; order.forEach(([st, rm]) => { const group = H.rest.filter((r) => r.state === st && r.room === rm); queue.push({ st, rm, left: group.length, group }); });
+  const loader = new THREE.TextureLoader(); const jobs = [].concat(...queue.map((g) => g.group.map((r) => ({ r, g })))); let next = 0;
+  const pump = () => { while (next < jobs.length && pump.active < 4) { const { r, g } = jobs[next++]; pump.active++;
+    const done = () => { pump.active--; if (--g.left === 0) H.have[g.rm][g.st] = true; pump(); };
+    loader.load(r.url, (src) => { r.t.image = src.image; r.t.needsUpdate = true; done(); }, undefined, done); } };
+  pump.active = 0; pump();
+};
 function build(res) {
   ENV_MATS.length = 0; FLAMES.length = 0;
   const scene = new THREE.Scene(); scene.background = skyTex('#7D93B8', '#E9C9A2', '#F3DEC2');
@@ -195,7 +210,7 @@ H.mount = function (stage) {
     load((f) => { H.progress = f; }).then((res) => {
       H.S = build(res); const rt = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 });
       const comp = new EffectComposer(r, rt); comp.addPass(new RenderPass(H.S.scene, H.camera)); comp.addPass(new UnrealBloomPass(new THREE.Vector2(256, 256), .2, .3, 1.15)); comp.addPass(new OutputPass());
-      H.composer = comp; H.resize(H.W || 800, H.Hh || 600, window.devicePixelRatio || 1); H.setMood(H.mood); H.ready = true; onLeaf(() => {}); window.dispatchEvent(new Event('house-ready'));
+      H.composer = comp; H.resize(H.W || 800, H.Hh || 600, window.devicePixelRatio || 1); H.setMood(H.mood); H.ready = true; onLeaf(() => {}); window.dispatchEvent(new Event('house-ready')); setTimeout(H.loadRest, 300);
     }).catch((e) => { console.error(e); H.error = String((e && e.message) || e); H.failed = true; });
     return true;
   } catch (e) { H.error = String((e && e.message) || e); H.failed = true; return false; }
@@ -257,7 +272,7 @@ H.render = function (sp, t) {
   });
   S.candleLights.forEach(({ it, l }, k) => { l.intensity = (it.obj.userData.flame.visible ? 1 : 0) * (.9 + .1 * Math.sin(t * 11 + k)) * 1.2; });
   const M = MOODS3[H.mood] || {}; const fl = .94 + .06 * Math.sin(t * 9.3) * Math.sin(t * 5.1);
-  for (const k of ['F', 'B']) { LM[k].day.value = M.day ?? 1; LM[k].lit.value = (lit[k][1] ? lit[k][0] / lit[k][1] : 0) * (M.lit ?? 1) * fl; }
+  for (const k of ['F', 'B']) { const hv = H.have ? H.have[k] : { day: true, lit: true }; LM[k].day.value = hv.day ? (M.day ?? 1) : 0; LM[k].lit.value = hv.lit ? (lit[k][1] ? lit[k][0] / lit[k][1] : 0) * (M.lit ?? 1) * fl : 0; }
   // the curtains breathe, more when you scroll quickly
   H.wind = (H.wind || 0) * .92 + Math.min(1, Math.abs(p - (H.lastP ?? p)) * 600) * .08; const amp = .04 + H.wind * .2;
   S.curtains.forEach((c, ci) => { const a = c.geometry.attributes.position, b = c.userData.base; for (let i = 0; i < a.count; i++) { const x = b[i * 3], y = b[i * 3 + 1], d = -y / c.userData.h; a.setZ(i, amp * d * Math.sin(t * 1.3 + x * 4 + ci * 2) + .025 * Math.sin(x * 16 + ci)); } a.needsUpdate = true; c.geometry.computeVertexNormals(); });

@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Tiro+Devanagari+Hindi&display=swap">
+<script src="shared/pp-theme.js" data-pp="store"></script>
 <style>
 /* Layout: one column store page. Pixel-grid motif from the name, saffron as the single loud colour, cards are the only boxed objects. */
 :root {
@@ -19,7 +20,7 @@
   --muted: #5b5f78;
   --line: #dfe1ec;
   --saffron: #f26b1d;
-  --saffron-ink: #ffffff;
+  --saffron-ink: #1a0d03;
   --teal: #0f8f86;
   --sky: #3b6cf6;
   --leaf: #2f9e5b;
@@ -92,7 +93,7 @@ p { margin: 0; }
 .hero { padding-block: 56px 40px; }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
 .hero h1 { font-size: clamp(40px, 7vw, 76px); font-weight: 800; letter-spacing: -.035em; }
-.hero h1 .hl { color: var(--saffron); }
+.hero h1 .hl { color: #df5509; }
 .hero .lede { margin-top: 18px; font-size: 18px; color: var(--muted); max-width: 46ch; }
 .hero .ctas { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
 .hero .deva { margin-top: 26px; display: flex; align-items: baseline; gap: 10px; color: var(--muted); font-size: 14px; }
@@ -251,7 +252,7 @@ p { margin: 0; }
 .contact { text-align: left; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-block: 40px; border-top: 1px solid var(--line); }
 .contact h2 { font-size: clamp(26px, 3.6vw, 36px); font-weight: 800; letter-spacing: -.025em; }
 .contact p { color: var(--muted); margin-top: 6px; }
-.btn-wa { background: #1fa855; border-color: #1fa855; color: #ffffff; }
+.btn-wa { background: #128040; border-color: #128040; color: #ffffff; }
 footer { padding-block: 24px 96px; color: var(--muted); font-size: 14px; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 
@@ -273,10 +274,43 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal.pending { opacity: 1; transform: none; }
 }
+
+/* ---- showcase: features, category tabs, real previews, live preview modal ---- */
+.feats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.feat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.feat b { display: block; font-size: 17px; letter-spacing: -.01em; margin-bottom: 6px; } .feat p { margin: 0; color: var(--muted); font-size: 15px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 10px; }
+.tabs button { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: 600 14px/1 var(--font-body); padding: 11px 18px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s; min-height: 42px; }
+.tabs button:hover { transform: translateY(-1px); border-color: var(--ink); }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tabhint { color: var(--muted); font-size: 14.5px; margin: 0 0 22px; }
+.grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+.card[hidden] { display: none; } .card.pop { animation: pop .5s cubic-bezier(.2, .8, .2, 1); } @keyframes pop { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+.tshot { position: relative; margin: 14px 14px 0; border-radius: 12px; overflow: hidden; background: #111; border: 1px solid var(--line); aspect-ratio: 16 / 10; cursor: pointer; }
+.tshot .bar { position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 22px; background: rgba(20, 20, 24, .78); backdrop-filter: blur(4px); display: flex; gap: 5px; align-items: center; padding: 0 10px; }
+.tshot .bar i { width: 7px; height: 7px; border-radius: 50%; background: #ffffff55; }
+.tshot .dt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s cubic-bezier(.2, .7, .2, 1), opacity .6s; }
+.tshot img { opacity: 0; } .tshot img.ok { opacity: 1; }
+.tshot .ph { position: absolute; z-index: 2; right: 10px; bottom: -22%; width: 24%; border-radius: 14px; border: 3px solid #111; box-shadow: 0 14px 30px rgba(0, 0, 0, .45); transform: translateY(0); transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+.tshot .live { position: absolute; z-index: 3; left: 12px; bottom: 12px; background: var(--ink); color: var(--paper); font: 700 13px/1 var(--font-body); padding: 9px 14px; border-radius: 999px; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
+.card:hover .tshot .dt { transform: scale(1.06); } .card:hover .tshot .ph { transform: translateY(-16%); } .card:hover .tshot .live, .tshot:focus-visible .live { opacity: 1; transform: none; }
+@media (hover: none) { .tshot .live { opacity: 1; transform: none; } }
+.card.flash { box-shadow: 0 0 0 4px var(--accent, #f97316), var(--shadow); }
+.modal { position: fixed; inset: 0; z-index: 100; background: #0b0b0e; animation: mopen .45s cubic-bezier(.2, .8, .2, 1); }
+.modal iframe { width: 100%; height: 100%; border: 0; display: block; }
+@keyframes mopen { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+body.lock { overflow: hidden; }
+#try-ini { color: var(--saffron-ink); } .step .n { color: color-mix(in srgb, var(--saffron) 68%, #000); } .bundle .save { color: color-mix(in srgb, var(--saffron) 70%, #fff); } .try-btn { color: #1a0d03; }
+.skip-link { position: absolute; left: 8px; top: -60px; z-index: 200; background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 8px; font-weight: 700; } .skip-link:focus { top: 8px; }
+.themebar { display: inline-flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: var(--muted); } .themebar .pp-sw[aria-checked="true"] { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink); }
+@media (max-width: 640px) { .themebar { width: 100%; justify-content: space-between; } }
+
+@media (pointer: coarse) { .btn, .btn-sm, .switch button, .tabs button, .nav a, .logo, .chip, .try-btn { min-height: 44px; } .nav a, .logo { display: inline-flex; align-items: center; } .chip { min-width: 44px; } .pp-sw { width: 44px !important; height: 44px !important; } .themebar .pp-swatches { gap: 4px; } }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#templates">Skip to the templates</a>
 <header class="top" id="top">
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Pixelpatra home">
@@ -299,10 +333,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div class="copy">
         <p class="eyebrow">Website templates, made in India</p>
         <h1>Your website, <span class="hl">ready this week.</span></h1>
-        <p class="lede">Clean, fast templates for students, professionals and small businesses. Buy the files and launch it yourself, or let us set it up with your content.</p>
+        <p class="lede">Immersive templates for portfolios, online shops, factories and 3D experiences, each with an Owner view so you run it yourself. Buy the files and launch it yourself, or let us set it up with your content.</p>
         <div class="ctas">
           <a class="btn btn-solid" href="#templates">See the templates</a>
-          <a class="btn" href="#bundle">Get all 4 for ₹999</a>
+          <a class="btn" href="#bundle">Get all 6 for ₹22,999</a>
         </div>
         <p class="deva"><b lang="hi">पत्र</b> patra means a page, a letter. We make yours.</p>
       </div>
@@ -337,13 +371,28 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <button type="button" class="cloth-open" id="cloth-open" hidden>Swipe or tap to open</button>
   </section>
 
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">What every site includes</p><h2>Built to wow, built to run</h2></div></div>
+      <div class="feats">
+        <div class="feat reveal"><b>Immersive on first scroll</b><p>3D particles, scroll-driven films and walk-throughs, so a visitor remembers the site.</p></div>
+        <div class="feat reveal"><b>An Owner view</b><p>Products, prices, stock, photos, offers, orders and invoices, changed by the owner without a developer.</p></div>
+        <div class="feat reveal"><b>Brand and tax details locked</b><p>Name, GST and legal details can't be overwritten by accident. Real changes go through a verified request.</p></div>
+        <div class="feat reveal"><b>Phone first</b><p>Every template is tested on phones and can be installed like an app.</p></div>
+        <div class="feat reveal"><b>Orders on WhatsApp or online</b><p>From a simple WhatsApp order to payments, delivery and GST invoices.</p></div>
+        <div class="feat reveal"><b>Themes you approve</b><p>The owner can switch between looks you chose, never into something off-brand.</p></div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="templates">
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <p class="eyebrow">4 templates<span id="for-name"></span></p>
-          <h2>Pick your template</h2>
+          <p class="eyebrow"><span id="tcount">6 templates in 4 categories</span><span id="for-name"></span></p>
+          <h2>Open a template, try it live</h2>
         </div>
+        <div class="themebar"><span id="themelabel">Theme</span><div id="pp-sw"></div></div>
         <div class="switch" role="group" aria-label="Price option">
           <span class="pill" id="pill"></span>
           <button type="button" id="mode-files" aria-pressed="true" data-mode="files">Template only</button>
@@ -352,90 +401,131 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <p class="mode-note" id="mode-note">You get the template files and launch the site yourself.</p>
       </div>
 
-      <div class="grid">
-        <article class="card reveal" data-name="Portfolio" data-files="299" data-setup="799" data-demo="">
+      <noscript><style>.tshot img { opacity: 1; }</style></noscript>
+      <div class="tabs" role="tablist" aria-label="Template categories" id="tabs">
+        <button type="button" role="tab" aria-selected="true" data-cat="all">All</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="portfolio">Portfolio</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="ecommerce">E-commerce</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="3d">3D &amp; animated</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="business">Business</button>
+      </div>
+      <p class="tabhint" id="tabhint">Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.</p>
+      <div class="grid" id="grid">
+        <article class="card reveal" data-name="Portfolio" data-cat="portfolio 3d" data-id="portfolio" data-files="999" data-setup="2499" data-demo="demo/?demo=portfolio">
           <span class="glare"></span>
-          <div class="shot m-portfolio" style="--c: var(--pick, var(--teal))" aria-hidden="true">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDkFGWA65NWUgDbv3Z4Gcb8VWyuOnP1pKBj5UMcjIQVIPTPSimUUxH/2Q==) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="avatar"></div>
-              <div class="lines"><span class="mt nm" data-def="Your Name">Your Name</span><span class="ph"></span><span class="ph" style="width:60%"></span></div>
-              <div class="row"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/portfolio.jpg" width="1000" height="625" alt="Portfolio template, desktop view" loading="lazy">
+            <img class="ph" src="previews/portfolio-m.jpg" alt="Portfolio template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Portfolio</h3><span class="tag">Students &amp; Pros</span></div>
-            <p class="desc">A personal site for your work, resume and contact details. Ideal for placements, freelancing and job hunts.</p>
+            <div class="card-top"><h3>Portfolio</h3><span class="tag">Portfolio · 3D</span></div>
+            <p class="desc">A personal site whose name is built from thousands of particles that react to your pointer, then scatter into a galaxy as you scroll. Projects, about and contact.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹299</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=portfolio">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
           </div>
         </article>
-
-        <article class="card reveal" data-name="Sample 1" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="Professional Portfolio" data-cat="portfolio" data-id="ba" data-files="4999" data-setup="9999" data-demo="demo/?demo=ba">
           <span class="glare"></span>
-          <div class="shot m-sample v1" style="--c: var(--pick, var(--sky))" aria-hidden="true">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDCgW3e3TzB8wznJPr9apSEeawXIXPGRjin7SqAtkA+9MZuODVkj5IXjjDsGCt0JHBop0s6yRKmwjaMA7s/nRQB/9k=) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span></div>
-              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/ba.jpg" width="1000" height="625" alt="Professional Portfolio template, desktop view" loading="lazy">
+            <img class="ph" src="previews/ba-m.jpg" alt="Professional Portfolio template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Sample 1</h3><span class="tag">Business</span></div>
-            <p class="desc">A business site with a bold banner, services and a contact section. Good for shops, studios and local services.</p>
+            <div class="card-top"><h3>Professional Portfolio</h3><span class="tag">Portfolio · Knowledge base</span></div>
+            <p class="desc">A working portfolio for analysts and consultants: a chaos-to-clarity scroll intro, a searchable skills library, case studies, sample deliverables, interactive decision scenarios and a process puzzle. Shown with a real example.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹4,999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=ba">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
           </div>
         </article>
-
-        <article class="card reveal" data-name="Sample 2" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="Gift Shop" data-cat="ecommerce" data-id="sample1" data-files="6999" data-setup="14999" data-demo="demo/?demo=sample1">
           <span class="glare"></span>
-          <div class="shot m-sample v2" style="--c: var(--pick, var(--leaf))" aria-hidden="true">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDqfNbcQCBzSCcKpLsoGcfMQKX7PuJLJjk9Hp6wqoIC5z681GpWg6ORZFBDK2ehU5FFKBjgKAPaimI//9k=) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span><span class="ph"></span></div>
-              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/giftshop.jpg" width="1000" height="625" alt="Gift Shop template, desktop view" loading="lazy">
+            <img class="ph" src="previews/giftshop-m.jpg" alt="Gift Shop template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Sample 2</h3><span class="tag">Business</span></div>
-            <p class="desc">A split layout that puts your products or services side by side with your story.</p>
+            <div class="card-top"><h3>Gift Shop</h3><span class="tag">E-commerce</span></div>
+            <p class="desc">A complete online shop: cart, UPI and card payments, orders, GST invoices, coupons and rewards, and an Owner view where the owner runs the shop while the brand and tax details stay locked.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹6,999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=sample1">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
           </div>
         </article>
-
-        <article class="card reveal" data-name="Sample 3" data-files="499" data-setup="1499" data-demo="">
+        <article class="card reveal" data-name="3D House Shop" data-cat="ecommerce 3d" data-id="house" data-files="9999" data-setup="19999" data-demo="demo/?demo=house">
           <span class="glare"></span>
-          <div class="shot m-sample v3" style="--c: var(--pick, var(--plum)); --cols: 4" aria-hidden="true">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCtFqN8y/8AH7Ln/fNPTU7wvs+2OWzjbu5qF41h2LscOQCcsCP0qCK0f7X529cb92Oc1my0agv7zODcTZA/vUVAx+Yn2opgf//Z) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="page">
-              <div class="hero-band"><span class="mt nm" data-def="Your Business">Your Business</span><span class="ph"></span></div>
-              <div class="tiles"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
-            </div>
+            <img class="dt" src="previews/house.jpg" width="1000" height="625" alt="3D House Shop template, desktop view" loading="lazy">
+            <img class="ph" src="previews/house-m.jpg" alt="3D House Shop template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><h3>Sample 3</h3><span class="tag">Business</span></div>
-            <p class="desc">A lighter, minimal take with a gallery grid. Suits cafes, boutiques and creative businesses.</p>
+            <div class="card-top"><h3>3D House Shop</h3><span class="tag">E-commerce · 3D</span></div>
+            <p class="desc">The same full shop, opening with a scroll-driven walk through a 3D house. Products sit in the rooms; visitors step in and shop.</p>
             <div class="card-foot">
-              <p class="price"><span class="num">₹499</span><small class="lbl">template only</small></p>
+              <p class="price"><span class="num">₹9,999</span><small class="lbl">template only</small></p>
               <div class="actions">
-                <a class="btn btn-sm demo" href="#">View demo</a>
+                <a class="btn btn-sm demo" href="demo/?demo=house">Open live demo</a>
+                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card reveal" data-name="Scroll Openings" data-cat="3d" data-id="intros" data-files="2999" data-setup="6999" data-demo="demo/?demo=intros">
+          <span class="glare"></span>
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwBPt93j/j7kz/vmhL68dsfapf8AvqsuW5UhfK80HvvIP8qhM0hGC5rDlZ1c8exsm/vAcfapeP8AaorH8+X++aKOVhzx7H//2Q==) center/cover">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <img class="dt" src="previews/intros.jpg" width="1000" height="625" alt="Scroll Openings template, desktop view" loading="lazy">
+            <img class="ph" src="previews/intros-m.jpg" alt="Scroll Openings template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>Scroll Openings</h3><span class="tag">Animated</span></div>
+            <p class="desc">Three scroll-driven homepage openings: plaster arches that light up, a candle poured and lit, a 3D home tour. Drop one into any site.</p>
+            <div class="card-foot">
+              <p class="price"><span class="num">₹2,999</span><small class="lbl">template only</small></p>
+              <div class="actions">
+                <a class="btn btn-sm demo" href="demo/?demo=intros">Open live demo</a>
+                <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card reveal" data-name="Factory Film" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="9999" data-demo="demo/?demo=oil">
+          <span class="glare"></span>
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwChZTapPJ5f2yVSPvFpTx+FbdrHLAS9xfzuADkF+BXMLcxoMRoQcfe4zTTdMSeWx6+tZWbZpdGpqGpyzPizuZ19t3OaKy2vOgMakDnO0A/mKKdgbR//2Q==) center/cover">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <img class="dt" src="previews/oil.jpg" width="1000" height="625" alt="Factory Film template, desktop view" loading="lazy">
+            <img class="ph" src="previews/oil-m.jpg" alt="Factory Film template, phone view" loading="lazy">
+            <span class="live">▶ Try it live</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>Factory Film</h3><span class="tag">Business · Film</span></div>
+            <p class="desc">For factories and makers: a scroll-controlled seed-to-bottle film, online ordering, dealer enquiries and quality records.</p>
+            <div class="card-foot">
+              <p class="price"><span class="num">₹4,999</span><small class="lbl">template only</small></p>
+              <div class="actions">
+                <a class="btn btn-sm demo" href="demo/?demo=oil">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="#" target="_blank" rel="noopener">Buy</a>
               </div>
             </div>
@@ -451,16 +541,16 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <div class="px" aria-hidden="true"><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i></i><i class="x"></i></div>
         <div>
           <p class="eyebrow">Bundle</p>
-          <h2>All 4 templates, one price</h2>
-          <p>Get the Portfolio and all three samples together. Use them for yourself, your business, or your next client.</p>
+          <h2>All 6 templates, one price</h2>
+          <p>Get every template together. Use them for yourself, your business, or your next client.</p>
           <ul>
-            <li><span>Portfolio</span><span class="price">₹299</span></li>
-            <li><span>Sample 1, 2, 3</span><span class="price">₹1,497</span></li>
+            <li><span>Portfolio · Gift Shop · 3D House Shop</span><span class="price">₹17,997</span></li>
+            <li><span>Scroll Openings · Factory Film · Professional Portfolio</span><span class="price">₹12,997</span></li>
           </ul>
         </div>
         <div class="deal">
-          <span class="save">You save ₹797</span>
-          <div class="big price">₹999</div>
+          <span class="save">You save ₹7,995</span>
+          <div class="big price">₹22,999</div>
           <a class="btn btn-solid buy" id="buy-bundle" href="#" target="_blank" rel="noopener">Buy the bundle</a>
         </div>
       </div>
@@ -497,7 +587,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 <footer>
   <div class="wrap">
     <span>© <span id="yr">2026</span> Pixelpatra</span>
-    <span>Templates for students, professionals and small businesses</span>
+    <span>Immersive templates for portfolios, shops, factories and 3D · <a href="credits.html">Photo credits</a></span>
   </div>
 </footer>
 
@@ -505,6 +595,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.41 1.3-1.95 1.35-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>
 </a>
 
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-label="Live template preview"><iframe id="modal-frame" title="Live template preview" allow="fullscreen"></iframe></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -513,9 +604,11 @@ const CONFIG = {
   whatsapp: "",          // e.g. "919876543210" (country code + number, no +). Empty = WhatsApp opens and asks who to send to.
   payLinks: {            // Razorpay / Gumroad links per item, filled in later
     "Portfolio": { files: "", setup: "" },
-    "Sample 1": { files: "", setup: "" },
-    "Sample 2": { files: "", setup: "" },
-    "Sample 3": { files: "", setup: "" },
+    "Professional Portfolio": { files: "", setup: "" },
+    "Gift Shop": { files: "", setup: "" },
+    "3D House Shop": { files: "", setup: "" },
+    "Scroll Openings": { files: "", setup: "" },
+    "Factory Film": { files: "", setup: "" },
     "Bundle": { files: "" }
   }
 };
@@ -550,7 +643,7 @@ const CONFIG = {
       card.querySelector(".buy").href = link || wa(`Hi Pixelpatra! I'd like to buy ${name}${label} (${rupee(price)})${forWho}.`);
     });
     const b = CONFIG.payLinks.Bundle.files;
-    document.getElementById("buy-bundle").href = b || wa("Hi Pixelpatra! I'd like to buy the all-4 template bundle (₹999).");
+    document.getElementById("buy-bundle").href = b || wa("Hi Pixelpatra! I'd like to buy the all-6 template bundle (₹22,999).");
   }
   document.querySelectorAll(".demo").forEach(a => {
     const card = a.closest(".card");
@@ -779,6 +872,45 @@ const CONFIG = {
   })();
 
   document.getElementById("yr").textContent = new Date().getFullYear();
+})();
+
+/* ---- showcase: category tabs and the live preview ---- */
+(function () {
+  document.querySelectorAll(".tshot img").forEach(i => { if (i.complete && i.naturalWidth) i.classList.add("ok"); else i.addEventListener("load", () => i.classList.add("ok")); });
+  if (window.ppTheme) ppTheme.mount(document.getElementById("pp-sw"));
+  const tabs = document.querySelectorAll("#tabs button"), cards = [...document.querySelectorAll("#grid .card")];
+  const hints = { all: "Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.",
+    portfolio: "Portfolios: personal sites for designers, developers, photographers and professionals.",
+    ecommerce: "E-commerce: complete shops with payments, orders, invoices and an Owner view.",
+    "3d": "3D and animated: immersive openings and scroll-driven experiences that people remember.",
+    business: "Business: sites for factories, makers and service companies, with orders and dealer enquiries." };
+  function pickCat(cat) {
+    tabs.forEach(b => b.setAttribute("aria-selected", String(b.dataset.cat === cat)));
+    cards.forEach(c => { const on = cat === "all" || c.dataset.cat.split(" ").includes(cat); c.hidden = !on; if (on) { c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); } });
+    document.getElementById("tabhint").textContent = hints[cat];
+    history.replaceState(null, "", cat === "all" ? location.pathname + location.hash : "?cat=" + cat + "#templates");
+  }
+  tabs.forEach(b => b.addEventListener("click", () => pickCat(b.dataset.cat)));
+  const q = new URLSearchParams(location.search).get("cat"); if (q && hints[q]) pickCat(q);
+  const modal = document.getElementById("modal"), frame = document.getElementById("modal-frame");
+  let from = null;
+  function openLive(card) {
+    const cat = (document.querySelector("#tabs [aria-selected=true]") || {}).dataset ? document.querySelector("#tabs [aria-selected=true]").dataset.cat : "all";
+    from = card; frame.src = "demo/?embed=1&demo=" + card.dataset.id + (cat !== "all" ? "&cat=" + cat : "");
+    modal.hidden = false; document.body.classList.add("lock"); document.querySelectorAll("body > header, body > main, body > footer, body > .fab").forEach(n => n.setAttribute("inert", "")); frame.focus();
+  }
+  function closeLive() { modal.hidden = true; frame.src = "about:blank"; document.body.classList.remove("lock"); document.querySelectorAll("[inert]").forEach(n => n.removeAttribute("inert")); if (from) from.querySelector(".demo").focus(); }
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a.demo"), shot = e.target.closest(".tshot");
+    const card = (a || shot) && (a || shot).closest(".card"); if (!card) return;
+    e.preventDefault(); openLive(card);
+  }, true);
+  document.querySelectorAll(".tshot").forEach(t => { t.tabIndex = 0; t.setAttribute("role", "button"); t.setAttribute("aria-label", "Open live demo"); t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLive(t.closest(".card")); } }); });
+  addEventListener("message", e => {
+    const m = e.data || {}; if (m.pixelpatra === "close") closeLive();
+    if (m.pixelpatra === "get") { closeLive(); const c = cards.find(x => x.dataset.id === m.demo); if (c) { c.hidden = false; c.scrollIntoView({ behavior: "smooth", block: "center" }); c.classList.add("flash"); setTimeout(() => c.classList.remove("flash"), 2600); } }
+  });
+  addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeLive(); });
 })();
 </script>
 </body>

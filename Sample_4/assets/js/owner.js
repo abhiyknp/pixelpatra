@@ -1,0 +1,317 @@
+/* Owner view (#stats): visitor numbers from the GoatCounter API, styled like the rest of the site.
+   Not linked anywhere. It stays locked until the owner enters a GoatCounter API key with "Read statistics"
+   permission; the key is kept only in that browser (localStorage) and is sent only to GoatCounter. */
+(function () {
+  'use strict';
+  var SITE = 'https://abhiyknp.goatcounter.com', KEY = 'pf-owner-gc';
+  var RANGES = [['1', 'Today'], ['7', '7 days'], ['30', '30 days'], ['90', '90 days']];
+  /* GoatCounter groups screen widths into these codes and sends no display name for them. */
+  var SIZES = { phone: 'Phones (up to 600px)', tablet: 'Tablets (601 to 1000px)', desktop: 'Laptops and desktops', desktophd: 'Large screens (over 1920px)', unknown: 'Unknown' };
+  function track(name) { document.dispatchEvent(new CustomEvent('pf:track', { detail: name })); }
+  var EVENTS = { 'resume-download': 'Résumé downloaded', 'email-click': 'Email link clicked', 'email-copy': 'Email address copied', 'linkedin-click': 'LinkedIn opened', 'compare-used': 'Before/after slider used', 'puzzle-solved': 'Puzzle solved', 'owner-desk-denied': 'Tried the owner\'s desk (denied)' };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var state = { days: '7', data: null, error: '', loading: false, status: 'Loading…', cache: {}, step: 0, total: 7 };
+  var CACHE_MS = 10 * 60 * 1000, CACHE_KEY = 'pf-owner-cache-2';
+  try { state.cache = JSON.parse(sessionStorage.getItem(CACHE_KEY)) || {}; } catch (e) {}
+  function saveCache() { try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(state.cache)); } catch (e) {} }
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function getKey() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
+  function setKey(v) { try { if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch (e) {} }
+  function fmt(n) { return Number(n || 0).toLocaleString('en-IN'); }
+  function ymd(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function cnt(x) { return x.count != null ? x.count : (x.count_unique || 0); }
+
+  /* Friendly names for counted paths: /case/rajmarg → "Case study: Rajmarg Pravesh Portal". */
+  function pageName(path) {
+    var p = String(path || '').replace(/^\//, '').split('/'), v = p[0], id = p.slice(1).join('/');
+    var find = function (list) { return (list || []).filter(function (x) { return x.id === id; })[0]; };
+    var x;
+    if (v === 'home' || v === '') return 'Overview';
+    if (v === 'skills') return 'Skills Library';
+    if (v === 'cases') return 'Case studies';
+    if (v === 'scenarios') return 'Scenarios';
+    if (v === 'evidence') return 'Evidence map';
+    if (v === 'puzzle') return 'Process puzzle';
+    if (v === 'studio') return id && (x = find(PF.artifacts)) ? 'Artifact: ' + x.name : 'Artifact Studio';
+    if (v === 'skill' && (x = find(PF.skills))) return 'Skill: ' + x.name;
+    if (v === 'case' && (x = find(PF.cases))) return 'Case study: ' + x.name;
+    if (v === 'scenario' && (x = find(PF.scenarios))) return 'Scenario: ' + x.short;
+    return path;
+  }
+
+  /* Everyone except the owner gets an "access denied" page, written as the access rule that denies them: a role and
+     permission matrix with a DENIED stamp on their row, plus the acceptance criteria. The owner reaches the key box
+     through "I'm the owner". No figures are requested until a key is present. */
+  var LOCK = '<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>';
+  function denied() {
+    var Y = '<td class="dm-y"><span aria-hidden="true">✓</span><span class="sr-only">Allowed</span></td>';
+    var N = '<td class="dm-n"><span aria-hidden="true">✕</span><span class="sr-only">Denied</span></td>';
+    return '<div class="wrap page owner deny"><header class="page-head"><p class="kicker">' + LOCK + ' Owner\'s desk · restricted</p><h1>Access request denied.</h1>' +
+      '<p class="lede">Good instinct to look behind the curtain. This page shows who visits the portfolio, and that stays with the owner. Here is the rule that stopped you, written the way I would write it for a real system.</p></header>' +
+      '<div class="panel deny-matrix"><div class="tw-auto"><table><caption>Rule RBAC-07 · Role-based access for this site</caption>' +
+        '<thead><tr><th scope="col">Role</th><th scope="col">Read case studies</th><th scope="col">Download résumé</th><th scope="col">Use the Artifact Studio</th><th scope="col">See visitor statistics</th></tr></thead><tbody>' +
+        '<tr class="dm-you"><th scope="row">Visitor <span class="dm-tag">you</span></th>' + Y + Y + Y + '<td class="dm-n dm-stamp-cell"><span aria-hidden="true">✕</span><span class="sr-only">Denied</span><span class="dm-stamp" aria-hidden="true">Denied</span></td></tr>' +
+        '<tr><th scope="row">Recruiter</th>' + Y + Y + Y + N + '</tr>' +
+        '<tr><th scope="row">Product owner <span class="small muted">(Abhishek)</span></th>' + Y + Y + Y + Y + '</tr>' +
+      '</tbody></table></div></div>' +
+      '<div class="panel deny-ac"><h2>Acceptance criteria</h2><ul class="h-ac">' +
+        '<li><b>Given</b> I am not the owner, <b>when</b> I open the owner\'s desk, <b>then</b> I see this page and no figures are loaded.</li>' +
+        '<li><b>Given</b> I am the owner on an unlocked device, <b>when</b> I open it, <b>then</b> I see the visitor statistics.</li>' +
+        '<li><b>Given</b> a denied visit, <b>then</b> it is counted as one anonymous event, with nothing about who you are.</li></ul></div>' +
+      '<div class="btn-row"><a class="btn" href="#cases">Explore the case studies</a><a class="btn ghost" href="#skill.rbac">How I write access rules</a></div>' +
+      '<p class="deny-owner"><button type="button" class="linkish" data-act="own-iam" aria-expanded="false" aria-controls="owner">I\'m the owner</button></p>' +
+      '<div id="owner" hidden></div></div>';
+  }
+  function view() {
+    if (!getKey()) return denied();
+    return '<div class="wrap page owner"><header class="page-head"><p class="kicker">Owner view · private</p><h1>Visitor stats</h1>' +
+      '<p class="lede">Who is reading the portfolio, what they open and what they do next. Only visible on a device where you have unlocked it.</p></header>' +
+      '<div id="owner"></div></div>';
+  }
+
+  function draw() {
+    var host = document.getElementById('owner'); if (!host) return;
+    if (!getKey()) {
+      host.innerHTML = '<form class="panel owner-lock" id="owner-form" autocomplete="off">' +
+        '<h2>Locked</h2><p class="muted">Enter your GoatCounter API key to see the numbers on this device. The key is stored only in this browser and sent only to GoatCounter.</p>' +
+        '<label for="owner-key" class="small">GoatCounter API key</label><input id="owner-key" type="password" spellcheck="false" autocapitalize="off" required>' +
+        '<div class="btn-row"><button class="btn" type="submit">Unlock</button></div>' +
+        (state.error ? '<p class="owner-err" role="alert">' + state.error + '</p>' : '') +
+        '<details class="small"><summary>How to get a key</summary><ol><li>Open <a href="' + SITE + '" target="_blank" rel="noopener">your GoatCounter dashboard</a> and sign in.</li><li>Go to Settings → API → New API key.</li><li>Tick only <b>Read statistics</b>, create the key and copy it here.</li></ol></details></form>';
+      return;
+    }
+    var d = state.data;
+    var head = '<div class="owner-bar"><div class="chips" role="group" aria-label="Date range">' + RANGES.map(function (r) {
+        return '<button class="chip" type="button" data-act="own-range" data-v="' + r[0] + '" aria-pressed="' + (state.days === r[0]) + '">' + r[1] + '</button>';
+      }).join('') + '</div><div class="btn-row"><button class="btn ghost" type="button" data-act="own-refresh"' + (state.loading ? ' disabled aria-busy="true"><span class="spin" aria-hidden="true"></span>Loading' : '>Refresh') + '</button><a class="btn ghost" href="' + SITE + '" target="_blank" rel="noopener">Full dashboard ↗</a><button class="btn ghost" type="button" data-act="own-lock">Lock</button></div></div>';
+    if (state.error) { host.innerHTML = head + '<p class="owner-err" role="alert">' + state.error + '</p>'; return; }
+    if (state.loading || !d) { host.innerHTML = head + loader(); startOrbit(); progress(state.step); return; }
+
+    /* "/toggle-goatcounter" was counted before the site learned to skip it; leave it out. */
+    var pages = d.hits.filter(function (h) { return !h.event && h.path !== '/toggle-goatcounter'; }), events = d.hits.filter(function (h) { return h.event; });
+    var ev = function (name) { var h = events.filter(function (e) { return e.path === name; })[0]; return h ? cnt(h) : 0; };
+    var contact = ev('email-click') + ev('email-copy') + ev('linkedin-click');
+    var views = pages.reduce(function (s, h) { return s + cnt(h); }, 0);
+    var tiles = [
+      [fmt(d.total), 'Visitors', 'Unique visitors in the period'],
+      [fmt(views), 'Page visits', 'Visitors per page, added up'],
+      [fmt(ev('resume-download')), 'Résumé downloads', 'The strongest signal of interest'],
+      [fmt(contact), 'Contact clicks', 'Email, copy email and LinkedIn'],
+      [fmt(ev('puzzle-solved')), 'Puzzles solved', fmt(ev('compare-used')) + ' used the before/after slider']
+    ];
+    host.innerHTML = head +
+      '<p class="small muted">' + esc(d.label) + ' · updated ' + d.at + '</p>' +
+      '<div class="owner-tiles">' + tiles.map(function (t) { return '<div class="owner-tile"><span class="l">' + t[1] + '</span><span class="v">' + t[0] + '</span><span class="small muted">' + t[2] + '</span></div>'; }).join('') + '</div>' +
+      '<section class="panel owner-sec"><h2>Visitors per day</h2>' + daily(d.daily) + '</section>' +
+      '<div class="owner-grid">' +
+        ranked('Most-read pages', pages.map(function (h) { return [pageName(h.path), cnt(h)]; }), 'No page visits yet.') +
+        ranked('Actions', events.map(function (h) { return [EVENTS[h.path] || h.title || h.path, cnt(h)]; }), 'No downloads or clicks yet.') +
+        ranked('Where visitors came from', d.refs.map(function (r) { return [r.name || 'Direct or unknown', cnt(r)]; }), 'No sources yet.') +
+        ranked('Countries', d.locations.map(function (r) { return [r.name || 'Unknown', cnt(r)]; }), 'No locations yet.') +
+        ranked('Screen size', d.sizes.map(function (r) { return [SIZES[r.id] || r.name || 'Unknown', cnt(r)]; }), 'No data yet.') +
+        ranked('Browsers', d.browsers.map(function (r) { return [r.name || 'Unknown', cnt(r)]; }), 'No data yet.') +
+        ranked('Operating systems', d.systems.map(function (r) { return [r.name || 'Unknown', cnt(r)]; }), 'No data yet.') +
+      '</div>' +
+      '<p class="small muted">Your own visits are not counted on a device where this page is unlocked.</p>';
+  }
+
+  /* The scattered questions behind the figures. They become the loader's moving words (see loader.js). */
+  var WORDS = ['how many??', 'anyone?', 'traffic', 'which page?', 'case study?', 'CV?', 'LinkedIn?', 'Google', 'naukri', 'India?', 'UAE', 'abroad?',
+    'phone?', 'laptop', 'tablet', 'chrome', 'safari?', 'edge', 'mac?', 'windows', 'android'];
+  function loader() {
+    return '<div class="owner-load" aria-busy="true">' +
+      '<p class="owner-status" role="status" id="own-status"><span class="spin" aria-hidden="true"></span><span id="own-status-t">' + esc(state.status) + '</span></p>' +
+      '<div class="panel oc-box owner-chaos">' + PFLoader.markup(WORDS, 'Clarity.', 'Loading visitor stats', state.total) + '</div></div>';
+  }
+  var anim = null;
+  function startOrbit() {
+    var box = document.querySelector('.owner-chaos'); if (!box) return;
+    anim = PFLoader.start(box, { total: state.total, onClear: function () {
+      status('All figures in.'); var sp = document.querySelector('#own-status .spin'); if (sp) sp.remove();
+    } });
+    anim.box = box;
+  }
+  /* Resolves once the loader has finished its "Clarity." moment (straight away without motion or a loader). */
+  function loaderFinished() {
+    return new Promise(function (res) {
+      if (reduce.matches) return res();
+      var start = Date.now();
+      (function check() {
+        var box = document.querySelector('.owner-chaos');
+        if (!box || !anim || anim.box !== box) return res();
+        if (anim.done) return setTimeout(res, 1100);
+        if (Date.now() - start > 8000) return res();
+        setTimeout(check, 100);
+      })();
+    });
+  }
+
+  /* Ranked list: label, a bar scaled to the largest value, and the number. */
+  function ranked(title, rows, empty) {
+    rows = rows.filter(function (r) { return r[1] > 0; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10);
+    var max = rows.reduce(function (m, r) { return Math.max(m, r[1]); }, 0);
+    return '<section class="panel owner-sec"><h2>' + title + '</h2>' + (rows.length ? '<ol class="owner-rank">' + rows.map(function (r) {
+      return '<li><span class="n">' + esc(r[0]) + '</span><span class="b" aria-hidden="true"><i style="width:' + Math.max(2, r[1] / max * 100).toFixed(1) + '%"></i></span><span class="c">' + fmt(r[1]) + '</span></li>';
+    }).join('') + '</ol>' : '<p class="small muted">' + empty + '</p>') + '</section>';
+  }
+
+  /* Daily visitors as columns, with a hover readout and a table for screen readers. */
+  function daily(rows) {
+    if (!rows.length) return '<p class="small muted">No visits yet.</p>';
+    var max = Math.max(1, rows.reduce(function (m, r) { return Math.max(m, r[1]); }, 0)), n = rows.length;
+    var W = 720, H = 180, gap = n > 45 ? 1 : 2, bw = (W - gap * (n - 1)) / n, s = '', yl = '';
+    var nice = Math.max(1, Math.ceil(max / 4)), top = nice * 4;
+    for (var g = 0; g <= 4; g++) { var y = H - (g * nice / top) * H; s += '<line class="og" x1="0" x2="' + W + '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) + '"/>'; yl += '<span style="top:' + (y / H * 100).toFixed(2) + '%">' + fmt(g * nice) + '</span>'; }
+    rows.forEach(function (r, i) {
+      var h = r[1] / top * H, x = i * (bw + gap);
+      s += '<g class="ob" data-tip="' + esc(label(r[0]) + ': ' + fmt(r[1]) + ' visitor' + (r[1] === 1 ? '' : 's')) + '"><rect class="hit" x="' + x.toFixed(1) + '" y="0" width="' + (bw + gap).toFixed(1) + '" height="' + H + '"/>' +
+        (r[1] ? '<path class="bar" d="' + colPath(x, H - h, bw, h) + '"/>' : '') + '</g>';
+    });
+    var ticks = [0, Math.floor((n - 1) / 2), n - 1].filter(function (v, i, a) { return a.indexOf(v) === i; });
+    var axis = ticks.map(function (i) { return '<span style="left:' + ((i * (bw + gap) + bw / 2) / W * 100).toFixed(2) + '%">' + label(rows[i][0]) + '</span>'; }).join('');
+    return '<div class="owner-chart"><div class="owner-plot"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="Visitors per day">' + s + '</svg><div class="owner-y" aria-hidden="true">' + yl + '</div></div><div class="owner-axis">' + axis + '</div><div class="owner-tip" hidden></div></div>' +
+      '<details class="small"><summary>Show as a table</summary><table><tr><th>Day</th><th>Visitors</th></tr>' + rows.map(function (r) { return '<tr><td>' + label(r[0]) + '</td><td>' + fmt(r[1]) + '</td></tr>'; }).join('') + '</table></details>';
+  }
+  function colPath(x, y, w, h) { var r = Math.min(4, w / 2, h); return 'M' + x + ' ' + (y + h) + 'V' + (y + r) + 'Q' + x + ' ' + y + ' ' + (x + r) + ' ' + y + 'H' + (x + w - r) + 'Q' + (x + w) + ' ' + y + ' ' + (x + w) + ' ' + (y + r) + 'V' + (y + h) + 'Z'; }
+  function label(day) { var d = new Date(day + 'T00:00:00'); return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); }
+
+  /* ---------------- GoatCounter API ---------------- */
+  function wait(ms) { return new Promise(function (res) { setTimeout(res, ms); }); }
+  function status(t) { state.status = t; var el = document.getElementById('own-status-t'); if (el) el.textContent = t; }
+  function progress(i) {
+    state.step = i;
+    if (anim && anim.box && anim.box.isConnected) anim.set(i);
+  }
+  /* Wait with a visible countdown: "Trying again in 8 seconds…", "7 seconds…" and so on. */
+  function countdown(secs, lead) {
+    return new Promise(function (res) {
+      (function tick(n) { status(lead + ' Trying again in ' + n + ' second' + (n === 1 ? '' : 's') + '…'); if (n <= 0) return res(); setTimeout(function () { tick(n - 1); }, 1000); })(secs);
+    });
+  }
+  /* GoatCounter allows 4 API requests per second and 500 per hour from one address, and the browser's permission
+     check before each request counts too. A refused permission check shows up as a network error rather than a 429,
+     so both are retried: wait as long as GoatCounter asks (or 3, 8, 15, then 30 seconds), up to four times. */
+  function api(path, params, tries) {
+    tries = tries || 0;
+    var q = Object.keys(params).map(function (k) { return k + '=' + encodeURIComponent(params[k]); }).join('&');
+    var retry = function (secs, why) {
+      if (tries >= 4) throw { msg: why === 'net' ? 'Could not reach GoatCounter from this page. Check your connection, wait a few minutes and press Refresh, or open the <a href="' + SITE + '" target="_blank" rel="noopener">full dashboard</a>.' : 'GoatCounter is still limiting requests. Wait a few minutes, then press Refresh.' };
+      secs = Math.min(60, Math.max(1, secs || [3, 8, 15, 30][tries]));
+      return countdown(secs, why === 'net' ? 'GoatCounter did not answer.' : 'GoatCounter asked to slow down.').then(function () { status('Trying again…'); return api(path, params, tries + 1); });
+    };
+    return fetch(SITE + '/api/v0/' + path + '?' + q, { headers: { Authorization: 'Bearer ' + getKey() } }).then(function (r) {
+      if (r.status === 401 || r.status === 403) throw { auth: true };
+      if (r.status === 429) { var hdr = parseFloat(r.headers.get('X-Rate-Limit-Reset') || r.headers.get('Retry-After') || ''); return retry(isFinite(hdr) && hdr > 0 ? Math.ceil(hdr) : 0, 'limit'); }
+      if (!r.ok) throw { msg: 'GoatCounter returned an error (' + r.status + '). Try Refresh, or open the full dashboard.' };
+      return r.json();
+    }, function () { return retry(0, 'net'); });
+  }
+  function load(force) {
+    var hit = state.cache[state.days];
+    if (!force && hit && Date.now() - hit.t < CACHE_MS) { state.token = {}; state.loading = false; state.error = ''; state.data = hit.data; draw(); return; }
+    var days = +state.days, end = new Date(), start = new Date(); start.setDate(end.getDate() - (days - 1));
+    /* GoatCounter reads a bare date as midnight, which would leave out today. Send exact times instead: from the
+       start of the first day to the end of the current hour (GoatCounter counts by the hour). */
+    var from = new Date(start); from.setHours(0, 0, 0, 0);
+    var to = new Date(end); to.setMinutes(0, 0, 0); to.setHours(to.getHours() + 1);
+    var iso = function (d) { return d.toISOString().replace(/\.\d{3}Z$/, 'Z'); };
+    var p = { start: iso(from), end: iso(to) }, out = {}, day0 = ymd(start), day1 = ymd(end);
+    var token = state.token = {};
+    state.loading = true; state.error = ''; state.status = 'Connecting to GoatCounter…'; state.step = 0; draw();
+    /* One request every 1.2 seconds keeps well inside GoatCounter's rate limit. */
+    var steps = [
+      ['total', 'stats/total', p, 'visitor totals'],
+      ['hits', 'stats/hits', { start: p.start, end: p.end, limit: 100, daily: true }, 'pages and actions'],
+      ['refs', 'stats/toprefs', { start: p.start, end: p.end, limit: 10 }, 'sources'],
+      ['locations', 'stats/locations', { start: p.start, end: p.end, limit: 10 }, 'countries'],
+      ['sizes', 'stats/sizes', { start: p.start, end: p.end, limit: 10 }, 'screen sizes'],
+      ['browsers', 'stats/browsers', { start: p.start, end: p.end, limit: 10 }, 'browsers'],
+      ['systems', 'stats/systems', { start: p.start, end: p.end, limit: 10 }, 'operating systems']
+    ];
+    steps.reduce(function (chain, s, i) {
+      return chain.then(function () {
+        if (state.token !== token) throw { stale: true };
+        status('Loading ' + s[3] + ' (' + (i + 1) + ' of ' + steps.length + ')…');
+        return (i ? wait(1200) : Promise.resolve()).then(function () { return api(s[1], s[2]); }).then(function (j) { out[s[0]] = j; progress(i + 1); });
+      });
+    }, Promise.resolve())
+      .then(function () {
+        if (state.token !== token) return;
+        var hits = out.hits.hits || [];
+        /* Visitors per day: the total endpoint's daily figures where present, otherwise page figures added up. */
+        var byDay = {};
+        for (var i = 0; i < days; i++) { var dd = new Date(start); dd.setDate(start.getDate() + i); byDay[ymd(dd)] = 0; }
+        var tStats = out.total.stats || [];
+        if (tStats.length) tStats.forEach(function (s) { if (s.day in byDay) byDay[s.day] = s.daily || 0; });
+        else hits.forEach(function (h) { if (!h.event) (h.stats || []).forEach(function (s) { if (s.day in byDay) byDay[s.day] += s.daily || 0; }); });
+        state.data = {
+          total: out.total.total != null ? out.total.total : out.total.total_unique,
+          hits: hits, daily: Object.keys(byDay).sort().map(function (k) { return [k, byDay[k]]; }),
+          refs: out.refs.stats || [], locations: out.locations.stats || [], sizes: out.sizes.stats || [], browsers: out.browsers.stats || [], systems: out.systems.stats || [],
+          label: days === 1 ? 'Today' : 'Last ' + days + ' days (' + label(day0) + ' to ' + label(day1) + ')',
+          at: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+        };
+        state.cache[state.days] = { data: state.data, t: Date.now() }; saveCache();
+        return loaderFinished().then(function () { if (state.token !== token) return; state.loading = false; draw(); });
+      })
+      .catch(function (e) {
+        if (state.token !== token || (e && e.stale)) return;
+        state.loading = false; state.data = null;
+        if (e && e.auth) { setKey(''); state.error = 'GoatCounter did not accept that key. Check that it has "Read statistics" permission and try again.'; rerender(); openKeyBox(); return; }
+        else state.error = (e && e.msg) || 'Could not reach GoatCounter from this page. Check your connection, or open the <a href="' + SITE + '" target="_blank" rel="noopener">full dashboard</a>.';
+        draw();
+      });
+  }
+
+  document.addEventListener('submit', function (e) {
+    if (e.target.id !== 'owner-form') return;
+    e.preventDefault();
+    var v = document.getElementById('owner-key').value.trim(); if (!v) return;
+    setKey(v); state.error = ''; rerender();
+  });
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-act^="own-"]'); if (!t) return;
+    var a = t.getAttribute('data-act');
+    if (a === 'own-range') { state.days = t.getAttribute('data-v'); load(); }
+    else if (a === 'own-refresh') load(true);
+    else if (a === 'own-lock') { setKey(''); state.token = {}; state.cache = {}; saveCache(); state.data = null; state.error = ''; rerender(); }
+    else if (a === 'own-iam') { var o = document.getElementById('owner'); o.hidden = !o.hidden; t.setAttribute('aria-expanded', String(!o.hidden)); if (!o.hidden) { draw(); var k = document.getElementById('owner-key'); if (k) k.focus(); } }
+  });
+  /* Hover readout for the daily columns. */
+  document.addEventListener('pointermove', function (e) {
+    var chart = e.target.closest && e.target.closest('.owner-chart'); var tips = document.querySelectorAll('.owner-tip');
+    if (!chart) { tips.forEach(function (t) { t.hidden = true; }); return; }
+    var g = e.target.closest('.ob'), tip = chart.querySelector('.owner-tip');
+    chart.querySelectorAll('.ob.on').forEach(function (x) { if (x !== g) x.classList.remove('on'); });
+    if (!g) { tip.hidden = true; return; }
+    g.classList.add('on'); tip.textContent = g.getAttribute('data-tip'); tip.hidden = false;
+    var r = chart.getBoundingClientRect(), x = Math.min(r.width - tip.offsetWidth, Math.max(0, e.clientX - r.left - tip.offsetWidth / 2));
+    tip.style.left = x + 'px';
+  });
+
+  /* Re-run the router for #stats (switches between the denied page and the stats), and keep the owner links in step. */
+  function rerender() { syncLinks(); window.dispatchEvent(new HashChangeEvent('hashchange')); }
+  function openKeyBox() { var b = document.querySelector('[data-act="own-iam"]'), o = document.getElementById('owner'); if (b && o) { o.hidden = false; b.setAttribute('aria-expanded', 'true'); draw(); } }
+  /* Footer link for everyone ("Owner's desk", locked); on the owner's unlocked device it reads "Visitor stats" and a
+     Stats item joins the main menu. */
+  function syncLinks() {
+    var own = !!getKey(), a = document.getElementById('owner-link'), nav = document.getElementById('site-nav'), item = document.getElementById('nav-stats');
+    if (a) { a.innerHTML = (own ? '' : LOCK) + '<span>' + (own ? 'Visitor stats' : 'Owner\'s desk') + '</span>'; a.classList.toggle('is-owner', own); }
+    if (nav && own && !item) nav.insertAdjacentHTML('beforeend', '<a href="#stats" data-nav="stats" id="nav-stats">Stats</a>');
+    if (item && !own) item.remove();
+    if (nav) { var cur = (location.hash.slice(1) || '').split('.')[0] === 'stats'; var n = document.getElementById('nav-stats'); if (n) { if (cur) n.setAttribute('aria-current', 'page'); else n.removeAttribute('aria-current'); } }
+  }
+  document.addEventListener('pf:route', syncLinks);
+  syncLinks();
+
+  window.PFOwner = {
+    view: view,
+    hydrate: function (root) {
+      if (!root.querySelector('#owner')) return;
+      if (getKey()) load();
+      else if (root.querySelector('.deny')) { if (state.error) openKeyBox(); else track('owner-desk-denied'); }
+    },
+    isOwner: function () { return !!getKey(); }
+  };
+})();
