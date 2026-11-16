@@ -64,11 +64,11 @@ def make(name, src, kind, o):
         subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-t', str(o['t']), '-an', '-vf', vf + ',fps=25', '-c:v', 'libx264', '-preset', 'slow', '-crf', '27', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4], check=True)
         subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', mp4, '-frames:v', '1', '-q:v', '4', os.path.join(OUT, name + '-poster.jpg')], check=True)
 def main():
-    want = sys.argv[1:] or list(MEDIA); done = {}
+    want = sys.argv[1:] or sorted(MEDIA, key=lambda n: MEDIA[n][1] != 'image'); done = {}  # photos first, videos after
     for name in want:
         title, kind, o = MEDIA[name]
         try: src, meta = download(name, title, kind, o['w'])
-        except RateLimited as e: print('Rate limited at', name, '- run again later.'); break
+        except RateLimited as e: print('Rate limited at', name, '- skipped, run again later.'); time.sleep(30); continue
         make(name, src, kind, o); done[name] = meta; print('ok', name)
     credits = []
     for name, (title, kind, o) in MEDIA.items():
