@@ -56,3 +56,13 @@ readers still need a hand test.
 - Pointer-follow spotlight and magnetic buttons on the cards; a short scroll-driven reveal for the category tabs.
 - A guided tour mode in the live preview ("Next: Owner view") for client calls.
 - A compare view (two templates side by side at phone size).
+
+## Round 3: full click-and-link audit and photos (16 Nov 2026)
+- A script clicked every button and followed every link on all seven pages (desktop, and phone for the first run), plus 20 in-app
+  pages of each shop: **no JavaScript errors, no failed requests, no broken images, no `undefined`/`NaN`/garbled text, no blank
+  pages.** Portfolio project links did not respond to the browser's Back button; fixed.
+- The 3D house could not be fully click-tested in a software-rendered browser (clicks time out because 3D drawing is very slow
+  there). Its own end-to-end test passes. Test it once on a real phone.
+- Real photos: six portfolio projects and five gift-shop packaging pictures (see `credits.html`).
+- **Still placeholder** (no free photos exist): 15 product pictures, hang tag, leather label, brand photo, 3 oil packs. Prompts in
+  `PHOTO_PROMPTS.md`; `tools/place-photos.py` puts the files in place.

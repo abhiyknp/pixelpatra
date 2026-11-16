@@ -23,7 +23,8 @@ function closeView() { view.hidden = true; document.body.style.overflow = ''; do
 $('#grid').addEventListener('click', (e) => { const a = e.target.closest('.proj'); if (!a) return; e.preventDefault(); openView(+a.dataset.i, a); });
 $('#v-close').addEventListener('click', closeView); $('#v-next').addEventListener('click', () => show(cur + 1)); $('#v-prev').addEventListener('click', () => show(cur - 1));
 addEventListener('keydown', (e) => { if (view.hidden) return; if (e.key === 'Escape') closeView(); if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
-const hp = /^#project-(\d)$/.exec(location.hash); if (hp && C.projects[+hp[1] - 1]) openView(+hp[1] - 1, null);
+const fromHash = () => { const hp = /^#project-(\d)$/.exec(location.hash); if (hp && C.projects[+hp[1] - 1]) { if (view.hidden || cur !== +hp[1] - 1) openView(+hp[1] - 1, opener); } else if (!view.hidden) closeView(); };
+addEventListener('hashchange', fromHash); fromHash(); // the browser's back button and shared links work
 // reveal on scroll
 const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
 document.querySelectorAll('.fade').forEach((n, i) => { n.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(n); });
