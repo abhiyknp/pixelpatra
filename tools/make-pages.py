@@ -265,6 +265,14 @@ def patch_index():
     s = re.sub(r'Get all \d+ for ₹[\d,]+', f'Get all {len(TEMPLATES)} for {inr(BUNDLE)}', s)
     open(p, 'w', encoding='utf-8').write(s)
 
+def patch_hub():
+    p = f'{ROOT}/demo/index.html'; s = open(p, encoding='utf-8').read()
+    demos = [{'id': t['id'], 'cats': t['cats'].split(), 'group': t['group'], 'name': f"{t['name']} · {t['tag']}", 'url': t['url'], 'owner': bool(t.get('owner')), 'note': t['note']} for t in TEMPLATES]
+    block = '/*pp:demos*/\n  var DEMOS = ' + json.dumps(demos, ensure_ascii=False, indent=2).replace('\n', '\n  ') + ';\n  /*/pp:demos*/'
+    s = re.sub(r'/\*pp:demos\*/.*?/\*/pp:demos\*/', lambda m: block, s, flags=re.S)
+    open(p, 'w', encoding='utf-8').write(s)
+
 if __name__ == '__main__':
+    patch_hub()
     if os.path.exists(f'{ROOT}/index.html') and '<!--pp:header-->' in open(f'{ROOT}/index.html', encoding='utf-8').read(): patch_index()
     print('pages written:', ', '.join(['how-it-works', 'faq', 'about', 'quote', 'terms', 'privacy', 'refunds', 'credits']))
