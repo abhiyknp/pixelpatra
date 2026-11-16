@@ -587,7 +587,7 @@ body.lock { overflow: hidden; }
 <footer>
   <div class="wrap">
     <span>© <span id="yr">2026</span> Pixelpatra</span>
-    <span>Immersive templates for portfolios, shops, factories and 3D · <a href="credits.html">Photo credits</a></span>
+    <span>Immersive templates for portfolios, shops, factories and 3D · <a href="credits.html">Photo credits</a> · <span id="build" title="Same number on every copy of this site means the same version"></span></span>
   </div>
 </footer>
 
@@ -876,6 +876,7 @@ const CONFIG = {
 
 /* ---- showcase: category tabs and the live preview ---- */
 (function () {
+  fetch("build.json").then(r => (r.ok ? r.json() : null)).then(j => { if (j && j.version) document.getElementById("build").textContent = "Version " + j.version; }).catch(() => {});
   document.querySelectorAll(".tshot img").forEach(i => { if (i.complete && i.naturalWidth) i.classList.add("ok"); else i.addEventListener("load", () => i.classList.add("ok")); });
   if (window.ppTheme) ppTheme.mount(document.getElementById("pp-sw"));
   const tabs = document.querySelectorAll("#tabs button"), cards = [...document.querySelectorAll("#grid .card")];
