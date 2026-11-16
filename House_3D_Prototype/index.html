@@ -11,7 +11,10 @@
 <meta property="og:description" content="Your tagline goes here.">
 <meta property="og:image" content="assets/share.jpg">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<style>[hidden]{display:none!important}body{margin:0}</style>
+<style>[hidden]{display:none!important}body{margin:0}
+/* touch screens: every control is at least 44 px tall */
+@media (pointer: coarse) { .proto button, .proto a, .proto select, .logo, .code-chip, .house-list-btn { min-height: 44px !important; } .card a, .card .name, a.name, .link, .linkbtn { padding-block: 12px; } .proto a, .proto button, .proto .seg button { display: inline-flex; align-items: center; justify-content: center; } .logo { display: inline-flex; align-items: center; min-width: 44px; } }
+</style>
 </head>
 <body>
 <title>SAMPLE STUDIO</title>

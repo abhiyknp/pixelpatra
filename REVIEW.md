@@ -32,17 +32,23 @@ readers still need a hand test.
 | Oil factory page moved 14 MB (hero and film each fetched the 7 MB scrub file) | Hero loops a 1.3 MB copy: 8.5 MB total |
 | Theme worked only inside Scroll Openings | Global theme (see above) |
 
-## Still open (ordered by value)
-1. **3D house loads slowly:** about 4 s and 5.7 MB on the local server. On a phone network it will feel long. Needs a loading
-   screen with progress, texture compression and lazy loading of the rooms.
-2. **Oil film is 7 MB for scrubbing:** fine on Wi-Fi, heavy on mobile data. Add a data-saver choice (poster plus short loop) and a
-   9:16 cut for phones.
-3. **Small tap targets** inside the shop samples (many 24 to 31 px links). Raise to 44 px on touch screens.
-4. **Opening kit:** two ARIA attribute errors and one low-contrast muted text.
-5. **Scroll-scrubbed video on iPhone Safari** is not tested; seeking is slower there and may need an all-keyframe copy.
-6. **Screen reader pass** (VoiceOver, NVDA) not done. The modal and the tabs follow the standard patterns but need a human check.
-7. **No loading or empty states** on the store cards (screenshots appear when ready); add blur-up placeholders.
-8. Real prices, real WhatsApp number and payment links are placeholders.
+## Open findings: round 2 (all but two now fixed)
+| Finding | Result |
+|---|---|
+| 3D house heavy on first load | Candle-light maps and the whole bedroom now load quietly after the foyer is ready (1.3 MB moved out of the first load, 22% less). Looks identical once loaded (checked at the door, the bedroom and the lights-on moment). Light stays at zero in a room until its maps arrive, so nothing flashes black. On a real host, scripts and pages are also compressed, which my local server does not do. |
+| Oil film heavy on mobile data | Three levels now: full film on desktop (8.5 MB), a narrow 9:16 cut on phones (4.3 MB), and **Lite mode** (six still frames, 0.9 MB). Lite turns on by itself on Data Saver and slow connections, and a button lets anyone switch it. |
+| Small tap targets | On touch screens every control in the store page, picker, oil factory, portfolio and the shop samples is 44 px or has a 44 px hit area. Remaining: five dots in the oil film's chapter rail (hit area enlarged, the dot is still 9 px) and four inline "Read our story" links in the scroll openings. |
+| Scroll openings: two ARIA errors and low-contrast muted price | Fixed. The page now passes the automated checks with no violations. |
+| Scroll-scrubbed video on iPhone Safari | Not testable here. Phone cut uses a keyframe every second frame, which is what makes Safari seek smoothly. **Needs a real iPhone check.** |
+| No loading state on store cards | Each card shows a blurred preview straight away and the sharp screenshot fades in. |
+| Screen reader pass | **Needs a person** with VoiceOver or NVDA. See the checklist below. |
+| Placeholder prices, WhatsApp number, payment links | **Need your real values** (`index.html` CONFIG and the card prices). |
+
+### Hand-test checklist (10 minutes)
+1. iPhone Safari: open the oil factory page, scroll the film; it should follow your finger without freezing. Try Lite mode.
+2. VoiceOver or NVDA on the store page: tabs read as "Portfolio, tab, 1 of 5", the live preview announces as a dialog, Esc closes it.
+3. Android Chrome with Data Saver on: the oil film should open in Lite mode by itself.
+4. A slow connection (throttle to Slow 4G): the 3D house shows its poster and progress bar, then the walk.
 
 ## Ideas that would make visitors stay longer
 - A "build your look" moment on the store page: the visitor types a name, picks a theme, and the template previews show their

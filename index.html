@@ -289,7 +289,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 .tshot { position: relative; margin: 14px 14px 0; border-radius: 12px; overflow: hidden; background: #111; border: 1px solid var(--line); aspect-ratio: 16 / 10; cursor: pointer; }
 .tshot .bar { position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 22px; background: rgba(20, 20, 24, .78); backdrop-filter: blur(4px); display: flex; gap: 5px; align-items: center; padding: 0 10px; }
 .tshot .bar i { width: 7px; height: 7px; border-radius: 50%; background: #ffffff55; }
-.tshot .dt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+.tshot .dt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s cubic-bezier(.2, .7, .2, 1), opacity .6s; }
+.tshot img { opacity: 0; } .tshot img.ok { opacity: 1; }
 .tshot .ph { position: absolute; z-index: 2; right: 10px; bottom: -22%; width: 24%; border-radius: 14px; border: 3px solid #111; box-shadow: 0 14px 30px rgba(0, 0, 0, .45); transform: translateY(0); transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
 .tshot .live { position: absolute; z-index: 3; left: 12px; bottom: 12px; background: var(--ink); color: var(--paper); font: 700 13px/1 var(--font-body); padding: 9px 14px; border-radius: 999px; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
 .card:hover .tshot .dt { transform: scale(1.06); } .card:hover .tshot .ph { transform: translateY(-16%); } .card:hover .tshot .live, .tshot:focus-visible .live { opacity: 1; transform: none; }
@@ -303,6 +304,8 @@ body.lock { overflow: hidden; }
 .skip-link { position: absolute; left: 8px; top: -60px; z-index: 200; background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 8px; font-weight: 700; } .skip-link:focus { top: 8px; }
 .themebar { display: inline-flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: var(--muted); } .themebar .pp-sw[aria-checked="true"] { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink); }
 @media (max-width: 640px) { .themebar { width: 100%; justify-content: space-between; } }
+
+@media (pointer: coarse) { .btn, .btn-sm, .switch button, .tabs button, .nav a, .logo, .chip, .try-btn { min-height: 44px; } .nav a, .logo { display: inline-flex; align-items: center; } .chip { min-width: 44px; } .pp-sw { width: 44px !important; height: 44px !important; } .themebar .pp-swatches { gap: 4px; } }
 </style>
 </head>
 <body>
@@ -398,6 +401,7 @@ body.lock { overflow: hidden; }
         <p class="mode-note" id="mode-note">You get the template files and launch the site yourself.</p>
       </div>
 
+      <noscript><style>.tshot img { opacity: 1; }</style></noscript>
       <div class="tabs" role="tablist" aria-label="Template categories" id="tabs">
         <button type="button" role="tab" aria-selected="true" data-cat="all">All</button>
         <button type="button" role="tab" aria-selected="false" data-cat="portfolio">Portfolio</button>
@@ -409,7 +413,7 @@ body.lock { overflow: hidden; }
       <div class="grid" id="grid">
         <article class="card reveal" data-name="Portfolio" data-cat="portfolio 3d" data-id="portfolio" data-files="999" data-setup="2499" data-demo="demo/?demo=portfolio">
           <span class="glare"></span>
-          <div class="tshot">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDkFGWA65NWUgDbv3Z4Gcb8VWyuOnP1pKBj5UMcjIQVIPTPSimUUxH/2Q==) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/portfolio.jpg" width="1000" height="625" alt="Portfolio template, desktop view" loading="lazy">
             <img class="ph" src="previews/portfolio-m.jpg" alt="Portfolio template, phone view" loading="lazy">
@@ -429,7 +433,7 @@ body.lock { overflow: hidden; }
         </article>
         <article class="card reveal" data-name="Gift Shop" data-cat="ecommerce" data-id="sample1" data-files="6999" data-setup="14999" data-demo="demo/?demo=sample1">
           <span class="glare"></span>
-          <div class="tshot">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDqfNbcQCBzSCcKpLsoGcfMQKX7PuJLJjk9Hp6wqoIC5z681GpWg6ORZFBDK2ehU5FFKBjgKAPaimI//9k=) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/giftshop.jpg" width="1000" height="625" alt="Gift Shop template, desktop view" loading="lazy">
             <img class="ph" src="previews/giftshop-m.jpg" alt="Gift Shop template, phone view" loading="lazy">
@@ -449,7 +453,7 @@ body.lock { overflow: hidden; }
         </article>
         <article class="card reveal" data-name="3D House Shop" data-cat="ecommerce 3d" data-id="house" data-files="9999" data-setup="19999" data-demo="demo/?demo=house">
           <span class="glare"></span>
-          <div class="tshot">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCtFqN8y/8AH7Ln/fNPTU7wvs+2OWzjbu5qF41h2LscOQCcsCP0qCK0f7X529cb92Oc1my0agv7zODcTZA/vUVAx+Yn2opgf//Z) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/house.jpg" width="1000" height="625" alt="3D House Shop template, desktop view" loading="lazy">
             <img class="ph" src="previews/house-m.jpg" alt="3D House Shop template, phone view" loading="lazy">
@@ -469,7 +473,7 @@ body.lock { overflow: hidden; }
         </article>
         <article class="card reveal" data-name="Scroll Openings" data-cat="3d" data-id="intros" data-files="2999" data-setup="6999" data-demo="demo/?demo=intros">
           <span class="glare"></span>
-          <div class="tshot">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwBPt93j/j7kz/vmhL68dsfapf8AvqsuW5UhfK80HvvIP8qhM0hGC5rDlZ1c8exsm/vAcfapeP8AaorH8+X++aKOVhzx7H//2Q==) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/intros.jpg" width="1000" height="625" alt="Scroll Openings template, desktop view" loading="lazy">
             <img class="ph" src="previews/intros-m.jpg" alt="Scroll Openings template, phone view" loading="lazy">
@@ -489,7 +493,7 @@ body.lock { overflow: hidden; }
         </article>
         <article class="card reveal" data-name="Factory Film" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="9999" data-demo="demo/?demo=oil">
           <span class="glare"></span>
-          <div class="tshot">
+          <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwChZTapPJ5f2yVSPvFpTx+FbdrHLAS9xfzuADkF+BXMLcxoMRoQcfe4zTTdMSeWx6+tZWbZpdGpqGpyzPizuZ19t3OaKy2vOgMakDnO0A/mKKdgbR//2Q==) center/cover">
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/oil.jpg" width="1000" height="625" alt="Factory Film template, desktop view" loading="lazy">
             <img class="ph" src="previews/oil-m.jpg" alt="Factory Film template, phone view" loading="lazy">
@@ -851,6 +855,7 @@ const CONFIG = {
 
 /* ---- showcase: category tabs and the live preview ---- */
 (function () {
+  document.querySelectorAll(".tshot img").forEach(i => { if (i.complete && i.naturalWidth) i.classList.add("ok"); else i.addEventListener("load", () => i.classList.add("ok")); });
   if (window.ppTheme) ppTheme.mount(document.getElementById("pp-sw"));
   const tabs = document.querySelectorAll("#tabs button"), cards = [...document.querySelectorAll("#grid .card")];
   const hints = { all: "Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.",

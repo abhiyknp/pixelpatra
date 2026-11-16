@@ -436,7 +436,7 @@ body.app .toast { bottom: 96px; }
 .pill.save { background: var(--ok-bg); color: var(--ok); }
 .save-note { color: var(--ok); font-weight: 600; }
 .ritual-price { font-family: var(--display); font-size: 36px; font-weight: 300; }
-.ritual-price s { font-size: 22px; opacity: .55; }
+.ritual-price s { font-size: 22px; opacity: .72; }
 .suggest { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 14px; margin-block: 12px; background: var(--linen); }
 .suggest .tile { width: 64px; height: 72px; flex-shrink: 0; background: var(--plaster); }
 .suggest .meta { flex: 1 1 160px; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
@@ -569,6 +569,9 @@ body.cs main { padding-bottom: 0; }
   input[type="checkbox"], input[type="radio"] { width: 22px; height: 22px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* touch screens: every control is at least 44 px tall */
+@media (pointer: coarse) { .proto button, .proto a, .proto select, .logo, .code-chip, .house-list-btn { min-height: 44px !important; } .card a, .card .name, a.name, .link, .linkbtn { padding-block: 12px; } .proto a, .proto button, .proto .seg button { display: inline-flex; align-items: center; justify-content: center; } .logo { display: inline-flex; align-items: center; min-width: 44px; } }
 </style>
 
 <div class="proto" role="region" aria-label="Preview controls">
@@ -1042,7 +1045,7 @@ function stars(id, big) {
 function tileArt(p, vi, sc) { const m = coverOf(p, vi); return m ? `<img class="fill" src="${esc(mUrl(m))}" alt="" loading="lazy">` : art(p, vi, sc); }
 function card(p, i) {
   const saved = S.saved.includes(p.id); const out = !inStock(p); const ph = mediaFor(p.id, { kind: 'photo' });
-  const sw = p.art === 'jar' ? '' : `<span class="swatches" aria-label="${p.variants.length} options">${p.variants.map((v, vi) => `<span style="background:${colorFor(p, vi)}"></span>`).join('')}</span>`;
+  const sw = p.art === 'jar' ? '' : `<span class="swatches" role="img" aria-label="${p.variants.length} options">${p.variants.map((v, vi) => `<span style="background:${colorFor(p, vi)}"></span>`).join('')}</span>`;
   return `<div class="card"><a class="tile${i % 2 ? ' alt' : ''}${ph.length ? ' has-ph' : ''}" href="#p-${p.id}" aria-label="${esc(p.name)}">${tileArt(p, 0, 1)}${ph[1] ? `<img class="fill hover-ph" src="${esc(mUrl(ph[1]))}" alt="" loading="lazy">` : ''}${out ? '<span class="badge out">Sold out</span>' : ''}</a>
     <span class="eyebrow">${esc(p.type)}</span>
     <a class="name" href="#p-${p.id}">${esc(p.name)}</a>${stars(p.id)}${sw}

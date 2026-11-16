@@ -1,7 +1,8 @@
 // The film is one real clip (assets/seed-to-bottle.mp4, made in Google Flow from the prompts in FLOW_PROMPTS.md).
 // Scrolling scrubs it; each chapter owns a slice of the clip, `time: [from, to]` in seconds.
 // Captions are sample text for the client to replace.
-window.STORY_FILM = { mp4: 'assets/seed-to-bottle.mp4', webm: 'assets/seed-to-bottle.webm', hero: 'assets/seed-to-bottle-hero.mp4', poster: 'assets/seed-to-bottle-poster.jpg', length: 7.85 };
+window.STORY_FILM = { mp4: 'assets/seed-to-bottle.mp4', webm: 'assets/seed-to-bottle.webm', hero: 'assets/seed-to-bottle-hero.mp4', mp4p: 'assets/seed-to-bottle-p.mp4',
+  stills: ['assets/still-1.jpg', 'assets/still-2.jpg', 'assets/still-3.jpg', 'assets/still-4.jpg', 'assets/still-5.jpg', 'assets/still-6.jpg'], poster: 'assets/seed-to-bottle-poster.jpg', length: 7.85 };
 window.STORY_CHAPTERS = [
   { rail: 'The field', eyebrow: '01 · The field', h: 'Grown for <em>the sun</em>', time: [0, 1.0],
     p: 'Sample text: where the seed is grown and the farmers who grow it.' },
