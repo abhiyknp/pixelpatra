@@ -10,7 +10,7 @@ points, gift cards and the Owner view all work in "demo mode", where every chang
 ## What it includes
 
 - Gift-shop home page: welcome offer, new arrivals, gift sets, ready-made bundles and the gift finder. (The 3D house
-  walk-through is not part of this sample; it is kept in the Bud & Things prototype.)
+  walk-through is not part of this sample; it is in [`House_3D_Prototype`](../House_3D_Prototype).)
 - Shop by collection, product pages, search, the "Find your feeling" gift finder, Build a Bundle (two pieces at a saving)
 - See it in your room (3D sample room, or the visitor's own photo)
 - Cart and checkout with sign-in by emailed code (shown on screen in demo mode), gift options, coupons and points, and

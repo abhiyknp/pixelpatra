@@ -190,9 +190,9 @@ p { margin: 0; }
         <div>
           <ul class="sb-list" id="sb-list">
             <li class="on"><span>Portfolio</span><span class="price">₹299</span></li>
-            <li><span>Bud and Things · 1</span><span class="price">₹499</span></li>
-            <li><span>Bud and Things · 2</span><span class="price">₹499</span></li>
-            <li><span>Bud and Things · 3</span><span class="price">₹499</span></li>
+            <li><span>Sample 1</span><span class="price">₹499</span></li>
+            <li><span>Sample 2</span><span class="price">₹499</span></li>
+            <li><span>Sample 3</span><span class="price">₹499</span></li>
           </ul>
           <div class="sb-progress"><b id="sb-prog"></b></div>
           <p class="sb-tip">Scroll down to switch templates</p>
@@ -219,7 +219,7 @@ p { margin: 0; }
       <div>
         <p class="eyebrow" style="color: inherit; opacity: .65">Bundle</p>
         <h3>All 4 templates, one price</h3>
-        <p>Portfolio plus all three Bud and Things editions.</p>
+        <p>Portfolio plus all three samples.</p>
         <div class="deal"><span class="big">₹999</span><span class="save">You save ₹797</span></div>
       </div>
       <div class="hang">
@@ -386,7 +386,7 @@ p { margin: 0; }
       if ((j === 5 && i >= 9 && i <= 16) || (j === 6 && i >= 9 && i <= 13)) return "var(--muted)";
       if (j >= 9 && j <= 10 && i >= 1 && i <= 18 && i % 6 !== 0) return "color-mix(in srgb, var(--teal) 35%, var(--line))";
       return null; } },
-    { name: "Bud and Things · 1", price: "₹499", col: (i, j) => {
+    { name: "Sample 1", price: "₹499", col: (i, j) => {
       if (j === 0) return "var(--line)";
       if (j >= 2 && j <= 6 && i >= 1 && i <= 18) {
         if (j === 3 && i >= 3 && i <= 10) return "#ffffff";
@@ -394,7 +394,7 @@ p { margin: 0; }
         return "var(--sky)"; }
       if (j >= 8 && j <= 10 && i >= 1 && i <= 18 && i % 6 !== 1 || (j >= 8 && j <= 10 && i === 1)) return "color-mix(in srgb, var(--sky) 30%, var(--line))";
       return null; } },
-    { name: "Bud and Things · 2", price: "₹499", col: (i, j) => {
+    { name: "Sample 2", price: "₹499", col: (i, j) => {
       if (j === 0) return "var(--line)";
       if (j >= 2 && j <= 10 && i >= 1 && i <= 9) {
         if (j === 5 && i >= 2 && i <= 7) return "#ffffff";
@@ -430,9 +430,9 @@ p { margin: 0; }
   const screensEl = document.getElementById("sb-screens");
   const screens = [
     { url: "pixelpatra.com/portfolio", html: `<div style="display:grid;grid-template-columns:30% 1fr;gap:8%;align-items:center"><div style="aspect-ratio:1;border-radius:50%;background:var(--teal)"></div><div style="display:grid;gap:10px"><div class="blk" style="height:14px;width:80%;background:var(--ink)"></div><div class="blk" style="height:8px"></div><div class="blk" style="height:8px;width:60%"></div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--teal) 30%,var(--line))"></div></div>` },
-    { url: "pixelpatra.com/bud-and-things-1", html: `<div style="border-radius:8px;background:var(--sky);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:#fff"></div><div class="blk" style="height:8px;width:70%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div></div>` },
-    { url: "pixelpatra.com/bud-and-things-2", html: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;height:100%;grid-row:1/-1"><div style="border-radius:8px;background:var(--leaf);padding:10%;display:grid;align-content:center;gap:8px"><div class="blk" style="height:14px;width:70%;background:#fff"></div><div class="blk" style="height:8px;width:85%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div></div></div>` },
-    { url: "pixelpatra.com/bud-and-things-3", html: `<div style="border-radius:8px;border:2px solid var(--plum);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:var(--plum)"></div><div class="blk" style="height:8px;width:70%;background:color-mix(in srgb,var(--plum) 35%,var(--line))"></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div></div>` }
+    { url: "pixelpatra.com/sample-1", html: `<div style="border-radius:8px;background:var(--sky);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:#fff"></div><div class="blk" style="height:8px;width:70%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--sky) 30%,var(--line))"></div></div>` },
+    { url: "pixelpatra.com/sample-2", html: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;height:100%;grid-row:1/-1"><div style="border-radius:8px;background:var(--leaf);padding:10%;display:grid;align-content:center;gap:8px"><div class="blk" style="height:14px;width:70%;background:#fff"></div><div class="blk" style="height:8px;width:85%;background:rgba(255,255,255,.6)"></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></div></div></div>` },
+    { url: "pixelpatra.com/sample-3", html: `<div style="border-radius:8px;border:2px solid var(--plum);padding:7%;display:grid;gap:8px"><div class="blk" style="height:14px;width:55%;background:var(--plum)"></div><div class="blk" style="height:8px;width:70%;background:color-mix(in srgb,var(--plum) 35%,var(--line))"></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div><div class="blk" style="background:color-mix(in srgb,var(--plum) 25%,var(--line))"></div></div>` }
   ];
   screens.forEach((s, k) => { const d = document.createElement("div"); d.className = "sb-screen" + (k === 0 ? " on" : ""); d.innerHTML = s.html; screensEl.appendChild(d); });
   const sb = document.getElementById("sb"), lis = document.querySelectorAll("#sb-list li"), prog = document.getElementById("sb-prog"), urlEl = document.getElementById("sb-url");

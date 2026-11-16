@@ -1,6 +1,6 @@
 # Theme kit
 
-The six colour themes from the BUD & THINGS site, kept on their own so another project can use them.
+Six colour themes, kept on their own so any Pixelpatra project can use them.
 
 | Theme | For |
 |---|---|
@@ -25,4 +25,4 @@ The six colour themes from the BUD & THINGS site, kept on their own so another p
 `--cta` / `--on-cta` main button · `--terra`, `--olive`, `--caramel` accents · `--ok`, `--warn`, `--ok-bg`,
 `--err-bg` messages · `--sk-*` text and buttons laid over the hero.
 
-Taken from the BUD & THINGS site (abhiyknp/Claude-Projects), where the owner picks one in Owner view → Settings.
+In the sample shops the owner picks one in Owner view → Settings.

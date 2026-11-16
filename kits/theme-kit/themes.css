@@ -1,4 +1,4 @@
-/* BUD & THINGS colour themes. Set <html data-skin="festive"> (or atelier, monsoon, gifting, evening) to switch;
+/* Colour themes. Set <html data-skin="festive"> (or atelier, monsoon, gifting, evening) to switch;
    no attribute gives Signature, the approved brand palette. Each theme overrides the same custom properties,
    so build the UI with var(--ivory), var(--choc), var(--cta) and so on and every theme just works.
    --sk-* are for the hero / stage area (text and buttons laid over the coloured room). */

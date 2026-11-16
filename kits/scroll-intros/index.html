@@ -798,7 +798,7 @@ const SET_META = [
 ];
 const CS_KEYS = ['comingSoon', 'previewCode'];
 const SET_DEFAULTS = { shipFee: 99, freeOver: 1999, deliveryDays: '4 to 7 days', exchangeDays: 7, codOn: true, codFee: 49, wrapFee: 99, ritualOff: 10, welcomeCode: 'HELLO10', welcomeOff: 10, repourPrice: 599,
-  featured: 'chai-at-four, ghat-tray, brass-and-saffron, moonlet-ring-dish', giftPicks: 'brass-and-saffron, ghat-tray, moonlet-ring-dish, first-light', homeRitual: 'four-oclock', whatsapp: '', email: 'hello@budandthings.com', instagram: '@budandthings_official', pinterest: 'budandthings_official',
+  featured: 'chai-at-four, ghat-tray, brass-and-saffron, moonlet-ring-dish', giftPicks: 'brass-and-saffron, ghat-tray, moonlet-ring-dish, first-light', homeRitual: 'four-oclock', whatsapp: '', email: '', instagram: '', pinterest: '',
   comingSoon: true, previewCode: 'budpreview' };
 let SET = Object.assign({}, SET_DEFAULTS);
 let TXT = {};
@@ -2325,7 +2325,7 @@ document.addEventListener('click', (e) => {
     case 'adm-text-reset': admDo(async () => { await dbDel('site_text', 'key', d.k); UI.adm.open = d.k.split('.')[0] + '.'; render(); renderChrome(); }, 'Back to the original.'); break;
     case 'adm-review': admDo(async () => { const v = d.v === '1'; if (BTDB.on) await BTDB.update('reviews', 'id=eq.' + encodeURIComponent(d.id), { published: v }); const list = admData('reviews') || []; const r = list.find((x) => String(x.id) === d.id); if (r) r.published = v; save(); DATA.reviews = list.filter((x) => x.published); render(); }, d.v === '1' ? 'Published.' : 'Unpublished.'); break;
     case 'adm-review-del': if (confirm('Delete this review?')) admDo(async () => { if (BTDB.on) await BTDB.remove('reviews', 'id=eq.' + encodeURIComponent(d.id)); const list = admData('reviews') || []; const i = list.findIndex((x) => String(x.id) === d.id); if (i >= 0) list.splice(i, 1); save(); DATA.reviews = list.filter((x) => x.published); render(); }, 'Review deleted.'); break;
-    case 'adm-csv': downloadCSV(d.v === 'subscribers' ? 'bud-and-things-sign-ups' : 'bud-and-things-restock-requests', (admData('people') || []).filter((r) => r.table === d.v)); break;
+    case 'adm-csv': downloadCSV(d.v === 'subscribers' ? 'sign-ups' : 'restock-requests', (admData('people') || []).filter((r) => r.table === d.v)); break;
     case 'cs-copy': { const l = $('#cs-link'); l.select(); (navigator.clipboard ? navigator.clipboard.writeText(l.value) : Promise.reject()).then(() => say('Preview link copied.'), () => say('Select the link and copy it.')); break; }
     case 'adm-seed':admDo(async () => { const msg = await admSeed(); say('Copied ' + msg + '.'); render(); }); break;
     case 'adm-signout': BTDB.signOut(); UI.adm.mfa = null; UI.adm.err = null; UI.adm.rows = {}; loadData(); render(); say('Signed out.'); break;
