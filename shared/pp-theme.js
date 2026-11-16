@@ -29,6 +29,8 @@
       set({ '--bg': dark, '--ink': t.dark ? t.ink : mix(t.bg, '#ffffff', .4), '--acc': acc, '--mut': mix(t.dark ? t.ink : t.bg, dark, .45) });
       window.PP_COLORS = { c1: hex(acc).map(function (v) { return v / 255; }), c2: hex(acc2).map(function (v) { return v / 255; }) };
     },
+    // the records dashboard: its own palette until a theme is chosen
+    dash: function (t) { set({ '--bg': t.bg, '--card': t.card, '--ink': t.ink, '--muted': mix(t.ink, t.bg, .4), '--line': mix(t.ink, t.bg, .86), '--accent': t.dark ? t.accent : t.accent, '--accent-ink': onText(t.accent), '--accent2': t.accent2 }); },
     // the Business Analyst portfolio keeps its own dark navy look until a theme is chosen; a light theme uses its light tokens
     ba: function (t) {
       var vars = { '--paper': t.bg, '--surface': t.card, '--surface-2': mix(t.bg, t.ink, .06), '--ink': t.ink, '--ink-2': mix(t.ink, t.bg, .28), '--ink-3': mix(t.ink, t.bg, .46), '--rule': mix(t.ink, t.bg, .84),
