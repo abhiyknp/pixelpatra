@@ -1,4 +1,4 @@
-// BUD & THINGS · Opening C · Home Tour (3D).
+// SAMPLE STUDIO · Opening C · Home Tour (3D).
 // One continuous camera walk, driven by scroll: the front door swings open, then the foyer, the living room and
 // the bedroom. In each room the candles on the centre shelf light one by one, and the pieces we sell are placed on
 // the left and right shelves as decor. Built with three.js; every surface texture except the oak is generated here.

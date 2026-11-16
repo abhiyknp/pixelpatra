@@ -1,5 +1,5 @@
-// BUD & THINGS · where the shop keeps everything that changes without a code change: products, prices, stock,
-// photos and videos, site text, settings, orders, reviews and sign-ups. See bud-and-things/supabase/README.md.
+// SAMPLE STUDIO · where the shop keeps everything that changes without a code change: products, prices, stock,
+// photos and videos, site text, settings, orders, reviews and sign-ups. No database is connected in this kit.
 //
 // Paste the two values from Supabase → Project Settings → API. The anon key is meant to be public: what it can
 // read and write is limited by the rules in supabase/schema.sql. Leave them empty to run the site on its built-in
