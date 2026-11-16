@@ -34,5 +34,7 @@
     $('#d-err').textContent = '';
     wa('Dealer enquiry for ' + C.brand + '. Name: ' + v('#d-name') + '. Shop: ' + (v('#d-shop') || '-') + '. City: ' + v('#d-city') + '. Monthly need: ' + $('#d-qty').value + '. ' + v('#d-note'));
   });
+  var cr = $('#credits'), esc = function (t) { return String(t || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  if (cr) cr.innerHTML = (window.CREDITS || []).map(function (c) { return '<li>' + (c.kind === 'video' ? 'Video' : 'Photo') + ': <a href="' + esc(c.page) + '" rel="noopener">' + esc(c.title.replace(/\.[a-z0-9]+$/i, '')) + '</a> by ' + esc(c.artist || 'unknown') + ', ' + (c.license_url ? '<a href="' + esc(c.license_url) + '" rel="noopener">' + esc(c.license) + '</a>' : esc(c.license)) + '</li>'; }).join('');
   var top = $('#top'); var onS = function () { top.classList.toggle('solid', scrollY > innerHeight * .6 && !document.body.classList.contains('infilm')); }; addEventListener('scroll', onS, { passive: true }); onS();
 })();

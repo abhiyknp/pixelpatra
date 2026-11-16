@@ -63,7 +63,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.08; m
 .grain { position: absolute; inset: -50%; pointer-events: none; opacity: .09; mix-blend-mode: overlay; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); animation: grain 1.2s steps(6) infinite; }
 @keyframes grain { 0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -3%); } 60% { transform: translate(-2%, -1%); } 80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); } }
 #fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.cap { position: absolute; left: var(--gutter); bottom: clamp(70px, 14vh, 140px); max-width: min(620px, 100% - 2 * var(--gutter)); }
+.cap { position: absolute; left: var(--gutter); bottom: clamp(70px, 14vh, 140px); width: min(620px, calc(100% - 2 * var(--gutter))); height: 0; }
 .cap .chap { position: absolute; left: 0; bottom: 0; width: 100%; opacity: 0; transform: translateY(18px); transition: opacity .6s, transform .6s; }
 .cap .chap.on { opacity: 1; transform: none; }
 .cap .eyebrow { color: var(--gold2); display: block; margin-bottom: 12px; }
@@ -76,7 +76,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.08; m
 .rail button i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .8); transition: all .3s; }
 .rail button.on { color: #fff; } .rail button.on span { opacity: 1; } .rail button.on i { background: var(--gold2); border-color: var(--gold2); transform: scale(1.3); }
 .rail button:focus-visible { outline: 2px solid var(--gold2); outline-offset: 4px; }
-@media (max-width: 720px) { .rail { top: auto; bottom: 22px; right: auto; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; } .rail button span { display: none; } .cap { bottom: 64px; } }
+@media (max-width: 720px) { .skip { display: none; } .rail { top: auto; bottom: 22px; right: auto; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; } .rail button span { display: none; } .cap { bottom: 64px; } }
 .bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: rgba(255, 255, 255, .15); z-index: 3; }
 .bar i { display: block; height: 100%; width: 0; background: var(--gold2); }
 .skip { position: absolute; right: var(--gutter); bottom: 16px; z-index: 4; font-size: 12px; color: rgba(255, 255, 255, .75); }
@@ -85,7 +85,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.08; m
 .finale h2 { font-size: clamp(40px, 9vw, 110px); font-weight: 400; letter-spacing: .04em; text-shadow: 0 4px 40px rgba(0, 0, 0, .5); }
 .finale p { margin: 14px auto 26px; max-width: 460px; }
 .finale .btn + .btn { margin-left: 10px; }
-.static .film { height: auto; } .static .stage { position: relative; height: auto; display: grid; } .static .scene { position: relative; opacity: 1; height: 70vh; } .static .cap { position: relative; left: 0; bottom: 0; max-width: none; padding: 20px var(--gutter) 40px; } .static .cap .chap { position: relative; opacity: 1; transform: none; margin-bottom: 30px; } .static .rail, .static .bar, .static #fx, .static .finale, .static .skip { display: none; }
+.static .film { height: auto; } .static .stage { position: relative; height: auto; display: grid; } .static .scene { position: relative; opacity: 1; height: 70vh; } .static .cap { position: relative; left: 0; bottom: 0; width: auto; height: auto; max-width: none; padding: 20px var(--gutter) 40px; } .static .cap .chap { position: relative; opacity: 1; transform: none; margin-bottom: 30px; } .static .rail, .static .bar, .static #fx, .static .finale, .static .skip { display: none; }
 
 /* sections */
 section.pad { padding: clamp(64px, 11vw, 140px) 0; }
@@ -196,6 +196,8 @@ footer { padding: 40px 0 90px; font-size: 14px; color: var(--ink2); }
 <footer><div class="wrap">© Sample brand · Built by Pixelpatra as a demo. No real products are sold here.</div></footer>
 
 <script src="config.js"></script>
+<script src="assets/credits.js" onerror="window.CREDITS=window.CREDITS||[]"></script>
+<script src="chapters.js"></script>
 <script src="story.js"></script>
 <script src="shop.js"></script>
 </body>
