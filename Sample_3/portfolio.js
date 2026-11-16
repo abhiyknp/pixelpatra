@@ -9,7 +9,7 @@ const small = innerWidth < 700;
 // ---- text content
 $('#h1').textContent = C.name + ', ' + C.role; $('#role').textContent = C.role; $('#line').textContent = C.line;
 $('#logo').textContent = C.name.split(' ').map((w) => w[0]).join('');
-$('#aboutp').textContent = 'Sample text: a short, honest paragraph about who you are, how you work and what you care about. ' + C.line;
+$('#aboutp').textContent = 'I started in print, moved to the web ten years ago, and still sketch every project on paper first. ' + C.line;
 $('#chips').innerHTML = C.skills.map((s) => '<span>' + s + '</span>').join('');
 $('#mail').textContent = C.email; $('#mail').href = 'mailto:' + C.email;
 $('#wa').addEventListener('click', (e) => { e.preventDefault(); if (!C.whatsapp) { alert('Sample site: no WhatsApp number is set yet.'); return; } open('https://wa.me/' + C.whatsapp + '?text=' + encodeURIComponent('Hello ' + C.name + ', I saw your portfolio.'), '_blank', 'noopener'); });
