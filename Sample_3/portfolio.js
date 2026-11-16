@@ -13,7 +13,17 @@ $('#chips').innerHTML = C.skills.map((s) => '<span>' + s + '</span>').join('');
 $('#mail').textContent = C.email; $('#mail').href = 'mailto:' + C.email;
 $('#wa').addEventListener('click', (e) => { e.preventDefault(); if (!C.whatsapp) { alert('Sample site: no WhatsApp number is set yet.'); return; } open('https://wa.me/' + C.whatsapp + '?text=' + encodeURIComponent('Hello ' + C.name + ', I saw your portfolio.'), '_blank', 'noopener'); });
 if (C.instagram) { $('#ig').hidden = false; $('#ig').href = 'https://instagram.com/' + C.instagram.replace(/^@/, ''); }
-$('#grid').innerHTML = C.projects.map((p, i) => '<a class="proj fade" href="#work" style="--g:linear-gradient(135deg,' + p.c[0] + ',' + p.c[1] + ')"><span class="n">0' + (i + 1) + ' · ' + p.y + '</span><b>' + p.t + '</b><span>' + p.k + '</span></a>').join('');
+$('#grid').innerHTML = C.projects.map((p, i) => '<a class="proj fade" href="#project-' + (i + 1) + '" data-i="' + i + '" style="--g:linear-gradient(135deg,' + p.c[0] + ',' + p.c[1] + ')"><img class="pi" src="' + p.img + '" alt="" loading="lazy"><span class="n">0' + (i + 1) + ' · ' + p.y + '</span><b>' + p.t + '</b><span>' + p.k + '</span></a>').join('');
+// project view: a full-screen panel with the image, the story and next/previous
+const view = $('#view'); let cur = -1, opener = null;
+function show(i) { cur = (i + C.projects.length) % C.projects.length; const p = C.projects[cur];
+  $('#v-img').src = p.img; $('#v-img').alt = p.t + ', ' + p.k; $('#v-n').textContent = '0' + (cur + 1) + ' / 0' + C.projects.length + ' · ' + p.y; $('#v-t').textContent = p.t; $('#v-k').textContent = p.k; $('#v-role').textContent = p.role; $('#v-text').textContent = p.text; }
+function openView(i, from) { opener = from; show(i); view.hidden = false; document.body.style.overflow = 'hidden'; document.querySelectorAll('main, .top, footer').forEach((n) => n.setAttribute('inert', '')); $('#v-close').focus(); history.replaceState(null, '', '#project-' + (cur + 1)); }
+function closeView() { view.hidden = true; document.body.style.overflow = ''; document.querySelectorAll('[inert]').forEach((n) => n.removeAttribute('inert')); history.replaceState(null, '', '#work'); if (opener) opener.focus(); }
+$('#grid').addEventListener('click', (e) => { const a = e.target.closest('.proj'); if (!a) return; e.preventDefault(); openView(+a.dataset.i, a); });
+$('#v-close').addEventListener('click', closeView); $('#v-next').addEventListener('click', () => show(cur + 1)); $('#v-prev').addEventListener('click', () => show(cur - 1));
+addEventListener('keydown', (e) => { if (view.hidden) return; if (e.key === 'Escape') closeView(); if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
+const hp = /^#project-(\d)$/.exec(location.hash); if (hp && C.projects[+hp[1] - 1]) openView(+hp[1] - 1, null);
 // reveal on scroll
 const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
 document.querySelectorAll('.fade').forEach((n, i) => { n.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(n); });

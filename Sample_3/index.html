@@ -34,7 +34,13 @@ h2 em { color: var(--acc); }
 .proj::before { content: ""; position: absolute; inset: 0; background: var(--g); transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
 .proj::after { content: ""; position: absolute; inset: 0; background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, .28), transparent 60%); opacity: 0; transition: opacity .3s; }
 .proj:hover { box-shadow: 0 30px 60px rgba(0, 0, 0, .5); } .proj:hover::before { transform: scale(1.08) rotate(.6deg); } .proj:hover::after { opacity: 1; }
-.proj * { position: relative; z-index: 1; }
+.proj .pi { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform .8s cubic-bezier(.2, .7, .2, 1); } .proj:hover .pi { transform: scale(1.08); } .proj::before { z-index: 0; opacity: .55; mix-blend-mode: multiply; }
+.proj > b, .proj > span { position: relative; z-index: 2; text-shadow: 0 2px 14px rgba(0, 0, 0, .55); } .proj::after { z-index: 1; }
+.view { position: fixed; inset: 0; z-index: 50; background: rgba(7, 7, 11, .96); backdrop-filter: blur(10px); overflow-y: auto; animation: vin .4s cubic-bezier(.2, .8, .2, 1); } @keyframes vin { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
+.vwrap { max-width: 1200px; margin: 0 auto; padding: 80px var(--gutter) 60px; display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: start; } @media (max-width: 860px) { .vwrap { grid-template-columns: 1fr; padding-top: 72px; } }
+.vimg { width: 100%; border-radius: 18px; aspect-ratio: 4 / 3; object-fit: cover; background: #111; } .vtext h2 { font: 400 clamp(36px, 5vw, 64px)/1 var(--serif); margin: 6px 0 10px; } .vn, .vk { color: var(--mut); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; margin: 0; } .vrole { margin: 18px 0 8px; } .vrole b { color: var(--acc); margin-right: 8px; } .vnav { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.vclose { position: fixed; top: 16px; right: var(--gutter); z-index: 51; background: rgba(255, 255, 255, .12); color: #fff; border: 1px solid rgba(255, 255, 255, .25); border-radius: 999px; padding: 0 18px; min-height: 44px; font: 600 14px var(--head); cursor: pointer; }
+.proj * { position: relative; z-index: 2; }
 .proj b { font: 400 clamp(26px, 3vw, 34px)/1 var(--serif); } .proj span { font-size: 13px; opacity: .85; letter-spacing: .04em; }
 .proj .n { position: absolute; top: 18px; left: 22px; font-size: 12px; letter-spacing: .2em; opacity: .75; }
 .about { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; align-items: start; }
@@ -66,6 +72,11 @@ footer { position: relative; z-index: 2; padding: 30px var(--gutter) 80px; color
   <section class="blk" id="about"><h2 class="fade">About <em>me</em></h2><div class="about fade"><p id="aboutp"></p><div class="chips" id="chips"></div></div></section>
   <section class="blk contact" id="contact"><h2 class="fade">Let's <em>talk</em></h2><div class="fade"><a class="big" id="mail" href="#"></a><div class="row"><a class="btn" id="wa" href="#">Message on WhatsApp</a><a class="btn ghost" id="ig" href="#" hidden>Instagram</a></div></div></section>
 </main>
+<div class="view" id="view" hidden role="dialog" aria-modal="true" aria-labelledby="v-t">
+  <button type="button" class="vbtn vclose" id="v-close" aria-label="Close project">Close ✕</button>
+  <div class="vwrap"><img id="v-img" alt="" class="vimg"><div class="vtext"><p class="vn" id="v-n"></p><h2 id="v-t"></h2><p class="vk" id="v-k"></p><p class="vrole"><b>My role</b> <span id="v-role"></span></p><p id="v-text"></p>
+    <div class="vnav"><button type="button" class="btn ghost" id="v-prev">← Previous</button><button type="button" class="btn" id="v-next">Next project →</button></div></div></div>
+</div>
 <footer>© Sample portfolio · built by Pixelpatra as a demo. Move the pointer through the particles, they push back.</footer>
 <script src="../shared/pp-theme.js" data-pp="portfolio"></script>
 <script src="config.js"></script>
