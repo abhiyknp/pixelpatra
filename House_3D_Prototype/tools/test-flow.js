@@ -50,7 +50,7 @@ const { chromium } = require(require('child_process').execSync('npm root -g').to
     const before = (await pg.textContent('.checkout-side .grand')).trim(); await pg.click('[data-act="pts-use"]'); await pg.waitForTimeout(100);
     console.log(w, 'with points:', before, '→', (await pg.textContent('.checkout-side .grand')).trim());
     await pg.goto(url + '#admin'); await pg.waitForTimeout(100);
-    await pg.click('[data-act="adm-tab"][data-v="stock"]'); console.log(w, 'stock 03-L:', await pg.inputValue('#st-SS-A-03-L'));
+    await pg.click('[data-act="adm-tab"][data-v="stock"]'); console.log(w, 'stock 03-L:', await pg.inputValue('#st-EL-A-03-L'));
     await pg.goto(url + '#feeling'); await pg.click('[data-act="finder-opt"][data-v="calm"]');
     for (let i = 0; i < 5; i++) await pg.click('[data-act="finder-next"]');
     console.log(w, 'finder:', await pg.$$eval('.finder-main .name', (e) => e.map((x) => x.textContent)));

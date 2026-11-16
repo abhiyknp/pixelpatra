@@ -2,6 +2,7 @@
 // has a second home on a spiral galaxy. Scrolling morphs name -> galaxy; the pointer pushes particles away.
 import * as THREE from 'three';
 const C = window.PORTFOLIO, $ = (s) => document.querySelector(s);
+const nameNow = () => (window.ppTheme ? window.ppTheme.brand(C.name) : C.name);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const small = innerWidth < 700;
 
@@ -53,7 +54,7 @@ function sampleText(name) {
 let points = null, mat = null, uni = null;
 function build() {
   if (points) { scene.remove(points); points.geometry.dispose(); }
-  const pts = sampleText(C.name), n = pts.length;
+  const pts = sampleText(nameNow()), n = pts.length;
   const home = new Float32Array(n * 3), alt = new Float32Array(n * 3), rnd = new Float32Array(n);
   const vh = 2 * 4 * Math.tan(25 * Math.PI / 180), vw = vh * (innerWidth / innerHeight), tw = Math.min(vw * (small ? .9 : .62), 5.6);
   for (let i = 0; i < n; i++) {
@@ -75,7 +76,7 @@ function build() {
   points = new THREE.Points(g, mat); scene.add(points);
 }
 function size() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); build(); }
-addEventListener('resize', size);
+addEventListener('resize', size); addEventListener('storage', (e) => { if (e.key === 'pp-name') build(); });
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(size); size();
 
 // ---- pointer, scroll, loop
