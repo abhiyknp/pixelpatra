@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pixelpatra demos</title>
 <script src="../shared/pp-theme.js" data-pp="hub"></script>
+<script src="../shared/pp-ui.js" data-ui="hub" defer></script>
 <meta name="description" content="Try every Pixelpatra sample site: pick a demo, a device and where to start, from the dropdowns.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f97316'/%3E%3C/svg%3E">
 <style>
@@ -24,6 +25,15 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
 .bar .opt { display: none; }
 .bar button.get { background: #fff; color: #1b1410; border-color: #fff; }
 .bar a.btn.go { background: var(--accent); border-color: var(--accent); color: #1b1410; }
+[hidden] { display: none !important; }
+.busy, .fail { padding: 8px 14px; font-size: 13px; }
+.busy { background: #2b211b; color: #ffd7b8; }
+.fail { background: #7f1d1d; color: #fff; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.fail[hidden], .busy[hidden], .guide[hidden] { display: none; }
+.fail button { font: inherit; font-weight: 700; color: #fff; background: transparent; border: 1px solid #fecaca; border-radius: 8px; padding: 4px 12px; cursor: pointer; }
+.guide { position: fixed; z-index: 50; left: 14px; bottom: 14px; max-width: min(340px, calc(100vw - 28px)); background: #fff; color: #1b1410; border-radius: 14px; padding: 14px 16px; box-shadow: 0 10px 34px rgba(0, 0, 0, .35); font-size: 13.5px; }
+.guide ul { margin: 6px 0 10px; padding-left: 18px; } .guide li { margin: 2px 0; }
+.guide button { font: inherit; font-weight: 700; background: #f97316; color: #1b1410; border: 0; border-radius: 8px; padding: 8px 14px; min-height: 40px; cursor: pointer; }
 .note { background: #2b211b; color: var(--muted); padding: 6px 14px; font-size: 12.5px; }
 .stage { flex: 1; min-height: 0; display: flex; justify-content: center; align-items: stretch; padding: 0; background: #d8d0c4; }
 .frame { width: 100%; height: 100%; border: 0; background: #fff; }
@@ -40,19 +50,22 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
 <header class="bar">
   <h1 class="ttl">Pixel<i>patra</i> demos</h1>
   <button id="opt" type="button" class="opt" aria-expanded="false" hidden>Options ▾</button>
-  <label>Demo<select id="demo" aria-label="Demo"></select></label>
-  <label>Device<select id="device" aria-label="Device"><option value="desktop">Website (full width)</option><option value="tablet">Tablet</option><option value="phone">Phone (installed app look)</option></select></label>
-  <label>Start at<select id="start" aria-label="Start at"><option value="">Home page</option><option value="admin">Owner view</option></select></label>
+  <label data-tip="Choose which sample website to try">Demo<select id="demo" aria-label="Demo"></select></label>
+  <label data-tip="See it as a website, on a tablet, or as an installed phone app">Device<select id="device" aria-label="Device"><option value="desktop">Website (full width)</option><option value="tablet">Tablet</option><option value="phone">Phone (installed app look)</option></select></label>
+  <label data-tip="Open the visitor view, or the Owner view where the shop owner edits the site">Start at<select id="start" aria-label="Start at"><option value="">Home page</option><option value="admin">Owner view</option></select></label>
   <span id="extra" style="display:contents"></span>
-  <label class="thm">Theme<span id="swatches"></span></label>
+  <label class="thm" data-tip="Six colour themes. The choice applies to every demo.">Theme<span id="swatches"></span></label>
   <span class="sp"></span>
-  <button id="reset" type="button" title="Clears what you changed in the demos (orders, owner edits, sign-ins)">Reset demos</button>
-  <a class="btn go" id="open" href="#" target="_blank" rel="noopener">Open full screen ↗</a>
+  <button id="reset" type="button" data-tip="Clears what you changed in the demos (orders, owner edits, sign-ins)">Reset demos</button>
+  <a class="btn go" id="open" href="#" target="_blank" rel="noopener" data-tip="Opens this demo in its own tab">Open full screen ↗</a>
   <a class="btn" id="home" href="../">Pixelpatra home</a>
   <button id="get" type="button" class="get" hidden>Request a quote</button>
   <button id="close" type="button" hidden>Close ✕</button>
 </header>
 <div class="note" id="note"></div>
+<div class="busy" id="busy" role="status" aria-live="polite" hidden>Loading the demo…</div>
+<div class="fail" id="fail" role="alert" hidden><span id="fail-t"></span> <button type="button" id="retry">Try again</button></div>
+<aside class="guide" id="guide" hidden aria-label="How to use this page"><b>How to use this page</b><ul><li><b>Demo</b>: pick a sample website.</li><li><b>Device</b>: see it as a website, tablet or phone app.</li><li><b>Start at → Owner view</b>: see the controls the shop owner uses.</li><li><b>Theme</b>: six colour themes for every demo.</li></ul><button type="button" id="guide-ok">Got it</button></aside>
 <main class="stage" id="stage"><iframe class="frame" id="frame" title="Demo" allow="fullscreen" loading="eager"></iframe></main>
 <script>
 // Pick a demo, a device and where to start; the choice is kept in the address so a link can be shared:
@@ -199,15 +212,26 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
     $('start').querySelector('option[value="admin"]').disabled = !d.owner; if (!d.owner) $('start').value = start = '';
     var url = d.url + (start === 'admin' ? '#admin' : '');
     var f = $('frame');
-    if (f.dataset.base !== d.url) { f.dataset.base = d.url; f.dataset.url = url; $('extra').innerHTML = ''; f.src = url; }
-    else { if (f.dataset.url !== url) { f.dataset.url = url; f.src = url; } setTimeout(wire, 300); } // same page: only the device or the start changed
+    if (f.dataset.base !== d.url) { f.dataset.base = d.url; f.dataset.url = url; $('extra').innerHTML = ''; watch(url); f.src = url; }
+    else { if (f.dataset.url !== url) { f.dataset.url = url; watch(url); f.src = url; } setTimeout(wire, 300); } // same page: only the device or the start changed
     $('stage').className = 'stage ' + (dev === 'phone' ? 'phone' : dev === 'tablet' ? 'tablet' : '');
     $('open').href = url; $('note').textContent = d.note;
     var s = new URLSearchParams(); s.set('demo', d.id); if (dev !== 'desktop') s.set('device', dev); if (start) s.set('start', start);
     ['opening', 'home'].forEach(function (k) { if (pending[k] && d.id === (q.get('demo') || 'sample1')) s.set(k, pending[k]); });
     history.replaceState(null, '', '?' + s.toString()); document.title = d.name.split(' (')[0] + ' · Pixelpatra demos';
   }
-  $('frame').addEventListener('load', function () { [250, 1200, 2800, 5000].forEach(function (ms) { setTimeout(wire, ms); }); });
+  // loading and failure messages: the page says what is happening instead of staying blank
+  var slow, busy = $('busy'), fail = $('fail');
+  function failMsg(t) { $('fail-t').textContent = t; fail.hidden = false; busy.hidden = true; }
+  function watch(url) {
+    clearTimeout(slow); fail.hidden = true; busy.hidden = false;
+    if (navigator.onLine === false) { failMsg('You are offline, so the demo cannot load. Reconnect, then try again.'); return; }
+    slow = setTimeout(function () { failMsg('This demo is taking longer than usual to load. Check your connection, then try again.'); }, 20000);
+    if (location.protocol !== 'file:') fetch(url.split('#')[0], { method: 'HEAD' }).then(function (r) { if (r.status >= 400) { clearTimeout(slow); failMsg('This demo could not be found (error ' + r.status + '). Please pick another demo, or tell us so we can fix it.'); } }).catch(function () { /* the load timer covers this */ });
+  }
+  $('retry').addEventListener('click', function () { var f = $('frame'); var u = f.dataset.url || f.src; watch(u); f.src = 'about:blank'; setTimeout(function () { f.src = u; }, 60); });
+  addEventListener('offline', function () { if (!busy.hidden) failMsg('You went offline, so the demo cannot finish loading. Reconnect, then try again.'); });
+  $('frame').addEventListener('load', function () { if ($('frame').src === 'about:blank' || /about:blank$/.test($('frame').src)) return; clearTimeout(slow); busy.hidden = true; [250, 1200, 2800, 5000].forEach(function (ms) { setTimeout(wire, ms); }); });
   $('demo').addEventListener('change', function () { pending = {}; show(); });
   ['device', 'start'].forEach(function (id) { $(id).addEventListener('change', show); });
   $('reset').addEventListener('click', function () {
@@ -223,6 +247,9 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   var bar = document.querySelector('.bar'), opt = $('opt');
   if (matchMedia('(max-width: 640px)').matches) { opt.hidden = false; bar.classList.add('collapsed'); }
   opt.addEventListener('click', function () { var c = bar.classList.toggle('collapsed'); opt.setAttribute('aria-expanded', String(!c)); opt.textContent = c ? 'Options ▾' : 'Options ▴'; });
+  // a short guide on the first visit; "Got it" hides it for good
+  var seen = false; try { seen = localStorage.getItem('pp-guide') === '1'; } catch (e) { /* storage blocked */ }
+  if (!EMBED && !seen) { var g = $('guide'); g.hidden = false; $('guide-ok').addEventListener('click', function () { g.hidden = true; try { localStorage.setItem('pp-guide', '1'); } catch (e) { /* blocked */ } }); }
   show();
 })();
 </script>

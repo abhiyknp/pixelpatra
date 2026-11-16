@@ -60,11 +60,13 @@ def page(slug, title, desc, body, extra_head='', extra_foot=''):
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <script src="shared/pp-config.js"></script>
 <script src="shared/pp-theme.js" data-pp="store"></script>
+<script src="shared/pp-ui.js" defer></script>
 <link rel="stylesheet" href="shared/pp-site.css">{extra_head}
 </head>
 <body>
 {HEADER}
 <main class="wrap page" id="main">
+<nav class="crumbs" aria-label="You are here"><a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">{esc(title.split(" · ")[0].split(" | ")[0])}</span></nav>
 {body}
 </main>
 {FOOTER}
@@ -165,6 +167,7 @@ legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for te
 opts = ''.join(f'<option value="{esc(t["name"])}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
 quote_body = f'''
 {head('Request a quote', 'Tell us what you need', 'Takes about two minutes. We reply with a clear quote; nothing starts until you agree.')}
+<div class="qsummary" id="qsummary" role="alert" tabindex="-1" hidden></div>
 <form class="qform" id="qform" name="quote" method="POST" action="quote.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
   <input type="hidden" name="form-name" value="quote">
   <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
