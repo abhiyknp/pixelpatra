@@ -36,6 +36,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   <label>Demo<select id="demo" aria-label="Demo"></select></label>
   <label>Device<select id="device" aria-label="Device"><option value="desktop">Website (full width)</option><option value="tablet">Tablet</option><option value="phone">Phone (installed app look)</option></select></label>
   <label>Start at<select id="start" aria-label="Start at"><option value="">Home page</option><option value="admin">Owner view</option></select></label>
+  <span id="extra" style="display:contents"></span>
   <span class="sp"></span>
   <button id="reset" type="button" title="Clears what you changed in the demos (orders, owner edits, sign-ins)">Reset demos</button>
   <a class="btn go" id="open" href="#" target="_blank" rel="noopener">Open full screen ↗</a>
@@ -49,9 +50,9 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
 (function () {
   var DEMOS = [
     { id: 'sample1', group: 'Shops', name: 'Sample 1 · Gift shop (full shop with Owner view)', url: '../Sample_1/index.html', owner: true, note: 'A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser.' },
-    { id: 'house', group: 'Shops', name: 'Sample 1 + 3D house walk-through', url: '../House_3D_Prototype/index.html', owner: true, note: 'The same shop, opening with a scroll-driven 3D walk through a house. Pick the opening in the dark bar at the top of the demo.' },
+    { id: 'house', group: 'Shops', name: 'Sample 1 + 3D house walk-through', url: '../House_3D_Prototype/index.html', owner: true, note: 'The same shop, opening with a scroll-driven 3D walk through a house. Use Home page above to switch between the walk and the gift shop.' },
     { id: 'oil', group: 'Factories and makers', name: 'Sample 2 · Sunflower oil factory (seed to bottle film)', url: '../Sample_2/index.html', note: 'Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records.' },
-    { id: 'intros', group: 'Immersive openings', name: 'Scroll intros A · B · C (pick inside)', url: '../kits/scroll-intros/index.html', owner: true, note: 'Three scroll-driven openings. Use the Opening and Theme dropdowns in the dark bar to switch.' },
+    { id: 'intros', group: 'Immersive openings', name: 'Scroll intros (openings A, B, C)', url: '../kits/scroll-intros/index.html', owner: true, note: 'Three scroll-driven openings. Use Opening and Theme above to switch, then scroll the homepage.' },
     { id: 'themes', group: 'Immersive openings', name: 'Colour themes (six looks)', url: '../kits/theme-kit/index.html', note: 'The six colour themes a shop can offer its owner.' },
     { id: 'store', group: 'Pixelpatra', name: 'Pixelpatra store page', url: '../index.html', note: 'The page that sells the templates.' }
   ];
@@ -63,17 +64,52 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   if (q.get('demo')) $('demo').value = pick(q.get('demo')).id;
   if (q.get('device')) $('device').value = q.get('device');
   if (q.get('start')) $('start').value = q.get('start');
+  // the demo pages carry their own dark "Preview" bar (opening, theme, view, Owner view, Reset). Inside this picker it is
+  // hidden, and the same choices are offered in the bar above instead, so there is one set of controls, not two.
+  var CONTROLS = [
+    { key: 'opening', label: 'Opening', select: '#opening-sel' },
+    { key: 'theme', label: 'Theme', select: '#skin-sel' },
+    { key: 'home', label: 'Home page', buttons: ['#home-foyer', '#home-gift'] }
+  ];
+  var pending = { opening: q.get('opening'), theme: q.get('theme'), home: q.get('home') };
+  function docOf(f) { try { return f.contentDocument; } catch (e) { return null; } }
+  function wire() {
+    var f = $('frame'), doc = docOf(f), extra = $('extra'); extra.innerHTML = '';
+    if (!doc || !doc.body) return;
+    if (!doc.getElementById('hub-hide')) { var st = doc.createElement('style'); st.id = 'hub-hide'; st.textContent = '.proto{display:none!important}'; doc.head.appendChild(st); }
+    var dev = $('device').value; var modeBtn = doc.querySelector(dev === 'phone' ? '#mode-app' : '#mode-web'); if (modeBtn && modeBtn.getAttribute('aria-pressed') !== 'true') modeBtn.click();
+    CONTROLS.forEach(function (c) {
+      var opts = [], el = null;
+      if (c.select) { el = doc.querySelector(c.select); if (!el) return; opts = [].map.call(el.options, function (o) { return { v: o.value, t: o.textContent }; }); }
+      else { var bs = c.buttons.map(function (sel) { return doc.querySelector(sel); }).filter(Boolean); if (bs.length < 2) return; opts = bs.map(function (b) { return { v: b.dataset.v, t: b.textContent.trim(), b: b }; }); }
+      var lab = document.createElement('label'), sel = document.createElement('select'); lab.textContent = c.label; sel.setAttribute('aria-label', c.label);
+      sel.innerHTML = opts.map(function (o) { return '<option value="' + o.v + '">' + o.t + '</option>'; }).join(''); lab.appendChild(sel); extra.appendChild(lab);
+      function apply(v) {
+        if (el) { el.value = v; el.dispatchEvent(new Event('change', { bubbles: true })); }
+        else opts.forEach(function (o) { if (o.v === v) o.b.click(); });
+        var s2 = new URLSearchParams(location.search); s2.set(c.key, v); history.replaceState(null, '', '?' + s2.toString());
+      }
+      if (pending[c.key] && opts.some(function (o) { return o.v === pending[c.key]; })) { sel.value = pending[c.key]; apply(pending[c.key]); }
+      else if (el) sel.value = el.value; else { var on = opts.filter(function (o) { return o.b.getAttribute('aria-pressed') === 'true'; })[0]; if (on) sel.value = on.v; }
+      sel.addEventListener('change', function () { apply(sel.value); });
+    });
+  }
   function show() {
     var d = pick($('demo').value), dev = $('device').value, start = $('start').value;
     $('start').querySelector('option[value="admin"]').disabled = !d.owner; if (!d.owner) $('start').value = start = '';
     var url = d.url + (start === 'admin' ? '#admin' : '');
-    var f = $('frame'); if (f.dataset.url !== url) { f.dataset.url = url; f.src = url; if (url.indexOf('#') > 0 && f.contentWindow) { try { f.contentWindow.location.replace(url); f.contentWindow.location.reload(); } catch (e) { /* cross-origin */ } } }
+    var f = $('frame');
+    if (f.dataset.base !== d.url) { f.dataset.base = d.url; f.dataset.url = url; $('extra').innerHTML = ''; f.src = url; }
+    else { if (f.dataset.url !== url) { f.dataset.url = url; f.src = url; } setTimeout(wire, 300); } // same page: only the device or the start changed
     $('stage').className = 'stage ' + (dev === 'phone' ? 'phone' : dev === 'tablet' ? 'tablet' : '');
     $('open').href = url; $('note').textContent = d.note;
     var s = new URLSearchParams(); s.set('demo', d.id); if (dev !== 'desktop') s.set('device', dev); if (start) s.set('start', start);
+    ['opening', 'theme', 'home'].forEach(function (k) { if (pending[k] && d.id === (q.get('demo') || 'sample1')) s.set(k, pending[k]); });
     history.replaceState(null, '', '?' + s.toString()); document.title = d.name.split(' (')[0] + ' · Pixelpatra demos';
   }
-  ['demo', 'device', 'start'].forEach(function (id) { $(id).addEventListener('change', show); });
+  $('frame').addEventListener('load', function () { [250, 1200, 2800, 5000].forEach(function (ms) { setTimeout(wire, ms); }); });
+  $('demo').addEventListener('change', function () { pending = {}; show(); });
+  ['device', 'start'].forEach(function (id) { $(id).addEventListener('change', show); });
   $('reset').addEventListener('click', function () {
     if (!confirm('Clear everything you changed in the demos (orders, Owner edits, sign-ins)?')) return;
     try { localStorage.clear(); sessionStorage.clear(); } catch (e) { /* blocked */ }
