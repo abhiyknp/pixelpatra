@@ -37,6 +37,18 @@ document.querySelectorAll('.proj').forEach((el) => {
 });
 
 // ---- particles
+// If the browser cannot start 3D graphics, show the name as plain text and say why, instead of a blank screen.
+function noGL(err) {
+  var c = $('#gl'); if (c) c.hidden = true; var g = $('#glow'); if (g) g.hidden = true;
+  var h = $('#h1'); h.removeAttribute('style'); h.className = ''; h.textContent = nameNow();
+  h.style.cssText = 'font:700 clamp(44px,9vw,120px)/1 var(--sans,Arial,sans-serif);margin:0 0 18px;color:var(--ink,#fff)';
+  var n = document.createElement('p'); n.setAttribute('role', 'status'); n.style.cssText = 'font-size:13px;opacity:.75;max-width:520px';
+  n.textContent = '3D effects are switched off because this browser cannot show them. Turn on hardware acceleration to see them. Everything else works.';
+  $('#line').after(n);
+  addEventListener('storage', function (e) { if (e.key === 'pp-name') h.textContent = nameNow(); });
+  if (window.console) console.warn('3D unavailable:', err && err.message);
+}
+try {
 const canvas = $('#gl');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1));
@@ -97,3 +109,4 @@ function frame(now) {
 requestAnimationFrame(frame);
 // first impression: the name assembles from a scattered cloud
 if (!reduce) { prog = 1; setTimeout(() => { progT = Math.min(1, scrollY / (innerHeight * .85)); }, 150); }
+} catch (err) { noGL(err); }
