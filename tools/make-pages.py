@@ -85,7 +85,7 @@ page('how-it-works', 'How it works', 'From first look to a live website: explore
 <div class="steps4">
   <div><b>Explore and try live</b><p>Open any template, switch the colour theme, type your own name, and use the Owner view the way you would after launch.</p></div>
   <div><b>Tell us what you need</b><p>Send the short request form: which template, what you want to achieve, your timeline and budget.</p></div>
-  <div><b>Get your quote</b><p>We reply with a clear quote that lists exactly what is included. Nothing starts until you say yes.</p></div>
+  <div><b>Get your quote</b><p>We reply within one working day with a clear quote that lists exactly what is included. Nothing starts until you say yes.</p></div>
   <div><b>We deliver</b><p>You receive the template files, or we set the site up with your content and put it live.</p></div>
 </div>
 <div class="prose">
@@ -115,13 +115,13 @@ faqs = [
  ('Which devices and browsers are supported?', 'Current Chrome, Safari, Firefox and Edge on phones, tablets and computers. Templates are built phone first.'),
  ('Who owns the website after I pay?', 'You do. You receive the files and can host them anywhere. Sample photos are replaced with your own; photos that stay in the demo carry their own licences, listed on the credits page.'),
  ('How does payment work?', 'After you accept the quote we share payment details. Work starts, or files are sent, once payment is confirmed.'),
- ('What if something does not work?', 'Tell us through the request form or reply to your quote. Defects in what we delivered are fixed free of charge.'),
+ ('What if something does not work?', 'Tell us through the request form or reply to your quote. Defects in what we delivered are fixed free of charge for 30 days after delivery.'),
  ('Can you build something that is not in the list?', 'Yes, choose Custom build in the request form and describe what you need. We will reply with a scope and a price.'),
  ('Is my information safe?', 'The details you send in the request form are used only to reply to you. Your typed name and theme choice stay in your browser. Read the <a href="privacy.html">privacy page</a>.'),
 ]
 items = ''.join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in faqs)
 page('faq', 'FAQ', 'Answers about Pixelpatra templates, packages, hosting, ownership and payment.', f'''
-{head('FAQ', 'Questions, answered', 'Can’t find yours? Use the request form and we will reply.')}
+{head('FAQ', 'Questions, answered', 'Can’t find yours? Use the request form and we will reply within one working day (Monday to Saturday).')}
 {items}
 <p style="margin-top:28px"><a class="btn btn-solid" href="quote.html">Request a quote</a></p>''')
 
@@ -143,25 +143,43 @@ page('about', 'About', 'Pixelpatra makes ready-made, immersive websites for port
 def legal(slug, title, desc, intro, sections):
     body = head('Legal', title, '') + f'<div class="prose"><p class="note">Last updated {TODAY}.</p><p>{intro}</p>' + ''.join(f'<h2>{h}</h2>{t}' for h, t in sections) + '</div>'
     page(slug, title, desc, body)
-legal('terms', 'Terms of use', 'The terms for using the Pixelpatra website and ordering templates.', 'These terms cover your use of this website and of the templates and services offered through it.', [
- ('Using this website', '<p>You may browse the site and try the live demos for your own evaluation. Please do not copy the demos, templates or code, or resell them, unless you have bought them.</p>'),
- ('Demos', '<p>The demos contain sample data only. Nothing you try in a demo is a real order, payment or account, and demo content may be reset at any time.</p>'),
- ('Quotes and orders', '<p>A quote lists what is included and its price. An order begins when you accept the quote and payment is confirmed. We may decline a request we cannot deliver well.</p>'),
- ('What you receive', '<p>You receive the files or the live site described in your quote. You may use them for your own or your business’s website. Photos and other third-party material keep their own licences, listed on the <a href="credits.html">credits page</a>.</p>'),
- ('Your content', '<p>You are responsible for the text, photos, prices, legal details and any claims you put on your website, and for holding the right to use them.</p>'),
- ('Limits', '<p>We take care to deliver working websites, but we cannot promise uninterrupted availability of third-party hosting, payment or delivery services. Our liability is limited to the amount you paid for the service in question.</p>'),
- ('Changes', '<p>We may update these terms. The date at the top shows when they last changed.</p>')])
-legal('privacy', 'Privacy', 'What Pixelpatra collects, why, and what stays in your own browser.', 'We collect as little as possible. This page explains what, and why.', [
- ('Details you send us', '<p>If you use the request form, we receive the details you type (name, email or phone, business, what you need). We use them only to reply to you and prepare your quote, and keep them while we are working with you or until you ask us to delete them.</p>'),
+# Fill these in once, then run this script again; the legal pages use them. Empty values fall back to plain wording.
+LEGAL_CITY, LEGAL_STATE = '', ''          # e.g. 'Pune', 'Maharashtra'
+REPLY = 'within one working day (Monday to Saturday)'
+PLACE = (f'{LEGAL_CITY}, {LEGAL_STATE}, India' if LEGAL_CITY and LEGAL_STATE else 'India')
+COURTS = (f'the courts at {LEGAL_CITY}, {LEGAL_STATE}' if LEGAL_CITY and LEGAL_STATE else 'the courts in India')
+legal('terms', 'Terms of use', 'The terms for using the Pixelpatra website and ordering templates, setup or custom websites.', f'These terms apply when you use this website or buy from Pixelpatra, which is run from {PLACE}. By asking us to start work or paying for a template, you agree to them.', [
+ ('Using this website', '<p>You may browse the site and try the live demos to decide whether to buy. Please do not copy, scrape or resell the demos, templates or code unless you have bought them.</p>'),
+ ('Demos contain sample data', '<p>Every demo uses made-up brands, products, people and prices. Nothing you try in a demo is a real order, payment or account, and demo content may be reset or changed at any time. Some film and images in demos are AI-generated or openly licensed samples; the <a href="credits.html">credits page</a> lists them.</p>'),
+ ('Quotes and orders', f'<p>You ask for a quote through the <a href="quote.html">request form</a>. We reply {REPLY}. A quote lists what is included, the price and the timeline. An order begins when you accept the quote and we confirm your payment. We may decline a request we cannot deliver well.</p>'),
+ ('The three packages', '<p><b>Template files:</b> you receive the files and set the site up yourself. <b>Setup &amp; launch:</b> we set the template up with your content and put it live. <b>Custom build:</b> we design and build a site for you, starting from a template. The quote says which one you are buying.</p>'),
+ ('Prices and payment', '<p>Prices are in Indian rupees. Any taxes that apply are shown on the quote. Payment is taken in advance, or in the stages written in the quote, by the method we give you. Delivery starts once payment is confirmed.</p>'),
+ ('Delivery', '<p>Template files are sent to you within one working day of payment. A Setup &amp; launch is usually live within 5 to 7 working days after we have your content. A Custom build follows the timeline in the quote. These are estimates; delays caused by late content, late feedback or third-party services may move them, and we will tell you.</p>'),
+ ('What you may do with what you receive', '<p>You receive a licence to use the files or site for one website that you or your business own. You may edit them freely. You may not resell, share or redistribute the template itself. Pixelpatra keeps the copyright in the templates. Photos and other third-party material keep their own licences, listed on the <a href="credits.html">credits page</a>.</p>'),
+ ('Your content', '<p>You are responsible for the text, photos, prices, legal details and any claims on your website, and for holding the right to use them. Do not give us material you do not own or that is unlawful.</p>'),
+ ('Fixes and support', '<p>If something we delivered does not work as described, tell us within 30 days of delivery and we will fix it at no charge. Changes you ask for after delivery are quoted separately.</p>'),
+ ('Third-party services', '<p>Hosting, domain names, payment gateways and delivery services are provided by other companies under their own terms. We cannot promise their availability.</p>'),
+ ('Limits', '<p>We take care to deliver working websites, but we cannot promise they will earn sales or run without interruption. Our liability for any claim is limited to the amount you paid for the service in question.</p>'),
+ ('Law and disputes', f'<p>These terms are governed by the laws of India. If we cannot settle a disagreement by talking, {COURTS} will have jurisdiction.</p>'),
+ ('Changes', '<p>We may update these terms. The date at the top shows when they last changed. The terms in force when you accepted your quote apply to that order.</p>')])
+legal('privacy', 'Privacy', 'What Pixelpatra collects, why, how long we keep it, and what stays in your own browser.', f'Pixelpatra is run from {PLACE}. We collect as little as possible. This page explains what, why, and your choices, in line with the Digital Personal Data Protection Act, 2023 and the Information Technology Act, 2000.', [
+ ('What we collect', '<p>If you use the request form, we receive what you type: your name, email or phone, business, what you need, budget and timeline. If you contact us by email or WhatsApp, we receive your message and number. We do not ask for card or bank details on this website.</p>'),
+ ('Why we use it', '<p>To reply to you, prepare your quote, deliver what you buy, and keep the records the law requires. We do not send marketing unless you ask for it, and we never sell your details.</p>'),
  ('What stays in your browser', '<p>The name you type into the home page box, your colour theme choice, and anything you try in a live demo (cart, orders, Owner view edits) are saved in your own browser only. They are never sent to us. Clearing your browser data, or using “Reset demos” in the demo picker, removes them.</p>'),
- ('Cookies and tracking', '<p>This website does not use advertising cookies or tracking. If we add visitor statistics, we will say so here.</p>'),
- ('Third parties', '<p>Page fonts load from Google Fonts. If you choose to contact us on WhatsApp or email, those services handle your message under their own policies.</p>'),
- ('Your choices', '<p>You can ask us to show, correct or delete the details you sent. Use the <a href="quote.html">request form</a> and say so.</p>')])
-legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for templates and services.', 'We want you to be happy with what you buy. Here is how refunds work.', [
- ('Template files', '<p>Template files are digital and delivered immediately. Once delivered they cannot be returned, so they are not refundable, except where they do not work as described and we cannot fix the problem. In that case we will fix it, or refund you.</p>'),
- ('Setup &amp; launch and Custom build', '<p>If you cancel before work begins, you receive a full refund. If you cancel after work has begun, you pay for the work already done. Once we have delivered the site and you have approved it, the work is complete.</p>'),
- ('Something is wrong', '<p>Tell us through the <a href="quote.html">request form</a> or by replying to your quote. We fix defects in what we delivered at no charge.</p>'),
- ('How refunds are paid', '<p>Refunds go back to the original payment method and may take several working days to appear.</p>')])
+ ('Who handles it', '<p>Only the services needed to run the site: our web host and form service (Netlify, when the request form is used on the Netlify site), email and WhatsApp for our replies, and a payment provider when you pay. Page fonts load from Google Fonts. Each handles data under its own policy, and some may store data on servers outside India.</p>'),
+ ('How long we keep it', '<p>Request details are kept while we work with you and for 12 months after our last contact, then deleted. Records of paid orders are kept for 8 years, as Indian tax law requires.</p>'),
+ ('Children', '<p>This service is for people aged 18 or over. We do not knowingly collect personal data of a child.</p>'),
+ ('Cookies and tracking', '<p>This website does not use advertising cookies or tracking. If we add visitor statistics, we will say so here first.</p>'),
+ ('Your rights', f'<p>You can ask to see, correct or delete the details you sent us, withdraw consent, or name someone to act for you. Use the <a href="quote.html">request form</a> and say so; we reply {REPLY} and finish within 30 days. If you are not satisfied, you may complain to the Data Protection Board of India.</p>'),
+ ('If something goes wrong', '<p>If a breach of your personal data affects you, we will tell you and the authorities as the law requires.</p>')])
+legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for template files, setup and custom builds.', 'We want you to be happy with what you buy. Here is exactly how refunds work.', [
+ ('In short', '<p>Digital files cannot be returned, so we do not refund for change of mind once they are delivered. If what we delivered does not work as described, we fix it, and if we cannot, we refund you. Cancelling before work starts is a full refund.</p>'),
+ ('Template files', '<p>Template files are delivered by download link within one working day of payment. If they do not open or do not work as described, tell us within 7 days of delivery. We will fix the problem within 3 working days; if we cannot, we refund the full amount. We do not refund for change of mind or for files that work as described.</p>'),
+ ('Setup &amp; launch', '<p>If you cancel before we start work, you get a full refund. If you cancel after work has begun, you pay for the work already done and we refund the rest. Once we have delivered the site and you have approved it, or 7 days pass after delivery without a report of a problem, the work is complete.</p>'),
+ ('Custom build', '<p>The quote sets the stages and payments. If you cancel, you pay for the stages already started, and any advance for a stage that has not started is refunded. Work completed and approved is not refundable.</p>'),
+ ('Something is wrong', f'<p>Tell us through the <a href="quote.html">request form</a> or by replying to your quote. We reply {REPLY}. We fix defects in what we delivered at no charge for 30 days after delivery.</p>'),
+ ('Payments taken in error', '<p>If money was taken from your account but your order was not confirmed, we refund the full amount to the same payment method within 5 to 7 working days. Tell us the payment reference if you do not see it.</p>'),
+ ('How refunds are paid', '<p>Refunds go back to the payment method you used, within 5 to 7 working days of approval. Your bank may take a few more days to show it.</p>')])
 
 # ---------------------------------------------------------------- quote
 opts = ''.join(f'<option value="{esc(t["name"])}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
