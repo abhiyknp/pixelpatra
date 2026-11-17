@@ -231,6 +231,7 @@ for t in TEMPLATES:
             <div class="card-foot">
               <p class="price"><span class="num">{inr(t['files'])}</span><small class="lbl">template files</small></p>
               <div class="actions">
+                <button type="button" class="btn btn-sm copylink" data-copy="demo/?demo={t['id']}" aria-label="Copy a link to the {esc(t['name'])} demo" data-tip="Copy a link to share this demo. Anyone who opens it sees this template."><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.7-1.7"/></svg></button>
                 <a class="btn btn-sm demo" href="demo/?demo={t['id']}">Open live demo</a>
                 <a class="btn btn-sm btn-solid buy" href="quote.html?template={esc(t['name'])}">Request quote</a>
               </div>

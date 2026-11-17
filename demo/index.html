@@ -59,6 +59,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   <button id="reset" type="button" data-tip="Clears what you changed in the demos (orders, owner edits, sign-ins)">Reset demos</button>
   <a class="btn go" id="open" href="#" target="_blank" rel="noopener" data-tip="Opens this demo in its own tab">Open full screen ↗</a>
   <a class="btn" id="home" href="../">Pixelpatra home</a>
+  <button id="copy" type="button" data-tip="Copy a link to exactly what you see now, to share with a client">Copy link</button>
   <button id="get" type="button" class="get" hidden>Request a quote</button>
   <button id="close" type="button" hidden>Close ✕</button>
 </header>
@@ -234,6 +235,10 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   $('frame').addEventListener('load', function () { if ($('frame').src === 'about:blank' || /about:blank$/.test($('frame').src)) return; clearTimeout(slow); busy.hidden = true; [250, 1200, 2800, 5000].forEach(function (ms) { setTimeout(wire, ms); }); });
   $('demo').addEventListener('change', function () { pending = {}; show(); });
   ['device', 'start'].forEach(function (id) { $(id).addEventListener('change', show); });
+  $('copy').addEventListener('click', function () {
+    var u = new URL(location.href); u.searchParams.delete('embed'); u.searchParams.delete('cat');
+    window.ppUI ? ppUI.copy(u.toString(), 'Link copied. Anyone who opens it sees this demo.') : prompt('Copy this link:', u.toString());
+  });
   $('reset').addEventListener('click', function () {
     if (!confirm('Clear everything you changed in the demos (orders, Owner edits, sign-ins)?')) return;
     try { localStorage.clear(); sessionStorage.clear(); } catch (e) { /* blocked */ }

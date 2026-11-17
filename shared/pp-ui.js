@@ -6,7 +6,8 @@
 (function () {
   'use strict';
   if (window.ppUI) return;
-  var doc = document, hub = (doc.currentScript && doc.currentScript.dataset.ui) === 'hub';
+  var doc = document, mode = doc.currentScript && doc.currentScript.dataset.ui, hub = mode === 'hub', demo = mode === 'demo';
+  var framed = false; try { framed = window.top !== window; } catch (e) { framed = true; } // inside the demo hub, the hub itself shows the offline and storage messages
   var css = '' +
     '#pp-tip{position:fixed;z-index:2147483000;max-width:260px;padding:7px 10px;border-radius:8px;background:#1b1410;color:#fff;font:500 12.5px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.28);pointer-events:none;opacity:0;transform:translateY(3px);transition:opacity .12s,transform .12s;text-transform:none;letter-spacing:0;font-style:normal}' +
     '#pp-tip.on{opacity:1;transform:none}' +
@@ -64,20 +65,30 @@
   // ---------- offline warning ----------
   var off = doc.createElement('div'); off.id = 'pp-offline'; off.setAttribute('role', 'alert'); off.hidden = true;
   off.textContent = 'You are offline. Some things may not load or send until you are back online.'; doc.body.appendChild(off);
-  addEventListener('offline', function () { off.hidden = false; });
+  addEventListener('offline', function () { if (!(demo && framed)) off.hidden = false; });
   addEventListener('online', function () { var was = !off.hidden; off.hidden = true; if (was) say('Back online.', 'ok'); });
-  if (navigator.onLine === false) off.hidden = false;
+  if (navigator.onLine === false && !(demo && framed)) off.hidden = false;
 
   // ---------- saved settings blocked (private window, strict settings) ----------
   var blocked = false; try { var k = '__pp_t'; localStorage.setItem(k, '1'); localStorage.removeItem(k); } catch (e) { blocked = true; }
-  if (blocked && !hub) setTimeout(function () { say('Your browser is not saving settings, so your name and colour theme will not carry from page to page. Turn off private browsing to fix this.', 'warn'); }, 1200);
+  if (blocked && !hub && !(demo && framed)) setTimeout(function () { say('Your browser is not saving settings, so your name and colour theme will not carry from page to page. Turn off private browsing to fix this.', 'warn'); }, 1200);
 
   // ---------- back to top ----------
-  if (!hub) {
+  if (!hub && !demo) {
     var up = doc.createElement('button'); up.id = 'pp-top'; up.type = 'button'; up.setAttribute('aria-label', 'Back to the top'); up.dataset.tip = 'Back to the top'; up.textContent = '↑'; doc.body.appendChild(up);
     var tk = false; addEventListener('scroll', function () { if (tk) return; tk = true; requestAnimationFrame(function () { tk = false; up.classList.toggle('on', scrollY > innerHeight * 1.2); }); }, { passive: true });
     up.addEventListener('click', function () { scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
   }
 
-  window.ppUI = { toast: function (t, k) { return say(t, k || 'ok'); }, alert: function (t, k) { return say(t, k || 'err', true); }, tip: showTip, hideTip: hideTip };
+  // copy text to the clipboard; falls back to a selectable box when the browser blocks the clipboard
+  function copy(text, okMsg) {
+    function done() { say(okMsg || 'Copied.', 'ok'); }
+    function manual() {
+      var t = doc.createElement('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      doc.body.appendChild(t); t.select(); t.setSelectionRange(0, text.length); var ok = false; try { ok = doc.execCommand('copy'); } catch (e) { /* blocked */ } doc.body.removeChild(t);
+      if (ok) done(); else say('Could not copy automatically. Copy this link: ' + text, 'warn', true);
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, manual); else manual();
+  }
+  window.ppUI = { copy: copy, toast: function (t, k) { return say(t, k || 'ok'); }, alert: function (t, k) { return say(t, k || 'err', true); }, tip: showTip, hideTip: hideTip };
 })();

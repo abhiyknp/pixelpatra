@@ -984,15 +984,15 @@ body.app .why-band { padding-bottom: 96px; }
     <span><strong>Preview</strong> · demo products, demo payments, nothing is charged or shipped</span>
     <span class="links">
       <span class="seg" role="group" aria-label="View as">
-        <button type="button" data-act="mode" data-v="web" id="mode-web">Website</button>
-        <button type="button" data-act="mode" data-v="app" id="mode-app">Installed app</button>
+        <button type="button" data-act="mode" data-v="web" data-tip="See it as a visitor on a computer" id="mode-web">Website</button>
+        <button type="button" data-act="mode" data-v="app" data-tip="See it as an app installed on a phone" id="mode-app">Installed app</button>
       </span>
       <span class="seg" role="group" aria-label="Home page">
         <button type="button" data-act="home-style" data-v="foyer" id="home-foyer">Foyer</button>
         <button type="button" data-act="home-style" data-v="gift" id="home-gift">Gift shop</button>
       </span>
-      <a href="#admin">Owner view</a>
-      <button type="button" data-act="reset">Reset demo</button>
+      <a href="#admin" data-tip="The screens the owner uses to edit products, orders and text">Owner view</a>
+      <button type="button" data-act="reset" data-tip="Clears the orders and edits you made in this demo">Reset demo</button>
     </span>
   </div>
 </div>
@@ -1037,7 +1037,7 @@ body.app .why-band { padding-bottom: 96px; }
 <div id="overlay"></div>
 <div class="sr" aria-live="polite" id="live"></div>
 
-<script src="../shared/pp-theme.js" data-pp="house" data-brand="Ember Lane|EMBER LANE"></script>
+<script src="../shared/pp-theme.js" data-pp="house" data-brand="Ember Lane|EMBER LANE"></script><script src="../shared/pp-ui.js" data-ui="demo" defer></script>
 <script src="config.js"></script>
 <script src="vendor/qrcode/qrcode.js"></script>
 <script src="db.js?v=8"></script>
