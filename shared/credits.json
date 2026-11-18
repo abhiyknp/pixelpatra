@@ -142,5 +142,77 @@
   "license_url": "",
   "page": "",
   "where": "Product Website sample: 15 litre oil tin"
+ },
+ {
+  "file": "product-01",
+  "title": "Amber Dusk candle (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Amber Dusk candle"
+ },
+ {
+  "file": "product-02",
+  "title": "Cedar Hearth candle (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Cedar Hearth candle"
+ },
+ {
+  "file": "product-07",
+  "title": "Speckle Tray (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Speckle Tray"
+ },
+ {
+  "file": "product-08",
+  "title": "Sand Dish (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Sand Dish"
+ },
+ {
+  "file": "product-09",
+  "title": "Arch Tray (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Arch Tray"
+ },
+ {
+  "file": "gift-set-small",
+  "title": "Hearth Box, Small (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Hearth Box, Small"
+ },
+ {
+  "file": "gift-set-medium",
+  "title": "Hearth Box, Medium (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Hearth Box, Medium"
+ },
+ {
+  "file": "gift-set-large",
+  "title": "Hearth Box, Large (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Hearth Box, Large"
  }
 ]

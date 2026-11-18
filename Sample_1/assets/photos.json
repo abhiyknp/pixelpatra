@@ -1,6 +1,14 @@
 {
  "products": {
   "product-10": "assets/products/product-10.jpg",
-  "product-12": "assets/products/product-12.jpg"
+  "product-12": "assets/products/product-12.jpg",
+  "gift-set-large": "assets/products/gift-set-large.jpg",
+  "gift-set-medium": "assets/products/gift-set-medium.jpg",
+  "gift-set-small": "assets/products/gift-set-small.jpg",
+  "product-02": "assets/products/product-02.jpg",
+  "product-07": "assets/products/product-07.jpg",
+  "product-08": "assets/products/product-08.jpg",
+  "product-09": "assets/products/product-09.jpg",
+  "product-01": "assets/products/product-01.jpg"
  }
 }
