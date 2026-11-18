@@ -53,28 +53,24 @@
         <p class="deva"><b lang="hi">पत्र</b> patra means a page, a letter. We make yours.</p>
       </div>
       <div class="try" id="try">
-        <div class="try-frame" aria-hidden="true">
-          <div class="bar"><i></i><i></i><i></i><span class="url" id="try-url"><b>yourname</b>.in</span></div>
+        <div class="try-frame">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url" id="try-url"><b>yourname</b>.in</span></div>
           <div class="try-page">
-            <div class="try-nav"><b id="try-ini">YN</b><span></span><span></span><span></span></div>
+            <div class="try-nav" aria-hidden="true"><b id="try-ini">YN</b><span></span><span></span><span></span></div>
             <p class="try-kicker">Welcome to</p>
-            <h2 class="try-name"><span id="try-name">Your Name</span><span class="cur"></span></h2>
-            <p class="try-sub">About · Work · Contact</p>
-            <span class="try-btn">Say hello</span>
-            <div class="try-tiles"><span></span><span></span><span></span></div>
+            <h2 class="try-name"><label class="sr" for="your-name">Your business name</label><input id="your-name" type="text" maxlength="28" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" placeholder="Your Name" aria-describedby="name-msg"></h2>
+            <span class="edit-hint" id="edit-hint" aria-hidden="true">✎ Click the name and type yours</span>
+            <p class="try-sub" aria-hidden="true">About · Work · Contact</p>
+            <span class="try-btn" aria-hidden="true">Say hello</span>
+            <div class="try-tiles" aria-hidden="true"><span></span><span></span><span></span></div>
           </div>
         </div>
-        <form class="namebox" id="name-form" novalidate>
-          <label class="try-label" for="your-name">Your business name <small>(optional)</small></label>
-          <div class="name-row">
-            <input id="your-name" type="text" maxlength="28" autocomplete="off" spellcheck="false" placeholder="e.g. Chai Corner or Riya Sharma" aria-describedby="name-msg" data-tip="Your business name. It replaces the sample brand in every template and live demo.">
-            <button type="submit" class="btn btn-solid" id="name-go">Show it in every template</button>
-          </div>
+        <div class="namebox" id="name-form">
           <p class="name-msg" id="name-msg" role="status" aria-live="polite"></p>
-          <p class="try-note">Type your business name and every template below, and every live demo, shows it. Leave it empty to look at the sample brands instead. <button type="button" class="linkbtn" id="name-clear" hidden>Use the sample names</button></p>
-        </form>
+          <p class="try-note">Type your business name above and every template below, and every live demo, shows it. Leave it as it is to look at the sample brands. <button type="button" class="linkbtn" id="name-clear" hidden>Use the sample names</button></p>
+        </div>
         <div class="try-themes"><span class="lbl" id="hero-sw-l">Colour theme</span><div id="hero-sw"></div></div>
-        <p class="try-note">Your name and colour theme carry into every live demo below. They stay in your browser only.</p>
+        <p class="try-note">Your name and colour theme stay in your browser only.</p>
       </div>
     </div>
     <canvas id="cloth" hidden aria-hidden="true"></canvas>
@@ -484,14 +480,19 @@ const CONFIG = window.PP_CONFIG || {};
 
   /* ---- Try your name: live preview in the hero and every card ---- */
   const input = document.getElementById("your-name");
-  const tName = document.getElementById("try-name"), tIni = document.getElementById("try-ini"), tUrl = document.getElementById("try-url"), forName = document.getElementById("for-name");
+  const tName = null, tIni = document.getElementById("try-ini"), tUrl = document.getElementById("try-url"), forName = document.getElementById("for-name");
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "") || "yourname";
   const initials = n => (n.trim().split(/\s+/).map(w => w[0]).join("").slice(0, 2) || "YN").toUpperCase();
   let flashT;
+  const hint = document.getElementById("edit-hint");
+  function fit(v) { // a long name gets a smaller type size so it always fits on one line
+    const len = Math.max(10, (v || "").length); input.style.fontSize = Math.max(4.6, Math.min(9.5, 150 / len)) + "cqw";
+    if (hint) hint.hidden = !!(v || "").trim() || document.activeElement === input;
+  }
   function applyName(n, flash) {
     yourName = n.trim();
-    tName.textContent = yourName || "Your Name";
+    fit(yourName);
     tIni.textContent = initials(yourName);
     tUrl.innerHTML = "";
     const b = document.createElement("b"); b.textContent = slug(yourName); tUrl.append(b, ".in");
@@ -512,7 +513,7 @@ const CONFIG = window.PP_CONFIG || {};
     nmsg.textContent = input.value.length >= input.maxLength ? "That is the longest name we can show (" + input.maxLength + " characters). Saved." : "Saved. “" + v + "” now appears in every live demo."; nmsg.classList.add("ok");
     return v;
   }
-  const banner = document.getElementById("name-banner"), clearBtn = document.getElementById("name-clear"), form = document.getElementById("name-form");
+  const banner = document.getElementById("name-banner"), clearBtn = document.getElementById("name-clear");
   function reflect(v) {
     document.querySelectorAll(".brandchip").forEach(c => { c.hidden = !v; });
     document.querySelectorAll(".brandchip .nm").forEach(n => { n.textContent = v; });
@@ -520,13 +521,16 @@ const CONFIG = window.PP_CONFIG || {};
     banner.hidden = !v; banner.querySelector(".bn").textContent = v; clearBtn.hidden = !v;
   }
   function goTemplates() { document.getElementById("templates").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
-  form.addEventListener("submit", e => {
-    e.preventDefault(); const raw = input.value.trim();
+  function submitName() {
+    const raw = input.value.trim();
     if (!raw) { nmsg.className = "name-msg"; nmsg.textContent = "No name entered, so you are seeing the sample brands. You can type one any time."; applyName("", false); reflect(""); goTemplates(); return; }
     const v = nameCheck(input.value); if (!v) { input.focus(); return; }
     applyName(v, true); reflect(v); goTemplates();
     if (window.ppUI) ppUI.toast("Showing every template as " + v + ".");
-  });
+  }
+  input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); submitName(); input.blur(); } });
+  input.addEventListener("focus", () => { if (hint) hint.hidden = true; });
+  input.addEventListener("blur", () => { if (hint) hint.hidden = !!input.value.trim(); });
   clearBtn.addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); input.focus(); });
   document.getElementById("nb-clear").addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); });
   document.getElementById("nb-change").addEventListener("click", () => { input.scrollIntoView({ block: "center", behavior: "smooth" }); input.focus(); });

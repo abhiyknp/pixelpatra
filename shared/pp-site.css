@@ -374,3 +374,11 @@ details.faq { border-bottom: 1px solid var(--line); padding-block: 4px; max-widt
 .notsure{margin:10px 0 0;font-size:14.5px}.notsure a{font-weight:700;color:var(--ink);text-underline-offset:3px}
 @media print{.top,.site-foot,.fab,#pp-top,#pp-offline,.pp-msgs,.crumbs,#qdone .btn{display:none!important}body{background:#fff}#qdone pre{white-space:pre-wrap}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* the heading in the preview is the business-name field */
+.try .try-name input{display:block;width:100%;min-height:0;padding:0 0 .04em;margin:0;border:0;border-bottom:2px dashed color-mix(in srgb,var(--b,var(--saffron)) 55%,transparent);border-radius:0;background:transparent;color:var(--ink);font:inherit;font-weight:800;letter-spacing:inherit;line-height:1.05;box-shadow:none;cursor:text}
+.try .try-name input::placeholder{color:var(--ink);opacity:.5}
+.try .try-name input:hover{border-bottom-color:var(--b,var(--saffron))}
+.try .try-name input:focus{outline:none;border-bottom:2px solid var(--b,var(--saffron));box-shadow:none}
+.try .try-name input:focus-visible{outline:3px solid var(--saffron);outline-offset:6px;border-radius:4px}
+.edit-hint{display:inline-block;margin-top:-1.2cqw;font:600 12px/1.2 var(--font-mono,monospace);color:var(--muted);letter-spacing:.02em}.edit-hint[hidden]{display:none}
