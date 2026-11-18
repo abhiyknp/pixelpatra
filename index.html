@@ -56,7 +56,7 @@
         <div class="try-frame">
           <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url" id="try-url"><b>yourname</b>.in</span></div>
           <div class="try-page">
-            <div class="try-nav" aria-hidden="true"><b id="try-ini">YN</b><span></span><span></span><span></span></div>
+            <div class="try-nav"><button type="button" id="try-ini" class="try-avatar" aria-label="Add your logo" data-tip="Click to add your logo. It appears in every demo.">YN</button><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></div>
             <p class="try-kicker">Welcome to</p>
             <h2 class="try-name"><label class="sr" for="your-name">Your business name</label><input id="your-name" type="text" maxlength="28" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" placeholder="Your Name" aria-describedby="name-msg"></h2>
             <span class="edit-hint" id="edit-hint" aria-hidden="true">✎ Click the name and type yours</span>
@@ -67,6 +67,7 @@
         </div>
         <div class="namebox" id="name-form">
           <p class="name-msg" id="name-msg" role="status" aria-live="polite"></p>
+          <p class="logo-row"><input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden><button type="button" class="linkbtn" id="logo-add">Add your logo</button><span class="logo-hint" id="logo-hint">PNG, JPG or SVG</span><button type="button" class="linkbtn" id="logo-rm" hidden>Remove logo</button></p>
           <p class="try-note">Type your business name above and every template below, and every live demo, shows it. Leave it as it is to look at the sample brands. <button type="button" class="linkbtn" id="name-clear" hidden>Use the sample names</button></p>
         </div>
         <div class="try-themes"><span class="lbl" id="hero-sw-l">Colour theme</span><div id="hero-sw"></div></div>
@@ -485,6 +486,37 @@ const CONFIG = window.PP_CONFIG || {};
   const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "") || "yourname";
   const initials = n => (n.trim().split(/\s+/).map(w => w[0]).join("").slice(0, 2) || "YN").toUpperCase();
   let flashT;
+  /* ---- your logo: shrunk in the browser, saved in this browser only, shown in every demo ---- */
+  const logoFile = document.getElementById("logo-file"), logoAdd = document.getElementById("logo-add"), logoRm = document.getElementById("logo-rm"), logoHint = document.getElementById("logo-hint");
+  const hasLogo = () => !!(window.ppTheme && ppTheme.getLogo());
+  function paintLogo() {
+    const on = hasLogo();
+    tIni.classList.toggle("has-logo", on); tIni.textContent = on ? "" : initials(yourName);
+    if (on) { const im = document.createElement("img"); im.src = ppTheme.getLogo(); im.alt = ""; tIni.appendChild(im); }
+    logoAdd.textContent = on ? "Change logo" : "Add your logo"; logoRm.hidden = !on; logoHint.hidden = on;
+    tIni.setAttribute("aria-label", on ? "Change your logo" : "Add your logo");
+  }
+  const logoMsg = (t, k) => { if (window.ppUI) ppUI.toast(t, k || "err"); };
+  function readLogo(file) {
+    if (!file) return;
+    if (!/^image\/(png|jpeg|webp|svg\+xml)$/.test(file.type)) { logoMsg("That file type is not supported. Please use a PNG, JPG, WebP or SVG logo."); return; }
+    if (file.size > 3 * 1024 * 1024) { logoMsg("That logo is larger than 3 MB. Please use a smaller file."); return; }
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      let w = img.naturalWidth || 300, h = img.naturalHeight || 150; const k = Math.min(1, 480 / w, 240 / h); w = Math.max(1, Math.round(w * k)); h = Math.max(1, Math.round(h * k));
+      const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(img, 0, 0, w, h); URL.revokeObjectURL(url);
+      let data; try { data = c.toDataURL("image/png"); } catch (e) { logoMsg("We could not read that logo. Try a PNG or JPG."); return; }
+      if (!ppTheme.setLogo(data, w / h)) { logoMsg("Your browser would not save the logo (private browsing?). It will not carry into the demos."); return; }
+      paintLogo(); if (window.ppExplore) ppExplore.mark("brand"); logoMsg("Logo added. It now appears in every live demo.", "ok");
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); logoMsg("We could not open that image. Please try another file."); };
+    img.src = url;
+  }
+  logoAdd.addEventListener("click", () => logoFile.click());
+  tIni.addEventListener("click", () => logoFile.click());
+  logoFile.addEventListener("change", () => { readLogo(logoFile.files[0]); logoFile.value = ""; });
+  logoRm.addEventListener("click", () => { ppTheme.clearLogo(); paintLogo(); logoMsg("Logo removed.", "ok"); });
+  window.addEventListener("pp-logo", paintLogo);
   const hint = document.getElementById("edit-hint");
   function fit(v) { // a long name gets a smaller type size so it always fits on one line
     const len = Math.max(10, (v || "").length); input.style.fontSize = Math.max(4.6, Math.min(9.5, 150 / len)) + "cqw";
@@ -493,7 +525,7 @@ const CONFIG = window.PP_CONFIG || {};
   function applyName(n, flash) {
     yourName = n.trim();
     fit(yourName);
-    tIni.textContent = initials(yourName);
+    if (!hasLogo()) tIni.textContent = initials(yourName);
     tUrl.innerHTML = "";
     const b = document.createElement("b"); b.textContent = slug(yourName); tUrl.append(b, ".in");
     document.querySelectorAll(".nm").forEach(el => {
@@ -536,7 +568,7 @@ const CONFIG = window.PP_CONFIG || {};
   document.getElementById("nb-change").addEventListener("click", () => { input.scrollIntoView({ block: "center", behavior: "smooth" }); input.focus(); });
   input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); reflect(v); flashT = setTimeout(() => applyName(v, true), 250); });
   const saved = store.get("pp-name"); if (saved) { input.value = saved; applyName(saved, false); reflect(saved.trim()); }
-  if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); }
+  if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); paintLogo(); }
 
   /* ---- Pixel dissolve on card previews when they scroll in ---- */
   function addDissolve(shot) {

@@ -382,3 +382,9 @@ details.faq { border-bottom: 1px solid var(--line); padding-block: 4px; max-widt
 .try .try-name input:focus{outline:none;border-bottom:2px solid var(--b,var(--saffron));box-shadow:none}
 .try .try-name input:focus-visible{outline:3px solid var(--saffron);outline-offset:6px;border-radius:4px}
 .edit-hint{display:inline-block;margin-top:-1.2cqw;font:600 12px/1.2 var(--font-mono,monospace);color:var(--muted);letter-spacing:.02em}.edit-hint[hidden]{display:none}
+
+/* your logo in the preview */
+.try-avatar{all:unset;box-sizing:border-box;cursor:pointer;display:grid;place-items:center;min-width:8cqw;height:8cqw;padding:0 1.4cqw;border-radius:2cqw;background:var(--b,var(--saffron));color:var(--saffron-ink);font:700 3.4cqw/1 var(--font-display,inherit);overflow:hidden}
+.try-avatar:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.try-avatar.has-logo{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);padding:1cqw}.try-avatar img{display:block;max-height:100%;max-width:22cqw;object-fit:contain}
+.logo-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 0;font-size:13px}.logo-hint{color:var(--muted)}.logo-hint[hidden]{display:none}
