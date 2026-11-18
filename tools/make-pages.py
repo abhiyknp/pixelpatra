@@ -234,9 +234,9 @@ quote_body = f'''
 page('quote', 'Request a quote', 'Tell Pixelpatra what you need and get a clear quote for a website template, setup or custom build.', quote_body, extra_foot='<script src="shared/vendor/qrcode.js"></script><script src="shared/pp-quote.js"></script>')
 
 # ---------------------------------------------------------------- credits
-rows = ''.join(f'<tr><td>{esc(x["where"])}</td><td><a href="{esc(x["page"])}" rel="noopener">{esc(x["title"].rsplit(".", 1)[0])}</a></td><td>{esc(x["artist"] or "Unknown")}</td><td>' + (f'<a href="{esc(x["license_url"])}" rel="noopener">{esc(x["license"])}</a>' if x.get('license_url') else esc(x['license'])) + '</td></tr>' for x in CREDITS)
+rows = ''.join(f'<tr><td>{esc(x["where"])}</td><td>' + (f'<a href="{esc(x["page"])}" rel="noopener">{esc(x["title"].rsplit(".", 1)[0])}</a>' if x.get("page") else esc(x["title"])) + '</td><td>{esc(x["artist"] or "Unknown")}</td><td>' + (f'<a href="{esc(x["license_url"])}" rel="noopener">{esc(x["license"])}</a>' if x.get('license_url') else esc(x['license'])) + '</td></tr>' for x in CREDITS)
 page('credits', 'Photo credits', 'Credits and licences for the photographs and media used in the Pixelpatra demos.', f'''
-{head('Credits', 'Photo credits', 'The demos use openly licensed photographs. Your own site uses your own photos.')}
+{head('Credits', 'Photo credits', 'The demos use openly licensed photographs and some AI-generated sample images. Your own site uses your own photos.')}
 <div class="prose"><div style="overflow-x:auto"><table class="credits-table"><thead><tr><th>Where</th><th>Photo</th><th>Author</th><th>Licence</th></tr></thead><tbody>{rows}</tbody></table></div>
 <h2>Film</h2><p>The seed-to-bottle film in the Product Website demo is AI-generated sample footage. It is not a record of any real factory.</p>
 <h2>Software</h2><p>3D uses <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence). The payment QR code uses <a href="https://github.com/kazuhikoarase/qrcode-generator" rel="noopener">qrcode-generator</a> by Kazuhiko Arase (MIT licence). QR Code is a registered trademark of DENSO WAVE INCORPORATED.</p></div>''',
