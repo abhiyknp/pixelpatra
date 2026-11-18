@@ -118,12 +118,6 @@
  },
  "addons": [
   {
-   "id": "basic",
-   "label": "Basic SEO and search listing",
-   "note": "Page titles, descriptions, sitemap and Google listing",
-   "price": 25000
-  },
-  {
    "id": "analytics",
    "label": "Analytics",
    "note": "Visitor and sales reports you can read at a glance",
@@ -146,12 +140,6 @@
    "label": "Payments",
    "note": "UPI and card payments through a payment gateway",
    "price": 20000
-  },
-  {
-   "id": "owner",
-   "label": "Owner view",
-   "note": "A private panel where you edit products, text and orders",
-   "price": 35000
   },
   {
    "id": "blog",
@@ -178,5 +166,10 @@
    "price": 15000
   }
  ],
- "addons_note": "Placeholder amounts: edit these in shared/templates.json, then run python3 tools/make-pages.py."
+ "addons_note": "Placeholder amounts: edit these in shared/templates.json, then run python3 tools/make-pages.py.",
+ "basic": {
+  "label": "Basic website with Owner view",
+  "note": "The website and its Owner view only, with no extra services. The starting price for Setup & launch and Custom build.",
+  "price": 25000
+ }
 }

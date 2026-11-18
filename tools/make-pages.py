@@ -14,6 +14,8 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = json.load(open(f'{ROOT}/shared/templates.json', encoding='utf-8'))
 TEMPLATES, BUNDLE = DATA['templates'], DATA['bundle']['price']
+BASIC = DATA.get('basic', {}).get('price', 0)
+for _t in TEMPLATES: _t['setup'] = max(_t['setup'], BASIC)  # Basic is the least a built site costs
 CREDITS = json.load(open(f'{ROOT}/shared/credits.json', encoding='utf-8'))
 TODAY = date.today().strftime('%d %B %Y').lstrip('0')
 inr = lambda n: '₹' + format(int(n), ',')
@@ -205,7 +207,7 @@ quote_body = f'''
     <div class="field"><label for="q-goal">What do you want your website to do?</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
     <div class="field"><span class="lab">Extra services <span class="hint">(tick any; each one adds its price)</span></span><div class="checks addons">
       {addon_html}</div></div>
-    <div class="estimate" id="q-estimate" role="status" aria-live="polite"></div>
+    <div class="estimate" id="q-estimate" role="status" aria-live="polite" data-basic="{BASIC}"></div>
     <input type="hidden" name="estimate" id="q-est" value="">
   </fieldset>
   <fieldset><legend>Practical details</legend>

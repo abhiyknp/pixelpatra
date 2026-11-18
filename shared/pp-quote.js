@@ -17,13 +17,16 @@
   function estimate() {
     var opt = $('#q-template').selectedOptions[0], pkg = $('#q-package').value, lines = [], base = null;
     var key = pkg === 'Template files' ? 'files' : pkg === 'Setup & launch' ? 'setup' : null;
-    if (opt && key && opt.dataset[key]) { base = +opt.dataset[key]; lines.push([opt.value + ' · ' + pkg, base]); }
+    var basic = +estBox.dataset.basic || 0;
+    if (pkg === 'Custom build' && basic) { base = basic; lines.push([(opt && opt.value !== 'Not sure yet' ? opt.value + ' · ' : '') + 'Custom build, starting price (Basic website with Owner view)', basic]); }
+    else if (opt && key && opt.dataset[key]) { base = +opt.dataset[key]; lines.push([opt.value + ' · ' + pkg + (key === 'setup' ? ' (Basic website with Owner view)' : ''), base]); }
     var add = 0; [].forEach.call(form.querySelectorAll('input[name="features"]:checked'), function (c) { var v = +c.dataset.price || 0; add += v; lines.push([c.value, v, true]); });
     var total = (base || 0) + add, html;
     if (!lines.length) html = '<p class="est-note">Choose a template and a package, then tick any extra services. Your estimate appears here.</p>';
     else {
       html = '<h3>Your estimate</h3><ul>' + lines.map(function (l) { return '<li><span>' + (l[2] ? '+ ' : '') + l[0].replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</span><b>' + inr(l[1]) + '</b></li>'; }).join('') + '</ul>';
-      if (base === null) html += '<p class="est-note">' + (pkg === 'Custom build' ? 'A custom build is priced from your scope, so the base price is agreed in your quote.' : 'Pick a template to see its base price.') + '</p>';
+      if (pkg === 'Custom build' && base !== null) html += '<p class="est-note">Basic is the least a built site costs. Anything beyond these services is priced from your scope in the quote.</p>';
+      if (base === null) html += '<p class="est-note">' + 'Pick a template to see its base price.' + '</p>';
       html += '<p class="est-total"><span>' + (base === null ? 'Extra services' : 'Estimated total') + '</span><b>' + inr(total) + '</b></p><p class="est-note">This is an estimate. We confirm the exact price, with any taxes, in your quote.</p>';
     }
     estBox.innerHTML = html; lastEst = lines.length ? (base === null ? 'Extra services ' : 'Estimated total ') + inr(total) : ''; if (estField) estField.value = lastEst;
