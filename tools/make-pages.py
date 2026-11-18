@@ -5,7 +5,7 @@
 
 Reads shared/templates.json (the template list and prices) and shared/credits.json (photo credits), writes
 how-it-works.html, faq.html, about.html, quote.html, terms.html, privacy.html, refunds.html and credits.html, and refreshes
-the header, footer, template cards and bundle block of index.html between the <!--pp:...--> markers.
+the header, footer, template cards of index.html between the <!--pp:...--> markers.
 """
 import base64, html, io, json, os, re
 from datetime import date
@@ -13,7 +13,7 @@ from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = json.load(open(f'{ROOT}/shared/templates.json', encoding='utf-8'))
-TEMPLATES, BUNDLE = DATA['templates'], DATA['bundle']['price']
+TEMPLATES = DATA['templates']
 BASIC = DATA.get('basic', {}).get('price', 0)
 for _t in TEMPLATES: _t['setup'] = max(_t['setup'], BASIC)  # Basic is the least a built site costs
 CREDITS = json.load(open(f'{ROOT}/shared/credits.json', encoding='utf-8'))
@@ -185,7 +185,6 @@ legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for te
 
 # ---------------------------------------------------------------- quote
 opts = ''.join(f'<option value="{esc(t["name"])}" data-files="{t["files"]}" data-setup="{t["setup"]}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
-opts += f'<option value="All templates (bundle)" data-files="{BUNDLE}" data-setup="{sum(t["setup"] for t in TEMPLATES)}">All {len(TEMPLATES)} templates (bundle)</option>'
 ADDONS = DATA.get('addons', [])
 addon_html = ''.join(f'<label class="check addon"><input type="checkbox" name="features" value="{esc(a["label"])}" data-price="{a["price"]}"><span class="addon-t">{esc(a["label"])}<small>{esc(a["note"])}</small></span><b class="plus">+ {inr(a["price"])}</b></label>' for a in ADDONS)
 quote_body = f'''
@@ -266,22 +265,6 @@ for t in TEMPLATES:
         </article>
 '''
 total = sum(t['files'] for t in TEMPLATES)
-bundle = f'''<div class="bundle reveal">
-        <div class="px" aria-hidden="true"><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i></i><i class="x"></i></div>
-        <div>
-          <p class="eyebrow">Bundle</p>
-          <h2>All {len(TEMPLATES)} templates, one price</h2>
-          <p>Get every template together. Use them for yourself, your business, or your next client.</p>
-          <ul>
-            <li><span>All {len(TEMPLATES)} templates, bought separately</span><span class="price">{inr(total)}</span></li>
-          </ul>
-        </div>
-        <div class="deal">
-          <span class="save">You save {inr(total - BUNDLE)}</span>
-          <div class="big price">{inr(BUNDLE)}</div>
-          <a class="btn btn-solid buy" id="buy-bundle" href="quote.html?template=Bundle">Request the bundle</a>
-        </div>
-      </div>'''
 
 def patch_index():
     p = f'{ROOT}/index.html'; s = open(p, encoding='utf-8').read()
@@ -290,9 +273,8 @@ def patch_index():
         a, b = f'<!--pp:{name}-->', f'<!--/pp:{name}-->'
         if a in s: s = re.sub(re.escape(a) + r'.*?' + re.escape(b), lambda m: a + '\n' + content + '\n' + b, s, flags=re.S)
         else: raise SystemExit(f'marker {a} missing in index.html')
-    block('header', HEADER); block('footer', FOOTER); block('cards', cards.rstrip('\n')); block('bundle', bundle)
+    block('header', HEADER); block('footer', FOOTER); block('cards', cards.rstrip('\n'))
     s = re.sub(r'<span id="tcount">[^<]*</span>', f'<span id="tcount">{len(TEMPLATES)} templates in 4 categories</span>', s)
-    s = re.sub(r'Get all \d+ for ₹[\d,]+', f'Get all {len(TEMPLATES)} for {inr(BUNDLE)}', s)
     open(p, 'w', encoding='utf-8').write(s)
 
 def patch_hub():

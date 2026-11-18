@@ -113,9 +113,6 @@
    "owner": false
   }
  ],
- "bundle": {
-  "price": 29999
- },
  "addons": [
   {
    "id": "analytics",

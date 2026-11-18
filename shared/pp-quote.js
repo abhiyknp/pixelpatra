@@ -6,8 +6,7 @@
   var form = $('#qform'), done = $('#qdone'); if (!form) return;
   var q = new URLSearchParams(location.search);
   function setSel(sel, v) { if (!v) return; var o = [].filter.call(sel.options, function (x) { return x.value === v; })[0]; if (o) sel.value = v; }
-  var t = q.get('template'); if (t === 'Bundle') t = 'All templates (bundle)';
-  if (t && ![].some.call($('#q-template').options, function (x) { return x.value === t; }) && t === 'All templates (bundle)') { var o = document.createElement('option'); o.value = o.textContent = t; $('#q-template').insertBefore(o, $('#q-template').options[1]); }
+  var t = q.get('template');
   setSel($('#q-template'), t); var p = q.get('package'); setSel($('#q-package'), p === 'setup' ? 'Setup & launch' : p === 'custom' ? 'Custom build' : p === 'files' ? 'Template files' : p);
   try { var n = localStorage.getItem('pp-name'); if (n && !$('#q-org').value) $('#q-org').value = n; } catch (e) { /* storage blocked */ }
 
@@ -17,6 +16,14 @@
   function estimate() {
     var opt = $('#q-template').selectedOptions[0], pkg = $('#q-package').value, lines = [], base = null;
     var key = pkg === 'Template files' ? 'files' : pkg === 'Setup & launch' ? 'setup' : null;
+    var picked = [].map.call(form.querySelectorAll('input[name="features"]:checked'), function (c) { return c.value; });
+    form.classList.toggle('nopr', pkg === 'Custom build'); // a custom build has no fixed amounts, so the service prices are hidden
+    if (pkg === 'Custom build') {
+      var esc2 = function (x) { return x.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+      estBox.innerHTML = '<h3>Custom build</h3><p>The price of a custom build depends on what you need. We do not set an amount in advance: tell us what you want, and we agree the scope and the price with you in writing before any work starts.</p>' +
+        (picked.length ? '<p class="est-note">Services you would like included: ' + picked.map(esc2).join(', ') + '.</p>' : '');
+      lastEst = 'Custom build: priced after we agree the scope'; if (estField) estField.value = lastEst; return;
+    }
     var basic = +estBox.dataset.basic || 0;
     if (pkg === 'Custom build' && basic) { base = basic; lines.push([(opt && opt.value !== 'Not sure yet' ? opt.value + ' · ' : '') + 'Custom build, starting price (Basic website with Owner view)', basic]); }
     else if (opt && key && opt.dataset[key]) { base = +opt.dataset[key]; lines.push([opt.value + ' · ' + pkg + (key === 'setup' ? ' (Basic website with Owner view)' : ''), base]); }

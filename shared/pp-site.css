@@ -369,3 +369,5 @@ details.faq { border-bottom: 1px solid var(--line); padding-block: 4px; max-widt
 .brandchip{position:absolute;z-index:3;left:10px;top:10px;display:flex;align-items:center;gap:7px;padding:5px 11px 5px 5px;border-radius:99px;background:rgba(20,14,10,.78);color:#fff;font:600 12.5px/1 system-ui,sans-serif;backdrop-filter:blur(4px);max-width:calc(100% - 20px)}
 .brandchip[hidden]{display:none}.brandchip .bi{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--saffron);color:var(--saffron-ink);display:grid;place-items:center;font-size:10px;font-weight:800;flex:none}
 .brandchip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brandchip b{font-weight:700}
+
+.nopr .addon .plus{display:none}
