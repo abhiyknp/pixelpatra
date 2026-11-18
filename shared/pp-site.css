@@ -369,3 +369,52 @@ details.faq { border-bottom: 1px solid var(--line); padding-block: 4px; max-widt
 .brandchip{position:absolute;z-index:3;left:10px;top:10px;display:flex;align-items:center;gap:7px;padding:5px 11px 5px 5px;border-radius:99px;background:rgba(20,14,10,.78);color:#fff;font:600 12.5px/1 system-ui,sans-serif;backdrop-filter:blur(4px);max-width:calc(100% - 20px)}
 .brandchip[hidden]{display:none}.brandchip .bi{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--saffron);color:var(--saffron-ink);display:grid;place-items:center;font-size:10px;font-weight:800;flex:none}
 .brandchip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brandchip b{font-weight:700}
+
+.nopr .addon .plus{display:none}
+.notsure{margin:10px 0 0;font-size:14.5px}.notsure a{font-weight:700;color:var(--ink);text-underline-offset:3px}
+@media print{.top,.site-foot,.fab,#pp-top,#pp-offline,.pp-msgs,.crumbs,#qdone .btn{display:none!important}body{background:#fff}#qdone pre{white-space:pre-wrap}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* the heading in the preview is the business-name field */
+.try .try-name input{display:block;width:100%;min-height:0;padding:0 0 .04em;margin:0;border:0;border-bottom:2px dashed color-mix(in srgb,var(--b,var(--saffron)) 55%,transparent);border-radius:0;background:transparent;color:var(--ink);font:inherit;font-weight:800;letter-spacing:inherit;line-height:1.05;box-shadow:none;cursor:text}
+.try .try-name input::placeholder{color:var(--ink);opacity:.5}
+.try .try-name input:hover{border-bottom-color:var(--b,var(--saffron))}
+.try .try-name input:focus{outline:none;border-bottom:2px solid var(--b,var(--saffron));box-shadow:none}
+.try .try-name input:focus-visible{outline:3px solid var(--saffron);outline-offset:6px;border-radius:4px}
+.edit-hint{display:inline-block;margin-top:-1.2cqw;font:600 12px/1.2 var(--font-mono,monospace);color:var(--muted);letter-spacing:.02em}.edit-hint[hidden]{display:none}
+
+/* your logo in the preview */
+.try-avatar{all:unset;box-sizing:border-box;cursor:pointer;display:grid;place-items:center;min-width:8cqw;height:8cqw;padding:0 1.4cqw;border-radius:2cqw;background:var(--b,var(--saffron));color:var(--saffron-ink);font:700 3.4cqw/1 var(--font-display,inherit);overflow:hidden}
+.try-avatar:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.try-avatar.has-logo{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);padding:1cqw}.try-avatar img{display:block;max-height:100%;max-width:22cqw;object-fit:contain}
+.logo-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 0;font-size:13px}.logo-hint{color:var(--muted)}.logo-hint[hidden]{display:none}
+
+/* the first-visit tour */
+.pp-tour-ring{position:fixed;z-index:2147482000;border-radius:14px;box-shadow:0 0 0 9999px rgba(15,12,10,.55),0 0 0 3px var(--saffron);pointer-events:none;transition:left .35s,top .35s,width .35s,height .35s}
+.pp-tour-pop{position:fixed;z-index:2147482100;background:var(--surface,#fff);color:var(--ink,#111);border-radius:16px;padding:16px 18px 14px;box-shadow:0 14px 44px rgba(0,0,0,.35);transition:left .35s,top .35s}
+.pp-tour-pop h2{margin:0 0 6px;font-size:19px;line-height:1.2}.pp-tour-pop p{margin:0 0 10px;font-size:14.5px;line-height:1.45;color:var(--muted)}.pp-tour-pop .pp-tour-n{font:600 11.5px/1 var(--font-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.pp-tour-dots{display:flex;gap:6px;margin:2px 0 12px}.pp-tour-dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}.pp-tour-dots i.on{background:var(--saffron)}
+.pp-tour-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.pp-tour-row button{font:inherit;font-weight:700;cursor:pointer;min-height:40px;border-radius:99px;padding:0 16px;border:1.5px solid var(--ink);background:transparent;color:var(--ink)}
+.pp-tour-row .pp-tour-next{background:var(--saffron);border-color:var(--saffron);color:var(--saffron-ink);margin-left:6px}.pp-tour-row .pp-tour-skip{border:0;text-decoration:underline;text-underline-offset:3px;padding:0 4px;color:var(--muted)}
+.pp-tour-row button:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.pp-tour-ring,.pp-tour-pop{transition:none}}
+.reward-note{margin:12px 0 0;padding:12px 14px;border-radius:12px;background:#dcfce7;color:#14532d;font-weight:600}.reward-note[hidden]{display:none}
+
+.est-actions{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0}.est-actions[hidden]{display:none}
+#print-sheet{display:none}
+@media print{
+  body.print-est > *:not(#print-sheet){display:none!important}
+  body.print-est #print-sheet{display:block!important;position:static;padding:0;color:#111;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  #print-sheet .ps-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid #f26b1d;padding-bottom:8px;margin-bottom:10px}#print-sheet .ps-head b{font-size:26px}#print-sheet .ps-head span{font-size:20px;color:#555}
+  #print-sheet .ps-meta{color:#555;margin:0 0 14px}#print-sheet table{width:100%;border-collapse:collapse;margin:14px 0}#print-sheet td{padding:8px 4px;border-bottom:1px solid #ddd;vertical-align:top}#print-sheet .amt{text-align:right;white-space:nowrap}#print-sheet .tot td{font-weight:800;font-size:18px;border-top:2px solid #111}#print-sheet .ps-note{color:#555;font-size:13px}
+}
+
+/* gentle motion: inner pages fade up as they load */
+@media (prefers-reduced-motion:no-preference){
+  .page > *{animation:ppRise .5s ease both}.page > :nth-child(2){animation-delay:.06s}.page > :nth-child(3){animation-delay:.12s}.page > :nth-child(n+4){animation-delay:.18s}
+  @keyframes ppRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+}
+.fab{bottom:calc(18px + env(safe-area-inset-bottom,0px) + var(--pp-cta-h,0px))!important}
+
+/* a short silent clip of the real demo plays on the card (hover on computers, when in view on phones) */
+.tshot .tvid{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .3s;pointer-events:none}.tshot .tvid.on{opacity:1}

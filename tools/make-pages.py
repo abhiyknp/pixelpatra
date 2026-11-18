@@ -5,7 +5,7 @@
 
 Reads shared/templates.json (the template list and prices) and shared/credits.json (photo credits), writes
 how-it-works.html, faq.html, about.html, quote.html, terms.html, privacy.html, refunds.html and credits.html, and refreshes
-the header, footer, template cards and bundle block of index.html between the <!--pp:...--> markers.
+the header, footer, template cards of index.html between the <!--pp:...--> markers.
 """
 import base64, html, io, json, os, re
 from datetime import date
@@ -13,11 +13,14 @@ from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = json.load(open(f'{ROOT}/shared/templates.json', encoding='utf-8'))
-TEMPLATES, BUNDLE = DATA['templates'], DATA['bundle']['price']
+TEMPLATES = DATA['templates']
+BASIC = DATA.get('basic', {}).get('price', 0)
+for _t in TEMPLATES: _t['setup'] = max(_t['setup'], BASIC)  # Basic is the least a built site costs
 CREDITS = json.load(open(f'{ROOT}/shared/credits.json', encoding='utf-8'))
 TODAY = date.today().strftime('%d %B %Y').lstrip('0')
 inr = lambda n: '₹' + format(int(n), ',')
 esc = html.escape
+SITE_URL = 'https://pixelpatra.netlify.app/'   # change to your own domain when you have one, then run this script again
 
 LOGO = '<span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>'
 HEADER = f'''<a class="skip-link" href="#main">Skip to the content</a>
@@ -27,6 +30,7 @@ HEADER = f'''<a class="skip-link" href="#main">Skip to the content</a>
     <nav class="nav" aria-label="Main">
       <a href="index.html#templates">Templates</a>
       <a class="hide-sm" href="demo/">Live demos</a>
+      <a class="hide-sm" href="compare.html">Compare</a>
       <a class="hide-sm" href="how-it-works.html">How it works</a>
       <a class="hide-sm" href="faq.html">FAQ</a>
       <a class="hide-sm" href="about.html">About</a>
@@ -38,7 +42,7 @@ FOOTER = f'''<footer class="site-foot">
   <div class="wrap foot-grid">
     <div><a class="logo" href="index.html" aria-label="Pixelpatra home">{LOGO}Pixelpatra</a><p>Immersive website templates for portfolios, shops, makers and 3D experiences, made in India.</p></div>
     <div><h3>Templates</h3><ul><li><a href="index.html?cat=portfolio#templates">Portfolio</a></li><li><a href="index.html?cat=ecommerce#templates">E-commerce</a></li><li><a href="index.html?cat=3d#templates">3D &amp; animated</a></li><li><a href="index.html?cat=business#templates">Business</a></li></ul></div>
-    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
+    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="compare.html">Compare and choose</a></li><li><a href="index.html?tour=1" data-tour>Take a quick tour</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
     <div><h3>Legal</h3><ul><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="refunds.html">Refunds</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
   </div>
   <div class="wrap foot-base"><span>© <span id="yr">2026</span> Pixelpatra</span><span id="build" title="The same number on every copy of this site means the same version"></span></div>
@@ -55,12 +59,15 @@ def page(slug, title, desc, body, extra_head='', extra_foot=''):
 <meta name="description" content="{esc(desc)}">
 <meta name="theme-color" content="#f6f7fb">
 <meta property="og:site_name" content="Pixelpatra"><meta property="og:title" content="{esc(title)} · Pixelpatra"><meta property="og:description" content="{esc(desc)}"><meta property="og:type" content="website">
+<meta property="og:image" content="{SITE_URL}share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{SITE_URL}{"" if slug == "index" else slug + ".html"}"><meta property="og:url" content="{SITE_URL}{"" if slug == "index" else slug + ".html"}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <script src="shared/pp-config.js"></script>
 <script src="shared/pp-theme.js" data-pp="store"></script>
 <script src="shared/pp-ui.js" defer></script>
+<script src="shared/pp-explore.js" data-ui="widget" defer></script>
 <link rel="stylesheet" href="shared/pp-site.css">{extra_head}
 </head>
 <body>
@@ -110,7 +117,7 @@ faqs = [
  ('What do I get when I order a template?', 'In the Template files package you get the complete website files and a short guide. In Setup &amp; launch we put your name, photos and text in and make it live for you. Custom build is for changes beyond that.'),
  ('Can I try a template before I order?', 'Yes. Every template opens as a live demo with a control bar: switch the colour theme, type your name to see it as the brand, change device size, and open the Owner view. Nothing you try is stored anywhere except in your own browser.'),
  ('Can I change colours, text and photos later?', 'Yes. Text and photos live in simple files, and templates with an Owner view let you change products, prices, text and offers without touching code.'),
- ('What is the Owner view?', 'A private control panel inside the shop and portfolio templates where the owner manages day-to-day content. Brand name, tax and legal details are locked so they cannot be changed by mistake.'),
+ ('What is the Owner view?', 'A private control panel inside the three shop templates (Gift Shop, 3D House Shop and Scroll Openings) where the owner manages products, orders and text. The other templates are changed by us or through one simple settings file. Brand name, tax and legal details are locked so they cannot be changed by mistake.'),
  ('Do I need hosting or a domain?', 'You need a place to publish the files (many are free or cheap) and, if you want your own address, a domain. In Setup &amp; launch we connect these for you.'),
  ('Which devices and browsers are supported?', 'Current Chrome, Safari, Firefox and Edge on phones, tablets and computers. Templates are built phone first.'),
  ('Who owns the website after I pay?', 'You do. You receive the files and can host them anywhere. Sample photos are replaced with your own; photos that stay in the demo carry their own licences, listed on the credits page.'),
@@ -183,7 +190,6 @@ legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for te
 
 # ---------------------------------------------------------------- quote
 opts = ''.join(f'<option value="{esc(t["name"])}" data-files="{t["files"]}" data-setup="{t["setup"]}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
-opts += f'<option value="All templates (bundle)" data-files="{BUNDLE}" data-setup="{sum(t["setup"] for t in TEMPLATES)}">All {len(TEMPLATES)} templates (bundle)</option>'
 ADDONS = DATA.get('addons', [])
 addon_html = ''.join(f'<label class="check addon"><input type="checkbox" name="features" value="{esc(a["label"])}" data-price="{a["price"]}"><span class="addon-t">{esc(a["label"])}<small>{esc(a["note"])}</small></span><b class="plus">+ {inr(a["price"])}</b></label>' for a in ADDONS)
 quote_body = f'''
@@ -205,8 +211,10 @@ quote_body = f'''
     <div class="field"><label for="q-goal">What do you want your website to do?</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
     <div class="field"><span class="lab">Extra services <span class="hint">(tick any; each one adds its price)</span></span><div class="checks addons">
       {addon_html}</div></div>
-    <div class="estimate" id="q-estimate" role="status" aria-live="polite"></div>
+    <div class="estimate" id="q-estimate" role="status" aria-live="polite" data-basic="{BASIC}"></div>
+    <p class="est-actions" id="q-est-actions" hidden><button type="button" class="btn btn-sm" id="q-est-pdf">Save estimate as PDF</button> <button type="button" class="btn btn-sm" id="q-est-mail">Email me this estimate</button></p>
     <input type="hidden" name="estimate" id="q-est" value="">
+    <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
   </fieldset>
   <fieldset><legend>Practical details</legend>
     <div class="row"><div class="field"><label for="q-budget">Budget</label><select id="q-budget" name="budget"><option>Not decided</option><option>Under ₹10,000</option><option>₹10,000 to ₹25,000</option><option>₹25,000 to ₹50,000</option><option>₹50,000 or more</option></select></div>
@@ -230,6 +238,53 @@ page('credits', 'Photo credits', 'Credits and licences for the photographs and m
 <h2>Software</h2><p>3D uses <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence).</p></div>''',
  extra_head='<style>.credits-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:12px;overflow:hidden}.credits-table th,.credits-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:top}.credits-table th{background:color-mix(in srgb,var(--ink) 6%,var(--surface))}</style>')
 
+# ---------------------------------------------------------------- compare and choose
+def yn(v): return '<span class="yes" aria-label="Yes">✓</span>' if v else '<span class="no" aria-label="No">—</span>'
+cmp_rows = ''.join(f"""<tr><th scope="row"><a href="demo/?demo={t['id']}">{esc(t['name'])}</a><small>{esc(t['tag'])}</small></th><td class="best">{esc(t['best'])}</td><td>{yn(t['has']['anim'])}</td><td>{yn(t['has']['shop'])}</td><td>{yn(t['has']['owner'])}</td><td>{yn(t['has']['app'])}</td><td>{inr(t['files'])}</td><td>{inr(t['setup'])}</td></tr>""" for t in TEMPLATES)
+finder_data = json.dumps([{'id': t['id'], 'name': t['name'], 'best': t['best'], 'desc': t['desc']} for t in TEMPLATES], ensure_ascii=False)
+FINDER_JS = """<script>
+(function () {
+  var T = __DATA__, byId = {}; T.forEach(function (t) { byId[t.id] = t; });
+  var Q = { start: { q: 'What is your website for?', o: [['Showing my work, or myself', 'work'], ['Selling products online', 'shop'], ['Showing a factory or product to dealers', 'oil'], ['Keeping lists of people or records', 'records'], ['I just want a striking opening effect', 'pixel']] },
+    work: { q: 'What feel do you want?', o: [['Bold and 3D, to be remembered', 'portfolio'], ['Clear and professional, to win clients or a job', 'ba']] },
+    shop: { q: 'How should the shop open?', o: [['A clean, simple shop that is ready fast', 'sample1'], ['A 3D walk through a house', 'house'], ['A cinematic scroll opening', 'intros']] } };
+  var box = document.getElementById('finder'), hist = [];
+  function esc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function show(key) {
+    if (byId[key]) { var t = byId[key];
+      box.innerHTML = '<h3>We suggest: ' + esc(t.name) + '</h3><p>' + esc(t.desc) + '</p><p class="fnote">Best for: ' + esc(t.best) + '.</p><p class="factions"><a class="btn btn-solid" href="demo/?demo=' + t.id + '">Open the live demo</a> <a class="btn" href="quote.html?template=' + encodeURIComponent(t.name) + '">Request this template</a> <button type="button" class="btn" id="f-again">Start again</button></p>';
+      document.getElementById('f-again').addEventListener('click', function () { hist = []; show('start'); }); box.focus(); return; }
+    var n = Q[key]; box.innerHTML = '<h3>' + esc(n.q) + '</h3><div class="fopts">' + n.o.map(function (o) { return '<button type="button" class="btn fopt" data-k="' + o[1] + '">' + esc(o[0]) + '</button>'; }).join('') + '</div>' + (hist.length ? '<p><button type="button" class="linkbtn" id="f-back">Back</button></p>' : '');
+    [].forEach.call(box.querySelectorAll('.fopt'), function (b) { b.addEventListener('click', function () { hist.push(key); show(b.dataset.k); }); });
+    var bk = document.getElementById('f-back'); if (bk) bk.addEventListener('click', function () { show(hist.pop()); }); if (hist.length) box.focus();
+  }
+  show('start');
+})();
+</script>""".replace('__DATA__', finder_data)
+CMP_CSS = '<style>.finder{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:22px;margin:0 0 34px}.finder h3{margin:0 0 12px;font-size:22px}.fopts{display:grid;gap:10px}.fopt{justify-content:flex-start;text-align:left;min-height:48px;white-space:normal}.fnote{color:var(--muted)}.factions{display:flex;gap:10px;flex-wrap:wrap}.cmp-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}.cmp{border-collapse:collapse;width:100%;min-width:860px}.cmp th,.cmp td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14.5px}.cmp thead th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.cmp tbody th{position:sticky;left:0;background:var(--surface);min-width:170px}.cmp th small{display:block;font-weight:400;color:var(--muted)}.cmp .best{min-width:190px;color:var(--muted)}.cmp .yes{color:#15803d;font-weight:800}.cmp .no{color:var(--muted)}.cmp tr:last-child th,.cmp tr:last-child td{border-bottom:0}.cmp-note{color:var(--muted);margin-top:14px}.cmp-wrap:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}</style>'
+page('compare', 'Compare and choose', 'Compare all Pixelpatra templates side by side, or answer a short question to find the one that suits your business.', f"""
+{head('Compare', 'Find the right template', 'Answer one or two questions, or compare all of them in one table.')}
+<section class="finder" aria-labelledby="f-h"><h2 id="f-h" class="sr">Which template suits me?</h2><div id="finder" tabindex="-1" aria-live="polite"></div></section>
+<h2>All templates side by side</h2>
+<div class="cmp-wrap" tabindex="0" role="region" aria-label="Template comparison. Scrolls sideways on small screens."><table class="cmp"><thead><tr><th scope="col">Template</th><th scope="col">Best for</th><th scope="col">Animation or 3D</th><th scope="col">Online shop</th><th scope="col">Owner view</th><th scope="col">Installed-app view</th><th scope="col">Files from</th><th scope="col">Setup from</th></tr></thead><tbody>{cmp_rows}</tbody></table></div>
+<p class="cmp-note">Setup &amp; launch starts at the Basic price and grows with the extra services you choose. A Custom build is priced from your needs. <a href="quote.html">Request a quote</a> for any of them.</p>
+""", extra_head=CMP_CSS, extra_foot=FINDER_JS)
+
+# ---------------------------------------------------------------- 404, sitemap, robots
+page('404', 'Page not found', 'That page does not exist. Pick a template or go back to the home page.', f"""
+{head('404', 'We could not find that page', 'The link may be old or mistyped. These will get you back on track.')}
+<p style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-solid" href="index.html">Go to the home page</a> <a class="btn" href="index.html#templates">See the templates</a> <a class="btn" href="demo/">Try the live demos</a> <a class="btn" href="quote.html">Request a quote</a></p>
+""")
+# a missing page can be asked for at any depth, so the 404 page works out where the site starts
+_p = f'{ROOT}/404.html'; _s = open(_p, encoding='utf-8').read()
+_s = _s.replace('<head>', '<head>\n<script>document.write(\'<base href="\' + (/github\\.io$/.test(location.hostname) ? "/" + location.pathname.split("/")[1] + "/" : "/") + \'">\');</script>', 1)
+_s = _s.replace('<meta name="theme-color"', '<meta name="robots" content="noindex"><meta name="theme-color"', 1)
+_s = re.sub(r'<link rel="canonical"[^>]*><meta property="og:url"[^>]*>', '', _s)
+open(_p, 'w', encoding='utf-8').write(_s)
+_urls = ['', 'compare.html', 'how-it-works.html', 'faq.html', 'about.html', 'quote.html', 'demo/', 'terms.html', 'privacy.html', 'refunds.html', 'credits.html']
+open(f'{ROOT}/sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE_URL}{u}</loc></url>\n' for u in _urls) + '</urlset>\n')
+open(f'{ROOT}/robots.txt', 'w', encoding='utf-8').write(f'User-agent: *\nAllow: /\nDisallow: /Sample_1/\nDisallow: /Sample_2/\nDisallow: /Sample_3/\nDisallow: /Sample_4/\nDisallow: /Sample_5/\nDisallow: /Sample_6/\nDisallow: /House_3D_Prototype/\nDisallow: /kits/\n\nSitemap: {SITE_URL}sitemap.xml\n')
+
 # ---------------------------------------------------------------- home page blocks
 def lqip(img):
     p = f'{ROOT}/previews/{img}.jpg'
@@ -246,6 +301,7 @@ for t in TEMPLATES:
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/{t['img']}.jpg" width="1000" height="625" alt="{esc(t['name'])} template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/{t['img']}.mp4"></video>
             <img class="ph" src="previews/{t['img']}-m.jpg" alt="{esc(t['name'])} template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -264,22 +320,6 @@ for t in TEMPLATES:
         </article>
 '''
 total = sum(t['files'] for t in TEMPLATES)
-bundle = f'''<div class="bundle reveal">
-        <div class="px" aria-hidden="true"><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i></i><i class="x"></i></div>
-        <div>
-          <p class="eyebrow">Bundle</p>
-          <h2>All {len(TEMPLATES)} templates, one price</h2>
-          <p>Get every template together. Use them for yourself, your business, or your next client.</p>
-          <ul>
-            <li><span>All {len(TEMPLATES)} templates, bought separately</span><span class="price">{inr(total)}</span></li>
-          </ul>
-        </div>
-        <div class="deal">
-          <span class="save">You save {inr(total - BUNDLE)}</span>
-          <div class="big price">{inr(BUNDLE)}</div>
-          <a class="btn btn-solid buy" id="buy-bundle" href="quote.html?template=Bundle">Request the bundle</a>
-        </div>
-      </div>'''
 
 def patch_index():
     p = f'{ROOT}/index.html'; s = open(p, encoding='utf-8').read()
@@ -288,14 +328,13 @@ def patch_index():
         a, b = f'<!--pp:{name}-->', f'<!--/pp:{name}-->'
         if a in s: s = re.sub(re.escape(a) + r'.*?' + re.escape(b), lambda m: a + '\n' + content + '\n' + b, s, flags=re.S)
         else: raise SystemExit(f'marker {a} missing in index.html')
-    block('header', HEADER); block('footer', FOOTER); block('cards', cards.rstrip('\n')); block('bundle', bundle)
+    block('header', HEADER); block('footer', FOOTER); block('cards', cards.rstrip('\n'))
     s = re.sub(r'<span id="tcount">[^<]*</span>', f'<span id="tcount">{len(TEMPLATES)} templates in 4 categories</span>', s)
-    s = re.sub(r'Get all \d+ for ₹[\d,]+', f'Get all {len(TEMPLATES)} for {inr(BUNDLE)}', s)
     open(p, 'w', encoding='utf-8').write(s)
 
 def patch_hub():
     p = f'{ROOT}/demo/index.html'; s = open(p, encoding='utf-8').read()
-    demos = [{'id': t['id'], 'cats': t['cats'].split(), 'group': t['group'], 'name': f"{t['name']} · {t['tag']}", 'url': t['url'], 'owner': bool(t.get('owner')), 'note': t['note']} for t in TEMPLATES]
+    demos = [{'id': t['id'], 'cats': t['cats'].split(), 'group': t['group'], 'name': f"{t['name']} · {t['tag']}", 'url': t['url'], 'owner': bool(t.get('owner')), 'note': t['note'], 'try': t.get('try', '')} for t in TEMPLATES]
     block = '/*pp:demos*/\n  var DEMOS = ' + json.dumps(demos, ensure_ascii=False, indent=2).replace('\n', '\n  ') + ';\n  /*/pp:demos*/'
     s = re.sub(r'/\*pp:demos\*/.*?/\*/pp:demos\*/', lambda m: block, s, flags=re.S)
     open(p, 'w', encoding='utf-8').write(s)
@@ -303,4 +342,4 @@ def patch_hub():
 if __name__ == '__main__':
     patch_hub()
     if os.path.exists(f'{ROOT}/index.html') and '<!--pp:header-->' in open(f'{ROOT}/index.html', encoding='utf-8').read(): patch_index()
-    print('pages written:', ', '.join(['how-it-works', 'faq', 'about', 'quote', 'terms', 'privacy', 'refunds', 'credits']))
+    print('pages written:', ', '.join(['how-it-works', 'faq', 'about', 'quote', 'compare', '404', 'terms', 'privacy', 'refunds', 'credits']))

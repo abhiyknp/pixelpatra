@@ -6,5 +6,6 @@ window.PP_CONFIG = {
   email: '',          // where quote requests are sent when the form cannot post to Netlify, e.g. hello@yourdomain.com
   instagram: '',      // handle without @, optional
   // Quote form delivery order: 1) Netlify Forms (works automatically on Netlify), 2) email, 3) WhatsApp, 4) copy-to-clipboard
+  reward: { text: 'A free 15-minute planning call' },   // unlocked when a visitor explores five things; change it to a discount if you prefer, for example 'Rs 2,000 off your first order'
   payLinks: {}        // optional per-template payment links, e.g. { "Gift Shop": { files: "https://rzp.io/...", setup: "" } }
 };

@@ -12,7 +12,15 @@
    "url": "../Sample_3/index.html",
    "group": "Portfolios",
    "note": "A portfolio whose name is made of thousands of particles. Move the pointer through them, then scroll: they scatter into a galaxy.",
-   "owner": true
+   "owner": false,
+   "best": "Designers, developers and freelancers who want to be remembered",
+   "has": {
+    "anim": 1,
+    "shop": 0,
+    "owner": 0,
+    "app": 0
+   },
+   "try": "Move your pointer over the name, scroll to turn it into a galaxy, then open a project."
   },
   {
    "id": "ba",
@@ -26,7 +34,15 @@
    "url": "../Sample_4/index.html",
    "group": "Portfolios",
    "note": "A working portfolio: scroll intro, 42-skill library, case studies, sample deliverables, decision scenarios and a process puzzle. Press / to search.",
-   "owner": false
+   "owner": false,
+   "best": "Analysts, consultants and job seekers who want to show how they think",
+   "has": {
+    "anim": 1,
+    "shop": 0,
+    "owner": 0,
+    "app": 0
+   },
+   "try": "Skip the intro, search the skills library, then open a case study."
   },
   {
    "id": "sample1",
@@ -40,7 +56,15 @@
    "url": "../Sample_1/index.html",
    "group": "Shops",
    "note": "A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser.",
-   "owner": true
+   "owner": true,
+   "best": "Small online shops: gifts, candles, crafts, food and more",
+   "has": {
+    "anim": 0,
+    "shop": 1,
+    "owner": 1,
+    "app": 1
+   },
+   "try": "Add a gift to the cart and check out with the test payment, then open Owner view."
   },
   {
    "id": "house",
@@ -54,7 +78,15 @@
    "url": "../House_3D_Prototype/index.html",
    "group": "Shops",
    "note": "The same shop, opening with a scroll-driven 3D walk through a house. Use Home page above to switch between the walk and the gift shop.",
-   "owner": true
+   "owner": true,
+   "best": "Shops that want a memorable, walk-through first impression",
+   "has": {
+    "anim": 1,
+    "shop": 1,
+    "owner": 1,
+    "app": 1
+   },
+   "try": "Choose Home page, Foyer, scroll through the house, then open Owner view."
   },
   {
    "id": "intros",
@@ -68,7 +100,15 @@
    "url": "../kits/scroll-intros/index.html",
    "group": "Immersive openings",
    "note": "Three scroll-driven openings. Use Opening above to switch, then scroll the homepage.",
-   "owner": true
+   "owner": true,
+   "best": "Shops and brands that want a cinematic scroll opening",
+   "has": {
+    "anim": 1,
+    "shop": 1,
+    "owner": 1,
+    "app": 1
+   },
+   "try": "Switch Opening above, scroll the home page, then open Owner view."
   },
   {
    "id": "oil",
@@ -82,7 +122,15 @@
    "url": "../Sample_2/index.html",
    "group": "Business",
    "note": "Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records.",
-   "owner": false
+   "owner": false,
+   "best": "Factories and makers who sell to dealers and shops: oil, spices, grains",
+   "has": {
+    "anim": 1,
+    "shop": 1,
+    "owner": 0,
+    "app": 0
+   },
+   "try": "Scroll the film from seed to bottle, then send a dealer enquiry."
   },
   {
    "id": "pixel",
@@ -96,7 +144,15 @@
    "url": "../Sample_5/index.html",
    "group": "Immersive openings",
    "note": "Four effects: tear the cloth, scroll to build the pictures, scroll the pinned browser tour, and tear off the price tag.",
-   "owner": false
+   "owner": false,
+   "best": "Any site that needs a striking opening effect",
+   "has": {
+    "anim": 1,
+    "shop": 0,
+    "owner": 0,
+    "app": 0
+   },
+   "try": "Tear the cloth, scroll to build the pictures, then try the tear-off price tag."
   },
   {
    "id": "records",
@@ -110,19 +166,18 @@
    "url": "../Sample_6/index.html",
    "group": "Business",
    "note": "Add, edit, delete, search, sort and export records. Try the Add button, then reload: your changes stay in this browser.",
-   "owner": false
+   "owner": false,
+   "best": "Schools, clinics and small offices that keep lists of people",
+   "has": {
+    "anim": 0,
+    "shop": 0,
+    "owner": 0,
+    "app": 0
+   },
+   "try": "Add a student, search, sort, export, then reload: your changes stay."
   }
  ],
- "bundle": {
-  "price": 29999
- },
  "addons": [
-  {
-   "id": "basic",
-   "label": "Basic SEO and search listing",
-   "note": "Page titles, descriptions, sitemap and Google listing",
-   "price": 25000
-  },
   {
    "id": "analytics",
    "label": "Analytics",
@@ -146,12 +201,6 @@
    "label": "Payments",
    "note": "UPI and card payments through a payment gateway",
    "price": 20000
-  },
-  {
-   "id": "owner",
-   "label": "Owner view",
-   "note": "A private panel where you edit products, text and orders",
-   "price": 35000
   },
   {
    "id": "blog",
@@ -178,5 +227,10 @@
    "price": 15000
   }
  ],
- "addons_note": "Placeholder amounts: edit these in shared/templates.json, then run python3 tools/make-pages.py."
+ "addons_note": "Placeholder amounts: edit these in shared/templates.json, then run python3 tools/make-pages.py.",
+ "basic": {
+  "label": "Basic website with Owner view",
+  "note": "The website and its Owner view only, with no extra services. The starting price for Setup & launch and Custom build.",
+  "price": 25000
+ }
 }

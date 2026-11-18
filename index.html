@@ -12,9 +12,12 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#f6f7fb">
 <meta property="og:site_name" content="Pixelpatra"><meta property="og:title" content="Pixelpatra: immersive website templates"><meta property="og:description" content="Portfolios, online shops, product websites and 3D experiences. Try every template live, then request a quote."><meta property="og:type" content="website">
+<meta property="og:image" content="https://pixelpatra.netlify.app/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://pixelpatra.netlify.app/"><meta property="og:url" content="https://pixelpatra.netlify.app/">
 <script src="shared/pp-config.js"></script>
 <script src="shared/pp-theme.js" data-pp="store"></script>
 <script src="shared/pp-ui.js" defer></script>
+<script src="shared/pp-tour.js" defer></script>
+<script src="shared/pp-explore.js" data-ui="widget" defer></script>
 <link rel="stylesheet" href="shared/pp-site.css">
 </head>
 <body>
@@ -28,6 +31,7 @@
     <nav class="nav" aria-label="Main">
       <a href="index.html#templates">Templates</a>
       <a class="hide-sm" href="demo/">Live demos</a>
+      <a class="hide-sm" href="compare.html">Compare</a>
       <a class="hide-sm" href="how-it-works.html">How it works</a>
       <a class="hide-sm" href="faq.html">FAQ</a>
       <a class="hide-sm" href="about.html">About</a>
@@ -46,33 +50,30 @@
         <p class="lede">Immersive templates for portfolios, online shops, factories and 3D experiences, each with an Owner view so you run it yourself. Buy the files and launch it yourself, or let us set it up with your content.</p>
         <div class="ctas">
           <a class="btn btn-solid" href="#templates">See the templates</a>
-          <a class="btn" href="#bundle">Get all 8 for ₹29,999</a>
+          <a class="btn" href="how-it-works.html">How it works</a>
         </div>
         <p class="deva"><b lang="hi">पत्र</b> patra means a page, a letter. We make yours.</p>
       </div>
       <div class="try" id="try">
-        <div class="try-frame" aria-hidden="true">
-          <div class="bar"><i></i><i></i><i></i><span class="url" id="try-url"><b>yourname</b>.in</span></div>
+        <div class="try-frame">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url" id="try-url"><b>yourname</b>.in</span></div>
           <div class="try-page">
-            <div class="try-nav"><b id="try-ini">YN</b><span></span><span></span><span></span></div>
+            <div class="try-nav"><button type="button" id="try-ini" class="try-avatar" aria-label="Add your logo" data-tip="Click to add your logo. It appears in every demo.">YN</button><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></div>
             <p class="try-kicker">Welcome to</p>
-            <h2 class="try-name"><span id="try-name">Your Name</span><span class="cur"></span></h2>
-            <p class="try-sub">About · Work · Contact</p>
-            <span class="try-btn">Say hello</span>
-            <div class="try-tiles"><span></span><span></span><span></span></div>
+            <h2 class="try-name"><label class="sr" for="your-name">Your business name</label><input id="your-name" type="text" maxlength="28" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" placeholder="Your Name" aria-describedby="name-msg"></h2>
+            <span class="edit-hint" id="edit-hint" aria-hidden="true">✎ Click the name and type yours</span>
+            <p class="try-sub" aria-hidden="true">About · Work · Contact</p>
+            <span class="try-btn" aria-hidden="true">Say hello</span>
+            <div class="try-tiles" aria-hidden="true"><span></span><span></span><span></span></div>
           </div>
         </div>
-        <form class="namebox" id="name-form" novalidate>
-          <label class="try-label" for="your-name">Your business name <small>(optional)</small></label>
-          <div class="name-row">
-            <input id="your-name" type="text" maxlength="28" autocomplete="off" spellcheck="false" placeholder="e.g. Chai Corner or Riya Sharma" aria-describedby="name-msg" data-tip="Your business name. It replaces the sample brand in every template and live demo.">
-            <button type="submit" class="btn btn-solid" id="name-go">Show it in every template</button>
-          </div>
+        <div class="namebox" id="name-form">
           <p class="name-msg" id="name-msg" role="status" aria-live="polite"></p>
-          <p class="try-note">Type your business name and every template below, and every live demo, shows it. Leave it empty to look at the sample brands instead. <button type="button" class="linkbtn" id="name-clear" hidden>Use the sample names</button></p>
-        </form>
+          <p class="logo-row"><input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden><button type="button" class="linkbtn" id="logo-add">Add your logo</button><span class="logo-hint" id="logo-hint">PNG, JPG or SVG</span><button type="button" class="linkbtn" id="logo-rm" hidden>Remove logo</button></p>
+          <p class="try-note">Type your business name above and every template below, and every live demo, shows it. Leave it as it is to look at the sample brands. <button type="button" class="linkbtn" id="name-clear" hidden>Use the sample names</button></p>
+        </div>
         <div class="try-themes"><span class="lbl" id="hero-sw-l">Colour theme</span><div id="hero-sw"></div></div>
-        <p class="try-note">Your name and colour theme carry into every live demo below. They stay in your browser only.</p>
+        <p class="try-note">Your name and colour theme stay in your browser only.</p>
       </div>
     </div>
     <canvas id="cloth" hidden aria-hidden="true"></canvas>
@@ -130,15 +131,17 @@
         <button type="button" role="tab" aria-selected="false" data-cat="3d" data-tip="Sites with 3D scenes, scroll films and effects">3D &amp; animated</button>
         <button type="button" role="tab" aria-selected="false" data-cat="business">Business</button>
       </div>
+      <p class="notsure">Not sure which one? <a href="compare.html">Answer a quick question or compare them all</a>.</p>
       <p class="tabhint" id="tabhint">Pick a category, then open a template. Inside, a control bar lets you try its themes, options and Owner view.</p>
       <div class="grid" id="grid">
 <!--pp:cards-->
-        <article class="card reveal" data-name="Portfolio" data-cat="portfolio 3d" data-id="portfolio" data-files="999" data-setup="2499" data-demo="demo/?demo=portfolio">
+        <article class="card reveal" data-name="Portfolio" data-cat="portfolio 3d" data-id="portfolio" data-files="999" data-setup="25000" data-demo="demo/?demo=portfolio">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDkFGWA65NTGJR1jP8A31UOVx05+tG1tu7HFAwPBI6c9KKSimI//9k=) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/portfolio.jpg" width="1000" height="625" alt="Portfolio template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/portfolio.mp4"></video>
             <img class="ph" src="previews/portfolio-m.jpg" alt="Portfolio template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -155,12 +158,13 @@
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="Professional Portfolio" data-cat="portfolio" data-id="ba" data-files="4999" data-setup="9999" data-demo="demo/?demo=ba">
+        <article class="card reveal" data-name="Professional Portfolio" data-cat="portfolio" data-id="ba" data-files="4999" data-setup="25000" data-demo="demo/?demo=ba">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDlRllAz0pxX3qMNgYpd5xVkCsMdM0U0sSOpooGf//Z) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/ba.jpg" width="1000" height="625" alt="Professional Portfolio template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/ba.mp4"></video>
             <img class="ph" src="previews/ba-m.jpg" alt="Professional Portfolio template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -177,12 +181,13 @@
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="Gift Shop" data-cat="ecommerce" data-id="sample1" data-files="6999" data-setup="14999" data-demo="demo/?demo=sample1">
+        <article class="card reveal" data-name="Gift Shop" data-cat="ecommerce" data-id="sample1" data-files="6999" data-setup="25000" data-demo="demo/?demo=sample1">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDcf7Kk/liytz1/gFSxwWbqS1lApBx90f4VYKRyEkw4OTzxn607yISu0xKwznDc1Jq3GwwWtpJybaH0GUBoqZFRFCogUDoAMUUEH//Z) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/giftshop.jpg" width="1000" height="625" alt="Gift Shop template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/giftshop.mp4"></video>
             <img class="ph" src="previews/giftshop-m.jpg" alt="Gift Shop template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -199,12 +204,13 @@
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="3D House Shop" data-cat="ecommerce 3d" data-id="house" data-files="9999" data-setup="19999" data-demo="demo/?demo=house">
+        <article class="card reveal" data-name="3D House Shop" data-cat="ecommerce 3d" data-id="house" data-files="9999" data-setup="25000" data-demo="demo/?demo=house">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCtHezsudtv/wB+U/wp8d9MGyI7cMDjiJM/yqsFiRV2uxbHIK4x+tQxW0323zsDbv3Zz2rNlo1ftkjcNHDkD/ngvT8qKhYneT7UUAf/2Q==) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/house.jpg" width="1000" height="625" alt="3D House Shop template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/house.mp4"></video>
             <img class="ph" src="previews/house-m.jpg" alt="3D House Shop template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -221,12 +227,13 @@
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="Scroll Openings" data-cat="3d" data-id="intros" data-files="2999" data-setup="6999" data-demo="demo/?demo=intros">
+        <article class="card reveal" data-name="Scroll Openings" data-cat="3d" data-id="intros" data-files="2999" data-setup="25000" data-demo="demo/?demo=intros">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwBjThjuNpakn/pl/wDXpqyoxwLO0/79f/XqlJcKoHlypJnqApGPzqL7XKPu4U+oFYWkdV4GiZYxx9itP+/X/wBeis77XJ3Ck0UWkF4H/9k=) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/intros.jpg" width="1000" height="625" alt="Scroll Openings template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/intros.mp4"></video>
             <img class="ph" src="previews/intros-m.jpg" alt="Scroll Openings template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -243,12 +250,13 @@
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="Product Website" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="9999" data-demo="demo/?demo=oil">
+        <article class="card reveal" data-name="Product Website" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="25000" data-demo="demo/?demo=oil">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDEsLC5un8oBcDksxOAK39P0mKxmMk0+4BTlduPxrDM4tgFgHb73eoftEpcspIJ6nPWstTS6L+q3sFyxFsWUHjnqaKqm74AlijYDvtAP5iimGh//9k=) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/oil.jpg" width="1000" height="625" alt="Product Website template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/oil.mp4"></video>
             <img class="ph" src="previews/oil-m.jpg" alt="Product Website template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -265,12 +273,13 @@
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="Pixel Intros" data-cat="3d" data-id="pixel" data-files="2499" data-setup="5999" data-demo="demo/?demo=pixel">
+        <article class="card reveal" data-name="Pixel Intros" data-cat="3d" data-id="pixel" data-files="2499" data-setup="25000" data-demo="demo/?demo=pixel">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDp55Y0l2vKUPHHmAfpSCW3yP8ASun/AE1rH1r/AI/z/uLWUY387cD8u5Tj2xXNKu1Jo644dOKd9zso7iOVyqOhPbDg5orC0X/j/H+41Fa0p88bmNWmqcrI/9k=) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/pixel.jpg" width="1000" height="625" alt="Pixel Intros template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/pixel.mp4"></video>
             <img class="ph" src="previews/pixel-m.jpg" alt="Pixel Intros template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -287,12 +296,13 @@
             </div>
           </div>
         </article>
-        <article class="card reveal" data-name="Records Dashboard" data-cat="business" data-id="records" data-files="3999" data-setup="8999" data-demo="demo/?demo=records">
+        <article class="card reveal" data-name="Records Dashboard" data-cat="business" data-id="records" data-files="3999" data-setup="25000" data-demo="demo/?demo=records">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDrmQKuASvPUUY3KR94dMetLI+1Qcd6bFCqDIJOeeaYhY1QLtjACj07UU5Y1QHaMUUDP//Z) center/cover">
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/records.jpg" width="1000" height="625" alt="Records Dashboard template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/records.mp4"></video>
             <img class="ph" src="previews/records-m.jpg" alt="Records Dashboard template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>
@@ -313,31 +323,6 @@
       </div>
     </div>
   </section>
-
-  <section class="section" id="bundle">
-    <div class="wrap">
-      <!--pp:bundle-->
-<div class="bundle reveal">
-        <div class="px" aria-hidden="true"><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i></i><i></i><i></i><i class="x"></i></div>
-        <div>
-          <p class="eyebrow">Bundle</p>
-          <h2>All 8 templates, one price</h2>
-          <p>Get every template together. Use them for yourself, your business, or your next client.</p>
-          <ul>
-            <li><span>All 8 templates, bought separately</span><span class="price">₹37,492</span></li>
-          </ul>
-        </div>
-        <div class="deal">
-          <span class="save">You save ₹7,493</span>
-          <div class="big price">₹29,999</div>
-          <a class="btn btn-solid buy" id="buy-bundle" href="quote.html?template=Bundle">Request the bundle</a>
-        </div>
-      </div>
-<!--/pp:bundle-->
-    
-    </div>
-  </section>
-
   <section class="section" id="how">
     <div class="wrap">
       <div class="sec-head"><div><p class="eyebrow">How it works</p><h2>Live in three steps</h2></div><a class="btn btn-sm" href="how-it-works.html">See the full steps and packages</a></div>
@@ -371,7 +356,7 @@
   <div class="wrap foot-grid">
     <div><a class="logo" href="index.html" aria-label="Pixelpatra home"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>Pixelpatra</a><p>Immersive website templates for portfolios, shops, makers and 3D experiences, made in India.</p></div>
     <div><h3>Templates</h3><ul><li><a href="index.html?cat=portfolio#templates">Portfolio</a></li><li><a href="index.html?cat=ecommerce#templates">E-commerce</a></li><li><a href="index.html?cat=3d#templates">3D &amp; animated</a></li><li><a href="index.html?cat=business#templates">Business</a></li></ul></div>
-    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
+    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="compare.html">Compare and choose</a></li><li><a href="index.html?tour=1" data-tour>Take a quick tour</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
     <div><h3>Legal</h3><ul><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="refunds.html">Refunds</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
   </div>
   <div class="wrap foot-base"><span>© <span id="yr">2026</span> Pixelpatra</span><span id="build" title="The same number on every copy of this site means the same version"></span></div>
@@ -506,15 +491,51 @@ const CONFIG = window.PP_CONFIG || {};
 
   /* ---- Try your name: live preview in the hero and every card ---- */
   const input = document.getElementById("your-name");
-  const tName = document.getElementById("try-name"), tIni = document.getElementById("try-ini"), tUrl = document.getElementById("try-url"), forName = document.getElementById("for-name");
+  const tName = null, tIni = document.getElementById("try-ini"), tUrl = document.getElementById("try-url"), forName = document.getElementById("for-name");
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "") || "yourname";
   const initials = n => (n.trim().split(/\s+/).map(w => w[0]).join("").slice(0, 2) || "YN").toUpperCase();
   let flashT;
+  /* ---- your logo: shrunk in the browser, saved in this browser only, shown in every demo ---- */
+  const logoFile = document.getElementById("logo-file"), logoAdd = document.getElementById("logo-add"), logoRm = document.getElementById("logo-rm"), logoHint = document.getElementById("logo-hint");
+  const hasLogo = () => !!(window.ppTheme && ppTheme.getLogo());
+  function paintLogo() {
+    const on = hasLogo();
+    tIni.classList.toggle("has-logo", on); tIni.textContent = on ? "" : initials(yourName);
+    if (on) { const im = document.createElement("img"); im.src = ppTheme.getLogo(); im.alt = ""; tIni.appendChild(im); }
+    logoAdd.textContent = on ? "Change logo" : "Add your logo"; logoRm.hidden = !on; logoHint.hidden = on;
+    tIni.setAttribute("aria-label", on ? "Change your logo" : "Add your logo");
+  }
+  const logoMsg = (t, k) => { if (window.ppUI) ppUI.toast(t, k || "err"); };
+  function readLogo(file) {
+    if (!file) return;
+    if (!/^image\/(png|jpeg|webp|svg\+xml)$/.test(file.type)) { logoMsg("That file type is not supported. Please use a PNG, JPG, WebP or SVG logo."); return; }
+    if (file.size > 3 * 1024 * 1024) { logoMsg("That logo is larger than 3 MB. Please use a smaller file."); return; }
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      let w = img.naturalWidth || 300, h = img.naturalHeight || 150; const k = Math.min(1, 480 / w, 240 / h); w = Math.max(1, Math.round(w * k)); h = Math.max(1, Math.round(h * k));
+      const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(img, 0, 0, w, h); URL.revokeObjectURL(url);
+      let data; try { data = c.toDataURL("image/png"); } catch (e) { logoMsg("We could not read that logo. Try a PNG or JPG."); return; }
+      if (!ppTheme.setLogo(data, w / h)) { logoMsg("Your browser would not save the logo (private browsing?). It will not carry into the demos."); return; }
+      paintLogo(); if (window.ppExplore) ppExplore.mark("look"); logoMsg("Logo added. It now appears in every live demo.", "ok");
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); logoMsg("We could not open that image. Please try another file."); };
+    img.src = url;
+  }
+  logoAdd.addEventListener("click", () => logoFile.click());
+  tIni.addEventListener("click", () => logoFile.click());
+  logoFile.addEventListener("change", () => { readLogo(logoFile.files[0]); logoFile.value = ""; });
+  logoRm.addEventListener("click", () => { ppTheme.clearLogo(); paintLogo(); logoMsg("Logo removed.", "ok"); });
+  window.addEventListener("pp-logo", paintLogo);
+  const hint = document.getElementById("edit-hint");
+  function fit(v) { // a long name gets a smaller type size so it always fits on one line
+    const len = Math.max(10, (v || "").length); input.style.fontSize = Math.max(4.6, Math.min(9.5, 150 / len)) + "cqw";
+    if (hint) hint.hidden = !!(v || "").trim() || document.activeElement === input;
+  }
   function applyName(n, flash) {
     yourName = n.trim();
-    tName.textContent = yourName || "Your Name";
-    tIni.textContent = initials(yourName);
+    fit(yourName);
+    if (!hasLogo()) tIni.textContent = initials(yourName);
     tUrl.innerHTML = "";
     const b = document.createElement("b"); b.textContent = slug(yourName); tUrl.append(b, ".in");
     document.querySelectorAll(".nm").forEach(el => {
@@ -534,7 +555,7 @@ const CONFIG = window.PP_CONFIG || {};
     nmsg.textContent = input.value.length >= input.maxLength ? "That is the longest name we can show (" + input.maxLength + " characters). Saved." : "Saved. “" + v + "” now appears in every live demo."; nmsg.classList.add("ok");
     return v;
   }
-  const banner = document.getElementById("name-banner"), clearBtn = document.getElementById("name-clear"), form = document.getElementById("name-form");
+  const banner = document.getElementById("name-banner"), clearBtn = document.getElementById("name-clear");
   function reflect(v) {
     document.querySelectorAll(".brandchip").forEach(c => { c.hidden = !v; });
     document.querySelectorAll(".brandchip .nm").forEach(n => { n.textContent = v; });
@@ -542,19 +563,22 @@ const CONFIG = window.PP_CONFIG || {};
     banner.hidden = !v; banner.querySelector(".bn").textContent = v; clearBtn.hidden = !v;
   }
   function goTemplates() { document.getElementById("templates").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
-  form.addEventListener("submit", e => {
-    e.preventDefault(); const raw = input.value.trim();
+  function submitName() {
+    const raw = input.value.trim();
     if (!raw) { nmsg.className = "name-msg"; nmsg.textContent = "No name entered, so you are seeing the sample brands. You can type one any time."; applyName("", false); reflect(""); goTemplates(); return; }
     const v = nameCheck(input.value); if (!v) { input.focus(); return; }
-    applyName(v, true); reflect(v); goTemplates();
+    applyName(v, true); reflect(v); goTemplates(); if (window.ppExplore) ppExplore.mark("name");
     if (window.ppUI) ppUI.toast("Showing every template as " + v + ".");
-  });
+  }
+  input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); submitName(); input.blur(); } });
+  input.addEventListener("focus", () => { if (hint) hint.hidden = true; });
+  input.addEventListener("blur", () => { if (hint) hint.hidden = !!input.value.trim(); });
   clearBtn.addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); input.focus(); });
   document.getElementById("nb-clear").addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); });
   document.getElementById("nb-change").addEventListener("click", () => { input.scrollIntoView({ block: "center", behavior: "smooth" }); input.focus(); });
-  input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); reflect(v); flashT = setTimeout(() => applyName(v, true), 250); });
+  input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); reflect(v); flashT = setTimeout(() => { applyName(v, true); if (v.length >= 2 && window.ppExplore) ppExplore.mark("name"); }, 250); });
   const saved = store.get("pp-name"); if (saved) { input.value = saved; applyName(saved, false); reflect(saved.trim()); }
-  if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); }
+  if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); paintLogo(); }
 
   /* ---- Pixel dissolve on card previews when they scroll in ---- */
   function addDissolve(shot) {
@@ -583,6 +607,7 @@ const CONFIG = window.PP_CONFIG || {};
   const hero = document.querySelector(".hero");
   const canvas = document.getElementById("cloth"), openBtn = document.getElementById("cloth-open");
   function opened() {
+    window.__ppOpened = true; window.dispatchEvent(new Event("pp-opened"));
     if (!reduce) root.classList.add("anim");
     setTimeout(() => pendingDissolve.forEach(playDissolve), 250);
   }
@@ -699,6 +724,7 @@ const CONFIG = window.PP_CONFIG || {};
   frame.addEventListener("load", () => clearTimeout(slowT));
   function openLive(card) {
     const cat = (document.querySelector("#tabs [aria-selected=true]") || {}).dataset ? document.querySelector("#tabs [aria-selected=true]").dataset.cat : "all";
+    if (window.ppExplore) ppExplore.mark("demo");
     from = card; frame.src = "demo/?embed=1&demo=" + card.dataset.id + (cat !== "all" ? "&cat=" + cat : "");
     clearTimeout(slowT); slowT = setTimeout(() => { if (window.ppUI && !modal.hidden) ppUI.alert(navigator.onLine === false ? "You are offline, so the live demo cannot load. Reconnect and open it again." : "The live demo is taking longer than usual. Check your connection, or close it and try again."); }, 20000);
     modal.hidden = false; document.body.classList.add("lock"); document.querySelectorAll("body > header, body > main, body > footer, body > .fab").forEach(n => n.setAttribute("inert", "")); frame.focus();
@@ -709,6 +735,20 @@ const CONFIG = window.PP_CONFIG || {};
     const card = (a || shot) && (a || shot).closest(".card"); if (!card) return;
     e.preventDefault(); openLive(card);
   }, true);
+  /* ---- card clips: play on hover (computers) or while in view (phones); never with reduced motion or Data Saver ---- */
+  (function () {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData);
+    const vids = [...document.querySelectorAll(".tvid")]; if (calm || !vids.length) return;
+    const play = v => { if (!v.src) v.src = v.dataset.src; v.play().then(() => v.classList.add("on")).catch(() => {}); };
+    const stop = v => { v.pause(); v.classList.remove("on"); };
+    if (matchMedia("(hover: hover)").matches) {
+      document.querySelectorAll(".tshot").forEach(s => { const v = s.querySelector(".tvid"); if (!v) return;
+        s.addEventListener("mouseenter", () => play(v)); s.addEventListener("mouseleave", () => stop(v)); s.addEventListener("focus", () => play(v)); s.addEventListener("blur", () => stop(v)); });
+    } else {
+      const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? play(e.target) : stop(e.target)), { threshold: 0.7 });
+      vids.forEach(v => io.observe(v));
+    }
+  })();
   document.querySelectorAll(".tshot").forEach(t => { t.tabIndex = 0; t.setAttribute("role", "button"); t.setAttribute("aria-label", "Open live demo"); t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLive(t.closest(".card")); } }); });
   document.addEventListener("click", e => {
     const b = e.target.closest(".copylink"); if (!b) return;
