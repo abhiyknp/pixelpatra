@@ -44,6 +44,7 @@
     '.pp-ex-list li.on .tick{background:#16a34a;border-color:#16a34a}.pp-ex-list li.on span{color:#6b5d52;text-decoration:line-through}.pp-ex-list a{color:inherit;text-underline-offset:3px}' +
     '.pp-ex-reward{margin:12px 0 0;padding:10px 12px;border-radius:12px;background:#fff4e8;font-size:13.5px}.pp-ex.done .pp-ex-reward{background:#dcfce7}.pp-ex-reward a{display:inline-block;margin-top:6px;font-weight:700}' +
     '.pp-ex-x{all:unset;cursor:pointer;position:absolute;right:10px;top:8px;padding:6px;color:#6b5d52}.pp-ex-x:focus-visible{outline:2px solid #f97316;border-radius:6px}' +
+    '.pp-ex-short{display:none}@media (max-width:720px){.pp-ex-pill{min-height:40px;padding:0 12px 0 9px;font-size:13px}.pp-ex-long{position:absolute;left:-9999px}.pp-ex-short{display:inline}.pp-ex.done .pp-ex-long{position:static}}' +
     '@media (prefers-reduced-motion:reduce){.pp-ex-bar i{transition:none}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
   var root = document.createElement('div'); root.className = 'pp-ex';
@@ -52,7 +53,7 @@
   function paint() {
     var a = read(), n = a.length, pct = Math.round(n / TASKS.length * 100), done = n === TASKS.length;
     root.classList.toggle('done', done); root.style.setProperty('--p', pct);
-    root.querySelector('#pp-ex-count').textContent = done ? 'Reward unlocked' : n + ' of ' + TASKS.length + ' explored';
+    root.querySelector('#pp-ex-count').innerHTML = done ? 'Reward unlocked' : '<span class="pp-ex-long">' + n + ' of ' + TASKS.length + ' explored</span><span class="pp-ex-short" aria-hidden="true">' + n + '/' + TASKS.length + '</span>';
     root.querySelector('#pp-ex-sub').textContent = done ? 'You have tried everything. Nicely done.' : 'Try five things and unlock a reward.';
     root.querySelector('#pp-ex-fill').style.width = pct + '%';
     root.querySelector('#pp-ex-list').innerHTML = TASKS.map(function (t) { var on = a.indexOf(t.id) >= 0; return '<li class="' + (on ? 'on' : '') + '"><span class="tick" aria-hidden="true">' + (on ? '✓' : '') + '</span><span>' + (on ? '<span class="sr-only" style="position:absolute;left:-9999px">Done: </span>' : '') + (on ? t.text : '<a href="' + t.href + '">' + t.text + '</a>') + '</span></li>'; }).join('');
