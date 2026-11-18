@@ -418,3 +418,9 @@ details.faq { border-bottom: 1px solid var(--line); padding-block: 4px; max-widt
 
 /* a short silent clip of the real demo plays on the card (hover on computers, when in view on phones) */
 .tshot .tvid{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .3s;pointer-events:none}.tshot .tvid.on{opacity:1}
+
+/* the preview's button and tiles are real links, not decoration */
+a.try-btn{display:inline-block;text-decoration:none;cursor:pointer}a.try-btn:hover{filter:brightness(1.06)}a.try-btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.try-tiles a{display:block;aspect-ratio:4/3;border-radius:2cqw;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line),0 .6cqw 1.6cqw rgba(0,0,0,.12);background:var(--line);transition:transform .2s}
+.try-tiles a:hover{transform:translateY(-.5cqw)}.try-tiles a:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+.try-tiles img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
