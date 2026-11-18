@@ -25,15 +25,15 @@
       cur = { lines: [], base: null, total: 0, pkg: pkg, template: opt ? opt.value : '', picked: picked, custom: true }; var act0 = $('#q-est-actions'); if (act0) act0.hidden = false;
       lastEst = 'Custom build: priced after we agree the scope'; if (estField) estField.value = lastEst; return;
     }
-    var basic = +estBox.dataset.basic || 0;
-    if (pkg === 'Custom build' && basic) { base = basic; lines.push([(opt && opt.value !== 'Not sure yet' ? opt.value + ' · ' : '') + 'Custom build, starting price (Basic website with Owner view)', basic]); }
-    else if (opt && key && opt.dataset[key]) { base = +opt.dataset[key]; lines.push([opt.value + ' · ' + pkg + (key === 'setup' ? ' (Basic website with Owner view)' : ''), base]); }
+    // the price of the template includes its website and Owner view; Setup & launch adds a fee for doing it all for the customer
+    var files = opt && opt.dataset.files ? +opt.dataset.files : 0, fee = opt && opt.dataset.fee ? +opt.dataset.fee : 0;
+    if (files && pkg === 'Template files') { base = files; lines.push([opt.value + ' · template files', files]); }
+    else if (files && pkg === 'Setup & launch') { base = files + fee; lines.push([opt.value + ' · template (website with Owner view)', files]); lines.push(['Setup & launch: we add your content and put it live', fee]); }
     var add = 0; [].forEach.call(form.querySelectorAll('input[name="features"]:checked'), function (c) { var v = +c.dataset.price || 0; add += v; lines.push([c.value, v, true]); });
     var total = (base || 0) + add, html;
     if (!lines.length) html = '<p class="est-note">Choose a template and a package, then tick any extra services. Your estimate appears here.</p>';
     else {
       html = '<h3>Your estimate</h3><ul>' + lines.map(function (l) { return '<li><span>' + (l[2] ? '+ ' : '') + l[0].replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</span><b>' + inr(l[1]) + '</b></li>'; }).join('') + '</ul>';
-      if (pkg === 'Custom build' && base !== null) html += '<p class="est-note">Basic is the least a built site costs. Anything beyond these services is priced from your scope in the quote.</p>';
       if (base === null) html += '<p class="est-note">' + 'Pick a template to see its base price.' + '</p>';
       html += '<p class="est-total"><span>' + (base === null ? 'Extra services' : 'Estimated total') + '</span><b>' + inr(total) + '</b></p><p class="est-note">This is an estimate. We confirm the exact price, with any taxes, in your quote.</p>';
     }
@@ -104,9 +104,39 @@
   function summary() {
     var f = new FormData(form), lines = [], get = function (k) { return (f.get(k) || '').toString().trim(); };
     lines.push('Quote request for Pixelpatra', '', 'Name: ' + get('name'), 'Business: ' + (get('organisation') || '-'), 'Email: ' + (get('email') || '-'), 'Phone: ' + (get('phone') || '-'), '',
-      'Template: ' + get('template'), 'Package: ' + get('package'), 'Extra services: ' + (f.getAll('features').join(', ') || '-'), 'Estimate: ' + (lastEst || '-'), (get('explorer') ? get('explorer') : 'Explorer reward: no'), 'Budget: ' + get('budget'), 'Timeline: ' + get('timeline'), 'Content ready: ' + get('content'),
+      'Order reference: ' + (orderRef || '-'), 'Template: ' + get('template'), 'Package: ' + get('package'), 'Extra services: ' + (f.getAll('features').join(', ') || '-'), 'Estimate: ' + (lastEst || '-'), (get('explorer') ? get('explorer') : 'Explorer reward: no'), 'Budget: ' + get('budget'), 'Timeline: ' + get('timeline'), 'Content ready: ' + get('content'),
       'Current website: ' + (get('website') || '-'), 'Best time to reach: ' + (get('best_time') || '-'), '', 'What they want:', get('goal'));
     return lines.join('\n');
+  }
+  // ---------- payment by UPI: the amount comes from the estimate; the customer then tells us the UPI reference so we can match it ----------
+  var orderRef = '';
+  function payNeeded() { return cur && !cur.custom && cur.total > 0 && C.upi && C.upi.id; }
+  function upiLink() { return 'upi://pay?pa=' + encodeURIComponent(C.upi.id).replace('%40', '@') + '&pn=' + encodeURIComponent(C.upi.name || 'Pixelpatra') + '&am=' + Number(cur.total).toFixed(2) + '&cu=INR&tn=' + encodeURIComponent(orderRef); }
+  function payHtml() {
+    if (cur && cur.custom) return '<div class="paybox"><h3>Payment</h3><p>For a custom build you pay after we agree the scope and the price with you. Nothing is due now.</p></div>';
+    if (!payNeeded()) return '';
+    return '<div class="paybox" id="paybox"><h3>Pay ' + inr(cur.total) + ' by UPI</h3><p>Scan the code with any UPI app, or tap the button on your phone. The amount and your order reference are filled in for you.</p>' +
+      '<div class="pay-grid"><div class="pay-qr" id="pay-qr" role="img" aria-label="UPI QR code for ' + inr(cur.total) + '"></div><div class="pay-info"><p><b>Amount</b> ' + inr(cur.total) + '</p><p><b>UPI ID</b> <code>' + esc(C.upi.id) + '</code></p><p><b>Order reference</b> <code>' + esc(orderRef) + '</code></p>' +
+      '<p class="pay-btns"><a class="btn btn-solid" id="pay-open" href="' + esc(upiLink()) + '">Pay with a UPI app</a> <button type="button" class="btn" id="pay-copy-id">Copy UPI ID</button></p></div></div>' +
+      '<form id="pay-form" novalidate><label for="pay-utr">After you pay, enter the UPI reference number</label><input id="pay-utr" autocomplete="off" autocapitalize="characters" placeholder="From your UPI app, for example 412345678901"><span class="err" id="e-utr" role="alert"></span><button class="btn btn-solid" type="submit" id="pay-go">I have paid</button></form>' +
+      '<p class="est-note">We match your payment to your order and reply within one working day (Monday to Saturday).</p></div>';
+  }
+  function wirePay() {
+    var box = $('#paybox'); if (!box) return;
+    try { var qr = qrcode(0, 'M'); qr.addData(upiLink()); qr.make(); $('#pay-qr').innerHTML = qr.createSvgTag({ cellSize: 5, margin: 2, scalable: true }); } catch (e) { $('#pay-qr').textContent = 'Use the button or the UPI ID.'; }
+    $('#pay-copy-id').addEventListener('click', function () { if (window.ppUI) ppUI.copy(C.upi.id, 'UPI ID copied.'); });
+    $('#pay-form').addEventListener('submit', function (e) {
+      e.preventDefault(); var utr = $('#pay-utr').value.trim(), err = $('#e-utr');
+      if (!/^[A-Za-z0-9]{8,30}$/.test(utr)) { err.textContent = 'Please enter the reference number from your UPI app (letters and numbers, 8 to 30 characters).'; $('#pay-utr').setAttribute('aria-invalid', 'true'); $('#pay-utr').focus(); return; }
+      err.textContent = ''; $('#pay-utr').setAttribute('aria-invalid', 'false');
+      var data = { 'form-name': 'payment', order_ref: orderRef, name: $('#q-name').value.trim(), email: $('#q-email').value.trim(), phone: $('#q-phone').value.trim(), amount: String(cur.total), utr: utr, template: cur.template, package: cur.pkg };
+      var line = 'Payment reference for ' + orderRef + ': ' + utr + ' (' + inr(cur.total) + ' to ' + C.upi.id + ')';
+      var ok = function () { $('#pay-form').outerHTML = '<p class="reward-note">Thank you. We have your payment reference (' + esc(utr) + '). We will confirm your payment within one working day.</p>'; };
+      var manual = function () { $('#pay-form').outerHTML = '<p>This site could not send the reference automatically. Please copy this and send it to us:</p><pre>' + esc(line) + '</pre><p><button type="button" class="btn" id="pay-copy-ref">Copy</button></p>'; $('#pay-copy-ref').addEventListener('click', function () { if (window.ppUI) ppUI.copy(line, 'Copied.'); }); };
+      if (!netlify) { manual(); return; }
+      var b = $('#pay-go'); b.disabled = true; b.textContent = 'Sending…';
+      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data).toString() }).then(function (r) { if (r.ok) ok(); else throw new Error('post'); }).catch(function () { manual(); });
+    });
   }
   function show(html) { form.hidden = true; done.hidden = false; done.innerHTML = html; done.focus(); done.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
@@ -115,19 +145,20 @@
     if (C.email) btns += '<a class="btn btn-solid" href="mailto:' + encodeURIComponent(C.email).replace('%40', '@') + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(text) + '">Send by email</a> ';
     if (C.whatsapp) btns += '<a class="btn btn-wa" target="_blank" rel="noopener" href="https://wa.me/' + C.whatsapp + '?text=' + encodeURIComponent(text) + '">Send on WhatsApp</a> ';
     btns += '<button type="button" class="btn" id="q-copy">Copy my request</button>';
-    show('<h2>One last step</h2><p>' + (C.email || C.whatsapp ? 'Choose how to send your request. We reply as soon as we can.' : 'Your request is ready. Copy it and send it to us. (This site has not been connected to an inbox yet.)') + '</p><pre>' + esc(text) + '</pre><p>' + btns + '</p><p><a href="quote.html">Edit and start again</a></p>');
+    show('<h2>One last step</h2><p>' + (C.email || C.whatsapp ? 'Choose how to send your request. We reply as soon as we can.' : 'Your request is ready. Copy it and send it to us. (This site has not been connected to an inbox yet.)') + '</p><pre>' + esc(text) + '</pre><p>' + btns + '</p><p><a href="quote.html">Edit and start again</a></p>' + payHtml()); wirePay();
     var cp = $('#q-copy'); if (cp) cp.addEventListener('click', function () { (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () { cp.textContent = 'Copied ✓'; }, function () { var r = document.createRange(); r.selectNodeContents($('#qdone pre')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); cp.textContent = 'Press Ctrl+C to copy'; }); });
   }
   function thanks(text) {
     var nm = $('#q-name').value.trim().split(/\s+/)[0];
     show('<h2>Thank you, ' + esc(nm) + '.</h2><p>We have your request and will reply with a clear quote' + ($('#q-email').value ? ' at ' + esc($('#q-email').value.trim()) : '') + ' ' + 'within one working day (Monday to Saturday). Nothing starts until you say yes.</p>' +
-      '<h3>What you asked for</h3><pre>' + esc(text) + '</pre><p><button type="button" class="btn" id="q-copy">Copy this</button> <button type="button" class="btn" id="q-print">Save estimate as PDF</button> <a class="btn" href="index.html#templates">Back to the templates</a></p>');
-    var cp = $('#q-copy'); if (cp) cp.addEventListener('click', function () { if (window.ppUI) ppUI.copy(text, 'Copied.'); });
+      '<h3>What you asked for</h3><pre>' + esc(text) + '</pre><p><button type="button" class="btn" id="q-copy">Copy this</button> <button type="button" class="btn" id="q-print">Save estimate as PDF</button> <a class="btn" href="index.html#templates">Back to the templates</a></p>' + payHtml());
+    wirePay(); var cp = $('#q-copy'); if (cp) cp.addEventListener('click', function () { if (window.ppUI) ppUI.copy(text, 'Copied.'); });
     var pr = $('#q-print'); if (pr) pr.addEventListener('click', printEstimate);
   }
   var netlify = C.netlifyForms === true || (C.netlifyForms !== false && /\.netlify\.app$/.test(location.hostname));
   form.addEventListener('submit', function (e) {
     e.preventDefault(); if (!validate()) return;
+    orderRef = ref(); if ($('#q-ref')) $('#q-ref').value = orderRef; if (!cur) estimate();
     var text = summary(), btn = $('#q-send'); btn.disabled = true; btn.textContent = 'Sending…';
     if (!netlify) { fallback(text); return; }
     if (navigator.onLine === false && window.ppUI) ppUI.alert('You are offline, so we cannot send this automatically. Use the options on the next screen, so your request is not lost.', 'warn');

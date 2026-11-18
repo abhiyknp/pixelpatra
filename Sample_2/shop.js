@@ -9,7 +9,7 @@
   };
   var packs = $('#packs');
   packs.innerHTML = C.packs.map(function (p) {
-    return '<article class="pack"><div class="ph">' + (p.img ? '<img src="' + p.img + '" alt="" loading="lazy">' : '') + '</div><h3>' + p.name + '</h3><small>' + p.note + ' · sample price</small><div class="price">' + inr(p.price) + '</div>' +
+    return '<article class="pack"><div class="ph">' + (p.img ? '<img src="' + p.img + '" alt="" loading="lazy">' : '') + '</div><h3>' + p.name + '</h3><small>' + p.note + '</small><div class="price">' + inr(p.price) + '</div>' +
       '<div class="qty"><button type="button" data-id="' + p.id + '" data-d="-1" aria-label="One less ' + p.name + '">−</button><output id="q-' + p.id + '" aria-live="polite">0</output><button type="button" data-id="' + p.id + '" data-d="1" aria-label="One more ' + p.name + '">+</button></div></article>';
   }).join('');
   function sum() {

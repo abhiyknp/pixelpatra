@@ -14,8 +14,9 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = json.load(open(f'{ROOT}/shared/templates.json', encoding='utf-8'))
 TEMPLATES = DATA['templates']
-BASIC = DATA.get('basic', {}).get('price', 0)
-for _t in TEMPLATES: _t['setup'] = max(_t['setup'], BASIC)  # Basic is the least a built site costs
+FEE = DATA.get('setup_fee', {'percent': 20, 'min': 5000, 'round': 500})
+def _fee(price): return max(FEE['min'], int(round(price * FEE['percent'] / 100 / FEE['round'])) * FEE['round'])
+for _t in TEMPLATES: _t['fee'] = _fee(_t['files']); _t['setup'] = _t['files'] + _t['fee']  # Setup & launch = template price + the setup fee
 CREDITS = json.load(open(f'{ROOT}/shared/credits.json', encoding='utf-8'))
 TODAY = date.today().strftime('%d %B %Y').lstrip('0')
 inr = lambda n: '₹' + format(int(n), ',')
@@ -107,8 +108,6 @@ page('how-it-works', 'How it works', 'From first look to a live website: explore
 <div class="prose">
 <h2>What you get after launch</h2>
 <ul><li><b>An Owner view</b> to change products, prices, text, photos, offers and orders yourself, in the templates that include it.</li><li><b>Locked brand details.</b> Your business name and tax details are protected from accidental edits; real changes go through a verified request.</li><li><b>A site that works on phones</b> as well as computers.</li></ul>
-<h2>About the photos you see</h2>
-<p>The demos use sample photos and sample text so you can judge the design. Your own photos and words go in at setup. See the <a href="credits.html">photo credits</a>.</p>
 <p><a class="btn btn-solid" href="quote.html">Request a quote</a></p>
 </div>''')
 
@@ -160,19 +159,21 @@ legal('terms', 'Terms of use', 'The terms for using the Pixelpatra website and o
  ('Demos contain sample data', '<p>Every demo uses made-up brands, products, people and prices. Nothing you try in a demo is a real order, payment or account, and demo content may be reset or changed at any time. Some film and images in demos are AI-generated or openly licensed samples; the <a href="credits.html">credits page</a> lists them.</p>'),
  ('Quotes and orders', f'<p>You ask for a quote through the <a href="quote.html">request form</a>. We reply {REPLY}. A quote lists what is included, the price and the timeline. An order begins when you accept the quote and we confirm your payment. We may decline a request we cannot deliver well.</p>'),
  ('The three packages', '<p><b>Template files:</b> you receive the files and set the site up yourself. <b>Setup &amp; launch:</b> we set the template up with your content and put it live. <b>Custom build:</b> we design and build a site for you, starting from a template. The quote says which one you are buying.</p>'),
- ('Prices and payment', '<p>Prices are in Indian rupees. Any taxes that apply are shown on the quote. Payment is taken in advance, or in the stages written in the quote, by the method we give you. Delivery starts once payment is confirmed.</p>'),
+ ('Prices and payment', '<p>Prices are in Indian rupees. When you choose a template, a package and any extra services, the estimate on the request form shows the amount, and that is the amount you pay by UPI after you send your request. Any taxes that apply are shown before you pay. For a Custom build there is no fixed price: we agree the scope and the price with you in writing first, and you pay after that, in the stages we agree. Delivery starts once we have matched your payment, which we do within one working day.</p>'),
  ('Delivery', '<p>Template files are sent to you within one working day of payment. A Setup &amp; launch is usually live within 5 to 7 working days after we have your content. A Custom build follows the timeline in the quote. These are estimates; delays caused by late content, late feedback or third-party services may move them, and we will tell you.</p>'),
  ('What you may do with what you receive', '<p>You receive a licence to use the files or site for one website that you or your business own. You may edit them freely. You may not resell, share or redistribute the template itself. Pixelpatra keeps the copyright in the templates. Photos and other third-party material keep their own licences, listed on the <a href="credits.html">credits page</a>.</p>'),
  ('Your content', '<p>You are responsible for the text, photos, prices, legal details and any claims on your website, and for holding the right to use them. Do not give us material you do not own or that is unlawful.</p>'),
  ('Fixes and support', '<p>If something we delivered does not work as described, tell us within 30 days of delivery and we will fix it at no charge. Changes you ask for after delivery are quoted separately.</p>'),
  ('Third-party services', '<p>Hosting, domain names, payment gateways and delivery services are provided by other companies under their own terms. We cannot promise their availability.</p>'),
  ('Limits', '<p>We take care to deliver working websites, but we cannot promise they will earn sales or run without interruption. Our liability for any claim is limited to the amount you paid for the service in question.</p>'),
+ ('Complaints', f'<p>If something is wrong, tell us through the <a href="quote.html">request form</a> and say it is a complaint. We acknowledge it within 48 hours and resolve it within 30 days.</p>'),
  ('Law and disputes', f'<p>These terms are governed by the laws of India. If we cannot settle a disagreement by talking, {COURTS} will have jurisdiction.</p>'),
  ('Changes', '<p>We may update these terms. The date at the top shows when they last changed. The terms in force when you accepted your quote apply to that order.</p>')])
 legal('privacy', 'Privacy', 'What Pixelpatra collects, why, how long we keep it, and what stays in your own browser.', f'Pixelpatra operates online only from {PLACE}. We collect as little as possible. This page explains what, why, and your choices, in line with the Digital Personal Data Protection Act, 2023 and the Information Technology Act, 2000.', [
  ('What we collect', '<p>If you use the request form, we receive what you type: your name, email or phone, business, what you need, budget and timeline. If you contact us by email or WhatsApp, we receive your message and number. We do not ask for card or bank details on this website.</p>'),
  ('Why we use it', '<p>To reply to you, prepare your quote, deliver what you buy, and keep the records the law requires. We do not send marketing unless you ask for it, and we never sell your details.</p>'),
  ('What stays in your browser', '<p>The name you type into the home page box, your colour theme choice, and anything you try in a live demo (cart, orders, Owner view edits) are saved in your own browser only. They are never sent to us. Clearing your browser data, or using “Reset demos” in the demo picker, removes them.</p>'),
+ ('Payments', '<p>You pay from your own UPI app. We never see your bank or card details. We see the amount, the UPI reference number you give us, and the name and UPI ID that appear on our bank statement.</p>'),
  ('Who handles it', '<p>Only the services needed to run the site: our web host and form service (Netlify, when the request form is used on the Netlify site), email and WhatsApp for our replies, and a payment provider when you pay. Page fonts load from Google Fonts. Each handles data under its own policy, and some may store data on servers outside India.</p>'),
  ('How long we keep it', '<p>Request details are kept while we work with you and for 12 months after our last contact, then deleted. Records of paid orders are kept for 8 years, as Indian tax law requires.</p>'),
  ('Children', '<p>This service is for people aged 18 or over. We do not knowingly collect personal data of a child.</p>'),
@@ -181,15 +182,16 @@ legal('privacy', 'Privacy', 'What Pixelpatra collects, why, how long we keep it,
  ('If something goes wrong', '<p>If a breach of your personal data affects you, we will tell you and the authorities as the law requires.</p>')])
 legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for template files, setup and custom builds.', 'We want you to be happy with what you buy. Here is exactly how refunds work.', [
  ('In short', '<p>Digital files cannot be returned, so we do not refund for change of mind once they are delivered. If what we delivered does not work as described, we fix it, and if we cannot, we refund you. Cancelling before work starts is a full refund.</p>'),
- ('Template files', '<p>Template files are delivered by download link within one working day of payment. If they do not open or do not work as described, tell us within 7 days of delivery. We will fix the problem within 3 working days; if we cannot, we refund the full amount. We do not refund for change of mind or for files that work as described.</p>'),
+ ('Template files', '<p>If you change your mind within 24 hours of paying, and before we have sent the files, you get a full refund. Template files are delivered by download link within one working day of payment. If they do not open or do not work as described, tell us within 7 days of delivery. We will fix the problem within 3 working days; if we cannot, we refund the full amount. We do not refund for change of mind or for files that work as described.</p>'),
  ('Setup &amp; launch', '<p>If you cancel before we start work, you get a full refund. If you cancel after work has begun, you pay for the work already done and we refund the rest. Once we have delivered the site and you have approved it, or 7 days pass after delivery without a report of a problem, the work is complete.</p>'),
  ('Custom build', '<p>The quote sets the stages and payments. If you cancel, you pay for the stages already started, and any advance for a stage that has not started is refunded. Work completed and approved is not refundable.</p>'),
  ('Something is wrong', f'<p>Tell us through the <a href="quote.html">request form</a> or by replying to your quote. We reply {REPLY}. We fix defects in what we delivered at no charge for 30 days after delivery.</p>'),
+ ('Complaints', '<p>If you are not happy with how a refund or a request was handled, tell us through the <a href="quote.html">request form</a> and say it is a complaint. We acknowledge it within 48 hours and resolve it within 30 days.</p>'),
  ('Payments taken in error', '<p>If money was taken from your account but your order was not confirmed, we refund the full amount to the same payment method within 5 to 7 working days. Tell us the payment reference if you do not see it.</p>'),
  ('How refunds are paid', '<p>Refunds go back to the payment method you used, within 5 to 7 working days of approval. Your bank may take a few more days to show it.</p>')])
 
 # ---------------------------------------------------------------- quote
-opts = ''.join(f'<option value="{esc(t["name"])}" data-files="{t["files"]}" data-setup="{t["setup"]}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
+opts = ''.join(f'<option value="{esc(t["name"])}" data-files="{t["files"]}" data-fee="{t["fee"]}" data-setup="{t["setup"]}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
 ADDONS = DATA.get('addons', [])
 addon_html = ''.join(f'<label class="check addon"><input type="checkbox" name="features" value="{esc(a["label"])}" data-price="{a["price"]}"><span class="addon-t">{esc(a["label"])}<small>{esc(a["note"])}</small></span><b class="plus">+ {inr(a["price"])}</b></label>' for a in ADDONS)
 quote_body = f'''
@@ -211,13 +213,14 @@ quote_body = f'''
     <div class="field"><label for="q-goal">What do you want your website to do?</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
     <div class="field"><span class="lab">Extra services <span class="hint">(tick any; each one adds its price)</span></span><div class="checks addons">
       {addon_html}</div></div>
-    <div class="estimate" id="q-estimate" role="status" aria-live="polite" data-basic="{BASIC}"></div>
+    <div class="estimate" id="q-estimate" role="status" aria-live="polite"></div>
     <p class="est-actions" id="q-est-actions" hidden><button type="button" class="btn btn-sm" id="q-est-pdf">Save estimate as PDF</button> <button type="button" class="btn btn-sm" id="q-est-mail">Email me this estimate</button></p>
     <input type="hidden" name="estimate" id="q-est" value="">
+    <input type="hidden" name="order_ref" id="q-ref" value="">
     <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
   </fieldset>
   <fieldset><legend>Practical details</legend>
-    <div class="row"><div class="field"><label for="q-budget">Budget</label><select id="q-budget" name="budget"><option>Not decided</option><option>Under ₹10,000</option><option>₹10,000 to ₹25,000</option><option>₹25,000 to ₹50,000</option><option>₹50,000 or more</option></select></div>
+    <div class="row"><div class="field"><label for="q-budget">Budget</label><select id="q-budget" name="budget"><option>Not decided</option><option>Under ₹25,000</option><option>₹25,000 to ₹50,000</option><option>₹50,000 to ₹1,00,000</option><option>₹1,00,000 or more</option></select></div>
     <div class="field"><label for="q-time">When do you need it?</label><select id="q-time" name="timeline"><option>No fixed date</option><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option></select></div></div>
     <div class="row"><div class="field"><label for="q-content">Is your content ready?</label><select id="q-content" name="content"><option>Not yet</option><option>Partly</option><option>Yes, text and photos are ready</option></select></div>
     <div class="field"><label for="q-url">Current website <span class="hint">(optional)</span></label><input id="q-url" name="website" type="url" inputmode="url" placeholder="https://"></div></div>
@@ -226,16 +229,17 @@ quote_body = f'''
   <label class="check"><input type="checkbox" id="q-consent" name="consent" value="yes"> I agree that Pixelpatra may use these details to reply to me. <a href="privacy.html">Privacy</a></label><span class="err" id="e-consent" role="alert"></span>
   <div><button class="btn btn-solid" type="submit" id="q-send">Send my request</button></div>
 </form>
-<div class="qdone" id="qdone" hidden tabindex="-1" role="status"></div>'''
-page('quote', 'Request a quote', 'Tell Pixelpatra what you need and get a clear quote for a website template, setup or custom build.', quote_body, extra_foot='<script src="shared/pp-quote.js"></script>')
+<div class="qdone" id="qdone" hidden tabindex="-1" role="status"></div>
+<form name="payment" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true"><input type="hidden" name="form-name" value="payment"><input name="bot-field"><input name="order_ref"><input name="name"><input name="email"><input name="phone"><input name="amount"><input name="utr"><input name="template"><input name="package"></form>'''
+page('quote', 'Request a quote', 'Tell Pixelpatra what you need and get a clear quote for a website template, setup or custom build.', quote_body, extra_foot='<script src="shared/vendor/qrcode.js"></script><script src="shared/pp-quote.js"></script>')
 
 # ---------------------------------------------------------------- credits
-rows = ''.join(f'<tr><td>{esc(x["where"])}</td><td><a href="{esc(x["page"])}" rel="noopener">{esc(x["title"].rsplit(".", 1)[0])}</a></td><td>{esc(x["artist"] or "Unknown")}</td><td>' + (f'<a href="{esc(x["license_url"])}" rel="noopener">{esc(x["license"])}</a>' if x.get('license_url') else esc(x['license'])) + '</td></tr>' for x in CREDITS)
+rows = ''.join(f'<tr><td>{esc(x["where"])}</td><td>' + (f'<a href="{esc(x["page"])}" rel="noopener">{esc(x["title"].rsplit(".", 1)[0])}</a>' if x.get("page") else esc(x["title"])) + '</td><td>{esc(x["artist"] or "Unknown")}</td><td>' + (f'<a href="{esc(x["license_url"])}" rel="noopener">{esc(x["license"])}</a>' if x.get('license_url') else esc(x['license'])) + '</td></tr>' for x in CREDITS)
 page('credits', 'Photo credits', 'Credits and licences for the photographs and media used in the Pixelpatra demos.', f'''
-{head('Credits', 'Photo credits', 'The demos use openly licensed photographs. Your own site uses your own photos.')}
+{head('Credits', 'Photo credits', 'The demos use openly licensed photographs and some AI-generated sample images. Your own site uses your own photos.')}
 <div class="prose"><div style="overflow-x:auto"><table class="credits-table"><thead><tr><th>Where</th><th>Photo</th><th>Author</th><th>Licence</th></tr></thead><tbody>{rows}</tbody></table></div>
 <h2>Film</h2><p>The seed-to-bottle film in the Product Website demo is AI-generated sample footage. It is not a record of any real factory.</p>
-<h2>Software</h2><p>3D uses <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence).</p></div>''',
+<h2>Software</h2><p>3D uses <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence). The payment QR code uses <a href="https://github.com/kazuhikoarase/qrcode-generator" rel="noopener">qrcode-generator</a> by Kazuhiko Arase (MIT licence). QR Code is a registered trademark of DENSO WAVE INCORPORATED.</p></div>''',
  extra_head='<style>.credits-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:12px;overflow:hidden}.credits-table th,.credits-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:top}.credits-table th{background:color-mix(in srgb,var(--ink) 6%,var(--surface))}</style>')
 
 # ---------------------------------------------------------------- compare and choose
@@ -267,7 +271,7 @@ page('compare', 'Compare and choose', 'Compare all Pixelpatra templates side by 
 <section class="finder" aria-labelledby="f-h"><h2 id="f-h" class="sr">Which template suits me?</h2><div id="finder" tabindex="-1" aria-live="polite"></div></section>
 <h2>All templates side by side</h2>
 <div class="cmp-wrap" tabindex="0" role="region" aria-label="Template comparison. Scrolls sideways on small screens."><table class="cmp"><thead><tr><th scope="col">Template</th><th scope="col">Best for</th><th scope="col">Animation or 3D</th><th scope="col">Online shop</th><th scope="col">Owner view</th><th scope="col">Installed-app view</th><th scope="col">Files from</th><th scope="col">Setup from</th></tr></thead><tbody>{cmp_rows}</tbody></table></div>
-<p class="cmp-note">Setup &amp; launch starts at the Basic price and grows with the extra services you choose. A Custom build is priced from your needs. <a href="quote.html">Request a quote</a> for any of them.</p>
+<p class="cmp-note">Setup &amp; launch is the template price plus a setup fee, and grows with the extra services you choose. A Custom build has no fixed price: it is priced from your needs. <a href="quote.html">Request a quote</a> for any of them.</p>
 """, extra_head=CMP_CSS, extra_foot=FINDER_JS)
 
 # ---------------------------------------------------------------- 404, sitemap, robots

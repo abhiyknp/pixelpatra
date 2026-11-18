@@ -99,21 +99,165 @@
   "where": "Gift shop: pouch"
  },
  {
-  "file": "product-12",
-  "title": "Elegant green ceramic plate design",
-  "artist": "The Metropolitan Museum of Art (via Openverse)",
-  "license": "CC0 1.0",
-  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-  "page": "https://www.rawpixel.com/image/10235554/plate",
-  "where": "Shop samples: Sage Plate"
+  "file": "pack-1l",
+  "title": "1 litre oil bottle (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Product Website sample: 1 litre oil bottle"
+ },
+ {
+  "file": "pack-5l",
+  "title": "5 litre oil can (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Product Website sample: 5 litre oil can"
+ },
+ {
+  "file": "pack-15l",
+  "title": "15 litre oil tin (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Product Website sample: 15 litre oil tin"
+ },
+ {
+  "file": "product-01",
+  "title": "Amber Dusk candle (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Amber Dusk candle"
+ },
+ {
+  "file": "product-02",
+  "title": "Cedar Hearth candle (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Cedar Hearth candle"
+ },
+ {
+  "file": "product-07",
+  "title": "Speckle Tray (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Speckle Tray"
+ },
+ {
+  "file": "product-08",
+  "title": "Sand Dish (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Sand Dish"
+ },
+ {
+  "file": "product-09",
+  "title": "Arch Tray (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Arch Tray"
+ },
+ {
+  "file": "gift-set-small",
+  "title": "Hearth Box, Small (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Hearth Box, Small"
+ },
+ {
+  "file": "gift-set-medium",
+  "title": "Hearth Box, Medium (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Hearth Box, Medium"
+ },
+ {
+  "file": "gift-set-large",
+  "title": "Hearth Box, Large (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Hearth Box, Large"
  },
  {
   "file": "product-10",
-  "title": "Stones",
-  "artist": "rkramer62",
-  "license": "CC BY 2.0",
-  "license_url": "https://creativecommons.org/licenses/by/2.0",
-  "page": "https://www.flickr.com/photos/26503922@N08/6233679473",
+  "title": "River Pebbles (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
   "where": "Shop samples: River Pebbles"
+ },
+ {
+  "file": "product-12",
+  "title": "Sage Plate (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Sage Plate"
+ },
+ {
+  "file": "product-03",
+  "title": "Linen Morning (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Linen Morning"
+ },
+ {
+  "file": "product-04",
+  "title": "Fig Orchard (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Fig Orchard"
+ },
+ {
+  "file": "product-05",
+  "title": "Rose Tin (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Rose Tin"
+ },
+ {
+  "file": "product-06",
+  "title": "Ivory Pillar (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Ivory Pillar"
+ },
+ {
+  "file": "product-11",
+  "title": "Mini Arch (AI-generated sample image)",
+  "artist": "Made in Google Flow by the site owner",
+  "license": "AI-generated sample image",
+  "license_url": "",
+  "page": "",
+  "where": "Shop samples: Mini Arch"
  }
 ]

@@ -1,6 +1,19 @@
 {
  "products": {
   "product-10": "assets/products/product-10.jpg",
-  "product-12": "assets/products/product-12.jpg"
+  "product-12": "assets/products/product-12.jpg",
+  "gift-set-large": "assets/products/gift-set-large.jpg",
+  "gift-set-medium": "assets/products/gift-set-medium.jpg",
+  "gift-set-small": "assets/products/gift-set-small.jpg",
+  "product-02": "assets/products/product-02.jpg",
+  "product-07": "assets/products/product-07.jpg",
+  "product-08": "assets/products/product-08.jpg",
+  "product-09": "assets/products/product-09.jpg",
+  "product-01": "assets/products/product-01.jpg",
+  "product-03": "assets/products/product-03.jpg",
+  "product-04": "assets/products/product-04.jpg",
+  "product-05": "assets/products/product-05.jpg",
+  "product-06": "assets/products/product-06.jpg",
+  "product-11": "assets/products/product-11.jpg"
  }
 }
