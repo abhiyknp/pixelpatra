@@ -62,9 +62,15 @@
             <div class="try-tiles"><span></span><span></span><span></span></div>
           </div>
         </div>
-        <label class="try-label" for="your-name">Type your name or business to see it in every live demo</label>
-        <input id="your-name" type="text" maxlength="28" autocomplete="off" spellcheck="false" placeholder="e.g. Riya Sharma or Chai Corner" aria-describedby="name-msg" data-tip="Your name or business. It replaces the sample brand in every live demo.">
-        <p class="name-msg" id="name-msg" role="status" aria-live="polite"></p>
+        <form class="namebox" id="name-form" novalidate>
+          <label class="try-label" for="your-name">Your business name <small>(optional)</small></label>
+          <div class="name-row">
+            <input id="your-name" type="text" maxlength="28" autocomplete="off" spellcheck="false" placeholder="e.g. Chai Corner or Riya Sharma" aria-describedby="name-msg" data-tip="Your business name. It replaces the sample brand in every template and live demo.">
+            <button type="submit" class="btn btn-solid" id="name-go">Show it in every template</button>
+          </div>
+          <p class="name-msg" id="name-msg" role="status" aria-live="polite"></p>
+          <p class="try-note">Type your business name and every template below, and every live demo, shows it. Leave it empty to look at the sample brands instead. <button type="button" class="linkbtn" id="name-clear" hidden>Use the sample names</button></p>
+        </form>
         <div class="try-themes"><span class="lbl" id="hero-sw-l">Colour theme</span><div id="hero-sw"></div></div>
         <p class="try-note">Your name and colour theme carry into every live demo below. They stay in your browser only.</p>
       </div>
@@ -112,6 +118,10 @@
         <p class="mode-note" id="mode-note">You get the template files and launch the site yourself.</p>
       </div>
 
+      <div class="name-banner" id="name-banner" role="status" aria-live="polite" hidden>
+        <span>Showing every template as <b class="bn"></b>. Open any live demo to see it in full.</span>
+        <button type="button" class="linkbtn" id="nb-change">Change name</button><button type="button" class="linkbtn" id="nb-clear">Use the sample names</button>
+      </div>
       <noscript><style>.tshot img { opacity: 1; }</style></noscript>
       <div class="tabs" role="tablist" aria-label="Template categories" id="tabs">
         <button type="button" role="tab" aria-selected="true" data-cat="all">All</button>
@@ -126,6 +136,7 @@
         <article class="card reveal" data-name="Portfolio" data-cat="portfolio 3d" data-id="portfolio" data-files="999" data-setup="2499" data-demo="demo/?demo=portfolio">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDkFGWA65NTGJR1jP8A31UOVx05+tG1tu7HFAwPBI6c9KKSimI//9k=) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/portfolio.jpg" width="1000" height="625" alt="Portfolio template, desktop view" loading="lazy">
             <img class="ph" src="previews/portfolio-m.jpg" alt="Portfolio template, phone view" loading="lazy">
@@ -147,6 +158,7 @@
         <article class="card reveal" data-name="Professional Portfolio" data-cat="portfolio" data-id="ba" data-files="4999" data-setup="9999" data-demo="demo/?demo=ba">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDlRllAz0pxX3qMNgYpd5xVkCsMdM0U0sSOpooGf//Z) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/ba.jpg" width="1000" height="625" alt="Professional Portfolio template, desktop view" loading="lazy">
             <img class="ph" src="previews/ba-m.jpg" alt="Professional Portfolio template, phone view" loading="lazy">
@@ -168,6 +180,7 @@
         <article class="card reveal" data-name="Gift Shop" data-cat="ecommerce" data-id="sample1" data-files="6999" data-setup="14999" data-demo="demo/?demo=sample1">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDcf7Kk/liytz1/gFSxwWbqS1lApBx90f4VYKRyEkw4OTzxn607yISu0xKwznDc1Jq3GwwWtpJybaH0GUBoqZFRFCogUDoAMUUEH//Z) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/giftshop.jpg" width="1000" height="625" alt="Gift Shop template, desktop view" loading="lazy">
             <img class="ph" src="previews/giftshop-m.jpg" alt="Gift Shop template, phone view" loading="lazy">
@@ -189,6 +202,7 @@
         <article class="card reveal" data-name="3D House Shop" data-cat="ecommerce 3d" data-id="house" data-files="9999" data-setup="19999" data-demo="demo/?demo=house">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCtHezsudtv/wB+U/wp8d9MGyI7cMDjiJM/yqsFiRV2uxbHIK4x+tQxW0323zsDbv3Zz2rNlo1ftkjcNHDkD/ngvT8qKhYneT7UUAf/2Q==) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/house.jpg" width="1000" height="625" alt="3D House Shop template, desktop view" loading="lazy">
             <img class="ph" src="previews/house-m.jpg" alt="3D House Shop template, phone view" loading="lazy">
@@ -210,6 +224,7 @@
         <article class="card reveal" data-name="Scroll Openings" data-cat="3d" data-id="intros" data-files="2999" data-setup="6999" data-demo="demo/?demo=intros">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwBjThjuNpakn/pl/wDXpqyoxwLO0/79f/XqlJcKoHlypJnqApGPzqL7XKPu4U+oFYWkdV4GiZYxx9itP+/X/wBeis77XJ3Ck0UWkF4H/9k=) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/intros.jpg" width="1000" height="625" alt="Scroll Openings template, desktop view" loading="lazy">
             <img class="ph" src="previews/intros-m.jpg" alt="Scroll Openings template, phone view" loading="lazy">
@@ -231,6 +246,7 @@
         <article class="card reveal" data-name="Product Website" data-cat="business 3d" data-id="oil" data-files="4999" data-setup="9999" data-demo="demo/?demo=oil">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDEsLC5un8oBcDksxOAK39P0mKxmMk0+4BTlduPxrDM4tgFgHb73eoftEpcspIJ6nPWstTS6L+q3sFyxFsWUHjnqaKqm74AlijYDvtAP5iimGh//9k=) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/oil.jpg" width="1000" height="625" alt="Product Website template, desktop view" loading="lazy">
             <img class="ph" src="previews/oil-m.jpg" alt="Product Website template, phone view" loading="lazy">
@@ -252,6 +268,7 @@
         <article class="card reveal" data-name="Pixel Intros" data-cat="3d" data-id="pixel" data-files="2499" data-setup="5999" data-demo="demo/?demo=pixel">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDp55Y0l2vKUPHHmAfpSCW3yP8ASun/AE1rH1r/AI/z/uLWUY387cD8u5Tj2xXNKu1Jo644dOKd9zso7iOVyqOhPbDg5orC0X/j/H+41Fa0p88bmNWmqcrI/9k=) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/pixel.jpg" width="1000" height="625" alt="Pixel Intros template, desktop view" loading="lazy">
             <img class="ph" src="previews/pixel-m.jpg" alt="Pixel Intros template, phone view" loading="lazy">
@@ -273,6 +290,7 @@
         <article class="card reveal" data-name="Records Dashboard" data-cat="business" data-id="records" data-files="3999" data-setup="8999" data-demo="demo/?demo=records">
           <span class="glare"></span>
           <div class="tshot" style="background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAPABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDrmQKuASvPUUY3KR94dMetLI+1Qcd6bFCqDIJOeeaYhY1QLtjACj07UU5Y1QHaMUUDP//Z) center/cover">
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/records.jpg" width="1000" height="625" alt="Records Dashboard template, desktop view" loading="lazy">
             <img class="ph" src="previews/records-m.jpg" alt="Records Dashboard template, phone view" loading="lazy">
@@ -516,8 +534,26 @@ const CONFIG = window.PP_CONFIG || {};
     nmsg.textContent = input.value.length >= input.maxLength ? "That is the longest name we can show (" + input.maxLength + " characters). Saved." : "Saved. “" + v + "” now appears in every live demo."; nmsg.classList.add("ok");
     return v;
   }
-  input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); flashT = setTimeout(() => applyName(v, true), 250); });
-  const saved = store.get("pp-name"); if (saved) { input.value = saved; applyName(saved, false); }
+  const banner = document.getElementById("name-banner"), clearBtn = document.getElementById("name-clear"), form = document.getElementById("name-form");
+  function reflect(v) {
+    document.querySelectorAll(".brandchip").forEach(c => { c.hidden = !v; });
+    document.querySelectorAll(".brandchip .nm").forEach(n => { n.textContent = v; });
+    document.querySelectorAll(".brandchip .bi").forEach(n => { n.textContent = initials(v); });
+    banner.hidden = !v; banner.querySelector(".bn").textContent = v; clearBtn.hidden = !v;
+  }
+  function goTemplates() { document.getElementById("templates").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
+  form.addEventListener("submit", e => {
+    e.preventDefault(); const raw = input.value.trim();
+    if (!raw) { nmsg.className = "name-msg"; nmsg.textContent = "No name entered, so you are seeing the sample brands. You can type one any time."; applyName("", false); reflect(""); goTemplates(); return; }
+    const v = nameCheck(input.value); if (!v) { input.focus(); return; }
+    applyName(v, true); reflect(v); goTemplates();
+    if (window.ppUI) ppUI.toast("Showing every template as " + v + ".");
+  });
+  clearBtn.addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); input.focus(); });
+  document.getElementById("nb-clear").addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); });
+  document.getElementById("nb-change").addEventListener("click", () => { input.scrollIntoView({ block: "center", behavior: "smooth" }); input.focus(); });
+  input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); reflect(v); flashT = setTimeout(() => applyName(v, true), 250); });
+  const saved = store.get("pp-name"); if (saved) { input.value = saved; applyName(saved, false); reflect(saved.trim()); }
   if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); }
 
   /* ---- Pixel dissolve on card previews when they scroll in ---- */
@@ -605,10 +641,10 @@ const CONFIG = window.PP_CONFIG || {};
         const a = P(i, j), b = P(i + 1, j), c = P(i + 1, j + 1), d = P(i, j + 1);
         const li = i - lx, lj = j - ly, isLogo = lj >= 0 && lj < 6 && li >= 0 && li < 5 && logo[lj][li] === "#";
         const area = Math.abs((c.x - a.x) * (d.y - b.y) - (d.x - b.x) * (c.y - a.y)) / 2;
-        ctx.globalAlpha = 0.78 + 0.22 * Math.min(1, area / (cell * cell));
+        ctx.globalAlpha = 0.92 + 0.08 * Math.min(1, area / (cell * cell));
         ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.closePath();
         ctx.fillStyle = isLogo ? "#15172a" : sa; ctx.fill();
-        if (!isLogo && (i + j) % 2) { ctx.globalAlpha = 0.12; ctx.fillStyle = sd; ctx.fill(); }
+        if (!isLogo && (i + j) % 2) { ctx.globalAlpha = 0.07; ctx.fillStyle = "#ffffff"; ctx.fill(); }
       }
       ctx.globalAlpha = 1;
     }

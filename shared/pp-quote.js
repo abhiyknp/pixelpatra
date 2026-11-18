@@ -11,6 +11,26 @@
   setSel($('#q-template'), t); var p = q.get('package'); setSel($('#q-package'), p === 'setup' ? 'Setup & launch' : p === 'custom' ? 'Custom build' : p === 'files' ? 'Template files' : p);
   try { var n = localStorage.getItem('pp-name'); if (n && !$('#q-org').value) $('#q-org').value = n; } catch (e) { /* storage blocked */ }
 
+  // ---------- price estimate: the template and package price, plus each extra service that is ticked ----------
+  var inr = function (n) { return '₹' + Number(n).toLocaleString('en-IN'); };
+  var estBox = $('#q-estimate'), estField = $('#q-est'), lastEst = '';
+  function estimate() {
+    var opt = $('#q-template').selectedOptions[0], pkg = $('#q-package').value, lines = [], base = null;
+    var key = pkg === 'Template files' ? 'files' : pkg === 'Setup & launch' ? 'setup' : null;
+    if (opt && key && opt.dataset[key]) { base = +opt.dataset[key]; lines.push([opt.value + ' · ' + pkg, base]); }
+    var add = 0; [].forEach.call(form.querySelectorAll('input[name="features"]:checked'), function (c) { var v = +c.dataset.price || 0; add += v; lines.push([c.value, v, true]); });
+    var total = (base || 0) + add, html;
+    if (!lines.length) html = '<p class="est-note">Choose a template and a package, then tick any extra services. Your estimate appears here.</p>';
+    else {
+      html = '<h3>Your estimate</h3><ul>' + lines.map(function (l) { return '<li><span>' + (l[2] ? '+ ' : '') + l[0].replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</span><b>' + inr(l[1]) + '</b></li>'; }).join('') + '</ul>';
+      if (base === null) html += '<p class="est-note">' + (pkg === 'Custom build' ? 'A custom build is priced from your scope, so the base price is agreed in your quote.' : 'Pick a template to see its base price.') + '</p>';
+      html += '<p class="est-total"><span>' + (base === null ? 'Extra services' : 'Estimated total') + '</span><b>' + inr(total) + '</b></p><p class="est-note">This is an estimate. We confirm the exact price, with any taxes, in your quote.</p>';
+    }
+    estBox.innerHTML = html; lastEst = lines.length ? (base === null ? 'Extra services ' : 'Estimated total ') + inr(total) : ''; if (estField) estField.value = lastEst;
+  }
+  ['#q-template', '#q-package'].forEach(function (id) { $(id).addEventListener('change', estimate); }); form.addEventListener('change', function (e) { if (e.target.name === 'features') estimate(); });
+  estimate();
+
   var E = { name: $('#e-name'), email: $('#e-email'), phone: $('#e-phone'), goal: $('#e-goal'), consent: $('#e-consent') };
   function mark(inp, msg, el) { el.textContent = msg || ''; if (inp) inp.setAttribute('aria-invalid', msg ? 'true' : 'false'); return !msg; }
   function validate() {
@@ -34,7 +54,7 @@
   function summary() {
     var f = new FormData(form), lines = [], get = function (k) { return (f.get(k) || '').toString().trim(); };
     lines.push('Quote request for Pixelpatra', '', 'Name: ' + get('name'), 'Business: ' + (get('organisation') || '-'), 'Email: ' + (get('email') || '-'), 'Phone: ' + (get('phone') || '-'), '',
-      'Template: ' + get('template'), 'Package: ' + get('package'), 'Features: ' + (f.getAll('features').join(', ') || '-'), 'Budget: ' + get('budget'), 'Timeline: ' + get('timeline'), 'Content ready: ' + get('content'),
+      'Template: ' + get('template'), 'Package: ' + get('package'), 'Extra services: ' + (f.getAll('features').join(', ') || '-'), 'Estimate: ' + (lastEst || '-'), 'Budget: ' + get('budget'), 'Timeline: ' + get('timeline'), 'Content ready: ' + get('content'),
       'Current website: ' + (get('website') || '-'), 'Best time to reach: ' + (get('best_time') || '-'), '', 'What they want:', get('goal'));
     return lines.join('\n');
   }
