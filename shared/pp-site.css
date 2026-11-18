@@ -371,3 +371,6 @@ details.faq { border-bottom: 1px solid var(--line); padding-block: 4px; max-widt
 .brandchip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brandchip b{font-weight:700}
 
 .nopr .addon .plus{display:none}
+.notsure{margin:10px 0 0;font-size:14.5px}.notsure a{font-weight:700;color:var(--ink);text-underline-offset:3px}
+@media print{.top,.site-foot,.fab,#pp-top,#pp-offline,.pp-msgs,.crumbs,#qdone .btn{display:none!important}body{background:#fff}#qdone pre{white-space:pre-wrap}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /Sample_1/
+Disallow: /Sample_2/
+Disallow: /Sample_3/
+Disallow: /Sample_4/
+Disallow: /Sample_5/
+Disallow: /Sample_6/
+Disallow: /House_3D_Prototype/
+Disallow: /kits/
+
+Sitemap: https://pixelpatra.netlify.app/sitemap.xml

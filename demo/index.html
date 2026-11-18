@@ -83,8 +83,9 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "group": "Portfolios",
       "name": "Portfolio · Portfolio · 3D",
       "url": "../Sample_3/index.html",
-      "owner": true,
-      "note": "A portfolio whose name is made of thousands of particles. Move the pointer through them, then scroll: they scatter into a galaxy."
+      "owner": false,
+      "note": "A portfolio whose name is made of thousands of particles. Move the pointer through them, then scroll: they scatter into a galaxy.",
+      "try": "Move your pointer over the name, scroll to turn it into a galaxy, then open a project."
     },
     {
       "id": "ba",
@@ -95,7 +96,8 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "name": "Professional Portfolio · Portfolio · Knowledge base",
       "url": "../Sample_4/index.html",
       "owner": false,
-      "note": "A working portfolio: scroll intro, 42-skill library, case studies, sample deliverables, decision scenarios and a process puzzle. Press / to search."
+      "note": "A working portfolio: scroll intro, 42-skill library, case studies, sample deliverables, decision scenarios and a process puzzle. Press / to search.",
+      "try": "Skip the intro, search the skills library, then open a case study."
     },
     {
       "id": "sample1",
@@ -106,7 +108,8 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "name": "Gift Shop · E-commerce",
       "url": "../Sample_1/index.html",
       "owner": true,
-      "note": "A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser."
+      "note": "A complete shop: cart, test payments, orders, invoices and a locked Owner view. Everything you change stays in this browser.",
+      "try": "Add a gift to the cart and check out with the test payment, then open Owner view."
     },
     {
       "id": "house",
@@ -118,7 +121,8 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "name": "3D House Shop · E-commerce · 3D",
       "url": "../House_3D_Prototype/index.html",
       "owner": true,
-      "note": "The same shop, opening with a scroll-driven 3D walk through a house. Use Home page above to switch between the walk and the gift shop."
+      "note": "The same shop, opening with a scroll-driven 3D walk through a house. Use Home page above to switch between the walk and the gift shop.",
+      "try": "Choose Home page, Foyer, scroll through the house, then open Owner view."
     },
     {
       "id": "intros",
@@ -129,7 +133,8 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "name": "Scroll Openings · Animated",
       "url": "../kits/scroll-intros/index.html",
       "owner": true,
-      "note": "Three scroll-driven openings. Use Opening above to switch, then scroll the homepage."
+      "note": "Three scroll-driven openings. Use Opening above to switch, then scroll the homepage.",
+      "try": "Switch Opening above, scroll the home page, then open Owner view."
     },
     {
       "id": "oil",
@@ -141,7 +146,8 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "name": "Product Website · Product site · Film",
       "url": "../Sample_2/index.html",
       "owner": false,
-      "note": "Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records."
+      "note": "Scroll the film: field, sunflower, seeds, press, oil, bottles. Then orders, dealer enquiries and quality records.",
+      "try": "Scroll the film from seed to bottle, then send a dealer enquiry."
     },
     {
       "id": "pixel",
@@ -152,7 +158,8 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "name": "Pixel Intros · Animated · Effects",
       "url": "../Sample_5/index.html",
       "owner": false,
-      "note": "Four effects: tear the cloth, scroll to build the pictures, scroll the pinned browser tour, and tear off the price tag."
+      "note": "Four effects: tear the cloth, scroll to build the pictures, scroll the pinned browser tour, and tear off the price tag.",
+      "try": "Tear the cloth, scroll to build the pictures, then try the tear-off price tag."
     },
     {
       "id": "records",
@@ -163,7 +170,8 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
       "name": "Records Dashboard · Business tool",
       "url": "../Sample_6/index.html",
       "owner": false,
-      "note": "Add, edit, delete, search, sort and export records. Try the Add button, then reload: your changes stay in this browser."
+      "note": "Add, edit, delete, search, sort and export records. Try the Add button, then reload: your changes stay in this browser.",
+      "try": "Add a student, search, sort, export, then reload: your changes stay."
     }
   ];
   /*/pp:demos*/
@@ -216,7 +224,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
     if (f.dataset.base !== d.url) { f.dataset.base = d.url; f.dataset.url = url; $('extra').innerHTML = ''; watch(url); f.src = url; }
     else { if (f.dataset.url !== url) { f.dataset.url = url; watch(url); f.src = url; } setTimeout(wire, 300); } // same page: only the device or the start changed
     $('stage').className = 'stage ' + (dev === 'phone' ? 'phone' : dev === 'tablet' ? 'tablet' : '');
-    $('open').href = url; $('note').textContent = d.note;
+    $('open').href = url; $('note').textContent = d.note + (d.try ? ' Try this: ' + d.try : '');
     var s = new URLSearchParams(); s.set('demo', d.id); if (dev !== 'desktop') s.set('device', dev); if (start) s.set('start', start);
     ['opening', 'home'].forEach(function (k) { if (pending[k] && d.id === (q.get('demo') || 'sample1')) s.set(k, pending[k]); });
     history.replaceState(null, '', '?' + s.toString()); document.title = d.name.split(' (')[0] + ' · Pixelpatra demos';
