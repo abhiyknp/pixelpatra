@@ -104,8 +104,8 @@
   function summary() {
     var f = new FormData(form), lines = [], get = function (k) { return (f.get(k) || '').toString().trim(); };
     lines.push('Quote request for Pixelpatra', '', 'Name: ' + get('name'), 'Business: ' + (get('organisation') || '-'), 'Email: ' + (get('email') || '-'), 'Phone: ' + (get('phone') || '-'), '',
-      'Order reference: ' + (orderRef || '-'), 'Template: ' + get('template'), 'Package: ' + get('package'), 'Extra services: ' + (f.getAll('features').join(', ') || '-'), 'Estimate: ' + (lastEst || '-'), (get('explorer') ? get('explorer') : 'Explorer reward: no'), 'Budget: ' + get('budget'), 'Timeline: ' + get('timeline'), 'Content ready: ' + get('content'),
-      'Current website: ' + (get('website') || '-'), 'Best time to reach: ' + (get('best_time') || '-'), '', 'What they want:', get('goal'));
+      'Order reference: ' + (orderRef || '-'), 'Template: ' + get('template'), 'Package: ' + get('package'), 'Extra services: ' + (f.getAll('features').join(', ') || '-'), 'Estimate: ' + (lastEst || '-'), (get('explorer') ? get('explorer') : 'Explorer reward: no'),
+      '', 'What they want:', get('goal'));
     return lines.join('\n');
   }
   // ---------- payment by UPI: the amount comes from the estimate; the customer then tells us the UPI reference so we can match it ----------
