@@ -182,7 +182,10 @@ legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for te
  ('How refunds are paid', '<p>Refunds go back to the payment method you used, within 5 to 7 working days of approval. Your bank may take a few more days to show it.</p>')])
 
 # ---------------------------------------------------------------- quote
-opts = ''.join(f'<option value="{esc(t["name"])}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
+opts = ''.join(f'<option value="{esc(t["name"])}" data-files="{t["files"]}" data-setup="{t["setup"]}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
+opts += f'<option value="All templates (bundle)" data-files="{BUNDLE}" data-setup="{sum(t["setup"] for t in TEMPLATES)}">All {len(TEMPLATES)} templates (bundle)</option>'
+ADDONS = DATA.get('addons', [])
+addon_html = ''.join(f'<label class="check addon"><input type="checkbox" name="features" value="{esc(a["label"])}" data-price="{a["price"]}"><span class="addon-t">{esc(a["label"])}<small>{esc(a["note"])}</small></span><b class="plus">+ {inr(a["price"])}</b></label>' for a in ADDONS)
 quote_body = f'''
 {head('Request a quote', 'Tell us what you need', 'Takes about two minutes. We reply with a clear quote; nothing starts until you agree.')}
 <div class="qsummary" id="qsummary" role="alert" tabindex="-1" hidden></div>
@@ -200,8 +203,10 @@ quote_body = f'''
     <div class="row"><div class="field"><label for="q-template">Template</label><select id="q-template" name="template"><option value="Not sure yet">Not sure yet, help me choose</option>{opts}<option value="Something custom">Something custom</option></select></div>
     <div class="field"><label for="q-package">Package</label><select id="q-package" name="package"><option value="Template files">Template files</option><option value="Setup &amp; launch">Setup &amp; launch</option><option value="Custom build">Custom build</option></select></div></div>
     <div class="field"><label for="q-goal">What do you want your website to do?</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
-    <div class="field"><span class="lab">Features you need <span class="hint">(tick any)</span></span><div class="checks">
-      <label class="check"><input type="checkbox" name="features" value="Online ordering"> Online ordering</label><label class="check"><input type="checkbox" name="features" value="Payments"> Payments</label><label class="check"><input type="checkbox" name="features" value="Owner view"> Owner view</label><label class="check"><input type="checkbox" name="features" value="Blog or journal"> Blog or journal</label><label class="check"><input type="checkbox" name="features" value="More than one language"> More than one language</label><label class="check"><input type="checkbox" name="features" value="Domain and hosting help"> Domain and hosting help</label><label class="check"><input type="checkbox" name="features" value="Logo and branding"> Logo and branding</label></div></div>
+    <div class="field"><span class="lab">Extra services <span class="hint">(tick any; each one adds its price)</span></span><div class="checks addons">
+      {addon_html}</div></div>
+    <div class="estimate" id="q-estimate" role="status" aria-live="polite"></div>
+    <input type="hidden" name="estimate" id="q-est" value="">
   </fieldset>
   <fieldset><legend>Practical details</legend>
     <div class="row"><div class="field"><label for="q-budget">Budget</label><select id="q-budget" name="budget"><option>Not decided</option><option>Under ₹10,000</option><option>₹10,000 to ₹25,000</option><option>₹25,000 to ₹50,000</option><option>₹50,000 or more</option></select></div>
@@ -238,6 +243,7 @@ for t in TEMPLATES:
     cards += f'''        <article class="card reveal" data-name="{esc(t['name'])}" data-cat="{t['cats']}" data-id="{t['id']}" data-files="{t['files']}" data-setup="{t['setup']}" data-demo="demo/?demo={t['id']}">
           <span class="glare"></span>
           <div class="tshot"{bg}>
+            <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/{t['img']}.jpg" width="1000" height="625" alt="{esc(t['name'])} template, desktop view" loading="lazy">
             <img class="ph" src="previews/{t['img']}-m.jpg" alt="{esc(t['name'])} template, phone view" loading="lazy">

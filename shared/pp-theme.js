@@ -19,10 +19,17 @@
   function mix(a, b, t) { var x = hex(a), y = hex(b); return css([x[0] + (y[0] - x[0]) * t, x[1] + (y[1] - x[1]) * t, x[2] + (y[2] - x[2]) * t]); }
   function lum(h) { var c = hex(h).map(function (v) { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
   var onText = function (bg) { return lum(bg) > .35 ? '#1a1208' : '#ffffff'; };
+  // the Pixelpatra shell itself wants a lively accent. The template palettes use deep tones (good for text on a cream page), so
+  // for buttons, the logo and the opening cloth the accent is made brighter and more saturated, keeping its hue.
+  function hsl(h) { var c = hex(h).map(function (v) { return v / 255; }), mx = Math.max(c[0], c[1], c[2]), mn = Math.min(c[0], c[1], c[2]), l = (mx + mn) / 2, d = mx - mn, s = d ? d / (1 - Math.abs(2 * l - 1)) : 0, hh = 0;
+    if (d) { hh = mx === c[0] ? ((c[1] - c[2]) / d) % 6 : mx === c[1] ? (c[2] - c[0]) / d + 2 : (c[0] - c[1]) / d + 4; hh *= 60; if (hh < 0) hh += 360; } return [hh, s, l]; }
+  function fromHsl(h, s, l) { var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l), f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); }; return css([f(0) * 255, f(8) * 255, f(4) * 255]); }
+  function vivid(h) { var x = hsl(h), g = x[0] > 70 && x[0] < 210; /* greens and teals look neon when bright, so they stay a little deeper */ return fromHsl(x[0], Math.max(x[1], g ? .78 : .86), g ? Math.min(.40, Math.max(x[2], .36)) : Math.min(.58, Math.max(x[2], .52))); }
+  function best(bg) { var L = lum(bg), dark = (L + .05) / (lum('#1a1208') + .05), white = 1.05 / (L + .05); return dark >= white ? '#1a1208' : '#ffffff'; }
   function set(vars) { Object.keys(vars).forEach(function (k) { root.style.setProperty(k, vars[k]); }); }
 
   var adapters = {
-    store: function (t) { set({ '--paper': t.bg, '--surface': t.card, '--ink': t.ink, '--muted': mix(t.ink, t.bg, .38), '--line': mix(t.ink, t.bg, .86), '--saffron': t.accent, '--saffron-ink': onText(t.accent), '--teal': t.olive, '--leaf': t.olive, '--plum': t.accent2, '--sky': t.accent }); },
+    store: function (t) { set({ '--paper': t.bg, '--surface': t.card, '--ink': t.ink, '--muted': mix(t.ink, t.bg, .38), '--line': mix(t.ink, t.bg, .86), '--saffron': vivid(t.accent), '--saffron-ink': best(vivid(t.accent)), '--teal': t.olive, '--leaf': t.olive, '--plum': t.accent2, '--sky': vivid(t.accent) }); },
     oil: function (t) { set({ '--cream': t.bg, '--paper': t.card, '--ink': t.ink, '--ink2': mix(t.ink, t.bg, .3), '--line': mix(t.ink, t.bg, .82), '--gold': t.dark ? t.accent : (lum(t.accent) > .3 ? t.accent : mix(t.accent, '#ffffff', .12)), '--gold2': mix(t.accent, '#ffffff', .35), '--leaf': t.olive }); },
     portfolio: function (t) {
       var dark = t.dark ? t.bg : mix(t.ink, '#000000', .6), acc = t.dark ? t.accent : mix(t.accent, '#ffffff', .22), acc2 = t.dark ? t.accent2 : mix(t.accent2, '#ffffff', .25);
