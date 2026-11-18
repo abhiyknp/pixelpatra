@@ -14,6 +14,9 @@
     { id: 'phone', text: 'See a shop as a phone app', href: 'demo/?demo=sample1&device=phone' }
   ];
   var script = document.currentScript, mode = (script && script.dataset.ui) || 'widget';
+  var inDemo = /\/demo\/?(index\.html)?$/.test(location.pathname);
+  // the links in the checklist are written from the home page; this makes them work from the demo page and the other pages too
+  function link(h) { if (h.charAt(0) === '#') return (document.getElementById('your-name') ? '' : (inDemo ? '../' : '') + 'index.html') + h; return (inDemo ? '../' : '') + h; }
   function read() { try { var a = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(a) ? a.filter(function (x) { return TASKS.some(function (t) { return t.id === x; }); }) : []; } catch (e) { return []; } }
   function write(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) { /* storage blocked */ } }
   var listeners = [];
@@ -56,8 +59,8 @@
     root.querySelector('#pp-ex-count').innerHTML = done ? 'Reward unlocked' : '<span class="pp-ex-long">' + n + ' of ' + TASKS.length + ' explored</span><span class="pp-ex-short" aria-hidden="true">' + n + '/' + TASKS.length + '</span>';
     root.querySelector('#pp-ex-sub').textContent = done ? 'You have tried everything. Nicely done.' : 'Try five things and unlock a reward.';
     root.querySelector('#pp-ex-fill').style.width = pct + '%';
-    root.querySelector('#pp-ex-list').innerHTML = TASKS.map(function (t) { var on = a.indexOf(t.id) >= 0; return '<li class="' + (on ? 'on' : '') + '"><span class="tick" aria-hidden="true">' + (on ? '✓' : '') + '</span><span>' + (on ? '<span class="sr-only" style="position:absolute;left:-9999px">Done: </span>' : '') + (on ? t.text : '<a href="' + t.href + '">' + t.text + '</a>') + '</span></li>'; }).join('');
-    root.querySelector('#pp-ex-reward').innerHTML = done ? '<b>Unlocked: ' + reward + '.</b><br>Mention it when you request a quote; it is added to your request automatically.<br><a href="quote.html?explorer=1">Claim it in a quote request</a>' : '<b>Reward:</b> ' + reward + '.';
+    root.querySelector('#pp-ex-list').innerHTML = TASKS.map(function (t) { var on = a.indexOf(t.id) >= 0; return '<li class="' + (on ? 'on' : '') + '"><span class="tick" aria-hidden="true">' + (on ? '✓' : '') + '</span><span>' + (on ? '<span class="sr-only" style="position:absolute;left:-9999px">Done: </span>' : '') + (on ? t.text : '<a href="' + link(t.href) + '">' + t.text + '</a>') + '</span></li>'; }).join('');
+    root.querySelector('#pp-ex-reward').innerHTML = done ? '<b>Unlocked: ' + reward + '.</b><br>Mention it when you request a quote; it is added to your request automatically.<br><a href="' + link('quote.html?explorer=1') + '">Claim it in a quote request</a>' : '<b>Reward:</b> ' + reward + '.';
   }
   var pill = root.querySelector('#pp-ex-pill'), panel = root.querySelector('#pp-ex-panel');
   function toggle(open) { var o = open == null ? panel.hidden : open; panel.hidden = !o; pill.setAttribute('aria-expanded', String(o)); }

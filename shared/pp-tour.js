@@ -19,6 +19,7 @@
     document.body.appendChild(ring); document.body.appendChild(pop);
   }
   function place() {
+    if (!ring || !pop) return; // the tour was closed while a move was still pending
     var el = target(i); if (!el) return;
     var r = el.getBoundingClientRect(), pad = 8;
     ring.style.cssText = 'left:' + (r.left - pad) + 'px;top:' + (r.top - pad) + 'px;width:' + (r.width + pad * 2) + 'px;height:' + (r.height + pad * 2) + 'px';
