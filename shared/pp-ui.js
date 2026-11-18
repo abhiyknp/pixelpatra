@@ -21,7 +21,10 @@
     '#pp-top{position:fixed;z-index:900;right:16px;bottom:78px;width:44px;height:44px;border-radius:50%;border:0;background:#1b1410;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s}' +
     '#pp-top.on{opacity:.92;pointer-events:auto}#pp-top:focus-visible{outline:3px solid #ffb27a;outline-offset:2px}' +
     '[data-tip]{cursor:help}button[data-tip],a[data-tip],select[data-tip],label[data-tip]{cursor:pointer}' +
-    '@media (prefers-reduced-motion:reduce){#pp-tip,.pp-msg,#pp-top{transition:none;animation:none}}';
+    '.pp-cta{position:fixed;z-index:940;left:0;right:0;bottom:0;display:none;align-items:center;justify-content:center;min-height:56px;padding:8px 16px calc(8px + env(safe-area-inset-bottom));background:#1b1410;color:#fff;font:700 16px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;box-shadow:0 -6px 24px rgba(0,0,0,.25);transform:translateY(110%);transition:transform .25s}' +
+    '.pp-cta.on{transform:none}.pp-cta:focus-visible{outline:3px solid #ffb27a;outline-offset:-5px}.pp-cta span{color:#ffb454;margin-left:8px}' +
+    '@media (max-width:720px){.pp-cta{display:flex}#pp-top{bottom:calc(78px + var(--pp-cta-h,0px))}}' +
+    '@media (prefers-reduced-motion:reduce){#pp-tip,.pp-msg,#pp-top,.pp-cta{transition:none;animation:none}}';
   var st = doc.createElement('style'); st.textContent = css; doc.head.appendChild(st);
 
   // ---------- messages ----------
@@ -89,6 +92,13 @@
       if (ok) done(); else say('Could not copy automatically. Copy this link: ' + text, 'warn', true);
     }
     if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, manual); else manual();
+  }
+  // a "Request a quote" bar for phones, once the visitor has scrolled past the first screen
+  if (!hub && !demo && !doc.getElementById('qform')) {
+    var cta = doc.createElement('a'); cta.className = 'pp-cta'; cta.href = 'quote.html'; cta.innerHTML = 'Request a quote<span aria-hidden="true">→</span>'; doc.body.appendChild(cta);
+    var ct = false, mq = matchMedia('(max-width:720px)');
+    function ctaSync() { var show = mq.matches && scrollY > innerHeight * .9; cta.classList.toggle('on', show); doc.documentElement.style.setProperty('--pp-cta-h', show ? cta.offsetHeight + 'px' : '0px'); }
+    addEventListener('scroll', function () { if (ct) return; ct = true; requestAnimationFrame(function () { ct = false; ctaSync(); }); }, { passive: true }); addEventListener('resize', ctaSync);
   }
   window.ppUI = { copy: copy, toast: function (t, k) { return say(t, k || 'ok'); }, alert: function (t, k) { return say(t, k || 'err', true); }, tip: showTip, hideTip: hideTip };
 })();

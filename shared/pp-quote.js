@@ -12,7 +12,7 @@
 
   // ---------- price estimate: the template and package price, plus each extra service that is ticked ----------
   var inr = function (n) { return '₹' + Number(n).toLocaleString('en-IN'); };
-  var estBox = $('#q-estimate'), estField = $('#q-est'), lastEst = '';
+  var estBox = $('#q-estimate'), estField = $('#q-est'), lastEst = '', cur = null;
   function estimate() {
     var opt = $('#q-template').selectedOptions[0], pkg = $('#q-package').value, lines = [], base = null;
     var key = pkg === 'Template files' ? 'files' : pkg === 'Setup & launch' ? 'setup' : null;
@@ -22,6 +22,7 @@
       var esc2 = function (x) { return x.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
       estBox.innerHTML = '<h3>Custom build</h3><p>The price of a custom build depends on what you need. We do not set an amount in advance: tell us what you want, and we agree the scope and the price with you in writing before any work starts.</p>' +
         (picked.length ? '<p class="est-note">Services you would like included: ' + picked.map(esc2).join(', ') + '.</p>' : '');
+      cur = { lines: [], base: null, total: 0, pkg: pkg, template: opt ? opt.value : '', picked: picked, custom: true }; var act0 = $('#q-est-actions'); if (act0) act0.hidden = false;
       lastEst = 'Custom build: priced after we agree the scope'; if (estField) estField.value = lastEst; return;
     }
     var basic = +estBox.dataset.basic || 0;
@@ -36,10 +37,49 @@
       if (base === null) html += '<p class="est-note">' + 'Pick a template to see its base price.' + '</p>';
       html += '<p class="est-total"><span>' + (base === null ? 'Extra services' : 'Estimated total') + '</span><b>' + inr(total) + '</b></p><p class="est-note">This is an estimate. We confirm the exact price, with any taxes, in your quote.</p>';
     }
+    cur = { lines: lines, base: base, total: total, pkg: pkg, template: opt ? opt.value : '', picked: picked };
+    var act = $('#q-est-actions'); if (act) act.hidden = !lines.length && pkg !== 'Custom build';
     estBox.innerHTML = html; lastEst = lines.length ? (base === null ? 'Extra services ' : 'Estimated total ') + inr(total) : ''; if (estField) estField.value = lastEst;
   }
+  // ---------- the estimate as a PDF (the browser's Save as PDF) or an email ----------
+  function ref() { var d = new Date(), z = function (n) { return ('0' + n).slice(-2); }; return 'PP-' + d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate()) + '-' + Math.random().toString(36).slice(2, 6).toUpperCase(); }
+  function escH(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function sheetHtml(r) {
+    var who = [$('#q-name').value.trim(), $('#q-org').value.trim(), $('#q-email').value.trim(), $('#q-phone').value.trim()].filter(Boolean).map(escH).join(' · ') || 'Not filled in yet';
+    var rows = cur.custom ? '<tr><td>Custom build: the price depends on what you need, so no amount is set in advance. We agree the scope and the price with you in writing before any work starts.</td><td></td></tr>' + (cur.picked.length ? '<tr><td>Services you would like included: ' + cur.picked.map(escH).join(', ') + '</td><td></td></tr>' : '')
+      : cur.lines.map(function (l) { return '<tr><td>' + (l[2] ? '+ ' : '') + escH(l[0]) + '</td><td class="amt">' + inr(l[1]) + '</td></tr>'; }).join('');
+    var total = cur.custom ? '' : '<tr class="tot"><td>' + (cur.base === null ? 'Extra services' : 'Estimated total') + '</td><td class="amt">' + inr(cur.total) + '</td></tr>';
+    var contact = [C.email, C.whatsapp ? 'WhatsApp +' + C.whatsapp : ''].filter(Boolean).map(escH).join(' · ');
+    return '<div class="ps-head"><b>Pixelpatra</b><span>Estimate</span></div><p class="ps-meta">Reference ' + r + ' · ' + new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) + '</p>' +
+      '<p><b>Prepared for:</b> ' + who + '</p><p><b>Template:</b> ' + escH(cur.template || 'Not chosen yet') + ' · <b>Package:</b> ' + escH(cur.pkg) + '</p><table>' + rows + total + '</table>' +
+      '<p class="ps-note">This is an estimate, not a quote. We confirm the exact price, with any taxes that apply, in your quote. Nothing starts until you say yes.</p>' + (contact ? '<p class="ps-note">Contact: ' + contact + '</p>' : '') + '<p class="ps-note">Request a quote: ' + escH(location.origin + location.pathname.replace(/[^/]*$/, '') + 'quote.html') + '</p>';
+  }
+  function printEstimate() {
+    if (!cur) estimate(); if (!cur) return;
+    var sh = $('#print-sheet'); if (!sh) { sh = document.createElement('div'); sh.id = 'print-sheet'; document.body.appendChild(sh); }
+    sh.innerHTML = sheetHtml(ref()); document.body.classList.add('print-est');
+    var done = function () { document.body.classList.remove('print-est'); removeEventListener('afterprint', done); }; addEventListener('afterprint', done); setTimeout(function () { window.print(); }, 60);
+  }
+  function mailEstimate() {
+    if (!cur) estimate(); if (!cur) return;
+    var em = $('#q-email').value.trim(), to = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) ? em : '';
+    var lines = cur.custom ? ['Custom build: the price depends on what you need. We agree the scope and the price in writing before any work starts.'].concat(cur.picked.length ? ['Services you would like included: ' + cur.picked.join(', ')] : [])
+      : cur.lines.map(function (l) { return (l[2] ? '+ ' : '') + l[0] + ': ' + inr(l[1]); }).concat(['', (cur.base === null ? 'Extra services: ' : 'Estimated total: ') + inr(cur.total)]);
+    var body = ['Pixelpatra estimate', 'Template: ' + (cur.template || 'not chosen yet'), 'Package: ' + cur.pkg, ''].concat(lines, ['', 'This is an estimate, not a quote. We confirm the exact price in your quote.', 'Request a quote: ' + location.origin + location.pathname.replace(/[^/]*$/, '') + 'quote.html']).join('\n');
+    var url = 'mailto:' + to + '?subject=' + encodeURIComponent('Your Pixelpatra estimate') + '&body=' + encodeURIComponent(body);
+    (window.__ppMailto || function (u) { location.href = u; })(url);
+    if (!to && window.ppUI) ppUI.toast('Your email app opened. Add your own address and send it to yourself.', 'ok');
+  }
+  var bp = $('#q-est-pdf'), bm = $('#q-est-mail'); if (bp) bp.addEventListener('click', printEstimate); if (bm) bm.addEventListener('click', mailEstimate);
+
   ['#q-template', '#q-package'].forEach(function (id) { $(id).addEventListener('change', estimate); }); form.addEventListener('change', function (e) { if (e.target.name === 'features') estimate(); });
   estimate();
+
+  // an Explorer reward, if the visitor unlocked it by trying the demos
+  document.addEventListener('DOMContentLoaded', function () {
+    var ex = window.ppExplore, note = $('#q-reward'), fld = $('#q-explorer'); if (!ex || !ex.unlocked()) return;
+    fld.value = 'Explorer reward unlocked: ' + ex.reward; note.hidden = false; note.textContent = 'Explorer reward unlocked: ' + ex.reward + '. We will apply it to your request.';
+  });
 
   var E = { name: $('#e-name'), email: $('#e-email'), phone: $('#e-phone'), goal: $('#e-goal'), consent: $('#e-consent') };
   function mark(inp, msg, el) { el.textContent = msg || ''; if (inp) inp.setAttribute('aria-invalid', msg ? 'true' : 'false'); return !msg; }
@@ -64,7 +104,7 @@
   function summary() {
     var f = new FormData(form), lines = [], get = function (k) { return (f.get(k) || '').toString().trim(); };
     lines.push('Quote request for Pixelpatra', '', 'Name: ' + get('name'), 'Business: ' + (get('organisation') || '-'), 'Email: ' + (get('email') || '-'), 'Phone: ' + (get('phone') || '-'), '',
-      'Template: ' + get('template'), 'Package: ' + get('package'), 'Extra services: ' + (f.getAll('features').join(', ') || '-'), 'Estimate: ' + (lastEst || '-'), 'Budget: ' + get('budget'), 'Timeline: ' + get('timeline'), 'Content ready: ' + get('content'),
+      'Template: ' + get('template'), 'Package: ' + get('package'), 'Extra services: ' + (f.getAll('features').join(', ') || '-'), 'Estimate: ' + (lastEst || '-'), (get('explorer') ? get('explorer') : 'Explorer reward: no'), 'Budget: ' + get('budget'), 'Timeline: ' + get('timeline'), 'Content ready: ' + get('content'),
       'Current website: ' + (get('website') || '-'), 'Best time to reach: ' + (get('best_time') || '-'), '', 'What they want:', get('goal'));
     return lines.join('\n');
   }
@@ -81,9 +121,9 @@
   function thanks(text) {
     var nm = $('#q-name').value.trim().split(/\s+/)[0];
     show('<h2>Thank you, ' + esc(nm) + '.</h2><p>We have your request and will reply with a clear quote' + ($('#q-email').value ? ' at ' + esc($('#q-email').value.trim()) : '') + ' ' + 'within one working day (Monday to Saturday). Nothing starts until you say yes.</p>' +
-      '<h3>What you asked for</h3><pre>' + esc(text) + '</pre><p><button type="button" class="btn" id="q-copy">Copy this</button> <button type="button" class="btn" id="q-print">Print or save as PDF</button> <a class="btn" href="index.html#templates">Back to the templates</a></p>');
+      '<h3>What you asked for</h3><pre>' + esc(text) + '</pre><p><button type="button" class="btn" id="q-copy">Copy this</button> <button type="button" class="btn" id="q-print">Save estimate as PDF</button> <a class="btn" href="index.html#templates">Back to the templates</a></p>');
     var cp = $('#q-copy'); if (cp) cp.addEventListener('click', function () { if (window.ppUI) ppUI.copy(text, 'Copied.'); });
-    var pr = $('#q-print'); if (pr) pr.addEventListener('click', function () { window.print(); });
+    var pr = $('#q-print'); if (pr) pr.addEventListener('click', printEstimate);
   }
   var netlify = C.netlifyForms === true || (C.netlifyForms !== false && /\.netlify\.app$/.test(location.hostname));
   form.addEventListener('submit', function (e) {

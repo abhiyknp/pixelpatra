@@ -6,6 +6,7 @@
 <title>Pixelpatra demos</title>
 <script src="../shared/pp-theme.js" data-pp="hub"></script>
 <script src="../shared/pp-ui.js" data-ui="hub" defer></script>
+<script src="../shared/pp-explore.js" data-ui="widget" defer></script>
 <meta name="description" content="Try every Pixelpatra sample site: pick a demo, a device and where to start, from the dropdowns.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f97316'/%3E%3C/svg%3E">
 <style>
@@ -31,7 +32,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
 .fail { background: #7f1d1d; color: #fff; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .fail[hidden], .busy[hidden], .guide[hidden] { display: none; }
 .fail button { font: inherit; font-weight: 700; color: #fff; background: transparent; border: 1px solid #fecaca; border-radius: 8px; padding: 4px 12px; cursor: pointer; }
-.guide { position: fixed; z-index: 50; left: 14px; bottom: 14px; max-width: min(340px, calc(100vw - 28px)); background: #fff; color: #1b1410; border-radius: 14px; padding: 14px 16px; box-shadow: 0 10px 34px rgba(0, 0, 0, .35); font-size: 13.5px; }
+.guide { position: fixed; z-index: 50; left: 14px; bottom: 74px; max-width: min(340px, calc(100vw - 28px)); background: #fff; color: #1b1410; border-radius: 14px; padding: 14px 16px; box-shadow: 0 10px 34px rgba(0, 0, 0, .35); font-size: 13.5px; }
 .guide ul { margin: 6px 0 10px; padding-left: 18px; } .guide li { margin: 2px 0; }
 .guide button { font: inherit; font-weight: 700; background: #f97316; color: #1b1410; border: 0; border-radius: 8px; padding: 8px 14px; min-height: 40px; cursor: pointer; }
 .note { background: #2b211b; color: var(--muted); padding: 6px 14px; font-size: 12.5px; }
@@ -218,6 +219,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   }
   function show() {
     var d = pick($('demo').value), dev = $('device').value, start = $('start').value;
+    if (window.ppExplore) { ppExplore.mark('demo'); if (dev === 'phone' || dev === 'tablet') ppExplore.mark('phone'); if (start === 'admin') ppExplore.mark('owner'); }
     $('start').querySelector('option[value="admin"]').disabled = !d.owner; if (!d.owner) $('start').value = start = '';
     var url = d.url + (start === 'admin' ? '#admin' : '');
     var f = $('frame');

@@ -42,7 +42,7 @@ FOOTER = f'''<footer class="site-foot">
   <div class="wrap foot-grid">
     <div><a class="logo" href="index.html" aria-label="Pixelpatra home">{LOGO}Pixelpatra</a><p>Immersive website templates for portfolios, shops, makers and 3D experiences, made in India.</p></div>
     <div><h3>Templates</h3><ul><li><a href="index.html?cat=portfolio#templates">Portfolio</a></li><li><a href="index.html?cat=ecommerce#templates">E-commerce</a></li><li><a href="index.html?cat=3d#templates">3D &amp; animated</a></li><li><a href="index.html?cat=business#templates">Business</a></li></ul></div>
-    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="compare.html">Compare and choose</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
+    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="compare.html">Compare and choose</a></li><li><a href="index.html?tour=1" data-tour>Take a quick tour</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
     <div><h3>Legal</h3><ul><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="refunds.html">Refunds</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
   </div>
   <div class="wrap foot-base"><span>© <span id="yr">2026</span> Pixelpatra</span><span id="build" title="The same number on every copy of this site means the same version"></span></div>
@@ -67,6 +67,7 @@ def page(slug, title, desc, body, extra_head='', extra_foot=''):
 <script src="shared/pp-config.js"></script>
 <script src="shared/pp-theme.js" data-pp="store"></script>
 <script src="shared/pp-ui.js" defer></script>
+<script src="shared/pp-explore.js" data-ui="widget" defer></script>
 <link rel="stylesheet" href="shared/pp-site.css">{extra_head}
 </head>
 <body>
@@ -211,7 +212,9 @@ quote_body = f'''
     <div class="field"><span class="lab">Extra services <span class="hint">(tick any; each one adds its price)</span></span><div class="checks addons">
       {addon_html}</div></div>
     <div class="estimate" id="q-estimate" role="status" aria-live="polite" data-basic="{BASIC}"></div>
+    <p class="est-actions" id="q-est-actions" hidden><button type="button" class="btn btn-sm" id="q-est-pdf">Save estimate as PDF</button> <button type="button" class="btn btn-sm" id="q-est-mail">Email me this estimate</button></p>
     <input type="hidden" name="estimate" id="q-est" value="">
+    <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
   </fieldset>
   <fieldset><legend>Practical details</legend>
     <div class="row"><div class="field"><label for="q-budget">Budget</label><select id="q-budget" name="budget"><option>Not decided</option><option>Under ₹10,000</option><option>₹10,000 to ₹25,000</option><option>₹25,000 to ₹50,000</option><option>₹50,000 or more</option></select></div>
@@ -298,6 +301,7 @@ for t in TEMPLATES:
             <span class="brandchip" hidden aria-hidden="true"><i class="bi"></i><span>as <b class="nm"></b></span></span>
             <div class="bar"><i></i><i></i><i></i></div>
             <img class="dt" src="previews/{t['img']}.jpg" width="1000" height="625" alt="{esc(t['name'])} template, desktop view" loading="lazy">
+            <video class="tvid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="previews/{t['img']}.mp4"></video>
             <img class="ph" src="previews/{t['img']}-m.jpg" alt="{esc(t['name'])} template, phone view" loading="lazy">
             <span class="live">▶ Try it live</span>
           </div>

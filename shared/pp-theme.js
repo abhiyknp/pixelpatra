@@ -76,7 +76,7 @@
   function apply(id, persist, quiet) {
     var t = by(id); if (!t) return;
     current = id; root.dataset.ppTheme = id; (adapters[page] || adapters.store)(t, quiet);
-    if (persist) { try { localStorage.setItem(KEY, id); saved = true; } catch (e) { /* storage blocked */ } }
+    if (persist) { try { localStorage.setItem(KEY, id); saved = true; } catch (e) { /* storage blocked */ } if (window.ppExplore) window.ppExplore.mark('look'); }
     window.dispatchEvent(new CustomEvent('pp-theme', { detail: { id: id, theme: t } }));
   }
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }

@@ -16,6 +16,8 @@
 <script src="shared/pp-config.js"></script>
 <script src="shared/pp-theme.js" data-pp="store"></script>
 <script src="shared/pp-ui.js" defer></script>
+<script src="shared/pp-tour.js" defer></script>
+<script src="shared/pp-explore.js" data-ui="widget" defer></script>
 <link rel="stylesheet" href="shared/pp-site.css">
 </head>
 <body>
@@ -346,7 +348,7 @@
   <div class="wrap foot-grid">
     <div><a class="logo" href="index.html" aria-label="Pixelpatra home"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i class="o"></i><i></i><i class="x"></i><i></i><i></i><i class="x"></i><i class="x"></i></span>Pixelpatra</a><p>Immersive website templates for portfolios, shops, makers and 3D experiences, made in India.</p></div>
     <div><h3>Templates</h3><ul><li><a href="index.html?cat=portfolio#templates">Portfolio</a></li><li><a href="index.html?cat=ecommerce#templates">E-commerce</a></li><li><a href="index.html?cat=3d#templates">3D &amp; animated</a></li><li><a href="index.html?cat=business#templates">Business</a></li></ul></div>
-    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="compare.html">Compare and choose</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
+    <div><h3>Pixelpatra</h3><ul><li><a href="demo/">Live demos</a></li><li><a href="compare.html">Compare and choose</a></li><li><a href="index.html?tour=1" data-tour>Take a quick tour</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li><li><a href="quote.html">Request a quote</a></li></ul></div>
     <div><h3>Legal</h3><ul><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="refunds.html">Refunds</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
   </div>
   <div class="wrap foot-base"><span>© <span id="yr">2026</span> Pixelpatra</span><span id="build" title="The same number on every copy of this site means the same version"></span></div>
@@ -507,7 +509,7 @@ const CONFIG = window.PP_CONFIG || {};
       const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(img, 0, 0, w, h); URL.revokeObjectURL(url);
       let data; try { data = c.toDataURL("image/png"); } catch (e) { logoMsg("We could not read that logo. Try a PNG or JPG."); return; }
       if (!ppTheme.setLogo(data, w / h)) { logoMsg("Your browser would not save the logo (private browsing?). It will not carry into the demos."); return; }
-      paintLogo(); if (window.ppExplore) ppExplore.mark("brand"); logoMsg("Logo added. It now appears in every live demo.", "ok");
+      paintLogo(); if (window.ppExplore) ppExplore.mark("look"); logoMsg("Logo added. It now appears in every live demo.", "ok");
     };
     img.onerror = () => { URL.revokeObjectURL(url); logoMsg("We could not open that image. Please try another file."); };
     img.src = url;
@@ -557,7 +559,7 @@ const CONFIG = window.PP_CONFIG || {};
     const raw = input.value.trim();
     if (!raw) { nmsg.className = "name-msg"; nmsg.textContent = "No name entered, so you are seeing the sample brands. You can type one any time."; applyName("", false); reflect(""); goTemplates(); return; }
     const v = nameCheck(input.value); if (!v) { input.focus(); return; }
-    applyName(v, true); reflect(v); goTemplates();
+    applyName(v, true); reflect(v); goTemplates(); if (window.ppExplore) ppExplore.mark("name");
     if (window.ppUI) ppUI.toast("Showing every template as " + v + ".");
   }
   input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); submitName(); input.blur(); } });
@@ -566,7 +568,7 @@ const CONFIG = window.PP_CONFIG || {};
   clearBtn.addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); input.focus(); });
   document.getElementById("nb-clear").addEventListener("click", () => { input.value = ""; nameCheck(""); applyName("", false); reflect(""); });
   document.getElementById("nb-change").addEventListener("click", () => { input.scrollIntoView({ block: "center", behavior: "smooth" }); input.focus(); });
-  input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); reflect(v); flashT = setTimeout(() => applyName(v, true), 250); });
+  input.addEventListener("input", () => { clearTimeout(flashT); const v = nameCheck(input.value); applyName(v, false); reflect(v); flashT = setTimeout(() => { applyName(v, true); if (v.length >= 2 && window.ppExplore) ppExplore.mark("name"); }, 250); });
   const saved = store.get("pp-name"); if (saved) { input.value = saved; applyName(saved, false); reflect(saved.trim()); }
   if (window.ppTheme) { ppTheme.mount(document.getElementById("hero-sw")); paintLogo(); }
 
@@ -597,6 +599,7 @@ const CONFIG = window.PP_CONFIG || {};
   const hero = document.querySelector(".hero");
   const canvas = document.getElementById("cloth"), openBtn = document.getElementById("cloth-open");
   function opened() {
+    window.__ppOpened = true; window.dispatchEvent(new Event("pp-opened"));
     if (!reduce) root.classList.add("anim");
     setTimeout(() => pendingDissolve.forEach(playDissolve), 250);
   }
@@ -713,6 +716,7 @@ const CONFIG = window.PP_CONFIG || {};
   frame.addEventListener("load", () => clearTimeout(slowT));
   function openLive(card) {
     const cat = (document.querySelector("#tabs [aria-selected=true]") || {}).dataset ? document.querySelector("#tabs [aria-selected=true]").dataset.cat : "all";
+    if (window.ppExplore) ppExplore.mark("demo");
     from = card; frame.src = "demo/?embed=1&demo=" + card.dataset.id + (cat !== "all" ? "&cat=" + cat : "");
     clearTimeout(slowT); slowT = setTimeout(() => { if (window.ppUI && !modal.hidden) ppUI.alert(navigator.onLine === false ? "You are offline, so the live demo cannot load. Reconnect and open it again." : "The live demo is taking longer than usual. Check your connection, or close it and try again."); }, 20000);
     modal.hidden = false; document.body.classList.add("lock"); document.querySelectorAll("body > header, body > main, body > footer, body > .fab").forEach(n => n.setAttribute("inert", "")); frame.focus();
@@ -723,6 +727,20 @@ const CONFIG = window.PP_CONFIG || {};
     const card = (a || shot) && (a || shot).closest(".card"); if (!card) return;
     e.preventDefault(); openLive(card);
   }, true);
+  /* ---- card clips: play on hover (computers) or while in view (phones); never with reduced motion or Data Saver ---- */
+  (function () {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData);
+    const vids = [...document.querySelectorAll(".tvid")]; if (calm || !vids.length) return;
+    const play = v => { if (!v.src) v.src = v.dataset.src; v.play().then(() => v.classList.add("on")).catch(() => {}); };
+    const stop = v => { v.pause(); v.classList.remove("on"); };
+    if (matchMedia("(hover: hover)").matches) {
+      document.querySelectorAll(".tshot").forEach(s => { const v = s.querySelector(".tvid"); if (!v) return;
+        s.addEventListener("mouseenter", () => play(v)); s.addEventListener("mouseleave", () => stop(v)); s.addEventListener("focus", () => play(v)); s.addEventListener("blur", () => stop(v)); });
+    } else {
+      const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? play(e.target) : stop(e.target)), { threshold: 0.7 });
+      vids.forEach(v => io.observe(v));
+    }
+  })();
   document.querySelectorAll(".tshot").forEach(t => { t.tabIndex = 0; t.setAttribute("role", "button"); t.setAttribute("aria-label", "Open live demo"); t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLive(t.closest(".card")); } }); });
   document.addEventListener("click", e => {
     const b = e.target.closest(".copylink"); if (!b) return;
