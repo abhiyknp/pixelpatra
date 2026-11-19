@@ -34,6 +34,7 @@
     ownerCheck(); addEventListener('hashchange', ownerCheck);
     document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-act="mode"][data-v="app"]'); if (b) mark('phone'); }, true);
   }
+  if (mode === 'widget' && document.getElementById('qform')) return; // the request page has its own pinned bar; the reward note is shown inside the form
   if (mode !== 'widget' || new URLSearchParams(location.search).get('embed') === '1') return; // inside the live-preview window the page behind it shows the tracker
 
   // ---------- the corner tracker ----------

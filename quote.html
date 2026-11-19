@@ -37,39 +37,69 @@
 <main class="wrap page" id="main">
 <nav class="crumbs" aria-label="You are here"><a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">Request a quote</span></nav>
 
-<div class="page-head"><p class="eyebrow">Request a quote</p><h1>Tell us what you need</h1><p>Takes about two minutes. We reply with a clear quote; nothing starts until you agree.</p></div>
+<div class="page-head"><p class="eyebrow">Request a quote</p><h1>Let’s plan your website</h1><p>Three quick steps, about two minutes. Nothing is charged until you choose to pay, and nothing starts until you agree.</p></div>
 <div class="qsummary" id="qsummary" role="alert" tabindex="-1" hidden></div>
 <form class="qform" id="qform" name="quote" method="POST" action="quote.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
   <input type="hidden" name="form-name" value="quote">
   <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-  <fieldset><legend>About you</legend>
+  <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
+  <div class="qresume" id="qresume" role="status" hidden><span><b>Welcome back.</b> We kept your answers, saved only in this browser.</span><button type="button" id="qresume-clear">Start fresh</button></div>
+  <ol class="qprog" id="qprog" aria-label="Progress">
+    <li><button type="button" data-s="0" aria-current="step"><i>1</i><span>Choose your site</span></button></li>
+    <li><button type="button" data-s="1"><i>2</i><span>Make it yours</span></button></li>
+    <li><button type="button" data-s="2"><i>3</i><span>Confirm</span></button></li>
+  </ol>
+  <div class="qstep" data-step="0">
+    <h2 class="qh" tabindex="-1">Which site, and how much help?</h2>
+    <div class="field"><label for="q-template">Template</label><select id="q-template" name="template"><option value="Not sure yet">Not sure yet, help me choose</option><option value="Portfolio" data-files="25000" data-fee="5000" data-setup="30000" data-img="portfolio" data-tag="Portfolio · 3D">Portfolio · Portfolio · 3D</option><option value="Professional Portfolio" data-files="45000" data-fee="9000" data-setup="54000" data-img="ba" data-tag="Portfolio · Knowledge base">Professional Portfolio · Portfolio · Knowledge base</option><option value="Gift Shop" data-files="30000" data-fee="6000" data-setup="36000" data-img="giftshop" data-tag="E-commerce">Gift Shop · E-commerce</option><option value="3D House Shop" data-files="50000" data-fee="10000" data-setup="60000" data-img="house" data-tag="E-commerce · 3D">3D House Shop · E-commerce · 3D</option><option value="Scroll Openings" data-files="35000" data-fee="7000" data-setup="42000" data-img="intros" data-tag="Animated">Scroll Openings · Animated</option><option value="Product Website" data-files="40000" data-fee="8000" data-setup="48000" data-img="oil" data-tag="Product site · Film">Product Website · Product site · Film</option><option value="Pixel Intros" data-files="20000" data-fee="5000" data-setup="25000" data-img="pixel" data-tag="Animated · Effects">Pixel Intros · Animated · Effects</option><option value="Records Dashboard" data-files="50000" data-fee="10000" data-setup="60000" data-img="records" data-tag="Business tool">Records Dashboard · Business tool</option><option value="Something custom">Something custom</option></select></div>
+    <div class="tpl-peek" id="tpl-peek" hidden>
+      <div class="mock" aria-hidden="true"><div class="mk-bar"><i></i><i></i><i></i><span class="mk-url" id="mk-url">yourname.in</span></div><div class="mk-head"><span class="mk-av" id="mk-av">YN</span><b id="mk-name">Your business</b><em></em><em></em></div><img id="tp-img" alt="" width="1000" height="625"></div>
+      <div class="mk-cap"><small>Your site, as it will look</small><b id="tp-name"></b><span id="tp-tag"></span><a href="compare.html">Not sure? Compare them</a></div>
+    </div>
+    <div class="field" hidden><label for="q-package">Package</label><select id="q-package" name="package"><option value="Template files">Template files</option><option value="Setup &amp; launch">Setup &amp; launch</option><option value="Custom build">Custom build</option></select></div>
+    <div class="pkgpick" id="pkgpick" role="radiogroup" aria-label="How much help do you want?" data-minfiles="20000" data-minsetup="25000">
+      <button type="button" role="radio" data-val="Template files"><b>Template files</b><em>You set it up yourself</em><strong class="pp" data-k="files"></strong><ul><li>The complete website files</li><li>A written guide to add your name, photos and text</li><li>Runs on ordinary hosting</li></ul></button>
+      <button type="button" role="radio" data-val="Setup &amp; launch"><span class="ribbon">Easiest</span><b>Setup &amp; launch</b><em>We do it all for you</em><strong class="pp" data-k="setup"></strong><ul><li>We add your name, logo, colours, photos and text</li><li>We connect your domain and put it live</li><li>Two rounds of changes after you review it</li></ul></button>
+      <button type="button" role="radio" data-val="Custom build"><b>Custom build</b><em>Made around your needs</em><strong class="pp" data-k="custom"></strong><ul><li>Changes to layout, features or a new page type</li><li>Scope and price agreed with you in writing first</li><li>Best for specific needs</li></ul></button>
+    </div>
+    <p class="qassure">Choosing here does not commit you. You can change anything before you send.</p>
+  </div>
+  <div class="qstep" data-step="1" hidden>
+    <h2 class="qh" tabindex="-1">Tell us what you want it to do</h2>
+    <div class="field"><label for="q-goal">In your own words</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
+    <div class="field"><span class="lab">Make it do more <span class="hint">(optional; each one adds its price to your total)</span></span><div class="checks addons">
+      <label class="check addon"><input type="checkbox" name="features" value="Analytics" data-price="50000"><span class="addon-t">Analytics<small>Visitor and sales reports you can read at a glance</small></span><b class="plus">+ ₹50,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Shipping service" data-price="30000"><span class="addon-t">Shipping service<small>Courier rates, delivery PIN check and order tracking</small></span><b class="plus">+ ₹30,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Online ordering" data-price="40000"><span class="addon-t">Online ordering<small>Cart and checkout so customers can order on the site</small></span><b class="plus">+ ₹40,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Payments" data-price="20000"><span class="addon-t">Payments<small>UPI and card payments through a payment gateway</small></span><b class="plus">+ ₹20,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Blog or journal" data-price="15000"><span class="addon-t">Blog or journal<small>Write and publish articles from the Owner view</small></span><b class="plus">+ ₹15,000</b></label><label class="check addon"><input type="checkbox" name="features" value="More than one language" data-price="25000"><span class="addon-t">More than one language<small>The site in two or more languages</small></span><b class="plus">+ ₹25,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Domain and hosting help" data-price="5000"><span class="addon-t">Domain and hosting help<small>We register the domain and put the site live</small></span><b class="plus">+ ₹5,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Logo and branding" data-price="15000"><span class="addon-t">Logo and branding<small>A logo, colours and fonts made for you</small></span><b class="plus">+ ₹15,000</b></label></div></div>
+  </div>
+  <div class="qstep" data-step="2" hidden>
+    <h2 class="qh" tabindex="-1">Almost done. Who should we reply to?</h2>
     <div class="row"><div class="field"><label for="q-name">Your name</label><input id="q-name" name="name" type="text" autocomplete="name" required><span class="err" id="e-name" role="alert"></span></div>
     <div class="field"><label for="q-org">Business or organisation <span class="hint">(optional)</span></label><input id="q-org" name="organisation" type="text" autocomplete="organization"></div></div>
     <div class="row"><div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" inputmode="email"><span class="err" id="e-email" role="alert"></span></div>
     <div class="field"><label for="q-phone">Phone or WhatsApp</label><input id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"><span class="err" id="e-phone" role="alert"></span></div></div>
     <p class="hint" style="margin:-4px 0 14px;color:var(--muted)">Email or phone, at least one, so we can reach you.</p>
-  </fieldset>
-  <fieldset><legend>What you want</legend>
-    <div class="row"><div class="field"><label for="q-template">Template</label><select id="q-template" name="template"><option value="Not sure yet">Not sure yet, help me choose</option><option value="Portfolio" data-files="25000" data-fee="5000" data-setup="30000">Portfolio · Portfolio · 3D</option><option value="Professional Portfolio" data-files="45000" data-fee="9000" data-setup="54000">Professional Portfolio · Portfolio · Knowledge base</option><option value="Gift Shop" data-files="30000" data-fee="6000" data-setup="36000">Gift Shop · E-commerce</option><option value="3D House Shop" data-files="50000" data-fee="10000" data-setup="60000">3D House Shop · E-commerce · 3D</option><option value="Scroll Openings" data-files="35000" data-fee="7000" data-setup="42000">Scroll Openings · Animated</option><option value="Product Website" data-files="40000" data-fee="8000" data-setup="48000">Product Website · Product site · Film</option><option value="Pixel Intros" data-files="20000" data-fee="5000" data-setup="25000">Pixel Intros · Animated · Effects</option><option value="Records Dashboard" data-files="50000" data-fee="10000" data-setup="60000">Records Dashboard · Business tool</option><option value="Something custom">Something custom</option></select></div>
-    <div class="field"><label for="q-package">Package</label><select id="q-package" name="package"><option value="Template files">Template files</option><option value="Setup &amp; launch">Setup &amp; launch</option><option value="Custom build">Custom build</option></select></div></div>
-    <div class="field"><label for="q-goal">What do you want your website to do?</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
-    <div class="field"><span class="lab">Extra services <span class="hint">(tick any; each one adds its price)</span></span><div class="checks addons">
-      <label class="check addon"><input type="checkbox" name="features" value="Analytics" data-price="50000"><span class="addon-t">Analytics<small>Visitor and sales reports you can read at a glance</small></span><b class="plus">+ ₹50,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Shipping service" data-price="30000"><span class="addon-t">Shipping service<small>Courier rates, delivery PIN check and order tracking</small></span><b class="plus">+ ₹30,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Online ordering" data-price="40000"><span class="addon-t">Online ordering<small>Cart and checkout so customers can order on the site</small></span><b class="plus">+ ₹40,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Payments" data-price="20000"><span class="addon-t">Payments<small>UPI and card payments through a payment gateway</small></span><b class="plus">+ ₹20,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Blog or journal" data-price="15000"><span class="addon-t">Blog or journal<small>Write and publish articles from the Owner view</small></span><b class="plus">+ ₹15,000</b></label><label class="check addon"><input type="checkbox" name="features" value="More than one language" data-price="25000"><span class="addon-t">More than one language<small>The site in two or more languages</small></span><b class="plus">+ ₹25,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Domain and hosting help" data-price="5000"><span class="addon-t">Domain and hosting help<small>We register the domain and put the site live</small></span><b class="plus">+ ₹5,000</b></label><label class="check addon"><input type="checkbox" name="features" value="Logo and branding" data-price="15000"><span class="addon-t">Logo and branding<small>A logo, colours and fonts made for you</small></span><b class="plus">+ ₹15,000</b></label></div></div>
     <div class="estimate" id="q-estimate" role="status" aria-live="polite"></div>
     <p class="est-actions" id="q-est-actions" hidden><button type="button" class="btn btn-sm" id="q-est-pdf">Save estimate as PDF</button> <button type="button" class="btn btn-sm" id="q-est-mail">Email me this estimate</button></p>
     <input type="hidden" name="estimate" id="q-est" value="">
     <input type="hidden" name="order_ref" id="q-ref" value="">
-    <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
-  </fieldset>
-  <fieldset><legend>Practical details</legend>
-    <div class="row"><div class="field"><label for="q-budget">Budget</label><select id="q-budget" name="budget"><option>Not decided</option><option>Under ₹25,000</option><option>₹25,000 to ₹50,000</option><option>₹50,000 to ₹1,00,000</option><option>₹1,00,000 or more</option></select></div>
-    <div class="field"><label for="q-time">When do you need it?</label><select id="q-time" name="timeline"><option>No fixed date</option><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option></select></div></div>
-    <div class="row"><div class="field"><label for="q-content">Is your content ready?</label><select id="q-content" name="content"><option>Not yet</option><option>Partly</option><option>Yes, text and photos are ready</option></select></div>
-    <div class="field"><label for="q-url">Current website <span class="hint">(optional)</span></label><input id="q-url" name="website" type="url" inputmode="url" placeholder="https://"></div></div>
-    <div class="field"><label for="q-contact">Best time to reach you <span class="hint">(optional)</span></label><input id="q-contact" name="best_time" type="text" placeholder="For example: weekdays after 5 pm"></div>
-  </fieldset>
-  <label class="check"><input type="checkbox" id="q-consent" name="consent" value="yes"> I agree that Pixelpatra may use these details to reply to me. <a href="privacy.html">Privacy</a></label><span class="err" id="e-consent" role="alert"></span>
-  <div><button class="btn btn-solid" type="submit" id="q-send">Send my request</button></div>
+    <ul class="qpromise">
+      <li><b>Nothing starts until you agree.</b> This is a request, not an order.</li>
+      <li><b>We reply within one working day</b> (Monday to Saturday).</li>
+      <li><b>Full refund</b> if you cancel before work starts.</li>
+      <li><b>Pay by UPI from your own app,</b> right after you send. We never see your bank details.</li>
+    </ul>
+    <ol class="qnext" id="qnext" aria-label="What happens next">
+      <li><b>You send this request</b><span>It takes a minute.</span></li>
+      <li><b>We reply</b><span>Within one working day, Monday to Saturday.</span></li>
+      <li id="qn-3"><b>You approve and pay</b><span>By UPI, from your own app.</span></li>
+      <li id="qn-4"><b>We deliver</b><span></span></li>
+    </ol>
+    <label class="check"><input type="checkbox" id="q-consent" name="consent" value="yes"> I agree that Pixelpatra may use these details to reply to me. <a href="privacy.html">Privacy</a></label><span class="err" id="e-consent" role="alert"></span>
+  </div>
+  <div class="qbar" id="qbar">
+    <div class="qb-sum" aria-live="polite"><small>Your estimate</small><b id="qb-total">Pick a template</b><span id="qb-sub"></span></div>
+    <button type="button" class="btn" id="q-back" hidden>Back</button>
+    <button class="btn btn-solid" type="button" id="q-send">Continue</button>
+  </div>
 </form>
 <div class="qdone" id="qdone" hidden tabindex="-1" role="status"></div>
 <form name="payment" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true"><input type="hidden" name="form-name" value="payment"><input name="bot-field"><input name="order_ref"><input name="name"><input name="email"><input name="phone"><input name="amount"><input name="utr"><input name="template"><input name="package"></form>
