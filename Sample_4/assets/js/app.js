@@ -431,7 +431,7 @@
     if (!host || !window.PFIntros) return;
     host.classList.toggle('i-static', reduceMotion.matches);
     var skip = '<button class="i-skip" type="button" data-act="skip-intro">Skip intro</button>';
-    host.innerHTML = '<section class="i-sec i-chaos"><div class="i-stage" role="img" aria-label="Animated introduction: stakeholder phrases fade away as four words form the line: Turning complexity into clarity.">' + skip + '</div></section>';
+    host.innerHTML = '<section class="i-sec i-chaos"><div class="i-stage" role="group" aria-label="Animated introduction: stakeholder phrases fade away as four words form the line: Turning complexity into clarity.">' + skip + '</div></section>';
     stopIntro = window.PFIntros.chaos(host.querySelector('.i-chaos'), { sub: '<span class="i-name">That is the job.</span><span>Here is how I do it ↓</span>', fadeOut: true });
   }
   function layoutThread() {

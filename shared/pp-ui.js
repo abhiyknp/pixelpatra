@@ -36,20 +36,20 @@
     var x = doc.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'Dismiss message'); x.textContent = '✕'; m.appendChild(x);
     function gone() { if (m.parentNode) m.parentNode.removeChild(m); }
     x.addEventListener('click', gone); msgBox().appendChild(m);
-    if (!sticky) setTimeout(gone, kind === 'err' ? 9000 : 4200);
+    if (!sticky) setTimeout(gone, kind === 'err' || kind === 'warn' ? 9000 : 4200);
     return { close: gone };
   }
 
   // ---------- tooltips ----------
-  var tip = doc.createElement('div'); tip.id = 'pp-tip'; tip.setAttribute('role', 'tooltip'); doc.body.appendChild(tip);
+  var tip = doc.createElement('div'); tip.id = 'pp-tip'; tip.setAttribute('aria-hidden', 'true'); doc.body.appendChild(tip);
   var cur = null;
   function place(el) {
     var r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight, x = r.left + r.width / 2 - w / 2, y = r.bottom + 8;
     if (y + h > innerHeight - 6) y = r.top - h - 8;
     x = Math.max(8, Math.min(x, innerWidth - w - 8)); tip.style.left = x + 'px'; tip.style.top = Math.max(6, y) + 'px';
   }
-  function showTip(el) { if (!el || !el.dataset.tip) return; cur = el; tip.textContent = el.dataset.tip; tip.classList.add('on'); el.setAttribute('aria-describedby', 'pp-tip'); place(el); }
-  function hideTip() { if (cur) cur.removeAttribute('aria-describedby'); cur = null; tip.classList.remove('on'); }
+  function showTip(el) { if (!el || !el.dataset.tip) return; cur = el; tip.textContent = el.dataset.tip; tip.setAttribute('role', 'tooltip'); tip.removeAttribute('aria-hidden'); tip.classList.add('on'); el.setAttribute('aria-describedby', 'pp-tip'); place(el); }
+  function hideTip() { if (cur) cur.removeAttribute('aria-describedby'); cur = null; tip.classList.remove('on'); tip.removeAttribute('role'); tip.setAttribute('aria-hidden', 'true'); }
   function target(e) {
     var t = e.target && e.target.closest ? e.target.closest('[data-tip],.pp-sw[title]') : null;
     if (t && !t.dataset.tip && t.title) { t.dataset.tip = t.title; t.removeAttribute('title'); } // one tooltip, not two
@@ -95,7 +95,7 @@
   }
   // a "Request a quote" bar for phones, once the visitor has scrolled past the first screen
   if (!hub && !demo && !doc.getElementById('qform')) {
-    var cta = doc.createElement('a'); cta.className = 'pp-cta'; cta.href = 'quote.html'; cta.innerHTML = 'Request a quote<span aria-hidden="true">→</span>'; doc.body.appendChild(cta);
+    var ctaWrap = doc.createElement('nav'); ctaWrap.setAttribute('aria-label', 'Quick link'); var cta = doc.createElement('a'); cta.className = 'pp-cta'; cta.href = 'quote.html'; cta.innerHTML = 'Request a quote<span aria-hidden="true">→</span>'; ctaWrap.appendChild(cta); doc.body.appendChild(ctaWrap);
     var ct = false, mq = matchMedia('(max-width:720px)');
     function ctaSync() { var show = mq.matches && scrollY > innerHeight * .9; cta.classList.toggle('on', show); doc.documentElement.style.setProperty('--pp-cta-h', show ? cta.offsetHeight + 'px' : '0px'); }
     addEventListener('scroll', function () { if (ct) return; ct = true; requestAnimationFrame(function () { ct = false; ctaSync(); }); }, { passive: true }); addEventListener('resize', ctaSync);

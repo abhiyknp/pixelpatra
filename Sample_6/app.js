@@ -17,7 +17,7 @@
       fields: [{ k: 'name', l: 'Full name', t: 'text', req: 1 }, { k: 'email', l: 'Email', t: 'email', req: 1 }, { k: 'phone', l: 'Phone', t: 'tel' }, { k: 'department', l: 'Department', t: 'select', opts: S.depts }, { k: 'role', l: 'Role', t: 'text', req: 1 }, { k: 'city', l: 'City', t: 'text' }, { k: 'status', l: 'Status', t: 'select', opts: ['Active', 'On leave'] }, { k: 'joined', l: 'Joined on', t: 'date' }] }
   };
   var st = { view: 'dash', q: '', sort: { k: 'name', d: 1 }, page: 1, f: '', status: '' };
-  var COLORS = ['#2f6df6', '#12a594', '#c98512', '#a24ad6', '#d6457a', '#3a8f3a'];
+  var COLORS = ['#2f6df6', '#0e7c70', '#9a5f0a', '#8f3bbd', '#b02a60', '#2f7a2f'];
   var color = function (s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return COLORS[h % COLORS.length]; };
   var initials = function (n) { return n.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase(); };
   var fmtDate = function (d) { if (!d) return '–'; var x = new Date(d + 'T00:00:00'); return isNaN(x) ? d : x.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); };
