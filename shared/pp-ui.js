@@ -36,7 +36,7 @@
     var x = doc.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'Dismiss message'); x.textContent = '✕'; m.appendChild(x);
     function gone() { if (m.parentNode) m.parentNode.removeChild(m); }
     x.addEventListener('click', gone); msgBox().appendChild(m);
-    if (!sticky) setTimeout(gone, kind === 'err' ? 9000 : 4200);
+    if (!sticky) setTimeout(gone, kind === 'err' || kind === 'warn' ? 9000 : 4200);
     return { close: gone };
   }
 
