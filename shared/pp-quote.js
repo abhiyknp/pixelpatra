@@ -13,7 +13,8 @@
   // ---------- price estimate: the template and package price, plus each extra service that is ticked ----------
   var inr = function (n) { return '₹' + Number(n).toLocaleString('en-IN'); };
   var estBox = $('#q-estimate'), estField = $('#q-est'), lastEst = '', cur = null;
-  function estimate() {
+  function estimate() { estimateCore(); barUpdate(); pkgUpdate(); peekUpdate(); }
+  function estimateCore() {
     var opt = $('#q-template').selectedOptions[0], pkg = $('#q-package').value, lines = [], base = null;
     var key = pkg === 'Template files' ? 'files' : pkg === 'Setup & launch' ? 'setup' : null;
     var picked = [].map.call(form.querySelectorAll('input[name="features"]:checked'), function (c) { return c.value; });
@@ -83,19 +84,20 @@
 
   var E = { name: $('#e-name'), email: $('#e-email'), phone: $('#e-phone'), goal: $('#e-goal'), consent: $('#e-consent') };
   function mark(inp, msg, el) { el.textContent = msg || ''; if (inp) inp.setAttribute('aria-invalid', msg ? 'true' : 'false'); return !msg; }
-  function validate() {
-    var ok = true, first = null, list = [], v = function (id) { return $(id).value.trim(); };
+  function validate(only) {
+    var ok = true, first = null, list = [], v = function (id) { return $(id).value.trim(); }, chk = function (id) { return !only || only.indexOf(id) >= 0; };
     function bad(inp, msg, el) { if (!mark(inp, msg, el)) { ok = false; if (!first) first = inp; list.push({ id: inp.id, msg: msg }); } }
-    bad($('#q-name'), v('#q-name').length < 2 ? 'Please tell us your name.' : '', E.name);
+    if (chk('q-name')) bad($('#q-name'), v('#q-name').length < 2 ? 'Please tell us your name.' : '', E.name);
     var em = v('#q-email'), ph = v('#q-phone').replace(/[\s\-()]/g, '');
     var emBad = em && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em), phBad = ph && !/^\+?\d{8,15}$/.test(ph);
-    bad($('#q-email'), emBad ? 'That email does not look right.' : (!em && !ph ? 'Add an email or a phone number.' : ''), E.email);
-    bad($('#q-phone'), phBad ? 'Use 8 to 15 digits, with the country code if outside India.' : '', E.phone);
-    bad($('#q-goal'), v('#q-goal').length < 10 ? 'Tell us a little about what you want (at least a sentence).' : '', E.goal);
-    bad($('#q-consent'), $('#q-consent').checked ? '' : 'Please tick to agree.', E.consent);
+    if (chk('q-email')) bad($('#q-email'), emBad ? 'That email does not look right.' : (!em && !ph ? 'Add an email or a phone number.' : ''), E.email);
+    if (chk('q-phone')) bad($('#q-phone'), phBad ? 'Use 8 to 15 digits, with the country code if outside India.' : '', E.phone);
+    if (chk('q-goal')) bad($('#q-goal'), v('#q-goal').length < 10 ? 'Tell us a little about what you want (at least a sentence).' : '', E.goal);
+    if (chk('q-consent')) bad($('#q-consent'), $('#q-consent').checked ? '' : 'Please tick to agree.', E.consent);
     var sum = $('#qsummary');
     if (list.length) {
-      sum.innerHTML = '<b>Please fix ' + (list.length === 1 ? 'this' : 'these ' + list.length + ' things') + ' before sending:</b><ul>' + list.map(function (x) { return '<li><a href="#' + x.id + '">' + x.msg + '</a></li>'; }).join('') + '</ul>';
+      if (first) { var st = first.closest('.qstep'); if (st) go(+st.dataset.step, true); }
+      sum.innerHTML = '<b>Please fix ' + (list.length === 1 ? 'this' : 'these ' + list.length + ' things') + ' to continue:</b><ul>' + list.map(function (x) { return '<li><a href="#' + x.id + '">' + x.msg + '</a></li>'; }).join('') + '</ul>';
       sum.hidden = false; sum.focus(); sum.scrollIntoView({ block: 'center', behavior: 'smooth' });
       [].forEach.call(sum.querySelectorAll('a'), function (a) { a.addEventListener('click', function (e) { e.preventDefault(); var t = $(a.getAttribute('href')); if (t) { t.focus(); t.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }); });
     } else { sum.hidden = true; sum.innerHTML = ''; }
@@ -138,7 +140,7 @@
       fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data).toString() }).then(function (r) { if (r.ok) ok(); else throw new Error('post'); }).catch(function () { manual(); });
     });
   }
-  function show(html) { form.hidden = true; done.hidden = false; done.innerHTML = html; done.focus(); done.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  function show(html) { document.documentElement.style.setProperty('--pp-cta-h', '0px'); document.body.classList.remove('has-qbar'); form.hidden = true; done.hidden = false; done.innerHTML = html; done.focus(); done.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   function fallback(text) {
     var subj = 'Quote request: ' + ($('#q-template').value), btns = '';
@@ -156,8 +158,41 @@
     var pr = $('#q-print'); if (pr) pr.addEventListener('click', printEstimate);
   }
   var netlify = C.netlifyForms === true || (C.netlifyForms !== false && /\.netlify\.app$/.test(location.hostname));
+  // ---------- three steps, a progress bar, package cards and a pinned total ----------
+  var steps = [].slice.call(form.querySelectorAll('.qstep')), step = 0, CHECK = [[], ['q-goal'], ['q-name', 'q-email', 'q-phone', 'q-consent']], LAB = ['Continue', 'Continue', 'Send my request'];
+  var sendBtn = $('#q-send'), backBtn = $('#q-back'), prog = [].slice.call(form.querySelectorAll('#qprog button')), reduceM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function go(n, quiet) {
+    step = Math.max(0, Math.min(2, n));
+    steps.forEach(function (st, i) { st.hidden = i !== step; });
+    prog.forEach(function (b, i) { b.classList.toggle('done', i < step); if (i === step) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); b.disabled = i > step; });
+    sendBtn.textContent = LAB[step]; backBtn.hidden = step === 0;
+    if (!quiet) {
+      var sm = $('#qsummary'); sm.hidden = true; sm.innerHTML = '';
+      $('#qprog').scrollIntoView({ block: 'start', behavior: reduceM ? 'auto' : 'smooth' });
+      var h = steps[step].querySelector('.qh'); if (h) h.focus({ preventScroll: true });
+    }
+  }
+  function next() { if (!validate(CHECK[step])) return; go(step + 1); }
+  function submitNow() { if (form.requestSubmit) form.requestSubmit(); else form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); }
+  sendBtn.addEventListener('click', function () { if (step < 2) next(); else submitNow(); }); // the button stays a plain button, so changing its label can never submit the form by accident
+  backBtn.addEventListener('click', function () { go(step - 1); });
+  prog.forEach(function (b, i) { b.addEventListener('click', function () { if (i < step) go(i); }); });
+  form.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'checkbox') { e.preventDefault(); if (step < 2) next(); else submitNow(); } });
+  var pk = $('#pkgpick');
+  function pickPkg(btn) { $('#q-package').value = btn.dataset.val; $('#q-package').dispatchEvent(new Event('change', { bubbles: true })); }
+  pk.addEventListener('click', function (e) { var b = e.target.closest('button[data-val]'); if (b) pickPkg(b); });
+  pk.addEventListener('keydown', function (e) {
+    var k = e.key; if (['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'].indexOf(k) < 0) return; e.preventDefault();
+    var bs = [].slice.call(pk.querySelectorAll('button')), i = bs.indexOf(document.activeElement); if (i < 0) i = bs.findIndex(function (b) { return b.getAttribute('aria-checked') === 'true'; });
+    var n = bs[(i + (k === 'ArrowRight' || k === 'ArrowDown' ? 1 : bs.length - 1)) % bs.length]; pickPkg(n); n.focus();
+  });
+  var oT = $('#q-template').selectedOptions[0], startAt = (q.get('template') && q.get('package') && oT && oT.dataset.files) ? 1 : 0; // a template and a package chosen on the home page: start at step 2
+  go(startAt, true); estimate();
+  function setBarHeight() { var bar = $('#qbar'); if (bar && !form.hidden) { document.documentElement.style.setProperty('--pp-cta-h', bar.offsetHeight + 'px'); document.body.classList.add('has-qbar'); } }
+  setBarHeight(); addEventListener('resize', setBarHeight);
+
   form.addEventListener('submit', function (e) {
-    e.preventDefault(); if (!validate()) return;
+    e.preventDefault(); if (step < 2) { next(); return; } if (!validate()) return;
     orderRef = ref(); if ($('#q-ref')) $('#q-ref').value = orderRef; if (!cur) estimate();
     var text = summary(), btn = $('#q-send'); btn.disabled = true; btn.textContent = 'Sending…';
     if (!netlify) { fallback(text); return; }
@@ -166,4 +201,30 @@
     fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).then(function (r) { if (r.ok) thanks(text); else throw new Error('post'); }).catch(function () { btn.disabled = false; btn.textContent = 'Send my request'; if (window.ppUI) ppUI.alert('We could not send your request automatically. Please use one of the options below, so nothing is lost.', 'warn'); fallback(text); });
   });
   form.addEventListener('input', function (e) { var id = e.target.id; if (e.target.getAttribute('aria-invalid') === 'true') { e.target.setAttribute('aria-invalid', 'false'); var m = { 'q-name': 'name', 'q-email': 'email', 'q-phone': 'phone', 'q-goal': 'goal', 'q-consent': 'consent' }[id]; if (m) E[m].textContent = ''; if (!form.querySelector('[aria-invalid="true"]')) { var sm = $('#qsummary'); sm.hidden = true; sm.innerHTML = ''; } } });
+
+  // ---------- pieces that follow the estimate ----------
+  function barUpdate() {
+    var t = $('#qb-total'), sb = $('#qb-sub'); if (!t || !cur) return;
+    var nm = cur.template && cur.template !== 'Not sure yet' ? cur.template : '', was = t.textContent, txt, sub;
+    if (cur.custom) { txt = 'Price agreed first'; sub = 'Custom build · nothing is charged now'; }
+    else if (cur.base === null) { txt = cur.total ? '+ ' + inr(cur.total) : 'Pick a template'; sub = cur.total ? 'extras so far · choose a template for the full price' : 'to see your price'; }
+    else { txt = inr(cur.total); sub = nm + ' · ' + cur.pkg + (cur.picked.length ? ' + ' + cur.picked.length + ' extra' + (cur.picked.length > 1 ? 's' : '') : ''); }
+    t.textContent = txt; sb.textContent = sub;
+    if (was !== txt && was !== '' && !matchMedia('(prefers-reduced-motion: reduce)').matches) { t.classList.remove('bump'); void t.offsetWidth; t.classList.add('bump'); }
+  }
+  function pkgUpdate() {
+    var box = $('#pkgpick'); if (!box) return;
+    var sel = $('#q-package').value, o = $('#q-template').selectedOptions[0], f = o && +o.dataset.files || 0, fee = o && +o.dataset.fee || 0;
+    [].forEach.call(box.querySelectorAll('button'), function (b) {
+      var on = b.dataset.val === sel; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle('on', on);
+      var pp = b.querySelector('.pp'), k = pp.dataset.k;
+      pp.textContent = k === 'custom' ? 'Priced after we talk' : k === 'files' ? (f ? inr(f) : 'from ' + inr(+box.dataset.minfiles)) : (f ? inr(f + fee) : 'from ' + inr(+box.dataset.minsetup));
+    });
+  }
+  function peekUpdate() {
+    var pkE = $('#tpl-peek'); if (!pkE) return;
+    var o = $('#q-template').selectedOptions[0], img = o && o.dataset.img; if (!img) { pkE.hidden = true; return; }
+    var nm = ''; try { nm = (localStorage.getItem('pp-name') || '').trim(); } catch (e) { /* storage blocked */ }
+    $('#tp-img').src = 'previews/' + img + '.jpg'; $('#tp-name').textContent = o.value + (nm ? ' as ' + nm : ''); $('#tp-tag').textContent = o.dataset.tag || ''; pkE.hidden = false;
+  }
 })();

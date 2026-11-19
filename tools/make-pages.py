@@ -191,36 +191,63 @@ legal('refunds', 'Refunds', 'Pixelpatra’s refund and replacement policy for te
  ('How refunds are paid', '<p>Refunds go back to the payment method you used, within 5 to 7 working days of approval. Your bank may take a few more days to show it.</p>')])
 
 # ---------------------------------------------------------------- quote
-opts = ''.join(f'<option value="{esc(t["name"])}" data-files="{t["files"]}" data-fee="{t["fee"]}" data-setup="{t["setup"]}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
+opts = ''.join(f'<option value="{esc(t["name"])}" data-files="{t["files"]}" data-fee="{t["fee"]}" data-setup="{t["setup"]}" data-img="{t["img"]}" data-tag="{esc(t["tag"])}">{esc(t["name"])} · {esc(t["tag"])}</option>' for t in TEMPLATES)
 ADDONS = DATA.get('addons', [])
 addon_html = ''.join(f'<label class="check addon"><input type="checkbox" name="features" value="{esc(a["label"])}" data-price="{a["price"]}"><span class="addon-t">{esc(a["label"])}<small>{esc(a["note"])}</small></span><b class="plus">+ {inr(a["price"])}</b></label>' for a in ADDONS)
 quote_body = f'''
-{head('Request a quote', 'Tell us what you need', 'Takes about two minutes. We reply with a clear quote; nothing starts until you agree.')}
+{head('Request a quote', 'Let’s plan your website', 'Three quick steps, about two minutes. Nothing is charged until you choose to pay, and nothing starts until you agree.')}
 <div class="qsummary" id="qsummary" role="alert" tabindex="-1" hidden></div>
 <form class="qform" id="qform" name="quote" method="POST" action="quote.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
   <input type="hidden" name="form-name" value="quote">
   <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-  <fieldset><legend>About you</legend>
+  <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
+  <ol class="qprog" id="qprog" aria-label="Progress">
+    <li><button type="button" data-s="0" aria-current="step"><i>1</i><span>Choose your site</span></button></li>
+    <li><button type="button" data-s="1"><i>2</i><span>Make it yours</span></button></li>
+    <li><button type="button" data-s="2"><i>3</i><span>Confirm</span></button></li>
+  </ol>
+  <div class="qstep" data-step="0">
+    <h2 class="qh" tabindex="-1">Which site, and how much help?</h2>
+    <div class="field"><label for="q-template">Template</label><select id="q-template" name="template"><option value="Not sure yet">Not sure yet, help me choose</option>{opts}<option value="Something custom">Something custom</option></select></div>
+    <div class="tpl-peek" id="tpl-peek" hidden><img id="tp-img" alt="" width="1000" height="625"><div><b id="tp-name"></b><span id="tp-tag"></span><a href="compare.html">Not sure? Compare them</a></div></div>
+    <div class="field" hidden><label for="q-package">Package</label><select id="q-package" name="package"><option value="Template files">Template files</option><option value="Setup &amp; launch">Setup &amp; launch</option><option value="Custom build">Custom build</option></select></div>
+    <div class="pkgpick" id="pkgpick" role="radiogroup" aria-label="How much help do you want?" data-minfiles="{min_files}" data-minsetup="{min_setup}">
+      <button type="button" role="radio" data-val="Template files"><b>Template files</b><em>You set it up yourself</em><strong class="pp" data-k="files"></strong><ul><li>The complete website files</li><li>A written guide to add your name, photos and text</li><li>Runs on ordinary hosting</li></ul></button>
+      <button type="button" role="radio" data-val="Setup &amp; launch"><span class="ribbon">Easiest</span><b>Setup &amp; launch</b><em>We do it all for you</em><strong class="pp" data-k="setup"></strong><ul><li>We add your name, logo, colours, photos and text</li><li>We connect your domain and put it live</li><li>Two rounds of changes after you review it</li></ul></button>
+      <button type="button" role="radio" data-val="Custom build"><b>Custom build</b><em>Made around your needs</em><strong class="pp" data-k="custom"></strong><ul><li>Changes to layout, features or a new page type</li><li>Scope and price agreed with you in writing first</li><li>Best for specific needs</li></ul></button>
+    </div>
+    <p class="qassure">Choosing here does not commit you. You can change anything before you send.</p>
+  </div>
+  <div class="qstep" data-step="1" hidden>
+    <h2 class="qh" tabindex="-1">Tell us what you want it to do</h2>
+    <div class="field"><label for="q-goal">In your own words</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
+    <div class="field"><span class="lab">Make it do more <span class="hint">(optional; each one adds its price to your total)</span></span><div class="checks addons">
+      {addon_html}</div></div>
+  </div>
+  <div class="qstep" data-step="2" hidden>
+    <h2 class="qh" tabindex="-1">Almost done. Who should we reply to?</h2>
     <div class="row"><div class="field"><label for="q-name">Your name</label><input id="q-name" name="name" type="text" autocomplete="name" required><span class="err" id="e-name" role="alert"></span></div>
     <div class="field"><label for="q-org">Business or organisation <span class="hint">(optional)</span></label><input id="q-org" name="organisation" type="text" autocomplete="organization"></div></div>
     <div class="row"><div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" inputmode="email"><span class="err" id="e-email" role="alert"></span></div>
     <div class="field"><label for="q-phone">Phone or WhatsApp</label><input id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"><span class="err" id="e-phone" role="alert"></span></div></div>
     <p class="hint" style="margin:-4px 0 14px;color:var(--muted)">Email or phone, at least one, so we can reach you.</p>
-  </fieldset>
-  <fieldset><legend>What you want</legend>
-    <div class="row"><div class="field"><label for="q-template">Template</label><select id="q-template" name="template"><option value="Not sure yet">Not sure yet, help me choose</option>{opts}<option value="Something custom">Something custom</option></select></div>
-    <div class="field"><label for="q-package">Package</label><select id="q-package" name="package"><option value="Template files">Template files</option><option value="Setup &amp; launch">Setup &amp; launch</option><option value="Custom build">Custom build</option></select></div></div>
-    <div class="field"><label for="q-goal">What do you want your website to do?</label><textarea id="q-goal" name="goal" rows="5" placeholder="For example: show my work and get client enquiries; sell candles online with UPI payments; show our products to dealers."></textarea><span class="err" id="e-goal" role="alert"></span></div>
-    <div class="field"><span class="lab">Extra services <span class="hint">(tick any; each one adds its price)</span></span><div class="checks addons">
-      {addon_html}</div></div>
     <div class="estimate" id="q-estimate" role="status" aria-live="polite"></div>
     <p class="est-actions" id="q-est-actions" hidden><button type="button" class="btn btn-sm" id="q-est-pdf">Save estimate as PDF</button> <button type="button" class="btn btn-sm" id="q-est-mail">Email me this estimate</button></p>
     <input type="hidden" name="estimate" id="q-est" value="">
     <input type="hidden" name="order_ref" id="q-ref" value="">
-    <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
-  </fieldset>
-  <label class="check"><input type="checkbox" id="q-consent" name="consent" value="yes"> I agree that Pixelpatra may use these details to reply to me. <a href="privacy.html">Privacy</a></label><span class="err" id="e-consent" role="alert"></span>
-  <div><button class="btn btn-solid" type="submit" id="q-send">Send my request</button></div>
+    <ul class="qpromise">
+      <li><b>Nothing starts until you agree.</b> This is a request, not an order.</li>
+      <li><b>We reply within one working day</b> (Monday to Saturday).</li>
+      <li><b>Full refund</b> if you cancel before work starts.</li>
+      <li><b>Pay by UPI from your own app,</b> right after you send. We never see your bank details.</li>
+    </ul>
+    <label class="check"><input type="checkbox" id="q-consent" name="consent" value="yes"> I agree that Pixelpatra may use these details to reply to me. <a href="privacy.html">Privacy</a></label><span class="err" id="e-consent" role="alert"></span>
+  </div>
+  <div class="qbar" id="qbar">
+    <div class="qb-sum" aria-live="polite"><small>Your estimate</small><b id="qb-total">Pick a template</b><span id="qb-sub"></span></div>
+    <button type="button" class="btn" id="q-back" hidden>Back</button>
+    <button class="btn btn-solid" type="button" id="q-send">Continue</button>
+  </div>
 </form>
 <div class="qdone" id="qdone" hidden tabindex="-1" role="status"></div>
 <form name="payment" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true"><input type="hidden" name="form-name" value="payment"><input name="bot-field"><input name="order_ref"><input name="name"><input name="email"><input name="phone"><input name="amount"><input name="utr"><input name="template"><input name="package"></form>'''
