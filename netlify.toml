@@ -1,0 +1,5 @@
+# Netlify builds the site from this repo on every change to main.
+# The same script GitHub Pages uses, so both sites are always identical.
+[build]
+  command = "sh tools/build-site.sh _site"
+  publish = "_site"
