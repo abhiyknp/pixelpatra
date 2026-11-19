@@ -64,7 +64,7 @@ body { display: flex; flex-direction: column; font: 14px/1.4 system-ui, -apple-s
   <button id="get" type="button" class="get" hidden>Request a quote</button>
   <button id="close" type="button" hidden>Close ✕</button>
 </header>
-<div class="note" id="note"></div>
+<div class="note" id="note" role="region" aria-label="About this demo"></div>
 <div class="busy" id="busy" role="status" aria-live="polite" hidden>Loading the demo…</div>
 <div class="fail" id="fail" role="alert" hidden><span id="fail-t"></span> <button type="button" id="retry">Try again</button></div>
 <aside class="guide" id="guide" hidden aria-label="How to use this page"><b>How to use this page</b><ul><li><b>Demo</b>: pick a sample website.</li><li><b>Device</b>: see it as a website, tablet or phone app.</li><li><b>Start at → Owner view</b>: see the controls the shop owner uses.</li><li><b>Theme</b>: six colour themes for every demo.</li></ul><button type="button" id="guide-ok">Got it</button></aside>
