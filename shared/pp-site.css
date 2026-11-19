@@ -508,3 +508,29 @@ html:has(.qbar){scroll-padding-bottom:140px}
   .try-avatar{min-width:44px;height:44px}.try .try-name input{min-height:44px}
   .logo-row .linkbtn{min-height:44px}
 }
+
+/* after-request screen */
+.qdone{position:relative;overflow:hidden}
+.ok-hero{text-align:center;padding:6px 0 4px}.ok-hero h2{font-size:clamp(26px,5vw,36px);margin:10px 0 8px}.ok-hero p{max-width:52ch;margin:0 auto;color:var(--muted)}
+.ok-tick{width:72px;height:72px;display:block;margin:0 auto}.ok-ring{fill:#dcfce7;stroke:#16a34a;stroke-width:2.5;stroke-dasharray:145;stroke-dashoffset:145;animation:okDraw .7s ease-out forwards}.ok-mark{fill:none;stroke:#15803d;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:okDraw .45s .55s ease-out forwards}
+@keyframes okDraw{to{stroke-dashoffset:0}}
+.tl{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0;padding:0;counter-reset:none}
+.tl li{position:relative;display:flex;flex-direction:column;gap:3px;padding:14px 12px 12px 54px;border:1px solid var(--line);border-radius:14px;background:var(--paper);min-height:76px}
+.tl li i{position:absolute;left:12px;top:14px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--font-mono);font-style:normal;background:var(--surface);border:2px solid var(--line);color:var(--muted)}
+.tl li b{font-size:15px}.tl li span{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.tl li.done i{background:#16a34a;border-color:#16a34a;color:#fff}.tl li.now{border-color:var(--saffron);box-shadow:0 0 0 3px color-mix(in srgb,var(--saffron) 22%,transparent)}.tl li.now i{border-color:var(--saffron);color:var(--ink);animation:tlPulse 1.8s ease-in-out infinite}
+@keyframes tlPulse{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--saffron) 25%,transparent)}}
+.sumcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:var(--paper)}.sumcard h3{margin:0 0 10px}
+.sumcard dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:0}.sumcard dl div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.sumcard dt{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.sumcard dd{margin:3px 0 0;font-weight:700;overflow-wrap:anywhere}
+.sumcard details{margin:12px 0 0}.sumcard summary{cursor:pointer;font-weight:600;padding:8px 0}.sum-btns{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 0}
+.qdone .paybox{margin-top:20px;border:0;border-radius:18px;background:#1b1410;color:#fff;padding:22px;box-shadow:0 14px 40px rgba(27,20,16,.28)}.qdone .paybox h3{color:#fff;margin-top:0}.qdone .paybox p,.qdone .paybox label{color:#e9ddd2}.qdone .paybox code{color:#ffd7b8}.qdone .paybox .est-note{color:#c9b9aa}
+.qdone .paybox .btn:not(.btn-solid){background:transparent;color:#fff;border-color:#8a7767}.qdone .paybox input{width:100%;margin:6px 0 10px}.qdone .paybox .err{display:block;color:#ffb4b4;margin-bottom:8px}
+.paybox.paid{text-align:center;position:relative;overflow:hidden;background:linear-gradient(160deg,#14301f,#1b1410 70%)}.paybox.paid .ok-tick{width:64px;height:64px}.paid-sub{max-width:52ch;margin:0 auto 14px}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 16px;text-align:left}.chips div{background:rgba(255,255,255,.08);border-radius:12px;padding:10px 12px}.chips dt{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#bfae9d}.chips dd{margin:3px 0 0;font:600 15px var(--font-mono);overflow-wrap:anywhere}
+.next{text-align:left;max-width:560px;margin:0 auto 16px}.next h4{margin:0 0 6px}.next ol{margin:0;padding-left:22px}.next li{margin:4px 0}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}.confetti i{position:absolute;top:-12px;width:8px;height:13px;border-radius:2px;opacity:0;animation:cf 2s ease-in forwards}
+@keyframes cf{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--dx),420px) rotate(var(--r))}}
+@media(max-width:620px){.tl{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.ok-ring,.ok-mark{animation:none;stroke-dashoffset:0}.tl li.now i{animation:none}}
+@media print{.tl,.confetti,.paybox:not(.paid){display:none!important}.qdone .paybox.paid{background:#fff;color:#000;box-shadow:none}.qdone .paybox.paid *{color:#000!important}}
+.qdone .paybox .err:empty{display:none}.qdone .paybox #pay-go{margin-top:2px}

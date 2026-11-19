@@ -133,7 +133,7 @@
       err.textContent = ''; $('#pay-utr').setAttribute('aria-invalid', 'false');
       var data = { 'form-name': 'payment', order_ref: orderRef, name: $('#q-name').value.trim(), email: $('#q-email').value.trim(), phone: $('#q-phone').value.trim(), amount: String(cur.total), utr: utr, template: cur.template, package: cur.pkg };
       var line = 'Payment reference for ' + orderRef + ': ' + utr + ' (' + inr(cur.total) + ' to ' + C.upi.id + ')';
-      var ok = function () { $('#pay-form').outerHTML = '<p class="reward-note">Thank you. We have your payment reference (' + esc(utr) + '). We will confirm your payment within one working day.</p>'; };
+      var ok = function () { paidView(utr); };
       var manual = function () { $('#pay-form').outerHTML = '<p>This site could not send the reference automatically. Please copy this and send it to us:</p><pre>' + esc(line) + '</pre><p><button type="button" class="btn" id="pay-copy-ref">Copy</button></p>'; $('#pay-copy-ref').addEventListener('click', function () { if (window.ppUI) ppUI.copy(line, 'Copied.'); }); };
       if (!netlify) { manual(); return; }
       var b = $('#pay-go'); b.disabled = true; b.textContent = 'Sending…';
@@ -150,12 +150,41 @@
     show('<h2>One last step</h2><p>' + (C.email || C.whatsapp ? 'Choose how to send your request. We reply as soon as we can.' : 'Your request is ready. Copy it and send it to us. (This site has not been connected to an inbox yet.)') + '</p><pre>' + esc(text) + '</pre><p>' + btns + '</p><p><a href="quote.html">Edit and start again</a></p>' + payHtml()); wirePay();
     var cp = $('#q-copy'); if (cp) cp.addEventListener('click', function () { (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () { cp.textContent = 'Copied ✓'; }, function () { var r = document.createRange(); r.selectNodeContents($('#qdone pre')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); cp.textContent = 'Press Ctrl+C to copy'; }); });
   }
+  // ---------- the screen after "Send my request": a tick, a three-step timeline, a tidy summary, then payment ----------
+  var TICK = '<svg class="ok-tick" viewBox="0 0 52 52" aria-hidden="true"><circle class="ok-ring" cx="26" cy="26" r="23"/><path class="ok-mark" d="M15 27l8 8 15-17"/></svg>';
+  function timeline(stage) {
+    var pay = payNeeded(), L = pay ? [['Request received', orderRef], ['Pay by UPI', 'Now, or after we reply'], ['We confirm and reply', 'Within one working day']] : [['Request received', orderRef], ['We prepare your quote', 'Within one working day'], ['You approve, we start', 'Nothing starts before that']];
+    return '<ol class="tl" id="tl" aria-label="Progress">' + L.map(function (x, i) { var c = i < stage ? 'done' : i === stage ? 'now' : ''; return '<li class="' + c + '"' + (c === 'now' ? ' aria-current="step"' : '') + '><i aria-hidden="true">' + (i < stage ? '✓' : i + 1) + '</i><b>' + x[0] + '</b><span>' + esc(x[1]) + '</span></li>'; }).join('') + '</ol>';
+  }
+  function setStage(n) { var t = $('#tl'); if (!t) return; [].forEach.call(t.children, function (li, i) { li.className = i < n ? 'done' : i === n ? 'now' : ''; if (i === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); li.querySelector('i').textContent = i < n ? '✓' : i + 1; }); }
+  function confetti(host) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var c = doc2.createElement('div'); c.className = 'confetti'; c.setAttribute('aria-hidden', 'true'); var cols = ['#f97316', '#fbbf24', '#22c55e', '#38bdf8', '#e879f9'];
+    for (var i = 0; i < 28; i++) { var p = doc2.createElement('i'); p.style.cssText = 'left:' + (Math.random() * 100) + '%;background:' + cols[i % 5] + ';animation-delay:' + (Math.random() * .35) + 's;animation-duration:' + (1.4 + Math.random() * 1.1) + 's;--dx:' + (Math.round(Math.random() * 120 - 60)) + 'px;--r:' + Math.round(Math.random() * 540) + 'deg'; c.appendChild(p); }
+    host.appendChild(c); setTimeout(function () { if (c.parentNode) c.parentNode.removeChild(c); }, 3000);
+  }
+  var doc2 = document;
+  function paidView(utr) {
+    var box = $('#paybox'); if (!box) return;
+    box.classList.add('paid');
+    box.innerHTML = TICK + '<h3>Payment reference received</h3><p class="paid-sub">Thank you. We will match it to your order and confirm within one working day (Monday to Saturday).</p>' +
+      '<dl class="chips"><div><dt>Amount</dt><dd>' + inr(cur.total) + '</dd></div><div><dt>UPI reference</dt><dd>' + esc(utr) + '</dd></div><div><dt>Order reference</dt><dd>' + esc(orderRef) + '</dd></div></dl>' +
+      '<div class="next"><h4>What happens next</h4><ol><li>We check the payment against your order.</li><li>You get a confirmation' + ($('#q-email').value.trim() ? ' at <b>' + esc($('#q-email').value.trim()) + '</b>' : '') + ' with your start date.</li><li>We begin once you have said yes to the quote.</li></ol></div>' +
+      '<p class="pay-btns"><button type="button" class="btn" id="paid-print">Save receipt as PDF</button> <a class="btn btn-solid" href="index.html#templates">Keep exploring templates</a></p>';
+    setStage(2); confetti(box); var pr = $('#paid-print'); if (pr) pr.addEventListener('click', printEstimate);
+    box.setAttribute('tabindex', '-1'); box.focus({ preventScroll: true }); box.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
   function thanks(text) {
-    var nm = $('#q-name').value.trim().split(/\s+/)[0];
-    show('<h2>Thank you, ' + esc(nm) + '.</h2><p>We have your request and will reply with a clear quote' + ($('#q-email').value ? ' at ' + esc($('#q-email').value.trim()) : '') + ' ' + 'within one working day (Monday to Saturday). Nothing starts until you say yes.</p>' +
-      '<h3>What you asked for</h3><pre>' + esc(text) + '</pre><p><button type="button" class="btn" id="q-copy">Copy this</button> <button type="button" class="btn" id="q-print">Save estimate as PDF</button> <a class="btn" href="index.html#templates">Back to the templates</a></p>' + payHtml());
+    var nm = $('#q-name').value.trim().split(/\s+/)[0], f = new FormData(form), g = function (k) { return (f.get(k) || '').toString().trim(); }, em = $('#q-email').value.trim();
+    var rows = [['Template', g('template')], ['Package', g('package')], ['Extra services', f.getAll('features').join(', ') || 'None'], ['Estimate', lastEst || '-'], ['Order reference', orderRef || '-']];
+    show('<div class="ok-hero">' + TICK + '<h2>Request received, ' + esc(nm) + '.</h2><p>We will reply with a clear quote' + (em ? ' at <b>' + esc(em) + '</b>' : '') + ' within one working day (Monday to Saturday). Nothing starts until you say yes.</p></div>' +
+      timeline(1) +
+      '<div class="sumcard"><h3>Your request</h3><dl>' + rows.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd></div>'; }).join('') + '</dl>' +
+      '<details><summary>See everything you sent</summary><pre>' + esc(text) + '</pre></details>' +
+      '<p class="sum-btns"><button type="button" class="btn" id="q-copy">Copy this</button> <button type="button" class="btn" id="q-print">Save estimate as PDF</button> <a class="btn" href="index.html#templates">Back to the templates</a></p></div>' + payHtml());
     wirePay(); var cp = $('#q-copy'); if (cp) cp.addEventListener('click', function () { if (window.ppUI) ppUI.copy(text, 'Copied.'); });
     var pr = $('#q-print'); if (pr) pr.addEventListener('click', printEstimate);
+    var tk = $('#qdone .ok-hero'); if (tk) confetti(tk);
   }
   var netlify = C.netlifyForms === true || (C.netlifyForms !== false && /\.netlify\.app$/.test(location.hostname));
   // ---------- three steps, a progress bar, package cards and a pinned total ----------
