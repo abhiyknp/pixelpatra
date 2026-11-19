@@ -534,3 +534,6 @@ html:has(.qbar){scroll-padding-bottom:140px}
 @media(prefers-reduced-motion:reduce){.ok-ring,.ok-mark{animation:none;stroke-dashoffset:0}.tl li.now i{animation:none}}
 @media print{.tl,.confetti,.paybox:not(.paid){display:none!important}.qdone .paybox.paid{background:#fff;color:#000;box-shadow:none}.qdone .paybox.paid *{color:#000!important}}
 .qdone .paybox .err:empty{display:none}.qdone .paybox #pay-go{margin-top:2px}
+/* floating badges (explorer pill, Netlify badge) must never cover the last lines of a page, and stay out of the request flow */
+.site-foot{padding-bottom:calc(76px + var(--pp-cta-h,0px))}
+html:has(#qform) .pp-ex{display:none}
