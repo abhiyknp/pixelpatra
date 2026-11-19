@@ -477,3 +477,24 @@ html:has(.qbar){scroll-padding-bottom:140px}
 .page > .qform{animation:none}
 .qb-sum small{white-space:nowrap}
 @media(max-width:760px){.qbar{gap:8px}.qbar .btn{padding-inline:16px}.qb-sum small{font-size:10px;letter-spacing:.05em}}
+
+/* mini mock-up of their site, saved-progress note, what happens next */
+.tpl-peek{gap:18px}
+.tpl-peek .mock{width:260px;flex:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:0 10px 26px rgba(0,0,0,.12)}
+.mk-bar{height:20px;display:flex;align-items:center;gap:4px;padding:0 8px;background:var(--paper);border-bottom:1px solid var(--line)}.mk-bar i{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.mk-url{margin-left:6px;flex:1;min-width:0;font:500 9px var(--font-mono,monospace);color:var(--muted);background:var(--surface);padding:2px 7px;border-radius:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mk-head{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:3px solid var(--saffron)}
+.mk-av{flex:none;width:24px;height:24px;border-radius:7px;background:var(--saffron);color:var(--saffron-ink);display:grid;place-items:center;font:700 9px var(--font-body,inherit);overflow:hidden}.mk-av img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+.mk-head b{flex:1;min-width:0;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mk-head em{flex:none;width:14px;height:3px;border-radius:2px;background:var(--line)}
+.tpl-peek .mock img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top;border:0;border-radius:0}
+.mk-cap{display:grid;gap:3px;font-size:14px}.mk-cap small{font:600 10.5px var(--font-mono,monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.mk-cap span{color:var(--muted)}.mk-cap a{color:var(--ink);font-size:13px;text-underline-offset:3px}
+.qresume{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 16px;padding:12px 14px;border:1px solid color-mix(in srgb,#2563eb 35%,var(--line));border-radius:14px;background:color-mix(in srgb,#2563eb 6%,var(--surface));font-size:14px}.qresume[hidden]{display:none}
+.qresume button{all:unset;cursor:pointer;font-weight:700;text-decoration:underline;text-underline-offset:3px}.qresume button:focus-visible{outline:3px solid var(--saffron);outline-offset:2px;border-radius:4px}
+.qnext{list-style:none;counter-reset:n;margin:18px 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qnext li{counter-increment:n;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface);font-size:13px;display:grid;gap:3px;align-content:start}
+.qnext li::before{content:counter(n);width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:700 12px var(--font-body,inherit);margin-bottom:4px}
+.qnext li b{font-size:14px}.qnext li span{color:var(--muted)}
+@media(max-width:760px){.tpl-peek{flex-direction:column;align-items:stretch}.tpl-peek .mock{width:100%}.qnext{grid-template-columns:1fr}.qnext li{grid-template-columns:auto 1fr;column-gap:10px}.qnext li::before{grid-row:1/3;margin:0}}
+/* the older preview rule set every div inside to a grid; the mock-up needs its own layout back */
+.tpl-peek .mock{display:block}.tpl-peek .mk-bar,.tpl-peek .mk-head{display:flex;gap:0}.tpl-peek .mk-bar{gap:4px}.tpl-peek .mk-head{gap:8px}
+.mk-av.logo{width:auto;max-width:110px;height:24px;background:transparent;border-radius:0;justify-content:start}.mk-av.logo img{height:24px;width:auto;max-width:110px}

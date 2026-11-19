@@ -201,6 +201,7 @@ quote_body = f'''
   <input type="hidden" name="form-name" value="quote">
   <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
   <div class="reward-note" id="q-reward" hidden></div><input type="hidden" name="explorer" id="q-explorer" value="">
+  <div class="qresume" id="qresume" role="status" hidden><span><b>Welcome back.</b> We kept your answers, saved only in this browser.</span><button type="button" id="qresume-clear">Start fresh</button></div>
   <ol class="qprog" id="qprog" aria-label="Progress">
     <li><button type="button" data-s="0" aria-current="step"><i>1</i><span>Choose your site</span></button></li>
     <li><button type="button" data-s="1"><i>2</i><span>Make it yours</span></button></li>
@@ -209,7 +210,10 @@ quote_body = f'''
   <div class="qstep" data-step="0">
     <h2 class="qh" tabindex="-1">Which site, and how much help?</h2>
     <div class="field"><label for="q-template">Template</label><select id="q-template" name="template"><option value="Not sure yet">Not sure yet, help me choose</option>{opts}<option value="Something custom">Something custom</option></select></div>
-    <div class="tpl-peek" id="tpl-peek" hidden><img id="tp-img" alt="" width="1000" height="625"><div><b id="tp-name"></b><span id="tp-tag"></span><a href="compare.html">Not sure? Compare them</a></div></div>
+    <div class="tpl-peek" id="tpl-peek" hidden>
+      <div class="mock" aria-hidden="true"><div class="mk-bar"><i></i><i></i><i></i><span class="mk-url" id="mk-url">yourname.in</span></div><div class="mk-head"><span class="mk-av" id="mk-av">YN</span><b id="mk-name">Your business</b><em></em><em></em></div><img id="tp-img" alt="" width="1000" height="625"></div>
+      <div class="mk-cap"><small>Your site, as it will look</small><b id="tp-name"></b><span id="tp-tag"></span><a href="compare.html">Not sure? Compare them</a></div>
+    </div>
     <div class="field" hidden><label for="q-package">Package</label><select id="q-package" name="package"><option value="Template files">Template files</option><option value="Setup &amp; launch">Setup &amp; launch</option><option value="Custom build">Custom build</option></select></div>
     <div class="pkgpick" id="pkgpick" role="radiogroup" aria-label="How much help do you want?" data-minfiles="{min_files}" data-minsetup="{min_setup}">
       <button type="button" role="radio" data-val="Template files"><b>Template files</b><em>You set it up yourself</em><strong class="pp" data-k="files"></strong><ul><li>The complete website files</li><li>A written guide to add your name, photos and text</li><li>Runs on ordinary hosting</li></ul></button>
@@ -241,6 +245,12 @@ quote_body = f'''
       <li><b>Full refund</b> if you cancel before work starts.</li>
       <li><b>Pay by UPI from your own app,</b> right after you send. We never see your bank details.</li>
     </ul>
+    <ol class="qnext" id="qnext" aria-label="What happens next">
+      <li><b>You send this request</b><span>It takes a minute.</span></li>
+      <li><b>We reply</b><span>Within one working day, Monday to Saturday.</span></li>
+      <li id="qn-3"><b>You approve and pay</b><span>By UPI, from your own app.</span></li>
+      <li id="qn-4"><b>We deliver</b><span></span></li>
+    </ol>
     <label class="check"><input type="checkbox" id="q-consent" name="consent" value="yes"> I agree that Pixelpatra may use these details to reply to me. <a href="privacy.html">Privacy</a></label><span class="err" id="e-consent" role="alert"></span>
   </div>
   <div class="qbar" id="qbar">

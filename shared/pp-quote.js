@@ -13,7 +13,7 @@
   // ---------- price estimate: the template and package price, plus each extra service that is ticked ----------
   var inr = function (n) { return '₹' + Number(n).toLocaleString('en-IN'); };
   var estBox = $('#q-estimate'), estField = $('#q-est'), lastEst = '', cur = null;
-  function estimate() { estimateCore(); barUpdate(); pkgUpdate(); peekUpdate(); }
+  function estimate() { estimateCore(); barUpdate(); pkgUpdate(); peekUpdate(); nextUpdate(); }
   function estimateCore() {
     var opt = $('#q-template').selectedOptions[0], pkg = $('#q-package').value, lines = [], base = null;
     var key = pkg === 'Template files' ? 'files' : pkg === 'Setup & launch' ? 'setup' : null;
@@ -140,7 +140,7 @@
       fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data).toString() }).then(function (r) { if (r.ok) ok(); else throw new Error('post'); }).catch(function () { manual(); });
     });
   }
-  function show(html) { document.documentElement.style.setProperty('--pp-cta-h', '0px'); document.body.classList.remove('has-qbar'); form.hidden = true; done.hidden = false; done.innerHTML = html; done.focus(); done.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  function show(html) { if (window.__qClearDraft) window.__qClearDraft(); document.documentElement.style.setProperty('--pp-cta-h', '0px'); document.body.classList.remove('has-qbar'); form.hidden = true; done.hidden = false; done.innerHTML = html; done.focus(); done.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   function fallback(text) {
     var subj = 'Quote request: ' + ($('#q-template').value), btns = '';
@@ -165,7 +165,7 @@
     step = Math.max(0, Math.min(2, n));
     steps.forEach(function (st, i) { st.hidden = i !== step; });
     prog.forEach(function (b, i) { b.classList.toggle('done', i < step); if (i === step) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); b.disabled = i > step; });
-    sendBtn.textContent = LAB[step]; backBtn.hidden = step === 0;
+    sendBtn.textContent = LAB[step]; backBtn.hidden = step === 0; if (typeof saveDraft === 'function') saveDraft();
     if (!quiet) {
       var sm = $('#qsummary'); sm.hidden = true; sm.innerHTML = '';
       $('#qprog').scrollIntoView({ block: 'start', behavior: reduceM ? 'auto' : 'smooth' });
@@ -187,6 +187,28 @@
     var n = bs[(i + (k === 'ArrowRight' || k === 'ArrowDown' ? 1 : bs.length - 1)) % bs.length]; pickPkg(n); n.focus();
   });
   var oT = $('#q-template').selectedOptions[0], startAt = (q.get('template') && q.get('package') && oT && oT.dataset.files) ? 1 : 0; // a template and a package chosen on the home page: start at step 2
+  // ---------- saved progress: answers are kept in this browser only, so a visitor can leave and come back ----------
+  var DK = 'pp-quote-draft', saveT, FIELDS = ['q-template', 'q-package', 'q-goal', 'q-name', 'q-org', 'q-email', 'q-phone'];
+  function snap() { var f = {}; FIELDS.forEach(function (id) { f[id] = $('#' + id).value; }); f.feat = [].map.call(form.querySelectorAll('input[name="features"]:checked'), function (c) { return c.value; }); f.step = step; f.ts = Date.now(); return f; }
+  function meaningful(f) { return !!((f['q-goal'] || '').trim() || (f['q-name'] || '').trim() || (f['q-email'] || '').trim() || (f['q-phone'] || '').trim() || (f.feat || []).length); } // only real input counts: choosing a template alone is not worth a welcome-back note
+  function saveDraft() { clearTimeout(saveT); saveT = setTimeout(function () { if (form.hidden) return; var f = snap(); try { if (meaningful(f)) localStorage.setItem(DK, JSON.stringify(f)); } catch (e) { /* storage blocked */ } }, 400); }
+  function clearDraft() { clearTimeout(saveT); try { localStorage.removeItem(DK); } catch (e) { /* storage blocked */ } }
+  window.__qClearDraft = clearDraft;
+  function restore() {
+    if (q.get('template') || q.get('package')) return false; // arriving from a template card: start from that choice
+    var d = null; try { d = JSON.parse(localStorage.getItem(DK) || 'null'); } catch (e) { /* unreadable */ }
+    if (!d || Date.now() - d.ts > 14 * 864e5 || !meaningful(d)) return false;
+    FIELDS.forEach(function (id) { var el = $('#' + id); if (d[id] == null) return; if (el.tagName === 'SELECT') { if ([].some.call(el.options, function (o) { return o.value === d[id]; })) el.value = d[id]; } else if (d[id]) el.value = d[id]; });
+    (d.feat || []).forEach(function (v) { var c = [].filter.call(form.querySelectorAll('input[name="features"]'), function (x) { return x.value === v; })[0]; if (c) c.checked = true; });
+    $('#qresume').hidden = false; startAt = Math.min(2, Math.max(0, +d.step || 0)); return true;
+  }
+  $('#qresume-clear').addEventListener('click', function () {
+    clearDraft(); form.reset(); try { var n = localStorage.getItem('pp-name'); if (n) $('#q-org').value = n; } catch (e) { /* blocked */ }
+    $('#qresume').hidden = true; $('#qsummary').hidden = true; go(0); estimate(); if (window.ppUI) ppUI.toast('Started fresh.', 'ok');
+  });
+  form.addEventListener('input', saveDraft); form.addEventListener('change', saveDraft);
+  window.addEventListener('pp-theme', peekUpdate); window.addEventListener('pp-logo', peekUpdate);
+  restore();
   go(startAt, true); estimate();
   function setBarHeight() { var bar = $('#qbar'); if (bar && !form.hidden) { document.documentElement.style.setProperty('--pp-cta-h', bar.offsetHeight + 'px'); document.body.classList.add('has-qbar'); } }
   setBarHeight(); addEventListener('resize', setBarHeight);
@@ -224,7 +246,19 @@
   function peekUpdate() {
     var pkE = $('#tpl-peek'); if (!pkE) return;
     var o = $('#q-template').selectedOptions[0], img = o && o.dataset.img; if (!img) { pkE.hidden = true; return; }
-    var nm = ''; try { nm = (localStorage.getItem('pp-name') || '').trim(); } catch (e) { /* storage blocked */ }
-    $('#tp-img').src = 'previews/' + img + '.jpg'; $('#tp-name').textContent = o.value + (nm ? ' as ' + nm : ''); $('#tp-tag').textContent = o.dataset.tag || ''; pkE.hidden = false;
+    var nm = ''; try { nm = (localStorage.getItem('pp-name') || '').trim().slice(0, 28); } catch (e) { /* storage blocked */ }
+    $('#tp-img').src = 'previews/' + img + '.jpg'; $('#tp-name').textContent = o.value + (nm ? ' as ' + nm : ''); $('#tp-tag').textContent = o.dataset.tag || '';
+    // the mock-up shows their name, logo and colour (the colour follows the theme they picked on the home page)
+    $('#mk-name').textContent = nm || 'Your business'; $('#mk-url').textContent = (nm.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '') || 'yourname') + '.in';
+    var av = $('#mk-av'), logo = ''; try { logo = window.ppTheme && ppTheme.getLogo ? ppTheme.getLogo() : ''; } catch (e) { /* none */ }
+    av.textContent = ''; av.classList.toggle('logo', !!logo); if (logo) { var li = document.createElement('img'); li.src = logo; li.alt = ''; av.appendChild(li); } else av.textContent = (nm.split(/\s+/).map(function (w) { return w[0] || ''; }).join('').slice(0, 2) || 'YN').toUpperCase();
+    pkE.hidden = false;
   }
+  function nextUpdate() {
+    var n3 = $('#qn-3'), n4 = $('#qn-4'); if (!n3) return; var p = $('#q-package').value;
+    n3.querySelector('b').textContent = p === 'Custom build' ? 'We agree scope and price' : 'You approve and pay';
+    n3.querySelector('span').textContent = p === 'Custom build' ? 'In writing, before any work starts. You pay in stages.' : 'By UPI, from your own app. The next page shows how, right after you send.';
+    n4.querySelector('span').textContent = p === 'Template files' ? 'Your files, within one working day of payment.' : p === 'Setup & launch' ? 'We set it up and put it live, usually 5 to 7 working days after we have your content.' : 'We build it in the stages we agreed.';
+  }
+
 })();
