@@ -13,7 +13,7 @@
 :root {
   color-scheme: light;
   --paper: #f6f7fb; --surface: #ffffff; --ink: #15172a; --muted: #5b5f78; --line: #dfe1ec;
-  --saffron: #f26b1d; --saffron-dk: #c9520f; --saffron-ink: #ffffff;
+  --saffron: #f26b1d; --saffron-dk: #c9520f; --saffron-ink: #1a0d03;
   --teal: #0f8f86; --sky: #3b6cf6; --leaf: #2f9e5b; --plum: #8a3ffc;
   --shadow: 0 1px 2px rgba(21,23,42,.06), 0 12px 32px -12px rgba(21,23,42,.18);
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
@@ -87,7 +87,7 @@ p { margin: 0; }
 .sb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .sb-list li { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--muted); transition: background .3s, color .3s; font-weight: 600; }
 .sb-list li .price { font-family: var(--font-mono); font-weight: 500; }
-.sb-list li.on { background: var(--ink); color: var(--paper); }
+.sb-list li.on { background: var(--ink); color: var(--paper); } .sb-list li.on small { color: var(--paper); opacity: .85; }
 .sb-frame { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--paper); }
 .sb-bar { height: 28px; display: flex; align-items: center; gap: 6px; padding-inline: 10px; background: var(--surface); border-bottom: 1px solid var(--line); }
 .sb-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
@@ -136,7 +136,7 @@ p { margin: 0; }
 .pb-shot.run span { z-index: 1; }
 .pb-card .row small { color: var(--muted); font: 500 12px var(--font-mono); letter-spacing: .04em; }
 .sb-screen { padding: 0; } .sb-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
-.sb-list li small { font: 500 12px var(--font-mono); opacity: .8; }
+.sb-list li small { font: 500 12px var(--font-mono); opacity: 1; color: var(--muted); }
 .site-note { color: var(--muted); font-size: 14px; padding-block: 8px 0; }
 @media (prefers-reduced-motion: reduce) { .pb-shot img { opacity: 1; transition: none; } }
 </style>
